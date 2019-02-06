@@ -1,0 +1,5 @@
+This is the home of my work on the static Trac pages I produced from
+backups of the Trac instance R7RS WG2 used to have at
+<http://trac.sacrideo.us/>.
+
+The backups are included in a Git Annex in this repository.
