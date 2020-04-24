@@ -1,6 +1,6 @@
 ;;;; Trac database extraction (for R7RS-WG1)
 
-;;;; Copyright MMXVIII-MMXIX Arthur A. Gleckler.  All rights reserved.
+;;;; Copyright MMXVIII-MMXX Arthur A. Gleckler.  All rights reserved.
 
 ;;; references:
 
@@ -505,15 +505,18 @@
 
 (define hyphenate-wiki-name
   (let ((change
-	 (rexp-compile
-	  (rexp-sequence char-set:lower-case char-set:upper-case))))
+	 (compile-regsexp
+	  `(seq (char-in ,char-set:lower-case)
+		(char-in ,char-set:upper-case)))))
   (lambda (name)
     (let ((size (string-length name)))
       (let next ((accumulator '())
 		 (i 0))
-	(let ((transition (re-substring-search-forward change name i size)))
+	(let ((transition (regsexp-string-search-forward
+			   change
+			   (string-slice name i size))))
 	  (if transition
-	      (let* ((j (re-match-start-index 0 transition))
+	      (let* ((j (+ i (car transition)))
 		     (next-lower
 		      (or (substring-find-next-char-in-set
 			   name
@@ -692,25 +695,24 @@ WikiFormatting is actually used."
 		      wiki-transforms)))
   name)
 
-(define (add-rexp-transform! name rexp transform #!optional guard)
+(define (add-regsexp-transform! name regsexp transform #!optional guard)
   (add-transform! name
-      (let ((regexp (rexp-compile rexp)))
+      (let ((regexp (compile-regsexp regsexp)))
 	(lambda (string start)
 	  (let ((registers
-		 (re-substring-search-forward regexp
-					      string
-					      start
-					      (string-length string))))
+		 (regsexp-string-search-forward regexp
+						string
+						(string-slice string start))))
 	    (and registers
 		 (make-wiki-transform-result
-		  registers
+		  <><>registers
 		  (re-match-start-index 0 registers)
 		  (re-match-end-index 0 registers))))))
     (lambda (result string)
       (transform (wtr/data result) string))
     guard))
 
-(add-rexp-transform! 'bare-wiki-name
+(add-regsexp-transform! 'bare-wiki-name
     (rexp-sequence (rexp-word-start)
 		   (apply rexp-alternatives all-wiki-names)
 		   (rexp-word-end))
@@ -729,7 +731,7 @@ WikiFormatting is actually used."
 			(rexp+ char-set:lower-case))))
 
 (define camel-case?
-  (let ((camel (rexp-compile (rexp-sequence (rexp-string-start)
+  (let ((camel (compile-regsexp (rexp-sequence (rexp-string-start)
 					    camel-case
 					    (rexp-string-end)))))
     (lambda (string)
@@ -746,7 +748,7 @@ WikiFormatting is actually used."
   '("AbCd" #t)
   '("AbCD" #f))
 
-(add-rexp-transform! 'bare-wiki-name-not
+(add-regsexp-transform! 'bare-wiki-name-not
     (rexp-sequence "!" camel-case)
   (lambda (registers string)
     (string-tail (re-match-extract string registers 0) 1)))
@@ -775,7 +777,7 @@ WikiFormatting is actually used."
     ("http://trac.sacrideo.us/wg/wiki/WG1Ballot6Results#a433fullconversioncycleforcontainers"
      "/wiki/WG1Ballot6Results#a433fullconversioncycleforcontainers")))
 
-(add-rexp-transform! 'bracketed-link
+(add-regsexp-transform! 'bracketed-link
     (rexp-sequence "["
 		   (rexp-group
 		    (rexp-alternatives "ftp://" "http://" "https://")
@@ -796,7 +798,7 @@ WikiFormatting is actually used."
       (href-simple (if (string-null? text) url text)
 		   url))))
 
-(add-rexp-transform! 'bracketed-wiki-name
+(add-regsexp-transform! 'bracketed-wiki-name
     (rexp-sequence "["
 		   (rexp-group (apply rexp-alternatives all-wiki-names))
 		   (rexp-alternatives
@@ -812,7 +814,7 @@ WikiFormatting is actually used."
       (href-simple (if (string-null? text) name text)
 		   url))))
 
-(add-rexp-transform! 'bracketed-wiki-link
+(add-regsexp-transform! 'bracketed-wiki-link
     (rexp-sequence "[wiki:"
 		   (rexp-group
 		    (rexp+ (char-set-invert
@@ -835,7 +837,7 @@ WikiFormatting is actually used."
   (let ((guard (if (default-object? guard)
 		   (lambda (string start end) #t)
 		   guard))
-	(regexp (rexp-compile rexp)))
+	(regexp (compile-regsexp rexp)))
     (lambda (string start end)
       (let next ((accumulator '())
 		 (index start))
@@ -910,7 +912,7 @@ WikiFormatting is actually used."
   ((h6 id sid) text))
 
 (define whitespace-regexp
-  (rexp-compile char-set:whitespace))
+  (compile-regsexp char-set:whitespace))
 
 (define (remove-whitespace string)
   (let ((size (string-length string)))
@@ -958,9 +960,9 @@ WikiFormatting is actually used."
 		  (rexp+ (char-set-invert (char-set #\newline #\return))))))
 
 (define transform-headline
-  (let ((headline-regexp (rexp-compile headline-line))
+  (let ((headline-regexp (compile-regsexp headline-line))
 	(anchor-regexp
-	 (rexp-compile
+	 (compile-regsexp
 	  (rexp-sequence "#"
 			 (rexp-group (rexp+ char-set:not-whitespace))
 			 (rexp-line-end)))))
@@ -1007,7 +1009,7 @@ WikiFormatting is actually used."
 (define item-numeric (rexp-sequence (rexp-group (rexp+ char-set:numeric)) "."))
 (define item-roman
   (rexp-sequence
-   (rexp-group (rexp+ (rexp-case-fold (string->char-set "mclxvi"))))
+   (rexp-group (rexp+ (string->char-set "mclxviMCLXVI")))
    "."))
 
 (define item-prefix
@@ -1032,7 +1034,7 @@ WikiFormatting is actually used."
    (rexp-group (rexp+ (char-set-invert (char-set #\return #\newline))))))
 
 (define read-blockquote-lines
-  (let ((outline (rexp-compile outline-line)))
+  (let ((outline (compile-regsexp outline-line)))
     (read-matching-lines
      blockquote-line
      (lambda (string start end)
@@ -1057,13 +1059,13 @@ WikiFormatting is actually used."
 ;; This doesn't handle tabs.  I'm not sure whether WikiFormatting is
 ;; supposed to do that.
 (define read-outline
-  (let ((break (rexp-compile paragraph-break))
-	(continuation-line (rexp-compile
+  (let ((break (compile-regsexp paragraph-break))
+	(continuation-line (compile-regsexp
 			    (rexp-sequence (rexp+ (rexp-any-char))
 					   (rexp-line-end))))
-	(item-content (rexp-compile item-content))
+	(item-content (compile-regsexp item-content))
 	(leading-whitespace
-	 (rexp-compile
+	 (compile-regsexp
 	  (rexp-sequence (rexp-line-start)
 			 (rexp+ (rexp-alternatives " " "\t"))))))
     (lambda (string start end)
@@ -1117,10 +1119,10 @@ WikiFormatting is actually used."
 ;; Return the item type and, if the value is not the initial value for
 ;; a list, that value.
 (define item-type
-  (let ((alphabetic (rexp-compile item-alphabetic))
-	(bullet (rexp-compile item-bullet))
-	(numeric (rexp-compile item-numeric))
-	(roman (rexp-compile item-roman)))
+  (let ((alphabetic (compile-regsexp item-alphabetic))
+	(bullet (compile-regsexp item-bullet))
+	(numeric (compile-regsexp item-numeric))
+	(roman (compile-regsexp item-roman)))
     (define (char-lower-case? character)
       (char-set-member? char-set:lower-case character))
     (define (initial-lower? value) (char-lower-case? (string-ref value 0)))
@@ -1177,7 +1179,7 @@ WikiFormatting is actually used."
   ((ol class k start v) ol-items))
 
 (define item-suffix
-  (let ((prefix (rexp-compile item-prefix)))
+  (let ((prefix (compile-regsexp item-prefix)))
     (lambda (string)
       (let ((registers (re-string-match prefix string)))
 	(if registers
@@ -1225,7 +1227,7 @@ WikiFormatting is actually used."
      offset)))
 
 (define processor-line
-  (rexp-compile
+  (compile-regsexp
    (rexp-sequence "#!"
 		  (rexp-group
 		   (rexp+ (char-set-invert (char-set #\newline #\return))))
@@ -1333,7 +1335,7 @@ represent un-enclosed regions."
 		 (rexp-alternatives line-break
 				    (rexp-line-end))))
 
-(define table-line-re (rexp-compile table-line))
+(define table-line-re (compile-regsexp table-line))
 
 (define (read-table-cells string start end)
   "Read the contents of all \"||\"-based table cells on the line
@@ -1438,7 +1440,7 @@ appeared."
    (table-spans cells)))
 
 (define row-separator
-  (rexp-compile
+  (compile-regsexp
    (rexp-sequence (rexp-line-start)
 		  "|"
 		  (rexp+ "-")
@@ -1606,7 +1608,7 @@ appeared."
      "  <p>hotel</p></td></tr></table>")))
 
 ;; <> Use `rexp-case-fold' here once it's fixed.
-(add-rexp-transform! 'line-break
+(add-regsexp-transform! 'line-break
     (rexp-sequence "[[" (rexp-alternatives "br" "BR") "]]")
   (lambda (registers string)
     (br)))
@@ -1614,7 +1616,7 @@ appeared."
 (define-html-template (monospace body) ()
   ((span class "monospace") body))
 
-(add-rexp-transform! 'monospace-backquote
+(add-regsexp-transform! 'monospace-backquote
     (rexp-sequence "`"
 		   (rexp-group
 		    (rexp+
@@ -1632,7 +1634,7 @@ appeared."
 		  "<span class=\"monospace\">''baz''\n</span>")
    "\n{{{\nfoo\n}}}\nbar\n{{{\n''baz''\n}}}\n"))
 
-(add-rexp-transform! 'monospace-curly-intraline
+(add-regsexp-transform! 'monospace-curly-intraline
     (rexp-sequence "{{{" (rexp-group (rexp+ (rexp-any-char))) "}}}")
   (lambda (registers string)
     (monospace (re-match-extract string registers 1))))
@@ -1693,7 +1695,7 @@ appeared."
    "<i>italic and <b> italic bold </b> </i>"
    "''italic and ''' italic bold ''' ''"))
 
-(add-rexp-transform! 'quotes-bold-italic
+(add-regsexp-transform! 'quotes-bold-italic
     (rexp-sequence "'''''" (rexp-group (rexp+ (rexp-any-char))) "'''''")
   (lambda (registers string)
     (b (i (wiki-transform (re-match-extract string registers 1))))))
@@ -1704,7 +1706,7 @@ appeared."
    "<b><i>foo </i></b>"
    "'''''foo '''''"))
 
-(add-rexp-transform! 'quotes-bold-not (rexp-sequence "!'''")
+(add-regsexp-transform! 'quotes-bold-not (rexp-sequence "!'''")
   (lambda (registers string)
     "'''"))
 
@@ -1732,7 +1734,7 @@ appeared."
    "<sup>foo</sup> bar <sup>baz</sup>"
    "^foo^ bar ^baz^"))
 
-(add-rexp-transform! 'superscript
+(add-regsexp-transform! 'superscript
     (rexp-sequence "^"
 		   (rexp-group (rexp+ (char-set-invert (char-set #\^))))
 		   "^")
@@ -1745,7 +1747,7 @@ appeared."
    "<sup>foo</sup>bar<sup>baz</sup>"
    "^foo^bar^baz^"))
 
-(add-rexp-transform! 'ticket-link
+(add-regsexp-transform! 'ticket-link
     (rexp-sequence "ticket:"
 		   (rexp-group (rexp+ char-set:numeric)))
   (lambda (registers string)
@@ -1754,7 +1756,7 @@ appeared."
 			 "/ticket/~A"
 			 (re-match-extract string registers 1)))))
 
-(add-rexp-transform! 'ticket-pound-link
+(add-regsexp-transform! 'ticket-pound-link
     (rexp-sequence "#"
 		   (rexp-group (rexp+ char-set:numeric)))
   (lambda (registers string)
@@ -1784,12 +1786,13 @@ appeared."
 		(< s1 s2))))))
 
 (define (wiki-transform string)
+  (define string* (string->immutable string))
   (define (wiki-try-transform transform start)
-    (let ((result ((wt/search transform) string start)))
+    (let ((result ((wt/search transform) string* start)))
       (and result
 	   (let ((guard (wt/guard transform)))
 	     (and (or (not guard)
-		      (guard result string))
+		      (guard result string*))
 		  (cons result transform))))))
   (let next-match ((accumulator '())
 		   (i 0)
@@ -1799,7 +1802,7 @@ appeared."
 			     (map (lambda (wt) (wiki-try-transform wt 0))
 				  wiki-transforms)))))
     (if (null? matches)
-	(reverse! (cons (string-tail string i) accumulator))
+	(reverse! (cons (string-tail string* i) accumulator))
 	(let* ((result (caar matches))
 	       (transform (cdar matches))
 	       (start (wtr/start result))
@@ -1810,8 +1813,8 @@ appeared."
 			 (lambda (m)
 			   (and (<= end (wtr/start (car m)))
 				m)))))
-	    (next-match (cons* ((wt/transform transform) result string)
-			       (substring string i start)
+	    (next-match (cons* ((wt/transform transform) result string*)
+			       (substring string* i start)
 			       accumulator)
 			end
 			(wiki-sort-matches
@@ -1843,7 +1846,7 @@ appeared."
 
 (define skip-blank-lines
   (skip-forward
-   (rexp-compile
+   (compile-regsexp
     (rexp-sequence (rexp* (char-set #\space #\tab))
 		   line-break))))
 
@@ -1869,7 +1872,7 @@ appeared."
 ;; including in a bug report.
 (define find-paragraph-end
   (let ((regexps (cons open-re
-		       (map rexp-compile
+		       (map compile-regsexp
 			    (list citation-line
 				  headline-line
 				  outline-line
@@ -1891,8 +1894,8 @@ appeared."
 	    (extremum registers < end))))))
 
 (define read-single-definition
-  (let ((definition-regexp (rexp-compile definition-line))
-	(term-regexp (rexp-compile term-line)))
+  (let ((definition-regexp (compile-regsexp definition-line))
+	(term-regexp (compile-regsexp term-line)))
     (lambda (string start end)
       (let ((term (re-substring-match term-regexp string start end)))
 	;; Read until <end>, the next <definition>, or the first line
@@ -1935,12 +1938,12 @@ appeared."
 ;; Break `string' into paragraphs and non-paragraphs and transform
 ;; each appropriately.
 (define wiki-process-regions
-  (let* ((blockquote (rexp-compile blockquote-line))
-	 (citation (rexp-compile citation-line))
-	 (term (rexp-compile term-line))
-	 (headline (rexp-compile headline-line))
-	 (outline (rexp-compile outline-line))
-	 (table (rexp-compile table-line))
+  (let* ((blockquote (compile-regsexp blockquote-line))
+	 (citation (compile-regsexp citation-line))
+	 (term (compile-regsexp term-line))
+	 (headline (compile-regsexp headline-line))
+	 (outline (compile-regsexp outline-line))
+	 (table (compile-regsexp table-line))
 	 (transformers
 	  (list (cons citation transform-citation)
 		(cons open-re transform-curlies)
