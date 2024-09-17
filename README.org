@@ -16,8 +16,8 @@ enough to extract our data in a usable form once and for all.
 Normally, it's not a good idea to include generated output in a Git
 repo.  However, in this case, my plan was to run the code here once,
 produce the output, and be done.  I'm not maintaining the code, so
-it's better to keep a copy of the output just in.  So the output is in
-[[file:output/][output/]], and the attachments, including the final R7RS Small report,
-are in [[file:trac-attachments][trac-attachments/]].
+it's better to keep a copy of the output just in case.  So the output
+is in [[file:output/][output/]], and the attachments, including the final R7RS Small
+report, are in [[file:trac-attachments][trac-attachments/]].
 
 I plan to publish the Trac database backup at [[https://files.scheme.org/][files.scheme.org]].
