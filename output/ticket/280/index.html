@@ -1,0 +1,86 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>280: Make vectors self-quoting</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 280: <span class="summary">Make vectors self-quoting</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-09-19 00:22:31</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/280/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-09-22 18:44:41</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Currently vectors are the only type represented by a readable datum that are neither self-quoting nor meaningful Scheme expressions (i.e. symbols and lists).  I propose switching to making them self-quoting as well.</p>
+        <p>Currently Racket, Gauche, MIT, Guile, Kawa, Chibi, SCM, STklos, Scheme 9, Scheme 7, UMB, VX, Oaklisp treat vectors as self-quoting; Gambit, Chicken, Bigloo, Scheme48/scsh, SISC, Ikarus, Larceny, Ypsilon, IronScheme, Mosh, KSi, SigScheme, Elk treat unquoted vectors as errors.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-05 09:13:00</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to adopt this proposal.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-08 17:01:14</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-08-26 14:57:55</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-08-26 15:01:45</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Felix Winkelmann points out that signaling an error,
+rather than is an error, allows relying on the fact that
+vectors must be quoted to use unquoted vectors for
+storing meta-information.  This is currently done in
+the alexpander macro expander.</p>
+              <p>Thus the issue as voted on was misleading - self-quoting
+is not the only semantics in use.  We should consider
+re-voting on this making it clear that the error option
+requires an error to be signalled.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-09-19 00:22:31</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>For lack of a second, the reopen failed; consequently, the change to make vectors self-quoting stands.</p></div></div></div></div></div></body></html>

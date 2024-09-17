@@ -1,0 +1,175 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ItIsAnError</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ItIsAnError.md">ItIsAnError</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">It&shy;Is&shy;An&shy;Error</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-07-07 04:29:23</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/ItIsAnError/history">history</a></div>
+      <div class="source"><a href="/wiki/ItIsAnError/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Itisanerror">It is an error</h2>
+      <p>Here's a list of places where R7RS-small says something &quot;is an error&quot;.  The names in brackets represent a rough-and-ready classification of these errors, and don't constitute a proposal.  The list is [domain], [mismatch], [syntax], [read], [immutable], [undefined], [non-continuable].</p>
+      <ol class="number">
+        <li>3.2 procedure domain errors [domain]</li></ol>
+      <ol class="number">
+        <li>3.2 too many or too few arguments [mismatch]</li></ol>
+      <ol class="number">
+        <li>3.3. reuse of auxiliary syntax [syntax]</li></ol>
+      <ol class="number">
+        <li>3.3. violation of start-end constraints [domain]</li></ol>
+      <ol class="number" start="2">
+        <li>4 non-numeric datum labels [read]</li></ol>
+      <ol class="number" start="2">
+        <li>4 forward references in datum labels [read]</li></ol>
+      <ol class="number" start="2">
+        <li>4 recursion in datum labels [read]</li></ol>
+      <ol class="number" start="2">
+        <li>4 circular code [syntax]</li></ol>
+      <ol class="number" start="3">
+        <li>4 violations of immutability [immutable]</li></ol>
+      <ol class="number" start="4">
+        <li>1.1 references to undefined variables [undefined]</li></ol>
+      <ol class="number" start="4">
+        <li>1.3 <span class="monospace">()</span> as code [syntax]</li></ol>
+      <ol class="number" start="4">
+        <li>1.4. repeated variables in <span class="monospace">lambda</span> lists [syntax]</li></ol>
+      <ol class="number" start="4">
+        <li>1.6 <span class="monospace">set!</span> of unbound variable [undefined]</li></ol>
+      <ol class="number" start="4">
+        <li>2.1 <span class="monospace">=&gt;</span> in <span class="monospace">cond</span> or <span class="monospace">case</span> doesn't accept one argument [domain]</li></ol>
+      <ol class="number" start="4">
+        <li>2.1 duplicated <span class="monospace">case</span> keys [syntax]</li></ol>
+      <ol class="number" start="4">
+        <li>2.2 repeated variables in <span class="monospace">let</span>, <span class="monospace">letrec</span>, <span class="monospace">let-values</span>, <span class="monospace">let-values*</span> lists or equivalent internal variable definitions [syntax]</li></ol>
+      <ol class="number" start="4">
+        <li>2.2 direct recursion in <span class="monospace">letrec</span> or <span class="monospace">letrec*</span> or equivalent internal variable definitions [syntax]</li></ol>
+      <ol class="number" start="4">
+        <li>2.2 mismatch between <span class="monospace">let-values</span> formals and returned values [mismatch]</li></ol>
+      <ol class="number" start="4">
+        <li>2.4 repeated variables in <span class="monospace">do</span> [syntax]</li></ol>
+      <ol class="number" start="4">
+        <li>2.6 non-parameter in <span class="monospace">parameterize</span> [domain]</li></ol>
+      <ol class="number" start="4">
+        <li>2.8 <span class="monospace">unquote-splicing</span> of a non-list [domain]</li></ol>
+      <ol class="number" start="4">
+        <li>2.9 uncaught case in <span class="monospace">case-lambda</span> [mismatch]</li></ol>
+      <ol class="number" start="4">
+        <li>3.1 repeated keywords in <span class="monospace">let-syntax</span> [syntax]</li></ol>
+      <ol class="number" start="4">
+        <li>3.2 non-identifiers in <span class="monospace">syntax-rules</span> [syntax]</li></ol>
+      <ol class="number" start="4">
+        <li>3.2 repeated pattern variable in <span class="monospace">syntax-rules</span> [syntax]</li></ol>
+      <ol class="number" start="4">
+        <li>3.2 unhandled syntax in <span class="monospace">syntax-rules</span> [syntax]</li></ol>
+      <ol class="number" start="4">
+        <li>3.2 unreconstructible <span class="monospace">syntax-rules</span> output [syntax]</li></ol>
+      <ol class="number" start="5">
+        <li>2 unknown identifiers in <span class="monospace">only</span>, <span class="monospace">except</span>, <span class="monospace">rename</span> import specs [syntax]</li></ol>
+      <ol class="number" start="5">
+        <li>2 importing an identifier more than once with different bindings [syntax]</li></ol>
+      <ol class="number" start="5">
+        <li>2 redefining or mutating imported bindings [syntax]</li></ol>
+      <ol class="number" start="5">
+        <li>2 referring to unimported identifiers [syntax]</li></ol>
+      <ol class="number" start="5">
+        <li>3.3 duplicate variables in <span class="monospace">define-values</span> [syntax]</li></ol>
+      <ol class="number" start="5">
+        <li>4 use of a syntax keyword before its definition [syntax]</li></ol>
+      <ol class="number" start="5">
+        <li>4 hopelessly muddled or ambiguous definitions [syntax]</li></ol>
+      <ol class="number" start="5">
+        <li>5 duplicate field names in records [syntax]</li></ol>
+      <ol class="number" start="5">
+        <li>5 undefined field name in record constructor [syntax]</li></ol>
+      <ol class="number" start="5">
+        <li>5 invoke record accessor or mutator on record of wrong type [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>2.3 use anything but an exact integer as a container index [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>2.6 division by exact 0 [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>2.7 unusual conversion radix [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>2.7 impossible conversion from number to string [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>4 <span class="monospace">car</span> or <span class="monospace">cdr</span> of non-list [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>4 <span class="monospace">list-ref</span>, <span class="monospace">list-set!</span>, <span class="monospace">list-tail</span> invalid index [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>4 alist is not an alist [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>4 attempt to copy a circular list [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>5 mutating symbol names [immutable]</li></ol>
+      <ol class="number" start="6">
+        <li>7 violate forbidden-character restrictions [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>7 <span class="monospace">string-ref</span>, <span class="monospace">string-set!</span> invalid index [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>7 attempt to convert non-character to string or to fill string with non-character [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>7 violate <span class="monospace">string-copy!</span> restrictions [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>8 <span class="monospace">vector-ref</span>, <span class="monospace">vector-set!</span> invalid index [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>8 violate <span class="monospace">vector-copy!</span> restrictions [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>9 <span class="monospace">bytevector-u8-ref</span>, <span class="monospace">byte-vector-u8-set!</span> invalid index [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>9 violate <span class="monospace">bytevector-copy!</span> restrictions [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>9 invalid UTF-8 byte sequences in <span class="monospace">utf8-&gt;string</span> [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>10 mapping procedures must accept as many containers as are available [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>10 lists being mapped must not all be circular [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>10 mapping procedures must not mutate inputs [immutable]</li></ol>
+      <ol class="number" start="6">
+        <li>10 <span class="monospace">call/cc</span> must accept one argument [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>10 <span class="monospace">with-exception-handler</span> handler and thunk arguments must accept a condition object and no arguments respectively [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>11 attempt to continue from a non-continuable exception [non-continuable]</li></ol>
+      <ol class="number" start="6">
+        <li>13.1 procedure passed to a call procedure must accept one argument [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>13.1 trying to get a string or bytevector out of a port that is not a string or bytevector port [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>13.2 attempt operations on a closed port [closed]</li></ol>
+      <ol class="number" start="6">
+        <li>14 file names must be strings [file]</li></ol>
+      <ol class="number" start="6">
+        <li>14 attempt to mutate command-line strings [immutable]</li></ol>
+      <ol class="number" start="6">
+        <li>14 indecipherable environment variable [domain]</li></ol>
+      <ol class="number" start="6">
+        <li>14 attempt to mutate environment variables or values or features [immutable]</li></ol>
+      <ol class="number" start="7">
+        <li>1 identifier starting with a combining character [read]</li></ol>
+      <h2 id="Implementationrestrictions">Implementation restrictions</h2>
+      <p>And here's a list of places where R7RS-small speaks of implementation restrictions:</p>
+      <ol class="number">
+        <li>3.2 out of memory</li></ol>
+      <ol class="number">
+        <li>3.2 overly large exact number</li></ol>
+      <ol class="number" start="6">
+        <li>2.2 incomplete numeric tower</li></ol>
+      <ol class="number" start="6">
+        <li>2.2 cannot produce exact result of arithmetic operation</li></ol>
+      <ol class="number" start="6">
+        <li>2.6 <span class="monospace">max</span> or <span class="monospace">min</span> needs to report an inexact number but cannot</li></ol>
+      <ol class="number" start="6">
+        <li>2.6 inexact or exact conversion can't represent result</li></ol></div></body></html>

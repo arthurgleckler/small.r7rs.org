@@ -1,0 +1,46 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1Ballot10</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1Ballot10.md">WG1Ballot10</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Ballot10</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-07-07 01:28:25</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/WG1Ballot10/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1Ballot10/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="NotesaboutResults">Notes about Results</h1>
+      <p>See <a href="/wiki/WG1BallotExplanation">WG1BallotExplanation</a>.</p>
+      <h1 id="WG1BallotItemsToFinalizeBySep.30">WG1 Ballot Items To Finalize By Sep. 30</h1>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="#125Allowproceduresnottobelocations(makingEQV?unspecifiedinsomeadditionalcases)"><a href="/ticket/125">#125</a> Allow procedures not to be locations (making EQV? unspecified in some additional cases)</h3>
+      <p>This is a change also made by R6RS, specifically:</p>
+      <blockquote class="citation">
+        <p>A quasiquote expression may return either fresh, mutable objects or literal structure
+ for any structure that is constructed at run time during the evaluation of the expression.
+ Portions that do not need to be rebuilt are always literal</p></blockquote>
+      <ul>
+        <li><b>Options:</b> r6rs, r5rs, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#467Alloweqv?andeq?toreturndifferentanswersonproceduresaswellasintegersandcharacters"><a href="/ticket/467">#467</a> Allow eqv? and eq? to return different answers on procedures as well as integers and characters</h3>
+      <p>This proposal stems from <a href="http://lists.r6rs.org/pipermail/r6rs-discuss/2012-July/006405.html">remarks</a> by Alaric Snell-Pym and Will Clinger on the r6rs public mailing list.  If <span class="monospace">eq?</span> is allowed to return <span class="monospace">#f</span> on two procedures when <span class="monospace">eqv?</span> nevertheless returns <span class="monospace">#t</span>, as is already the case for numbers and characters, then more intelligent implementation-specific procedure comparisons using <span class="monospace">eqv?</span> are possible, while still keeping <span class="monospace">eq?</span> simple enough to inline easily.</p>
+      <p>Note that this is orthogonal to the question of <a href="/ticket/460">#460</a>, how <span class="monospace">eqv?</span> works on procedures.  There should be little or no backward-compatibility hit for this change.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>same:</b> <span class="monospace">eq?</span> and <span class="monospace">eqv?</span> always return the same on procedures, per R5RS and R6RS</li>
+            <li><b>different:</b> <span class="monospace">eq?</span> may return <span class="monospace">#f</span> on procedures even when <span class="monospace">eqv?</span> returns <span class="monospace">#t</span> (but not vice versa)</li></ul></li>
+        <li><b>Options:</b> same, different, undecided</li>
+        <li><b>Default:</b> same</li>
+        <li><b>Preferences:</b></li></ul></div></body></html>

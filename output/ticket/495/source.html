@@ -1,0 +1,112 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #495</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #495</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>John David Stone writes:
+
+  R6RS provides libraries for hash tables and bitwise operators — very good!  Its `(rnrs lists)` library standardizes the names and interfaces of some very important higher-order procedures — `for-all`, `exists`, `filter`, `fold-left`, `fold-right` — while the proposed R7RS doesn't support any of these.  Of course, we teachers can always write our own libraries to support them, as apparently we're going to have to continue to do for random-number generation.  My guess is that the implementers will do at least as good a job.</pre>
+    <h2>id</h2>
+    <pre>495</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>The draft lacks many important libraries</pre>
+    <h2>time</h2>
+    <pre>2013-05-12 23:31:50</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG decided by unanimous consent to take no action on this ticket.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>495</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>495</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>495</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-05-12 23:40:24</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>This objection ignores the existence of useful and relevant SRFIs that support these things: specifically [http://srfi.schemers.org/srfi-1/srfi-1.html SRFI 1] for lists, [http://srfi.schemers.org/srfi-33/srfi-33.html SRFI 33] and [http://srfi.schemers.org/srfi-60/srfi-60.html SRFI 60] for bitwise operations on integers (see BitwiseComparison for a comparison of both with R6RS), and [http://srfi.schemers.org/srfi-69/srfi-69.html SRFI 69] for hash tables.  All of these come with highly portable implementations, though SRFI 69 is better implemented as a facade on top of native or R6RS hash tables.  I will match Olin Shivers's highly bummed code for SRFIs 1 and 33 against any implementer ever born, although Alex Shinn's implementation of SRFI 1 is also worthy, given the overriding goal of his Scheme, which is compactness.
+
+Unfortunately, what R6RS chose to standardize was filled with intentional and, to my mind, gratuitous deviations from these SRFIs, of which SRFI 1 at least is a ''de facto'' standard for Scheme programming.  The large language will include at least SRFI 1 directly as a standard library, making it a ''de jure'' standard as well.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1368376824503877</pre>
+    <h2>ticket</h2>
+    <pre>495</pre>
+    <h2>time</h2>
+    <pre>2013-05-12 23:40:24</pre></body></html>

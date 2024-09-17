@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki DatumLabels version 3</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki DatumLabels version 3</h1>
+    <h2>author</h2>
+    <pre>WillClinger</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>DatumLabels</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>I tested datum-label support with the following expression:
+
+{{{
+        (let ((x '(#1=(a b) #1#))) (eq? (car x) (cadr x)))
+}}}
+
+Gauche, MIT, Bigloo, Kawa, Chez, Ikarus/Vikare, Larceny^*^, Mosh, STklos, !FemtoLisp, Sagittarius, Foment, Picrin support the syntax and return `#t`;
+
+Racket, Chicken, Scheme48/scsh, Guile, SISC, SCM, Larceny^*^, Ypsilon, !IronScheme, NexJ, JScheme, KSi, !SigScheme, !TinyScheme, Scheme 9, RScheme, S7, XLisp, Rep, Schemik, Elk, SXM, Sizzle, Dfsch, Inlab, Oaklisp, Owl Lisp, Chibi (native mode) report lexical syntax errors;
+
+Gambit, Shoe, BDC, UMB, Llava, Chibi (R7RS mode) return `#f` for whatever reason.
+
+^*^Larceny v0.98 normally recognizes the syntax, but reports a lexical error in R6RS mode (as is required by the R6RS).</pre>
+    <h2>time</h2>
+    <pre>2015-06-01 04:56:44</pre>
+    <h2>version</h2>
+    <pre>3</pre></body></html>

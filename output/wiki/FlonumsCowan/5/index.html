@@ -1,0 +1,278 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>FlonumsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/FlonumsCowan.md">FlonumsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Flonums&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-11-02 02:56:33</div>
+      <div class="version">5<span class="comment"></span><a href="/wiki/FlonumsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/FlonumsCowan/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Flonumspackage">Flonums package</h2>
+      <p><i>Flonums</i> are a subset of the inexact real numbers provided by a Scheme implementation.  In most Schemes, the flonums and the inexact reals are the same.</p>
+      <p>The procedures in this package don't have hard-coded prefixes.  The intent is that they be placed in a module.  Users can then import this module with their own prefix such as <span class="monospace">fl</span>, or <span class="monospace">ƒ</span> if their Scheme implementation supports that character, or with no prefix at all if the intent is to override the normal Scheme arithmetic routines.</p>
+      <h2 id="Basicprocedures">Basic procedures</h2>
+      <p><span class="monospace">(flonum? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns #t if obj is a flonum, #f otherwise.</p>
+      <p><span class="monospace">(real-&gt;flonum </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns the best flonum representation of x.</p>
+      <h2 id="R6RS-compatibleprocedures">R6RS-compatible procedures</h2>
+      <p>The following core Scheme procedures have flonum equivalents:</p><span class="monospace">= &lt; &lt;= &gt; &gt;= 
+integer? zero? positive? negative? odd? even? finite? infinite? nan?
++ - * /
+abs numerator denominator floor ceiling truncate round
+exp log sin cos tan asin acos atan
+sqrt expt
+</span>
+      <p>TODO: need to see about integer division procedures</p>
+      <h2 id="C99&lt;math.h&gt;constants">C99 &lt;math.h&gt; constants</h2>
+      <p>The following constants are defined in terms of the constants of the &lt;math.h&gt; header of ISO/IEC 9899:1999 (C language).</p>
+      <table><tr><td class="default">
+            <p>Scheme name</p></td><td class="default">
+            <p>C name</p></td><td class="default">
+            <p>Comments</p></td></tr><tr><td class="default">
+            <p><span class="monospace">e</span></p></td><td class="default">
+            <p><span class="monospace">M_E</span></p></td><td class="default">
+            <p>Value of e</p></td></tr><tr><td class="default">
+            <p><span class="monospace">log2-e</span></p></td><td class="default">
+            <p><span class="monospace">M_LOG2E</span></p></td><td class="default">
+            <p>Value of log2e</p></td></tr><tr><td class="default">
+            <p><span class="monospace">log10-e</span></p></td><td class="default">
+            <p><span class="monospace">M_LOG10E</span></p></td><td class="default">
+            <p>Value of log10e</p></td></tr><tr><td class="default">
+            <p><span class="monospace">ln-2</span></p></td><td class="default">
+            <p><span class="monospace">M_LN2</span></p></td><td class="default">
+            <p>Value of loge2</p></td></tr><tr><td class="default">
+            <p><span class="monospace">ln-10</span></p></td><td class="default">
+            <p><span class="monospace">M_LN10</span></p></td><td class="default">
+            <p>Value of loge10</p></td></tr><tr><td class="default">
+            <p><span class="monospace">pi</span></p></td><td class="default">
+            <p><span class="monospace">M_PI</span></p></td><td class="default">
+            <p>Value of pi</p></td></tr><tr><td class="default">
+            <p><span class="monospace">pi/2</span></p></td><td class="default">
+            <p><span class="monospace">M_PI_2</span></p></td><td class="default">
+            <p>Value of pi/2</p></td></tr><tr><td class="default">
+            <p><span class="monospace">pi/4</span></p></td><td class="default">
+            <p><span class="monospace">M_PI_4</span></p></td><td class="default">
+            <p>Value of pi/4</p></td></tr><tr><td class="default">
+            <p><span class="monospace">one-over-pi</span></p></td><td class="default">
+            <p><span class="monospace">M_1_PI</span></p></td><td class="default">
+            <p>Value of 1/pi</p></td></tr><tr><td class="default">
+            <p><span class="monospace">two-over-pi</span></p></td><td class="default">
+            <p><span class="monospace">M_2_PI</span></p></td><td class="default">
+            <p>Value of 2/pi</p></td></tr><tr><td class="default">
+            <p><span class="monospace">two-over-sqrt-pi</span></p></td><td class="default">
+            <p><span class="monospace">M_2_SQRTPI</span></p></td><td class="default">
+            <p>Value of 2/sqrt(pi)</p></td></tr><tr><td class="default">
+            <p><span class="monospace">sqrt-2</span></p></td><td class="default">
+            <p><span class="monospace">M_SQRT2</span></p></td><td class="default">
+            <p>Value of sqrt(2)</p></td></tr><tr><td class="default">
+            <p><span class="monospace">one-over-sqrt-2</span></p></td><td class="default">
+            <p><span class="monospace">M_SQRT1_2</span></p></td><td class="default">
+            <p>Value of 1/sqrt(2)</p></td></tr><tr><td class="default">
+            <p><span class="monospace">maximum-flonum</span></p></td><td class="default">
+            <p><span class="monospace">HUGE_VAL</span></p></td><td class="default">
+            <p>+inf.0 or else the largest finite flonum</p></td></tr><tr><td class="default">
+            <p><span class="monospace">fast-multiply-add</span></p></td><td class="default">
+            <p><span class="monospace">FP_FAST_FMA, or 0 if not defined</span></p></td><td class="default">
+            <p>multiply-add is fast</p></td></tr><tr><td class="default">
+            <p><span class="monospace">integer-exponent-zero</span></p></td><td class="default">
+            <p><span class="monospace">FP_ILOGB0</span></p></td><td class="default">
+            <p>what (integer-binary-log 0) returns</p></td></tr><tr><td class="default">
+            <p><span class="monospace">integer-exponent-nan</span></p></td><td class="default">
+            <p><span class="monospace">FP_ILOGBNAN</span></p></td><td class="default">
+            <p>what (integer-binary-log +0.nan) returns</p></td></tr></table>
+      <h2 id="C99&lt;math.h&gt;procedures">C99 &lt;math.h&gt; procedures</h2>
+      <p>The following procedures are defined in terms of the functions of the &lt;math.h&gt; header of ISO/IEC 9899:1999 (C language).  In the C signatures, the types &quot;double&quot; and &quot;int&quot; are mapped to Scheme flonums and (suitably bounded) Scheme exact integers respectively.</p>
+      <table><tr><td class="default">
+            <p>Scheme name</p></td><td class="default">
+            <p>C signature</p></td><td class="default">
+            <p>Comments</p></td></tr><tr><td class="default">
+            <p><span class="monospace">acosh</span></p></td><td class="default">
+            <p><span class="monospace">double      acosh(double)</span></p></td><td class="default">
+            <p>hyperbolic arc cosine</p></td></tr><tr><td class="default">
+            <p><span class="monospace">asinh</span></p></td><td class="default">
+            <p><span class="monospace">double      asinh(double)</span></p></td><td class="default">
+            <p>hyperbolic arc sine</p></td></tr><tr><td class="default">
+            <p><span class="monospace">atanh</span></p></td><td class="default">
+            <p><span class="monospace">double      atanh(double)</span></p></td><td class="default">
+            <p>hyperbolic arc tangent</p></td></tr><tr><td class="default">
+            <p><span class="monospace">cbrt</span></p></td><td class="default">
+            <p><span class="monospace">double      cbrt(double);</span></p></td><td class="default">
+            <p>cube root</p></td></tr><tr><td class="default">
+            <p><span class="monospace">complementary-error-function</span></p></td><td class="default">
+            <p><span class="monospace">double      erfc(double)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">copy-sign</span></p></td><td class="default">
+            <p><span class="monospace">double      copysign(double x, double y)</span></p></td><td class="default">
+            <p>result has magnitude of x and sign of y</p></td></tr><tr><td class="default">
+            <p><span class="monospace">cosh</span></p></td><td class="default">
+            <p><span class="monospace">double      cosh(double)</span></p></td><td class="default">
+            <p>hyperbolic cosine</p></td></tr></table>
+      <p>||<span class="monospace">make-flonum</span>||<span class="monospace">double      ldexp(double x, int n)</span>||x*2^n</p>
+      <table><tr><td class="default">
+            <p><span class="monospace">error-function</span></p></td><td class="default">
+            <p><span class="monospace">double      erf(double)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">exp-binary</span></p></td><td class="default">
+            <p><span class="monospace">double      exp2(double)</span></p></td><td class="default">
+            <p>base-2 exponential</p></td></tr><tr><td class="default">
+            <p><span class="monospace">exp-minus-1</span></p></td><td class="default">
+            <p><span class="monospace">double      expm1(double)</span></p></td><td class="default">
+            <p>exp(x)-1</p></td></tr><tr><td class="default">
+            <p><span class="monospace">exponent</span></p></td><td class="default">
+            <p><span class="monospace">double      logb(double x)</span></p></td><td class="default">
+            <p>the exponent of x, which is the integral part of log_r(|x|), as a signed floating-point value, for non-zero x, where r is the radix of the machine's floating-point arithmetic</p></td></tr><tr><td class="default">
+            <p><span class="monospace">first-bessel-order-0</span></p></td><td class="default">
+            <p><span class="monospace">double      j0(double)</span></p></td><td class="default">
+            <p>bessel function of the first kind, order 0</p></td></tr><tr><td class="default">
+            <p><span class="monospace">first-bessel-order-1</span></p></td><td class="default">
+            <p><span class="monospace">double      j1(double)</span></p></td><td class="default">
+            <p>bessel function of the first kind, order 1</p></td></tr><tr><td class="default">
+            <p><span class="monospace">first-bessel</span></p></td><td class="default">
+            <p><span class="monospace">double      jn(int n, double)</span></p></td><td class="default">
+            <p>bessel function of the first kind, order n</p></td></tr><tr><td class="default">
+            <p><span class="monospace">fraction-exponent</span></p></td><td class="default">
+            <p><span class="monospace">double      modf(double, double *)</span></p></td><td class="default">
+            <p>returns two values, fraction and int exponent</p></td></tr><tr><td class="default">
+            <p><span class="monospace">gamma</span></p></td><td class="default">
+            <p><span class="monospace">double      tgamma(double)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">hypotenuse</span></p></td><td class="default">
+            <p><span class="monospace">double      hypot(double, double)</span></p></td><td class="default">
+            <p>sqrt(x<sup>2+y</sup>2)</p></td></tr><tr><td class="default">
+            <p><span class="monospace">integer-exponent</span></p></td><td class="default">
+            <p><span class="monospace">int         ilogb(double)</span></p></td><td class="default">
+            <p>binary log as int</p></td></tr><tr><td class="default">
+            <p><span class="monospace">log-binary</span></p></td><td class="default">
+            <p><span class="monospace">double      log2(double)</span></p></td><td class="default">
+            <p>log base 2</p></td></tr><tr><td class="default">
+            <p><span class="monospace">log-decimal</span></p></td><td class="default">
+            <p><span class="monospace">double      log10(double)</span></p></td><td class="default">
+            <p>log base 10</p></td></tr><tr><td class="default">
+            <p><span class="monospace">log-gamma</span></p></td><td class="default">
+            <p><span class="monospace">double      lgamma(double)</span></p></td><td class="default">
+            <p>returns two values, log(|gamma(x)|) and sgn(gamma(x))</p></td></tr><tr><td class="default">
+            <p><span class="monospace">log-one-plus</span></p></td><td class="default">
+            <p><span class="monospace">double      log1p(double x)</span></p></td><td class="default">
+            <p>log (1+x)</p></td></tr><tr><td class="default">
+            <p><span class="monospace">multiply-add</span></p></td><td class="default">
+            <p><span class="monospace">double      fma(double a, double b, double c)</span></p></td><td class="default">
+            <p>a*b+c</p></td></tr><tr><td class="default">
+            <p><span class="monospace">next-after</span></p></td><td class="default">
+            <p><span class="monospace">double      nextafter(double, double)</span></p></td><td class="default">
+            <p>next flonum following x in the direction of y</p></td></tr><tr><td class="default">
+            <p><span class="monospace">normalized-fraction-exponent</span></p></td><td class="default">
+            <p><span class="monospace">double      frexp(double, int *)</span></p></td><td class="default">
+            <p>returns two values, fraction in range [1/2,1) and int exponent</p></td></tr><tr><td class="default">
+            <p><span class="monospace">positive-difference</span></p></td><td class="default">
+            <p><span class="monospace">double      fdim(double, double)</span></p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <p>||<span class="monospace">remquo</span>||<span class="monospace">double      remquo(double, double, int *)</span>||returns two values, rounded remainder and low-order <i>n</i> bits of the quotient (<i>n</i> is implementation-defined)</p>
+      <table><tr><td class="default">
+            <p><span class="monospace">scalbn</span></p></td><td class="default">
+            <p><span class="monospace">double      scalbn(double x, int y)</span></p></td><td class="default">
+            <p>x*r^y, where r is the machine float radix</p></td></tr><tr><td class="default">
+            <p><span class="monospace">second-bessel-order-0</span></p></td><td class="default">
+            <p><span class="monospace">double      y0(double)</span></p></td><td class="default">
+            <p>bessel function of the second kind, order 0</p></td></tr><tr><td class="default">
+            <p><span class="monospace">second-bessel-order-1</span></p></td><td class="default">
+            <p><span class="monospace">double      y1(double)</span></p></td><td class="default">
+            <p>bessel function of the second kind, order 1</p></td></tr><tr><td class="default">
+            <p><span class="monospace">second-bessel</span></p></td><td class="default">
+            <p><span class="monospace">double      yn(int n, double)</span></p></td><td class="default">
+            <p>bessel function of the second kind, order n</p></td></tr><tr><td class="default">
+            <p><span class="monospace">sinh</span></p></td><td class="default">
+            <p><span class="monospace">double      cosh(double)</span></p></td><td class="default">
+            <p>hyperbolic sine</p></td></tr><tr><td class="default">
+            <p><span class="monospace">tanh</span></p></td><td class="default">
+            <p><span class="monospace">double      cosh(double)</span></p></td><td class="default">
+            <p>hyperbolic tangent</p></td></tr></table>
+      <h2 id="Generalremarks">General remarks</h2>
+      <p>In the event that these operations do not yield a real result for the given arguments, the result may be <span class="monospace">+nan.0</span>, or may be some unspecified flonum.</p>
+      <p>Implementations that use IEEE binary floating-point arithmetic should follow the relevant standards for these procedures.</p>
+      <h2 id="Compnumproceduresfrom&lt;complex.h&gt;">Compnum procedures from &lt;complex.h&gt;</h2>
+      <p>A <i>compnum</i> is a general complex number whose <span class="monospace">real-part</span> and <span class="monospace">imag-part</span> are both flonums.  The following procedures should be in a different module from the flonum procedures, since they will only be relevant to Schemes that support general complex numbers, and since there are conflicting names.</p>
+      <table><tr><td class="default">
+            <p>Scheme name</p></td><td class="default">
+            <p>C signature</p></td><td class="default">
+            <p>Comments</p></td></tr><tr><td class="default">
+            <p><span class="monospace">abs</span></p></td><td class="default">
+            <p><span class="monospace">double cabs(double complex)</span></p></td><td class="default">
+            <p>same as magnitude</p></td></tr><tr><td class="default">
+            <p><span class="monospace">acos</span></p></td><td class="default">
+            <p><span class="monospace">double complex cacos(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">acosh</span></p></td><td class="default">
+            <p><span class="monospace">double complex cacosh(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">angle</span></p></td><td class="default">
+            <p><span class="monospace">double carg(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">asin</span></p></td><td class="default">
+            <p><span class="monospace">double complex casin(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">asinh</span></p></td><td class="default">
+            <p><span class="monospace">double complex casinh(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">atan</span></p></td><td class="default">
+            <p><span class="monospace">double complex catan(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">atanh</span></p></td><td class="default">
+            <p><span class="monospace">double complex catanh(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">conjugate</span></p></td><td class="default">
+            <p><span class="monospace">double complex conj(double complex)</span></p></td><td class="default">
+            <p>complex conjugate</p></td></tr><tr><td class="default">
+            <p><span class="monospace">cos</span></p></td><td class="default">
+            <p><span class="monospace">double complex ccos(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">cosh</span></p></td><td class="default">
+            <p><span class="monospace">double complex ccosh(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">exp</span></p></td><td class="default">
+            <p><span class="monospace">double complex cexp(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">expt</span></p></td><td class="default">
+            <p><span class="monospace">double complex cpow(double complex, double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">imag-part</span></p></td><td class="default">
+            <p><span class="monospace">double cimag(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">log</span></p></td><td class="default">
+            <p><span class="monospace">double complex clog(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">magnitude</span></p></td><td class="default">
+            <p><span class="monospace">double cabs(double complex)</span></p></td><td class="default">
+            <p>same as abs</p></td></tr></table>
+      <p>||<span class="monospace">projection</span>||<span class="monospace">double complex  cproj(double complex)</span>||projects to Riemann sphere</p>
+      <table><tr><td class="default">
+            <p><span class="monospace">real-part</span></p></td><td class="default">
+            <p><span class="monospace">double creal(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">sin</span></p></td><td class="default">
+            <p><span class="monospace">double complex csin(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">sinh</span></p></td><td class="default">
+            <p><span class="monospace">double complex csinh(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">sqrt</span></p></td><td class="default">
+            <p><span class="monospace">double complex csqrt(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">ctan</span></p></td><td class="default">
+            <p><span class="monospace">double complex ctan(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p><span class="monospace">ctanh</span></p></td><td class="default">
+            <p><span class="monospace">double complex ctanh(double complex)</span></p></td><td class="default">
+            <p>-</p></td></tr></table></div></body></html>

@@ -1,0 +1,57 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>313: inexact-&gt;exact and exact-&gt;inexact on complex numbers</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 313: <span class="summary">inexact-&gt;exact and exact-&gt;inexact on complex numbers</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-02-26 19:47:05</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">invalid</div>
+      <div class="source"><a href="/ticket/313/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-12-17 11:54:21</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>We allow &quot;an implementation violation&quot; for  inexact non-real to exact,
+since implementations may not support ratios, but require implementations
+to support both exact and inexact complex.  This may be too strong a
+requirement.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-12-18 01:19:40</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I agree; we should allow an implementation to support not having exact complex numbers.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-02-26 19:47:05</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">invalid</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>On re-reading the text, I think it can be inferred that the disclaimer</p><span class="monospace">If an exact argument has no reasonably close inexact equivalent, then a violation of an implementation restriction may be reported.
+</span>
+              <p>also applies to complex numbers, despite the preceding statement</p><span class="monospace">For exact complex numbers, the result is a complex number whose real and imaginary parts are the result of applying exact-&gt; inexact to the real and imaginary parts of the argument, respectively.
+</span>
+              <p>so there doesn't seem to be anything to change here, except
+potentially as an editorial clarification if someone comes up
+with better wording.</p></div></div></div></div></div></body></html>

@@ -1,0 +1,37 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Memoize</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/Memoize.md">Memoize</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Memoize</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-04-13 02:41:39</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/Memoize/history">history</a></div>
+      <div class="source"><a href="/wiki/Memoize/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This isn't a proposal, just some ideas and discussion points.</p>
+      <p>The basic interface to memoizing is a variant of <span class="monospace">lambda</span>, perhaps called <span class="monospace">lambda/memo</span> as in Racket, or perhaps something else.  It returns a procedure that <i>memoizes</i> the results of calls on it in a <i>store</i>, and then pulls the results out of the store on later calls with the same arguments.  (Obviously, you don't want to do this if the procedure is impure.)</p>
+      <p>It's easy to see how <span class="monospace">define/memo</span> would work as a more convenient version of this.</p>
+      <p>There are a bunch of issues, though:</p>
+      <ul>
+        <li>The most fundamental question is &quot;What counts as the 'same arguments'?&quot;  In Racket, <span class="monospace">lambda/memo</span> uses <span class="monospace">eq?</span> and <span class="monospace">lambda/memo*</span> uses <span class="monospace">equal</span>.  That doesn't seem very flexible.</li></ul>
+      <ul>
+        <li>What is the type of the store?  In Racket, hash tables based on <span class="monospace">eq?</span> and <span class="monospace">equal?</span> are available.  But in R7RS-large, there is no guarantee that an implementation that wants to support memoizing will also provide hash tables, so either we closely couple the two packages, or we provide a hook for constructing a store.  If the function accepts only a single argument which belongs to a small range of exact integers, a vector would be a <i>much</i> better store.</li></ul>
+      <ul>
+        <li>If arbitrary stores like a-lists are allowed, how are multiple arguments packaged up as a key for the store?</li></ul>
+      <ul>
+        <li>How do we specify the getter and setter for an arbitrary store?</li></ul>
+      <ul>
+        <li>How can we provide all this flexibility without compromising convenience for elementary uses?</li></ul>
+      <p>Adding extra arguments to <span class="monospace">lambda/memo</span> beyond the lambda-list and the body doesn't seem like a win to me (how do you know if the extra arguments are arguments, or part of the body?).  Are dynamic parameters the Right Thing here?  I don't think so, because all these factors should be bound to the static definition of the memoized functions.  Is this a place where we need keyword arguments (which can be implemented directly in R5RS with no new data structures or lambda magic)?</p>
+      <p>I think we need a record type <span class="monospace">memoization-store</span> that provides a store constructor, comparator, getter, and setter.  But we still have the issue of associating an instance of <span class="monospace">memoization-store</span> with a particular lambda.</p></div></body></html>

@@ -1,0 +1,73 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NanMedernach</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NanMedernach.md">NanMedernach</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Nan&shy;Medernach</h1>
+    <div class="wiki metadata">
+      <div class="author">medernac</div>
+      <div class="time">2012-06-08 02:53:19</div>
+      <div class="version">5<span class="comment">Removal of signaling nan constructors</span><a href="/wiki/NanMedernach/history">history</a></div>
+      <div class="source"><a href="/wiki/NanMedernach/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="{{{NaNs}}}libraryproposal"><span class="monospace">NaNs</span> library proposal</h1>
+      <h2 id="Libraryproposal">Library proposal</h2>
+      <p><span class="monospace">(nan)</span></p>
+      <p>Returns a <span class="monospace">NaN}}}  with an  implementation-defined chosen  payload.  Implementations are free to return different {{{NaNs}}} for each `nan` invocation or not. If so and as a matter of consistency, {{{NaN}}} representation such as &quot;+nan.0&quot; should also return different {{{NaNs</span>.</p>
+      <p><span class="monospace">(nan &lt;payload&gt;)</span></p>
+      <p>Returns a <span class="monospace">NaN</span> with the given payload as its content.  Valid values for <span class="monospace">&lt;payload&gt;</span> are implementation-dependent.</p>
+      <p><span class="monospace">(nan? &lt;obj&gt;)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <span class="monospace">&lt;obj&gt;</span> is a <span class="monospace">NaN</span>.</p>
+      <p><span class="monospace">(nan-signaling? &lt;obj&gt;)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <span class="monospace">&lt;obj&gt;</span> is a signaling <span class="monospace">NaN</span>.</p>
+      <p><span class="monospace">(nan-payload &lt;obj&gt;)</span></p>
+      <p>Returns the payload content of <span class="monospace">&lt;obj&gt;</span> if it is a <span class="monospace">NaN</span>.</p>
+      <p><span class="monospace">(nan-negative? &lt;obj&gt;)</span></p>
+      <p>Returns the sign part of <span class="monospace">&lt;obj&gt;</span> if it is a <span class="monospace">NaN</span>.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>This library is about <span class="monospace">NaNs</span> operation handling.</p>
+      <p>For IEEE Standard for Floating-Point Arithmetic (IEEE 754) implementation there is one <span class="monospace">NaN}}} concept but many different {{{NaNs}}}. From the purpose of {{{NaNs}}}, we have to be able to distinguish between {{{NaNs}}}. For that effect, {{{NaNs}}} carry a ''payload'' intended to put diagnosis information about what caused a {{{NaN</span> to be produced.</p>
+      <h3 id="Purposesof{{{NaNs}}}">Purposes of <span class="monospace">NaNs</span></h3>
+      <ul>
+        <li>allowing computation to continue even in the presence of incorrect computation, instead of aborting with an error.</li></ul>
+      <ul>
+        <li>to be able to discover what kind of error has been encountered if needed, by propagating a <span class="monospace">NaN</span> value.</li></ul>
+      <p>When the reader reads &quot;+nan.0&quot;, it has to choose one particular internal representation for it.  It is free to choose one representation shared for all &quot;+nan.0&quot; or to choose a different one each time it encounters another &quot;nan.0&quot;. This is what the following means:</p><span class="monospace">  (eqv? +nan.0 +nan.0) =&gt; unspecified
+</span>
+      <p>However the identity of a particular <span class="monospace">NaN</span> should not be questioned. I mean I think we should have this:</p><span class="monospace">  (let ((a +nan.0)) (eqv? a a)) =&gt; #t
+</span>
+      <p>The following is a desirable behaviour, but I would not push for it into the standard:</p><span class="monospace">  (let ((a (/ 0.0 0.0)) (b (sin +inf.0))) (eqv? a b)) =&gt; #f 
+</span>
+      <h2 id="Usecasesexamples">Use cases examples</h2>
+      <ul>
+        <li>Report invalid sensor values</li></ul>
+      <p>Instead of returning strange values such as 99999 which could be mistaken for real ones and cause dramatic effects, sensors may use <span class="monospace">NaNs</span> to report invalid values.  A payload may be added to report an additional message.</p>
+      <ul>
+        <li>Mark undefined values in a vector of reals</li></ul>
+      <p>In order to identify wrong usage of uninitialased vectors, one could fill vectors with <span class="monospace">NaNs</span> containing indexes in their payloads.</p><span class="monospace">(define (make-reals-vector N)
+  (if (&gt;= N 0)
+    (let ((result (make-vector N)))
+      (let loop ((i 0))
+        (if (&lt; i N)
+            (begin 
+              (vector-set! result i (nan i))
+              (loop (+ i 1)))
+            result )))
+    (error &quot;make-float-vector: negative argument&quot;)))
+</span>
+      <h2 id="CommentsbyJohnCowan">Comments by John Cowan</h2>
+      <p>I think the payload should be constrained to be an exact non-negative integer interpreted as a sequence of bits.   In IEEE formats, the sign bit is part of the payload, and should be extractable separately from the payload using <span class="monospace">nan-negative?</span> or some such predicate.  In addition, the sense of the signaling/quiet bit is implementation-dependent (it is always the highest-order bit of the mantissa, but whether 1 is signaling or quiet depends on the hardware), and so <span class="monospace">nan-signaling?</span> should also be added.</p>
+      <p>In addition, the requirement that <span class="monospace">read</span> invoke <span class="monospace">nan</span> seems pointless to me.  If <span class="monospace">read</span> returns any old NaN, that should be good enough.Â</p>
+      <h2 id="CommentsbyEmmanuelMedernach">Comments by Emmanuel Medernach</h2>
+      <ul>
+        <li>Reply to John's comments:</li></ul>
+      <p>Having payload to be an exact non-negative integer (or a sequence of bits) is IMHO too restrictive as this precludes the nice feature of allowing payloads to store symbols if one (future) implementation wish to do so.</p></div></body></html>

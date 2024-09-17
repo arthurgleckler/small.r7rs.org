@@ -1,0 +1,52 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>223: Converting current-{input,output}-ports to binary</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 223: <span class="summary">Converting current-{input,output}-ports to binary</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-09-11 07:45:16</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/223/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-06-29 11:51:25</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>The standard input and output ports which <span class="monospace">current-input-port</span> and <span class="monospace">current-output-port</span> are initially bound to are not opened explicitly.  They default to character ports.  Should they be replaceable with equivalent binary ports using the following procedures?</p>
+        <ul>
+          <li>(standard-input-is-binary!)</li>
+          <li>(standard-output-is-binary!)</li></ul>
+        <p>It is an error to call either of these if the corresponding <span class="monospace">current-{input,output}-port</span> is not the original value, or if any I/O has been performed on them, or if they cannot reasonably be treated as binary.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-06-30 10:55:07</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I am confused by this description, what are you suggesting?</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-11 07:45:16</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 rejected this proposal.</p></div></div></div></div></div></body></html>

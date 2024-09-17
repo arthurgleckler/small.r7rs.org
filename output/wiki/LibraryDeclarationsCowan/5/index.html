@@ -1,0 +1,64 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>LibraryDeclarationsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/LibraryDeclarationsCowan.md">LibraryDeclarationsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Library&shy;Declarations&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-01-14 09:58:53</div>
+      <div class="version">5<span class="comment"></span><a href="/wiki/LibraryDeclarationsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/LibraryDeclarationsCowan/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a proposal to add further library declarations and import-set types to the large language.</p>
+      <h2 id="Librarydeclarations">Library declarations</h2>
+      <p>In R7RS it is not an error to provide a library declaration that a specific implementation does not understand, although implementations should provide warnings in such cases.  Most of these declarations specified here use &quot;should&quot;, which means that implementations are allowed to silently ignore them if they are inappropriate.  Furthermore, implementations may (but should not) ignore any list of identifiers.  Conflicts between declarations are resolved in an implementation-specific way.  Exceptions:</p>
+      <ul>
+        <li>Support for <span class="monospace">reexport</span> and <span class="monospace">export-all</span> is required.</li></ul>
+      <ul>
+        <li>Precise support for <span class="monospace">notinline</span> is required for implementations that make the decision to inline code.</li></ul>
+      <h3 id="Namecontrol(required)">Name control (required)</h3>
+      <p><span class="monospace">(reexport </span><i>import-set</i> ...<span class="monospace">)</span></p>
+      <p>Like <span class="monospace">import</span>, but also exports all identifiers that were imported.  This allows a library to easily extend one or more other libraries.</p>
+      <p><span class="monospace">(export-all)</span></p>
+      <p>Exports all defined identifiers except those that were imported.  This allows a library to be easily extended.</p>
+      <h3 id="Optimization">Optimization</h3>
+      <p>In the list below, <i>importance</i> represents a symbol, one of <span class="monospace">unimportant</span> (no importance), <span class="monospace">neutral</span> (some importance, the default), <span class="monospace">important</span> (substantial importance), or <span class="monospace">extreme</span> (extreme importance).  It is an error to specify anything else.</p>
+      <p>If no identifiers are named, then the library declaration applies to all defined identifiers.</p>
+      <p><span class="monospace">(speed </span><i>importance</i> <i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The named <i>identifiers</i> should be processed so as to maximize execution speed to the extent specified by <i>importance</i>.</p>
+      <p><span class="monospace">(space </span><i>importance</i> <i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The named <i>identifiers</i> should be processed so as to minimize the use of space at run time to the extent specified by <i>importance</i>.</p>
+      <p><span class="monospace">(safety </span><i>importance</i> <i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The named <i>identifiers</i> should be processed so as to maximize safety at execution time to the extent specified by <i>importance</i>.</p>
+      <p><span class="monospace">(compilation-speed </span><i>importance</i> <i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The named <i>identifiers</i> should be processed so as to maximize compilation speed to the extent specified by <i>importance</i>.</p>
+      <p><span class="monospace">(debuggability </span><i>importance</i> <i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The named <i>identifiers</i> should be processed so as to maximize ease of debugging to the extent specified by <i>importance</i>.</p>
+      <h3 id="Compilation">Compilation</h3>
+      <p><span class="monospace">(inline </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The procedures named by the <i>identifiers</i> should be inlined by the compiler, if there is one.</p>
+      <p><span class="monospace">(notinline </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The procedures named by the <i>identifiers</i> must not be inlined by the compiler, if there is one.</p>
+      <p><span class="monospace">(unused </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The implementation should not warn the user if the <i>identifiers</i> are defined but not used in the library.</p>
+      <p><span class="monospace">(verbose </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The implementation should process the definitions of the named identifiers (if none are named, the whole library) verbosely.</p>
+      <p><span class="monospace">(terse </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The implementation should process the definitions of the named identifiers (if none are named, the whole library) as quietly as is reasonable.  The user should still be notified of errors and warnings.</p>
+      <p><span class="monospace">(silent </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The implementation should process the definitions of the named identifiers (if none are named, the whole library) silently.  The user should still be notified of errors.</p>
+      <h2 id="Importsets">Import sets</h2>
+      <p><span class="monospace">(drop-prefix </span><i>import-set</i> <i>identifier</i><span class="monospace">)</span></p>
+      <p>This import set automatically renames identifiers in the given <i>import-set</i>: any of them which begin with the characters in <i>identifier</i> have those characters removed.</p>
+      <p>For example, if the library <span class="monospace">(foo)</span> exports identifiers <span class="monospace">foo-a</span>, <span class="monospace">foo-b</span>, and <span class="monospace">foo-c</span>, then <span class="monospace">(import (drop-prefix (foo) foo-)</span> will import them under the names of <span class="monospace">a</span>, <span class="monospace">b</span>, and <span class="monospace">c</span> respectively.  Chibi Scheme already supports this type of import set.</p>
+      <p>See also <a href="/wiki/InterfacesCowan">InterfacesCowan</a>.</p></div></body></html>

@@ -1,0 +1,52 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>OrangeDocket</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/OrangeDocket.md">OrangeDocket</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Orange&shy;Docket</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-08-28 08:21:21</div>
+      <div class="version">35<span class="comment"></span><a href="/wiki/OrangeDocket/history">history</a></div>
+      <div class="source"><a href="/wiki/OrangeDocket/35/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is an early draft of proposals for the Orange Edition (numbers) of R7RS-large. For other dockets, see <a href="/wiki/WG2Dockets">WG2Dockets</a>.</p>
+      <p><b>Numeric types and operations</b></p>
+      <p>Integer division: <a href="http://srfi.schemers.org/srfi-141/srfi-141.html">SRFI 141</a></p>
+      <p>Bitwise integer operations:  <a href="http://srfi.schemers.org/srfi-151/srfi-151.html">SRFI 151</a> (superseding SRFI 142), <a href="http://srfi.schemers.org/srfi-60/srfi-60.html">SRFI 60</a>, <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-12.html#node_sec_11.4">R6RS</a>.</p>
+      <p>Fixnums:  <a href="http://srfi.schemers.org/srfi-143/srfi-143.html">SRFI 143</a>, <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-12.html#node_sec_11.2">R6RS</a></p>
+      <p>Flonums:  <a href="http://srfi.schemers.org/srfi-144/srfi-1443.html">SRFI 144</a>,
+<a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-12.html#node_sec_11.3">R6RS</a></p>
+      <p>Random numbers: <a href="http://srfi.schemers.org/srfi-27/srfi-27.html">SRFI 27</a>, plus <a href="/wiki/AdvancedRandomGauche">AdvancedRandomGauche</a></p>
+      <p>Prime numbers:  <a href="/wiki/PrimesGauche">PrimesGauche</a>.</p>
+      <p>Extended exact numbers:  <a href="/wiki/ExtendedRationalsCowan">ExtendedRationalsCowan</a> [Orange]</p>
+      <p>Natural number predicates (from WG1):  <span class="monospace">exact-positive-integer?</span> and <span class="monospace">exact-non-negative-integer?</span>.</p>
+      <p>NaN dissector API (sign, quiet/signaling status, and integer tag): <a href="/wiki/NanMedernach">NanMedernach</a></p>
+      <p><b>Numeric and semi-numeric data structures</b></p>
+      <p>Numeric vectors:  <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-3.html#node_chap_2,">R6RS</a>, <a href="http://srfi.schemers.org/srfi-4/srfi-4.html">SRFI 4</a>, <a href="http://srfi.schemers.org/srfi-63/srfi-63.html">SRFI 63</a> (supersedes SRFI 25 and SRFI 47; lexical syntax in <a href="http://srfi.schemers.org/srfi-58/srfi-58.html">SRFI 58</a>), <a href="http://srfi.schemers.org/srfi-66/srfi-66.html">SRFI 66</a>, <a href="http://srfi.schemers.org/srfi-74/srfi-74.html">SRFI 74</a>, <a href="/wiki/NumericVectorsCowan">NumericVectorsCowan</a>.</p>
+      <p>C-style structs:  <a href="https://github.com/TaylanUB/scheme-bytestructures">ByteStructuresTaylanub</a>.</p>
+      <p>Integer sets:  <a href="/wiki/IntegerSetsCowan">IntegerSetsCowan</a></p>
+      <p>Descriptive statistics:  <a href="/wiki/TallyCowan">TallyCowan</a></p>
+      <p>Multidimensional arrays: <a href="http://srfi.schemers.org/srfi-122/srfi-122.html">SRFI 122</a> .</p>
+      <p><b>Enumerations</b></p>
+      <p>Enumerations:  <a href="/wiki/EnumsCowan">EnumsCowan</a></p>
+      <p>Enumeration sets:  <a href="/wiki/EnumContainersCowan">EnumContainersCowan</a></p>
+      <p>Enumeration maps:  <a href="/wiki/EnumContainersCowan">EnumContainersCowan</a></p>
+      <p><b>Formatting</b></p>
+      <p><span class="monospace">number-&gt;string</span> and <span class="monospace">string-&gt;number</span> with non-ASCII decimal digits: <a href="/wiki/NumberStringUnicode">NumberStringUnicode</a></p>
+      <p><span class="monospace">hex-digit-value</span>: same as <span class="monospace">digit value</span>, but understands A-F and a-f too</p>
+      <p>Formatting: <a href="http://srfi.schemers.org/srfi-159/srfi-159.html">SRFI 159</a> or <a href="http://srfi.schemers.org/srfi-48/srfi-48.html">SRFI 48</a> (intermediate), possibly with <a href="http://srfi.schemers.org/srfi-29/srfi-29.html">SRFI 29</a> or <a href="/wiki/GettextCowan">GettextCowan</a></p>
+      <p><b>Carryovers from the Red Edition</b></p>
+      <p>Strings: <a href="http://srfi.schemers.org/srfi-13/srfi-13.html">SRFI 13</a> (comprehensive), <a href="http://srfi.schemers.org/srfi-118/srfi-118.html">SRFI 118</a> (adjustable), <a href="http://srfi.schemers.org/srfi-130/srfi-130.html">SRFI 130</a> (cursor-based), <a href="http://srfi.schemers.org/srfi-140/srfi-140.html">SRFI 140</a> (immutable), <a href="http://srfi.schemers.org/srfi-152/srfi-152.html">SRFI 152</a> (basic)</p>
+      <p>Ordered sets and bags:  <a href="http://srfi.schemers.org/srfi-153/srfi-153.html">SRFI 153</a></p>
+      <p>Mappings: <a href="http://srfi.schemers.org/srfi-146/srfi-146.html">SRFI 146</a></p>
+      <p>Regular expressions: <a href="http://srfi.schemers.org/srfi-115/srfi-115.html">SRFI 115</a></p></div></body></html>

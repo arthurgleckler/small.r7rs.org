@@ -1,0 +1,155 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>AggregatesMedernachImplementation</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/AggregatesMedernachImplementation.md">AggregatesMedernachImplementation</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Aggregates&shy;Medernach&shy;Implementation</h1>
+    <div class="wiki metadata">
+      <div class="author">medernac</div>
+      <div class="time">2011-01-15 16:46:02</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/AggregatesMedernachImplementation/history">history</a></div>
+      <div class="source"><a href="/wiki/AggregatesMedernachImplementation/2/source.html">source</a></div></div>
+    <div class="wiki text"><span class="monospace">
+;; (require srfi/23)
+
+;; Ok on Gambit, Guile, Racket
+
+;; Beware that fields specified as mutables are vectors of length 1 containing the actual value.
+
+(define-syntax define-datatype
+  (syntax-rules ()
+    ((define-datatype &lt;designation&gt; (&lt;fieldname-spec&gt; ...))
+     (begin
+       (define-syntax &lt;info&gt;
+         (syntax-rules (create designate fields)
+           ((&lt;info&gt; designate) &lt;designation&gt;)
+           ((&lt;info&gt; fields) '(&lt;fieldname-spec&gt; ...))))
+       (define-datatype-loop (&lt;designation&gt;) &lt;designation&gt; (&lt;fieldname-spec&gt; ...) () ())))))
+
+(define-syntax define-datatype-loop
+  (syntax-rules (mutable)
+    ((define-datatype-loop &lt;ancestor-list&gt;
+       &lt;designation&gt;
+       ((mutable &lt;fieldname&gt;) &lt;other&gt; ...)
+       (&lt;mutable-field&gt; ...)
+       (&lt;field&gt; ...))
+     (define-datatype-loop &lt;ancestor-list&gt;
+       &lt;designation&gt;
+       (&lt;other&gt; ...)
+       (&lt;mutable-field&gt; ... &lt;fieldname&gt;)
+       (&lt;field&gt; ... &lt;fieldname&gt;)))
+    
+    ((define-datatype-loop &lt;ancestor-list&gt;
+       &lt;designation&gt;
+       ((immutable &lt;fieldname&gt;) &lt;other&gt; ...)
+       (&lt;mutable-field&gt; ...)
+       (&lt;field&gt; ...))
+     (define-datatype-loop &lt;ancestor-list&gt;
+       &lt;designation&gt;
+       (&lt;other&gt; ...)
+       (&lt;mutable-field&gt; ... )
+       (&lt;field&gt; ... &lt;fieldname&gt;)))
+
+    ;; By default fields are immutables (except if they contain a
+    ;; mutable value, else we should go for a copy on access semantic
+    ;; and that's too bad)
+    ((define-datatype-loop &lt;ancestor-list&gt;
+       &lt;designation&gt;
+       (&lt;fieldname&gt; &lt;other&gt; ...)
+       (&lt;mutable-field&gt; ...)
+       (&lt;field&gt; ...))
+     (define-datatype-loop &lt;ancestor-list&gt;
+       &lt;designation&gt;
+       (&lt;other&gt; ...)
+       (&lt;mutable-field&gt; ...)
+       (&lt;field&gt; ... &lt;fieldname&gt;)))
+    
+    ((define-datatype-loop &lt;ancestor-list&gt;
+       &lt;designation&gt;
+       ()
+       (&lt;mutable-field&gt; ...) 
+       (&lt;field&gt; ...))
+     (define-datatype-helper &lt;ancestor-list&gt;
+       &lt;designation&gt;
+       (&lt;mutable-field&gt; ...)
+       (&lt;field&gt; ...)))))
+
+
+(define-syntax define-datatype-helper
+  (syntax-rules ()
+    ((define-datatype-helper (&lt;ancestor&gt; ...) &lt;designation&gt; (&lt;mutable-field&gt; ...) (&lt;fieldname&gt; ...))
+     
+     (let* ((datatype-tag (vector &lt;ancestor&gt; ...))
+            (datatype-depth (- (vector-length datatype-tag) 1)))
+       (letrec ( ;; We currently lack a way to create disjoint datatypes
+                (aggregate cons)
+                (aggregate? pair?)
+                (aggregate-&gt;tag car)
+                (aggregate-&gt;content cdr)
+
+                ;; (datatype-subtype? (lambda (tag1 tag2) (eqv? tag1 tag2)))
+
+                (datatype-subtype?
+                 (lambda (tag)
+                   (and (vector? tag)
+                        (&lt; datatype-depth (vector-length tag))
+                        (eqv? (vector-ref tag datatype-depth)
+                              &lt;designation&gt;))))
+                
+                (make-aggregate
+                 (lambda (&lt;fieldname&gt; ...)
+                   ;; it contains:
+                   ;; - the datatype tag associated to datatype (+ inheritance structure)
+                   ;; - values of all fields
+                   (let ((&lt;mutable-field&gt; (vector &lt;mutable-field&gt;)) ...)
+                     ;; We have to enclose 'values' with a thunk because of bigloo, larceny and racket which forbid to store values
+                     (aggregate datatype-tag (lambda () (values &lt;fieldname&gt; ...))))))
+             
+                (aggregate-switch
+                 (lambda (aggregate-case else-case)
+                   (lambda (obj)                     
+                     (cond
+                      ;; First: check if it is an aggregate kind
+                      ((not (aggregate? obj)) (error &quot;Not an aggregate: &quot; obj))
+                      ;; Second: check if it is of corresponding datatype type or a subtype
+                      ((not (datatype-subtype? (aggregate-&gt;tag obj))) (else-case obj))
+                      (else
+                       (call-with-values (aggregate-&gt;content obj)
+                         (lambda (&lt;fieldname&gt; ... . extension)
+                           ;; A little trick to easily allow inheritance
+                           (aggregate-case &lt;fieldname&gt; ...)))))))))
+         
+         (lambda ()
+           (values make-aggregate
+                   aggregate-switch
+                   ;; One could easily creates his own mutators like this:
+                   (list (list '&lt;mutable-field&gt;
+                               (lambda (obj val)
+                                 ((aggregate-switch
+                                   (lambda (&lt;fieldname&gt; ...) (vector-set! &lt;mutable-field&gt; 0 val))
+                                   (lambda (obj) (error &quot;Not of corresponding type: &quot; obj)))
+                                  obj)))
+                         ... ))))))))
+
+(define-syntax datatype-info-&gt;designation
+  (syntax-rules ()
+  ((datatype-info-&gt;designation datatype-info)
+   (datatype-info designate))))
+
+(define-syntax datatype-info-&gt;fields
+  (syntax-rules ()
+    ((datatype-info-&gt;fields datatype-info)
+     (datatype-info fields))))
+
+(define (create-aggregate-functions datatype) datatype)
+
+</span></div></body></html>

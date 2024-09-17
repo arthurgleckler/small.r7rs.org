@@ -1,0 +1,69 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StorageClassesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StorageClassesCowan.md">StorageClassesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Storage&shy;Classes&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-05-18 03:58:22</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/StorageClassesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/StorageClassesCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Abstract">Abstract</h2>
+      <p>A storage class is a group of storage objects with the same behavior.  A storage object maps a non-negative exact integer index into a storage location.  There are standard storage classes, but it is also possible for programmers to create their own storage classes.  Each storage class allows creating a storage object of a given size, accessing a location by its index, and mutating a location by its index to a new value.  Note that the procedures used to do this need not be the standard procedures such as <span class="monospace">make-vector</span>, <span class="monospace">vector-ref</span>, and <span class="monospace">vector-set!</span>; they may be more efficient equivalents.  Storage classes allow arrays (see <a href="/wiki/ArraysCowan">ArraysCowan</a>) and similar objects to be polymorphic in the type of storage they use.</p>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(make-storage-class </span><i>constructor accessor mutator sizer</i><span class="monospace">)</span></p>
+      <p>Returns a storage class with the specified procedures as constructor, accessor, mutator, and sizer.  See below for the invocation protocols.</p>
+      <p><span class="monospace">(make-bytestructure-storage-class </span><i>bytestructure-descriptor</i><span class="monospace">)</span></p>
+      <p>TBD.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(storage-class? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a storage class, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(in-storage-class? </span><i>storage-class obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a storage object of class <i>storage-class</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <h2 id="Accessors">Accessors</h2>
+      <p><span class="monospace">(storage-class-constructor </span><i>storage-class</i><span class="monospace">)</span></p>
+      <p>Returns the constructor of <i>storage-class</i>.  This procedure returns a storage object belonging to the storage class, and can be called with one or two arguments: the first is an exact non-negative integer specifying the size of the object.  If objects of the class do not have a fixed size, the size must be specified as <span class="monospace">#f</span>.  The second is a value to fill all the elements with.  If the second argument is omitted, the elements will have arbitrary contents.  If the class does not require storage objects (because the values are algorithmically generated, for example), the constructor returns <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(storage-class-accessor </span><i>storage-class</i><span class="monospace">)</span></p>
+      <p>Returns the accessor of <i>storage-class</i> as a procedure.  This procedure takes two arguments, a storage object and an exact non-negative integer, and returns the value of the element indexed by the integer.  It is an error if the index is greater than or equal to the size.</p>
+      <p><span class="monospace">(storage-class-mutator </span><i>storage-class</i><span class="monospace">)</span></p>
+      <p>Returns the mutator of <i>storage-class</i> as a procedure.  This procedure takes three arguments, a storage object, an exact non-negative integer, and a value.  It mutates the element of the object specified by the index to be the value.  It is an error if the index is greater than or equal to the size, or if the object is not capable of storing the value.</p>
+      <p><span class="monospace">(storage-class-sizer </span><i>storage-class</i><span class="monospace">)</span></p>
+      <p>Returns the sizr of <i>storage-class</i> as a procedure.  This procedure takes one argument, a storage object.  It returns the size of the object specified when the object was created.  This may be an exact non-negative integer or <span class="monospace">#f</span>.</p>
+      <h2 id="Invokers">Invokers</h2>
+      <p><span class="monospace">(make-storage-object ''storage-class n'' [ ''fill'' ]</span>)`</p>
+      <p>Returns a newly allocated storage object with class <i>storage-class</i> and length <i>n</i>, filled with value <i>fill</i>, if specified.
+<span class="monospace">(storage-object-ref </span><i>storage-class storage-object n</i><span class="monospace">)</span></p>
+      <p>Returns the <i>nth</i> element of <i>storage-object</i> as seen through the lens of <i>storage-class</i>.  It is an error if <i>n</i> is not less than the size of <i>storage-object</i>.</p>
+      <p><span class="monospace">(storage-object-set! </span><i>storage-class storage-object n value</i><span class="monospace">)</span></p>
+      <p>Mutates the <i>nth</i> element of <i>storage-object</i> as seen through the lens of <i>storage-class</i> so that its value is <i>value</i>.  It is an error if <i>n</i> is not less than the size of <i>storage-object</i>.</p>
+      <p><span class="monospace">(storage-object-length </span><i>storage-class storage-object</i><span class="monospace">)</span> seen through the lens of <i>storage-class</i>.</p>
+      <p>Returns the size of <i>storage-object</i> as seen through the lens of <i>storage-class</i>.</p>
+      <h2 id="Standardstorageclasses">Standard storage classes</h2>
+      <p><span class="monospace">vector-storage-class</span></p>
+      <p>Used to create and manipulate a Scheme vector as storage.</p>
+      <p><span class="monospace">u8vector-storage-class</span></p>
+      <p><span class="monospace">s8vector-storage-class</span></p>
+      <p><span class="monospace">u16vector-storage-class</span></p>
+      <p><span class="monospace">s16vector-storage-class</span></p>
+      <p><span class="monospace">u32vector-storage-class</span></p>
+      <p><span class="monospace">s32vector-storage-class</span></p>
+      <p><span class="monospace">u64vector-storage-class</span></p>
+      <p><span class="monospace">s64vector-storage-class</span></p>
+      <p><span class="monospace">f32vector-storage-class</span></p>
+      <p><span class="monospace">f64vector-storage-class</span></p>
+      <p><span class="monospace">c64vector-storage-class</span></p>
+      <p><span class="monospace">c128-storage-class</span></p>
+      <p>Used to create and manipulate native numeric vectors (see <a href="/wiki/NumericVectorsCowan">NumericVectorsCowan</a>) as storage.</p>
+      <p><span class="monospace">sparse-storage-class</span></p>
+      <p>Used to create and manipulate an object of implementation-specified type (run-length-encoded vector, hash table, tree, etc.) that provides a sparse representation of the mapping between indexes and arbitrary Scheme objects.  Note that there must be some representation of the fill value within the storage object if there is one.</p></div></body></html>

@@ -1,0 +1,47 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>OrderedMapsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/OrderedMapsCowan.md">OrderedMapsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Ordered&shy;Maps&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-12-24 04:41:26</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/OrderedMapsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/OrderedMapsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Introduction">Introduction</h2>
+      <p>This sub-proposal defines things you can do with ordered maps that are painful with hash-based mappings.  It's a cut-down version of <a href="/wiki/ImmutableMapsWortman">ImmutableMapsWortman</a>.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>Maps designed to work with comparators that have ordering procedures can readily expose additional APIs that don't make sense for comparators using hash functions.  For example, determining the smallest key in a hash table requires at least linear time, whereas determining the smallest key in a tree of some sort generally does not.  This is a list of functions that it would be useful to expose.</p>
+      <h2 id="Specification">Specification</h2>
+      <h3 id="Accessors">Accessors</h3>
+      <p><span class="monospace">(map-min-key </span><i>map</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(map-max-key </span><i>map</i><span class="monospace">)</span></p>
+      <p>Returns the least/greatest key of <i>map</i>.  It is an error for <i>map</i> to be empty. Takes O(log n) time; O(1) is optimal.</p>
+      <p><span class="monospace">(map-min-value </span><i>map</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(map-max-value</span><i>map</i><span class="monospace">)</span></p>
+      <p>Returns the value associated with the least/greatest key of <i>map</i> (<i>not</i> the least/greatest value).  It is an error for <i>map</i> to be empty. Takes O(log n) time; O(1) is optimal.</p>
+      <p><span class="monospace">(map-key-predecessor </span><i>map obj failure</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(map-key-successor </span><i>map obj failure</i><span class="monospace">)</span></p>
+      <p>Returns the key that immediately precedes/succeeds <span class="monospace">obj</span> in <span class="monospace">map</span>'s ordering. If no such association exists because <i>obj</i> is the minimum/maximum key, or because <i>map</i> is empty, returns the result of invoking the thunk <i>failure</i>. Takes O(log n) time.</p>
+      <h3 id="Filtering">Filtering</h3>
+      <p><span class="monospace">(map-range= </span><i>map obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(map-range&lt; </span><i>map obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(map-range&gt; </span><i>map obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(map-range&lt;= </span><i>map obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(map-range&gt;= </span><i>map obj</i><span class="monospace">)</span></p>
+      <p>Returns a map containing only the associations of <span class="monospace">map</span> whose keys are equal to / less than / greater than / less than or equal to / greater than or equal to <i>obj</i>.  Takes O(log n) time, where <i>n</i> is the number of associations in the map .</p>
+      <p>Note that since map keys are unique, <span class="monospace">imap-range=</span> returns a map with at most one association.</p>
+      <h3 id="Mappingandfolding">Mapping and folding</h3>
+      <p><span class="monospace">(imap-map/monotone </span><i>proc map</i> [ <i>comparator</i> ]<span class="monospace">)</span></p>
+      <p>Returns a map containing the result of invoking <i>proc</i> on every association in <i>map</i>.  It is an error unless <i>proc</i> is a <i>monotone</i> unary procedure that preserves the order of map associations. Observe that mapping a map of unique associations with a monotone function yields a map of unique associations, so association uniqueness follows from the monotonicity assumption. If <i>comparator</i> is given, it is the comparator of the result; otherwise the result uses the same comparator as <i>map</i>. Takes O(n) time.</p></div></body></html>

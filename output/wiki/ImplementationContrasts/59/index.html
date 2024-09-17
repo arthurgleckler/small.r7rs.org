@@ -1,0 +1,88 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImplementationContrasts</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImplementationContrasts.md">ImplementationContrasts</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Implementation&shy;Contrasts</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-10-18 07:54:22</div>
+      <div class="version">59<span class="comment"></span><a href="/wiki/ImplementationContrasts/history">history</a></div>
+      <div class="source"><a href="/wiki/ImplementationContrasts/59/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="ImplementationContrasts">Implementation Contrasts</h2>
+      <p>This is an index to pages that describe various detailed differences between Scheme implementations.</p>
+      <p>As of 2014-09-16, the list of Scheme implementations tested is:</p>
+      <p><a href="http://racket-lang.org/">Racket</a>, <a href="http://practical-scheme.net/gauche/">Gauche</a>, <a href="http://www.gnu.org/software/mit-scheme/">MIT</a>, <a href="http://dynamo.iro.umontreal.ca/wiki/index.php/Main_Page">Gambit</a>, plain <a href="http://call-cc.org/">Chicken</a>, Chicken with the <a href="http://wiki.call-cc.org/eggref/4/numbers">numbers egg</a>, <a href="http://www-sop.inria.fr/indes/fp/Bigloo/">Bigloo</a>, <a href="http://s48.org/">Scheme48</a>, <a href="http://www.scsh.net/">scsh</a>, <a href="http://www.gnu.org/software/guile/">Guile</a>, <a href="http://www.gnu.org/software/kawa/">Kawa</a>, <a href="http://sisc-scheme.org/">SISC</a>, <a href="https://code.google.com/p/chibi-scheme/">Chibi</a>, <a href="https://github.com/picrin-scheme/picrin">Picrin</a>, <a href="https://code.google.com/p/foment/">Foment</a>, <a href="http://people.csail.mit.edu/jaffer/SCM.html">SCM</a>, <a href="http://scheme.com/">Chez</a>, <a href="http://marcomaggi.github.io/vicare.html">Vicare</a>, <a href="http://www.larcenists.org/">Larceny</a>, <a href="https://code.google.com/p/ypsilon/">Ypsilon</a>, <a href="https://code.google.com/p/mosh-scheme/">Mosh</a>, <a href="http://ironscheme.codeplex.com/">IronScheme</a>, <a href="http://nexj-scheme.org/">NexJ</a>, <a href="http://jscheme.sourceforge.net/jscheme/main.html">JScheme</a>, <a href="http://www.stklos.net/">STklos</a>, <a href="http://ksi.sourceforge.net/">KSi</a>, <a href="https://code.google.com/p/sigscheme/">SigScheme</a>, <a href="http://www.nocrew.org/software-shoe.html">Shoe</a>, <a href="http://tinyscheme.sourceforge.net/">TinyScheme</a>, <a href="http://www.t3x.org/s9fes/">Scheme 9</a>, <a href="http://www.rscheme.org/rs/index.html">RScheme</a>, <a href="https://ccrma.stanford.edu/software/snd/snd/s7.html">S7</a>, <a href="http://carlstrom.com/bdc-scheme/">BDC</a>, <a href="http://www.xlisp.org/">XLisp</a>, <a href="http://librep.sourceforge.net/">Rep</a>, <a href="http://schemik.sourceforge.net/">Schemik</a>, <a href="http://sam.zoy.org/elk/">Elk</a>, <a href="http://www.cs.umb.edu/~wrc/scheme/">UMB</a>, <a href="http://llava.org/">Llava</a>, <a href="http://www.malgil.com/sxm/">SXM</a>, <a href="http://www.grabmueller.de/martin/www/sizzle/sizzle.en.html">Sizzle</a>, <a href="https://github.com/JeffBezanson/femtolisp">FemtoLisp</a>, <a href="http://hakl.net/software/dfsch.en.html">Dfsch</a>, <a href="http://www.inlab.de/scheme/">Inlab</a>, <a href="https://code.google.com/p/owl-lisp/">Owl Lisp</a>.</p>
+      <p>My test system now runs 64-bit Linux, but most of the pages below report the results from using 32-bit Linux.  Most of my Schemes (except Racket and JVM-based and CLR-based ones) are built from source, usually the latest release but in some cases the head of source control.  However, not all versions are up to date, and the versions tested have changed over the past few years, so some of the claims in the pages below are surely obsolete.  Implementers and users are urged to [mailto:cowan@ccil.org notify me] when they see something incorrect.</p>
+      <p>As of 2013-07-29, I could not build <a href="http://www.bcl.hamilton.ie/~barak/oaklisp/">Oaklisp</a> (it doesn't seem to like 64-bit systems) or Dream (link dead), so they were excluded from the suite from then on.</p>
+      <p>As of 2013-01-31, I could not build <a href="https://code.google.com/p/vx-scheme/">VX</a> or <a href="https://github.com/vijaymathew/spark-scheme">Spark</a>, so they were excluded from the suite from then on.</p>
+      <p>Sagittarius, KSM, Luna, MScheme, Schell, QScheme, Rhizome/pi, SIOD, and VSCM either will not build on my system or will not run.  For these and many other Schemes see the <a href="http://community.schemewiki.org/?scheme-faq-standards">fairly complete list of Scheme implementations</a>.</p>
+      <p>S7 was formerly, but incorrectly, known in these pages as &quot;Scheme 7&quot;, and some references to this name survive.  It's really named after <a href="http://en.wikipedia.org/wiki/Sunbeam_S7_and_S8">the motorcycle</a>.</p>
+      <p>Not all these pages have information on all these Schemes.</p>
+      <ul>
+        <li><a href="/wiki/ArgumentOrder">ArgumentOrder</a></li>
+        <li><a href="/wiki/BackslashBar">BackslashBar</a></li>
+        <li><a href="/wiki/BracketsBraces">BracketsBraces</a></li>
+        <li><a href="/wiki/CallCc">CallCc</a></li>
+        <li><a href="/wiki/CaseInsensitivity">CaseInsensitivity</a></li>
+        <li><a href="/wiki/CommaInIdentifiers">CommaInIdentifiers</a></li>
+        <li><a href="/wiki/ComplexLog">ComplexLog</a></li>
+        <li><a href="/wiki/ComplexRepresentations">ComplexRepresentations</a></li>
+        <li><a href="/wiki/CondExpand">CondExpand</a></li>
+        <li><a href="/wiki/CwifClosePort">CwifClosePort</a></li>
+        <li><a href="/wiki/DatumLabels">DatumLabels</a></li>
+        <li><a href="/wiki/DefineSyntaxDefines">DefineSyntaxDefines</a></li>
+        <li><a href="/wiki/DisjointPromises">DisjointPromises</a></li>
+        <li><a href="/wiki/DotComma">DotComma</a></li>
+        <li><a href="/wiki/EmbeddedCrLf">EmbeddedCrLf</a></li>
+        <li><a href="/wiki/EmptyDefine">EmptyDefine</a></li>
+        <li><a href="/wiki/EmptyList">EmptyList</a></li>
+        <li><a href="/wiki/EmptyStringsVectors">EmptyStringsVectors</a></li>
+        <li><a href="/wiki/EvalDefine">EvalDefine</a></li>
+        <li><a href="/wiki/FixnumInfo">FixnumInfo</a></li>
+        <li><a href="/wiki/FloatPrecision">FloatPrecision</a></li>
+        <li><a href="/wiki/ForceNonPromise">ForceNonPromise</a></li>
+        <li><a href="/wiki/GuardBehavior">GuardBehavior</a></li>
+        <li><a href="/wiki/HashQuote">HashQuote</a></li>
+        <li><a href="/wiki/HygienicInclusion">HygienicInclusion</a></li>
+        <li><a href="/wiki/ImmediateStringsCoalesced">ImmediateStringsCoalesced</a></li>
+        <li><a href="/wiki/ImproperLists">ImproperLists</a></li>
+        <li><a href="/wiki/LetrecStar">LetrecStar</a></li>
+        <li><a href="/wiki/MaxInfNan">MaxInfNan</a></li>
+        <li><a href="/wiki/MultipleValues">MultipleValues</a></li>
+        <li><a href="/wiki/NegativeSqrt">NegativeSqrt</a></li>
+        <li><a href="/wiki/NilIsFalse">NilIsFalse</a></li>
+        <li><a href="/wiki/NonFiniteNumbers">NonFiniteNumbers</a></li>
+        <li><a href="/wiki/NumericTower">NumericTower</a></li>
+        <li><a href="/wiki/OneArmedIf">OneArmedIf</a></li>
+        <li><a href="/wiki/PetrofskyCatastrophe">PetrofskyCatastrophe</a></li>
+        <li><a href="/wiki/PetrofskyLet">PetrofskyLet</a></li>
+        <li><a href="/wiki/PlusOneEx">PlusOneEx</a></li>
+        <li><a href="/wiki/PrefixedStringToNumber">PrefixedStringToNumber</a></li>
+        <li><a href="/wiki/QuoteDelimiter">QuoteDelimiter</a></li>
+        <li><a href="/wiki/ReadLine">ReadLine</a></li>
+        <li><a href="/wiki/RedefiningKeywords">RedefiningKeywords</a></li>
+        <li><a href="/wiki/RedefiningSyntax">RedefiningSyntax</a></li>
+        <li><a href="/wiki/RoundInf">RoundInf</a></li>
+        <li><a href="/wiki/SelfQuotingVectors">SelfQuotingVectors</a></li>
+        <li><a href="/wiki/SetUndefinedVariable">SetUndefinedVariable</a></li>
+        <li><a href="/wiki/SquareBrackets">SquareBrackets</a></li>
+        <li><a href="/wiki/StringSymbolConversion">StringSymbolConversion</a></li>
+        <li><a href="/wiki/SyntaxAbuse">SyntaxAbuse</a></li>
+        <li><a href="/wiki/UnicodeSupport">UnicodeSupport</a></li>
+        <li><a href="/wiki/UnsignedImaginary">UnsignedImaginary</a></li>
+        <li><a href="/wiki/UpperCaseEscape">UpperCaseEscape</a></li>
+        <li><a href="/wiki/VerticalLineSymbols">VerticalLineSymbols</a></li>
+        <li><a href="/wiki/WhatLoadReturns">WhatLoadReturns</a></li>
+        <li><a href="/wiki/Zero">Zero</a></li></ul>
+      <p><a href="http://web.mit.edu/~axch/www/scheme/choices.html">More implementation contrasts</a>.</p></div></body></html>

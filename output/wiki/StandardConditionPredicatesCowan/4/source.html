@@ -1,0 +1,184 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki StandardConditionPredicatesCowan version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki StandardConditionPredicatesCowan version 4</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>StandardConditionPredicatesCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= Standard condition predicates and accessors =
+
+Conditions created by an implementation are opaque objects as far as
+this standard is concerned; they may be any Scheme object such as a list, a vector, or a
+record.  However, a variety of predicates and accessors
+are provided in order to help programs 
+examine implementation-specific conditions.
+If a predicate returns `#t` on a particular condition, the related accessor(s)
+will return information, hopefully meaningful and useful.  Otherwise, calling the accessors
+has undefined effect.
+It is common for more than one predicate to return `#t` on a particular condition.
+
+ * `(message-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' contains a string message describing the condition to humans, otherwise `#f`.
+
+ * `(condition-message `''message-condition''`)`
+
+Returns the message associated with ''message-condition''.
+
+ * `(who-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' contains a string or symbol describing the object which is the
+source of the exception, otherwise `#f`.
+
+ * `(condition-who `''who-condition''`)`
+
+Returns the ''who'' object associated with ''who-condition''.
+
+ * `(irritants-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' contains a list of objects providing additional information
+about the condition, otherwise `#f`.
+
+ * `(condition-irritants `''irritants-condition''`)`
+
+Returns the list of irritants (possibly empty) associated with ''message-condition''.
+
+ * `(warning-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes an exceptional situation that does not,
+in principle, prohibit immediate continued execution of the program,
+but may interfere with the program’s execution later, otherwise `#f`. 
+
+ * `(serious-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes an exceptional situation that is
+serious enough that it cannot safely be ignored, otherwise `#f`.
+
+ * `(external-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes an exceptional situation that is
+caused by something that has gone wrong in the interaction
+of the program with the external world or the user, otherwise `#f`. 
+
+ * `(violation-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes an exceptional situation that is
+a violation of the language standard or a library standard,
+typically caused by a programming error, otherwise `#f`. 
+
+ * `(invocation-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes an invalid call to a procedure,
+such as passing an invalid number of arguments or passing an argument of the wrong type, otherwise `#f`.
+
+ * `(implementation-restriction-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes a violation of an implementation restriction
+that is allowed by the specification, otherwise `#f`.
+
+ * `(storage-exhausted-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' is reporting that storage is exhausted, otherwise `#f`.
+
+ * `(parse-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes a lexical syntax error
+or an error in parsing a datum, otherwise `#f`.
+
+ * `(condition-parse-string `''parse-condition''`)`
+
+Returns the string which could not be parsed.
+
+ * `(syntax-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes a syntax error, otherwise `#f`.
+
+ * `(condition-form `''syntax-condition''`)`
+
+Returns the form containing a syntax error.
+
+ * `(condition-subform `''syntax-condition''`)`
+
+Returns the subform which more precisely locates the syntax error.
+
+ * `(identifier-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes an undefined identifier, otherwise `#f`.
+
+ * `(condition-identifier `''identifier-condition''`)`
+
+Returns the identifier which is undefined as a symbol.
+
+ * `(port-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes a problem with a port, otherwise `#f`.
+
+ * `(condition-port `''port-condition''`)`
+
+Returns the port associated with ''port-condition''.
+
+ * `(i/o-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes an exceptional situation with I/O, otherwise `#f`.
+
+ * `(read-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes an exceptional situation with input, otherwise `#f`.
+
+ * `(write-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes an exceptional situation with output, otherwise `#f`.
+
+ * `(position-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes an attempt
+to set a port's position invalidly, otherwise `#f`.
+
+ * `(condition-position `''position-condition''`)`
+
+Returns the position specified by the user.
+
+ * `(filename-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' has a filename associated with it, otherwise `#f`.
+
+ * `(condition-filename `''filename-condition''`)`
+
+Returns the filename associated with ''filename-condition'' as a string.
+
+ * `(file-protection-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes a file protection violation, otherwise `#f`.
+
+ * `(file-existence-condition? `''condition''`)`
+
+Returns `#t` iff ''condition'' describes the existence or nonexistence of a file, otherwise `#f`.
+
+ * `(condition-file-exists? `''file-existence-condition''`)`
+
+Returns `#t` if the filename associated with ''file-existence-condition'' exists but should not,
+or `#f` if it does not exist but should.
+</pre>
+    <h2>time</h2>
+    <pre>2010-07-09 22:23:57</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

@@ -1,0 +1,63 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CombinatorsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CombinatorsCowan.md">CombinatorsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Combinators&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-12-22 10:42:54</div>
+      <div class="version">13<span class="comment"></span><a href="/wiki/CombinatorsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/CombinatorsCowan/13/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This proposal contains various procedures that return procedures, as well as a few others, drawn from an earlier version of Chicken.  Common Lisp has a few of them too, and more come from <a href="http://programmingpraxis.com/contents/standard-prelude/">the Standard Prelude from ''Programming Praxis''</a>.</p>
+      <h2 id="Combinators">Combinators</h2>
+      <p>These procedures are documented in an unusual style.  Rather than showing only how the procedures themselves are invoked, it also shows how the returned procedures would be invoked.  This is done in order to make the descriptions easier to understand.  For example, if <span class="monospace">complement</span> were documented in the standard style, the description would say &quot;Returns a procedure which, when applied to an argument, returns <span class="monospace">#t</span> when <i>proc</i> would return <span class="monospace">#f</span> when applied to the same argument, and <span class="monospace">#f</span> otherwise&quot;, which is more convoluted.</p>
+      <p><span class="monospace">((constantly </span><i>obj</i> ...<span class="monospace">)</span> <i>arg</i> ...<span class="monospace">)</span></p>
+      <p>Returns the <i>objs</i> as its values, ignoring <i>args</i>.</p>
+      <p><span class="monospace">((complement </span><i>proc</i><span class="monospace">)</span> <i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> when <span class="monospace">(''proc obj''</span>)<span class="monospace"> returns </span>#f<span class="monospace">, and </span>#f` otherwise.</p>
+      <p><span class="monospace">((compose </span><i>proc</i> ... <span class="monospace">)</span> <i>arg</i> ...<span class="monospace">)</span></p>
+      <p>Passes the <i>args</i> to the first <i>proc</i>, which returns any number of values.  These are then passed to the next <i>proc</i>, and so on until the final <i>proc</i> is reached.  If there are no <i>procs</i>, returns its arguments as values.</p>
+      <p><span class="monospace">((simple-compose </span><i>proc</i> ...<span class="monospace">)</span> <i>arg</i><span class="monospace">)</span></p>
+      <p>Passes <i>arg</i> to the first <i>proc</i>, which returns one value.  This is then passed to the next <i>proc</i>, and so on until the final <i>proc</i> is reached.  If there are no <i>procs</i>, returns its argument.</p>
+      <p><span class="monospace">((swap </span><i>proc</i><span class="monospace">)</span> <i>obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Invokes <span class="monospace">(''proc obj,,2,, obj,,1,,''</span>)`.</p>
+      <p><span class="monospace">((fst </span><i>proc</i><span class="monospace">)</span> <i>obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Returns <i>obj<sub>1</sub></i>.</p>
+      <p><span class="monospace">((snd </span><i>proc</i><span class="monospace">)</span> <i>obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Returns <i>obj<sub>2</sub></i>.</p>
+      <p><span class="monospace">((conjoin </span><i>predicate</i> ...<span class="monospace">)</span> <i>arg</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if the <i>args</i> satisfy all the <i>predicates</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">((disjoin </span><i>predicate</i> ...<span class="monospace">)</span> <i>arg</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if the <i>args</i> satisfy any of the <i>predicate</i>s.</p>
+      <p><span class="monospace">((each </span><i>proc</i> ... <span class="monospace">)</span> <i>arg</i> ...<span class="monospace">)</span></p>
+      <p>Applies each of the <i>proc</i>s in turn to <i>args</i>, discarding the results and returning an unspecified value.</p>
+      <p><span class="monospace">((flip </span><i>proc</i><span class="monospace">)</span> <i>arg1 arg2</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">(</span><i>proc arg2 arg1</i><span class="monospace">)</span>.</p>
+      <p><span class="monospace">((all-of? </span><i>predicate</i><span class="monospace">)</span></p>
+      <p>Applies <i>predicate</i> to each element of <i>list</i> in turn, and immediately returns <span class="monospace">#f</span> if <i>predicate</i> is not satisfied by that element; otherwise returns <span class="monospace">#t</span>.</p>
+      <p><span class="monospace">((any-of? </span><i>predicate</i><span class="monospace">)</span> <i>list</i><span class="monospace">)</span></p>
+      <p>Applies <i>predicate</i> to each element of <i>list</i> in turn, and immediately returns <span class="monospace">#t</span> if <i>predicate</i> is satisfied by that element; otherwise returns <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">((map-reduce </span><i>mapper reducer</i><span class="monospace">)</span> <i>list</i><span class="monospace">)</span></p>
+      <p>Returns `<span class="monospace">(apply ''reducer'' </span>(<span class="monospace">''mapper list''</span>))`.</p>
+      <p><span class="monospace">((left-section </span><i>proc arg</i> ...<span class="monospace">)</span> <i>obj</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to <i>args</i> concatenated with <i>objs</i>.</p>
+      <p><span class="monospace">((right-section </span><i>proc arg</i> ...<span class="monospace">)</span> <i>obj</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to <i>objs</i> concatenated with <i>args</i>, where <i>args</i> are in reverse order.</p>
+      <h2 id="Otherprocedures">Other procedures</h2>
+      <p><span class="monospace">(always </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Ignores its arguments and always returns <span class="monospace">#t</span>.</p>
+      <p><span class="monospace">(never </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Ignores its arguments and always returns <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(identity </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <i>obj</i>.</p></div></body></html>

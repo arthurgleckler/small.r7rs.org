@@ -1,0 +1,76 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki UniqueTypesSnellPym version 5</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki UniqueTypesSnellPym version 5</h1>
+    <h2>author</h2>
+    <pre>alaric</pre>
+    <h2>comment</h2>
+    <pre>Updated my unique types proposal to embed a free vector.</pre>
+    <h2>ipnr</h2>
+    <pre>79.135.115.242</pre>
+    <h2>name</h2>
+    <pre>UniqueTypesSnellPym</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>
+= Background =
+
+I feel that records are too complex and controversial and varied for standardisation in WG1.
+
+We all love records, but there's a number of ways of doing them.
+
+There's widespread consensus that defining a record type FOO with fields X, Y, and Z should result in procedures FOO?, FOO-X, FOO-Y, FOO-Z, MAKE-FOO, and sometimes FOO-X-SET!, FOO-Y-SET! and FOO-Z-SET!; however, there's less consensus about definition forms, let alone more esoteric features like purely functional mutators, constructs that open up a record by creating a lexical environment in which X is bound to (FOO-X &lt;record&gt;) and so on, etc.
+
+Perhaps most importantly, records need to be distinct types. If you implement them in terms of vectors, everything seems to work fine, but a subtle kind of hygiene is broken. If somebody writes a function that dispatches on type for some reason, and they have a case for handling vectors that comes before the case for some record type, then the vector case will be triggered unexpectedly. Oh, noes!
+
+Also, there is potential variation in implementation. It's widely accepted that programming languages should generally support records in the sense of first-class values in memory, but third-party libraries (or the outer reaches of a more sprawling language) may well want to implement a record-like interface - at least FOO? FOO-&lt;field&gt;, FOO-&lt;field&gt;-SET! *and type disjointness* - to things like persistent data in a database, data accessed via some network protocol, and other such forms. Clearly, Thing One already allows the definition of the procedures, and type disjointness is all we need 'added'.
+
+And, obviously, any manner of in-memory record abstraction can be implemented with suitable macros - if we have a means of forming disjoint types.
+
+Therefore, I propose that WG1 should standardise a primitive mechanism to create disjoint types, allowing portable libraries to implement SRFI-9, SRFI-99, R6RS records, Chicken records, CLOS, persistent databases, remote access to data on servers, and the like; WG2 should probably pick or create a record standard, but that's not my problem (and I'm happy either way, as I can have whatever record system I fancy as a portable library anyway).
+
+It is possible to build arbitrary record-like disjoint types on top of (eg) SRFI-9 records, by exposing the `FOO?` procedure and wrapping the accessors and (where applicable) constructors and mutators, but this gives me a non-jewel-like feeling.
+
+= The meat of the proposal =
+
+The semantics of such a system are fairly simple and obvious, and the syntax used in the Kernel programming language seems as good as any. Slightly altered for Schemier style, here it is:
+
+{{{
+(make-encapsulation-type &lt;size&gt;)
+}}}
+
+Returns three or more values: procedures `e`, `p?` and `d`, and perhaps some implementation-defined extra ones after that. Each call to `(make-encapsulation-type)` returns different procedures.
+
+ * `e` is a procedure that takes &lt;size&gt; arguments, and returns a fresh encapsulation with those arguments as the content. Different calls to `e` produce encapsulations that are not `eq?`, but will be `equal?` if their contents are equal? and they were both produced by `e`.
+
+ * `p?` is a procedure that takes one argument, and returns `#t` if the argument is an encapsulation that was returned by a call to `e`, and `#f` in all other cases.
+
+ * `d` is a procedure that takes two arguments. If the first is an encapsulation that was returned by a call to `e`, and N is an exact integer more than or equal to zero and less than &lt;size&gt;, then the Nth content of the encapsulation (where N is the second argument) is returned. Otherwise, an error is signalled.
+
+{{{
+(make-encapsulation-type &lt;size&gt; &lt;symbol&gt;)
+}}}
+
+As above, but annotates the type with a descriptive symbol. The implementation is free to ignore the symbol, but may use it to aid debugging or providing printable representations of the encapsulated type. However, implementors be warned that the users are in no way obliged to make descriptive symbols be unique, so don't go using it in ways that would assume this.
+
+= Rationale =
+
+I originally specified a single &quot;content item&quot; in the encapsulations, suggesting that users drop a vector in there if they wanted to, but without loss of generality (and only a little loss of simplicity), implementations can easily avoid an extra indirection by providing an embedded vector for free.
+
+I have not specified a mutation operation here, but have allowed for implementation extensions to return extra values from `make-encapsulation-type` to allow for a mutator procedure, or for implementations to provide a separate `make-mutable-encapsulation-type` etc.</pre>
+    <h2>time</h2>
+    <pre>2010-10-28 00:56:54</pre>
+    <h2>version</h2>
+    <pre>5</pre></body></html>

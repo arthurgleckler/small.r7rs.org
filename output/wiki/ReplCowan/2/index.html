@@ -1,0 +1,52 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ReplCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ReplCowan.md">ReplCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Repl&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-04-11 05:23:04</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/ReplCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ReplCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Read-eval-printloop">Read-eval-print loop</h2>
+      <p><span class="monospace">(repl</span> [<i>eval</i> [<i>write</i> [<i>read</i>]]]<span class="monospace">)</span></p>
+      <p>This procedure invokes an implementation-dependent read-eval-print loop (REPL), which reads a datum representing an expression or definition using <i>read</i>, evaluates it using <i>eval</i>, and prints the results if any using <i>write</i>.  It then loops until an eof-object is read.</p>
+      <p>By default, <i>eval</i> is <span class="monospace">repl-eval</span>, <i>write</i> is <span class="monospace">repl-write</span>, and <i>read</i> is <span class="monospace">repl-read</span>.  The arguments are given in the order of most likely replacement, not the order of use.  Allowing these defaults to be individually overridden means that languages written in Scheme can make use of the host implementation's REPL smarts, whatever they may be.  The <i>write</i> argument should respect <span class="monospace">current-output-port</span> and the <i>read</i> argument should respect <span class="monospace">current-input-port</span> if it makes sense to do so.</p>
+      <p><span class="monospace">(repl-read)</span></p>
+      <p>This procedure is implementation-dependent, but has the general effect of reading a datum from the current input port, possibly with some additional features.</p>
+      <p><span class="monospace">(repl-write </span><i>obj</i><span class="monospace">)</span></p>
+      <p>This procedure is implementation-dependent, but has the general effect of writing a datum to the current output port, possibly with some additional features.</p>
+      <p><span class="monospace">(repl-eval </span><i>obj</i><span class="monospace">)</span></p>
+      <p>This procedure is implementation dependent, but is similar to <span class="monospace">(lambda (x) (eval x (interaction-environment))</span> with the interaction environment augmented with the variables listed below.  In addition, <i>obj</i> may be a definition, which extends the interaction environment.  There may be other implementation-dependent features.</p>
+      <p>The following variables are known to <span class="monospace">repl-eval</span>; their values are local to a specific invocation of <span class="monospace">repl</span>.  They are equivalent to the Common Lisp variables with the same names but without the leading <span class="monospace">-</span> character; this is necessary because Scheme is a Lisp-1, so <span class="monospace">+ - * /</span> are already bound.</p>
+      <p><span class="monospace">--</span></p>
+      <p>The expression or definition currently being evaluated by <span class="monospace">repl-eval</span>.</p>
+      <p><span class="monospace">-+</span></p>
+      <p>The expression or definition last evaluated by <span class="monospace">repl-eval</span>.</p>
+      <p><span class="monospace">-++</span></p>
+      <p>The previous value of <span class="monospace">-+</span>.</p>
+      <p><span class="monospace">-+++</span></p>
+      <p>The previous value of <span class="monospace">-++</span>.</p>
+      <p><span class="monospace">-*</span></p>
+      <p>The result of the expression or definition most recently evaluated by <span class="monospace">repl-eval</span>.  If a definition was last evaluated, the value of <span class="monospace">-*</span> is implementation-dependent.  If the expression returned zero values, the value of <span class="monospace">-*</span> is #f; if the expression returned more than one value, the value of <span class="monospace">-*</span> is the first value returned.</p>
+      <p><span class="monospace">-**</span></p>
+      <p>The previous value of <span class="monospace">-*</span>.</p>
+      <p><span class="monospace">-***</span></p>
+      <p>The previous value of <span class="monospace">-**</span>.</p>
+      <p><span class="monospace">-/</span></p>
+      <p>A list of the results of the expression most recently evaluated by <span class="monospace">repl-eval</span>.  If a definition was last evaluated, the value of <span class="monospace">-/</span> is implementation-dependent.</p>
+      <p><span class="monospace">-//</span></p>
+      <p>The previous value of <span class="monospace">-/</span>.</p>
+      <p><span class="monospace">-///</span></p>
+      <p>The previous value of <span class="monospace">-//</span>.</p></div></body></html>

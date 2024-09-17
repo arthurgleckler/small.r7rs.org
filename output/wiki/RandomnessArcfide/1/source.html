@@ -1,0 +1,54 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki RandomnessArcfide version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki RandomnessArcfide version 1</h1>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>comment</h2>
+    <pre>Initial Proposal</pre>
+    <h2>ipnr</h2>
+    <pre>140.182.213.66</pre>
+    <h2>name</h2>
+    <pre>RandomnessArcfide</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= Simple Randomness =
+
+Aaron Hsu
+
+== Abstract ==
+
+The following proposal provides a simple, minimal interface to random number generation. It allows both controlled random seeding and also a single procedure that provides randomness. It is designed to be simple and fairly useful.
+
+== Rationale ==
+
+Randomness is a common feature to use in education and general programming. Therefore, it makes sense to have WG1 standardize randomness to some degree. The current proposals on the table are either too complex or do not provide the necessary features. Specifically, when teaching about randomness, it is important to be able to control the way that randomness falls out when grading assignments or testing them. 
+
+== Specification ==
+
+ `(random` ''real''`)`::
+ Returns a random value in the range [0.0, ''real''). When given an exact integer, the values returned must be exact integers; otherwise it will return a real value.
+
+ `(random-seed)`::
+ A parameter like procedure that allows the seed to be set and accessed. The procedure may be passed a single non-negative exact integer to set a specific seed.
+
+== Design Rationale ==
+
+I do not see any reason to have two procedures for getting a random value. These can be combined into one without requiring much trouble. Additionally, this one procedure is more general than the two procedures suggested by RandomCowan. It is also more simple than SRFI-27. The possibility of returning a 0.0 value from `random` is intentional to make the procedure behave in a more consistent manner. This should not be a problem, as suggested by RandomCowan, with `log` if `(log 0.0)` is defined to return `-inf.0`. 
+</pre>
+    <h2>time</h2>
+    <pre>2010-10-12 22:05:14</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

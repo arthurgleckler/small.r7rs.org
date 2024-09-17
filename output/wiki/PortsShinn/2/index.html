@@ -1,0 +1,78 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PortsShinn</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PortsShinn.md">PortsShinn</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Ports&shy;Shinn</h1>
+    <div class="wiki metadata">
+      <div class="author">alexshinn</div>
+      <div class="time">2011-06-28 22:42:07</div>
+      <div class="version">2<span class="comment">forgot write-blob</span><a href="/wiki/PortsShinn/history">history</a></div>
+      <div class="source"><a href="/wiki/PortsShinn/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>We specify the two ports types - binary and character - as in
+<a href="/wiki/PortsCowan">PortsCowan</a>, but make them distinct.  The following procedures are
+provided as in the draft, but whether or not they are disjoint is
+implementation-dependent:</p>
+      <ul>
+        <li>(character-port? &lt;obj&gt;)</li>
+        <li>(binary-port? &lt;obj&gt;)</li></ul><span class="monospace">Rationale: Many existing languages, including some of the most popular
+such as C/C++ and Java, enforce a strict distinction between binary
+and textual ports.  Allowing programs to freely shift between binary
+and textual operations is error-prone and difficult to implement
+efficiently, especially if buffered encoding conversions are desired.
+</span>
+      <p>All ports described in the R5RS are character by default.  New binary
+ports may be opened on files with the following procedures:</p>
+      <ul>
+        <li>(open-binary-input-file &lt;path&gt;)</li>
+        <li>(open-binary-output-file &lt;path&gt;)</li></ul><span class="monospace">Rationale: The current draft follows Gambit's convention of using
+property lists to specify additional file options, such as binary or
+textual encoding.  This allows for extensibility, but we do not use
+any of this flexibility in WG1, and it is unclear if this is the best
+way to specify file options.  It also doesn't address the fact that we
+need separate procedures for creating new ports anyway, such as for
+TCP/IP ports, and our APIs should be consistent and reflect this.
+</span>
+      <p>The standard input and output ports which <span class="monospace">current-input-port</span> and
+<span class="monospace">current-output-port</span> are bound to are not opened explicitly, so they
+present some difficulty.  They default to character, but can be
+converted to binary with the following procedures:</p>
+      <ul>
+        <li>(standard-input-is-binary!)</li>
+        <li>(standard-output-is-binary!)</li></ul>
+      <p>It is an error to call either of these if the corresponding
+<span class="monospace">current-in/output-port</span> is not the original value, or if any I/O has
+been performed on them.</p>
+      <p>The following operations can be performed on binary ports as in the
+current draft:</p>
+      <ul>
+        <li>(read-u8 [&lt;input-port&gt;])</li>
+        <li>(peek-u8 [&lt;input-port&gt;])</li>
+        <li>(u8-ready? [&lt;input-port&gt;])</li>
+        <li>(write-u8 &lt;octet&gt; [&lt;output-port&gt;])</li></ul>
+      <p>The following utility is also provided for the common idiom of opening
+a port from some arbitrary source, performing some work on it, then
+closing the port:</p>
+      <ul>
+        <li>(call-with-port &lt;port&gt; &lt;proc&gt;)</li></ul><span class="monospace">Note that `current-in/output-port` are parameters, and can be
+parameterized as such, obviating the need for `with-in/output-port`
+shortcuts.
+</span>
+      <p>To work with mixed binary/textual I/O, the following R6RS-compatible
+procedures are provided:</p>
+      <ul>
+        <li>(read-blob &lt;length&gt; [&lt;input-port&gt;])</li>
+        <li>(read-blob! &lt;blob&gt; &lt;length&gt; [&lt;input-port&gt;])</li>
+        <li>(write-blob &lt;blob&gt; [&lt;output-port&gt;])</li>
+        <li>(utf8-&gt;string &lt;blob&gt;)</li>
+        <li>(string-&gt;utf8 &lt;string&gt;)</li></ul></div></body></html>

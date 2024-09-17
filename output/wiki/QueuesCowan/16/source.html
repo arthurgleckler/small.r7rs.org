@@ -1,0 +1,179 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki QueuesCowan version 16</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki QueuesCowan version 16</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>QueuesCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Abstract ==
+
+Queues (more precisely, mostly-output-restricted deques) are mutable ordered collections that can contain any Scheme object.  Each queue is based on an ordinary Scheme list that contains the elements of the queue by maintaining pointers to the first and last pairs of the list.  It's cheap to add or remove elements from the front of the list or to add elements to the back, but not to remove elements from the back.  Queues are disjoint from other types of Scheme objects.
+
+== Rationale ==
+
+Because the representation of queues as lists is exposed by the implementation, it's not necessary to provide a comprehensive API for queues, since [http://srfi.schemers.org/srfi-1/srfi-1.html SRFI 1] and other list APIs can serve the same purpose, using the `queue-&gt;list`, `list-&gt;queue`, and `list-queue!` procedures to convert between queues and lists fairly cheaply.  Consequently, the API provided here over and above the bare necessities of queueing and dequeueing elements is closely analogous to the R7RS-small API for lists.  It also subsumes the [http://wiki.call-cc.org/man/4/Unit%20data-structures#queues Chicken] and [http://people.csail.mit.edu/jaffer/slib/Queues.html#Queues SLIB] APIs.
+
+
+== Specification ==
+
+=== Constructors ===
+
+`(make-queue `''k'' [ ''fill'' ]`)`
+
+Returns a newly allocated queue containing ''k'' elements.  If ''fill'' is provided, each element is equal to it; otherwise, the elements have unspecified values.
+
+`(queue `''element'' ...`)`
+
+Returns a newly allocated queue containing the ''elements''.  This operation is O(n).
+
+`(queue-copy `''queue''`)`
+
+Returns a newly allocated queue containing the elements of ''queue''.  This operation is O(n).
+
+`(queue-unfold `''stop? mapper successor seed''`)`
+
+If the result of applying the predicate ''stop?'' to ''seed'' is `#f`, return a newly allocated empty queue.  Otherwise, apply the procedure ''mapper'' to ''seed''.  ''Mapper'' returns a value which is added to the end of the queue.  Then get a new seed by applying the procedure ''successor'' to ''seed'', and repeat this algorithm.
+
+`(queue-unfold-right `''stop? mapper successor seed''`)`
+
+If the result of applying the predicate ''stop?'' to ''seed'' is `#f`, return a newly allocated empty queue.  Otherwise, apply the procedure ''mapper'' to ''seed''.  ''Mapper'' returns a value which is added to the beginning of the queue.  Then get a new seed by applying the procedure ''successor'' to ''seed'', and repeat this algorithm.
+
+=== Predicates ===
+
+`(queue? `''obj''`)`
+
+Returns `#t` if ''obj'' is a queue, and `#f` otherwise.  This operation is O(1).
+
+`(queue-empty? `''queue''`)`
+
+Returns `#t` if ''obj'' is a queue with no elements, and `#f` otherwise.  This operation is O(1).
+
+=== Accessors ===
+
+`(queue-front `''queue''` `''element''`)`
+
+Returns the first element of the queue.  This operation is O(1).
+
+`(queue-back `''queue''` `''element''`)`
+
+Returns the last element of the queue.  This operation is O(1).
+
+=== Mutators ===
+
+These procedures signal an error that satisfies `queue-error?` if there is no element to delete or modify.
+
+`(queue-add-front! `''queue''` `''element''`)`
+
+Adds ''element'' to the beginning of ''queue''.  Returns an unspecified value.  This operation is O(1).
+
+`(queue-add-back! `''queue''` `''element''`)`
+
+Adds ''element'' to the end of ''queue''.  Returns an unspecified value.  This operation is O(1).
+
+`(queue-remove-front! `''queue''`)`
+
+Removes the first element of ''queue'' and returns it.  This operation is O(1).
+
+`(queue-remove-back! `''queue''`)`
+
+Removes the last element of ''queue'' and returns it.  This operation is O(n), because the list does not have backward links.
+
+`(queue-clear! `''queue''`)`
+
+Removes all elements of ''queue''.  This operation is O(1).
+
+=== The whole queue ===
+
+`(queue-length `''queue''`)`
+
+Returns the number of elements in ''queue''.  This operation is O(n).
+
+`(queue-append `''queue'' ...`)`
+
+Returns a queue which contains all the elements in all the ''queues'' in the order in which they appear in the call.  The result does not share storage with any of the arguments.  This operation is O(n) in the total number of elements.
+
+`(queue-concatenate `''list-of-queues'' ...`)`
+
+Returns a queue which contains all the elements in all the queues which are members of ''list-of-queues'' in the order in which they appear.  The result does not share storage with any of the arguments.  This operation is O(n) in the total number of elements.  It is not part of the R7RS-small list API, but is included here to make appending a large number of queues possible in Schemes that limit the number of arguments to `apply`.
+
+=== Mapping ===
+
+`(queue-map `''proc queue''`)`
+
+Applies ''proc'' to each element of ''queue'' in unspecified order and returns a newly allocated queue containing the results.  This operation is O(n).
+
+`(queue-map! `''proc queue''`)`
+
+Applies ''proc'' to each element of ''queue'' in order and modifies ''queue'' to contain the results.  This operation is O(n).  It is not part of the R7RS-small list API, but is included here to make transformation of a queue by mutation more efficient.
+
+`(queue-for-each `''proc''` `''queue''`)`
+
+Applies ''proc'' to each element of ''queue'' in order, discarding the returned values.  Returns an unspecified value.  This operation is O(n).
+
+=== Conversion and list operations ===
+
+`(queue-&gt;list `''queue''`)`
+
+Returns the list that contains the members of ''queue'' in order.  It is an error to mutate the cdrs of such a list, as it shares storage with the queue.  This operation is O(1).
+
+`(list-&gt;queue `''list''`)`
+
+Returns a newly allocated queue containing the elements of ''list'' in order.  It is an error to mutate the cdrs of ''list'' after calling this procedure, as it shares storage with the queue.  This operation is O(n).
+
+To apply a non-destructive list procedure to a queue and return a new queue, use `(list-&gt;queue (`''proc''` (queue-&gt;list `''queue''`)))`.
+
+`(front-back-&gt;queue `''front back''`)`
+
+Returns a newly allocated queue containing the elements of the list whose first pair is ''front'' and whose last pair is ''back''.  Alternatively, both ''front'' and ''back'' can be the empty list.  It is an error to mutate the cdrs of the list to which ''front'' and ''back'' belong after calling this procedure, as it shares storage with the queue.  This operation is O(1).
+
+`(list-&gt;queue! `''queue list''`)`
+
+Replaces the list associated with ''queue'' with ''list'', effectively discarding all the elements of ''queue'' in favor of those in ''list''.  It is an error to mutate the cdrs of ''list'' after calling this procedure, as it shares storage with the queue.  Returns an unspecified value.  This operation is O(n).
+
+To apply a destructive list procedure to a queue, use `(list-&gt;queue! (`''proc''` (queue-&gt;list `''queue''`)))`.
+
+=== Queues as hooks ===
+
+`(queue-invoke `''queue arg'' ...`)`
+
+Apply each element of ''queue'' in turn to the ''args''.  It is an error if any element is not a procedure.  This allows queues to be used as hooks, which various parts of a program can register interest in by adding a procedure to the queue.  This operation is O(n).
+
+=== Comparator ===
+
+`queue-comparator`
+
+A comparator suitable for use with queues, using the procedures of `list-comparator`.
+
+`(make-queue-comparator `''element-comparator''`)`
+
+Returns a comparator for queues using ''element-comparator'' to compare the elements.
+
+== Implementation note ==
+
+R5RS implementations do not have `make-list`, `list-copy`, or `map!`, which therefore are packaged with the sample implementation.  All are available in SRFI 1, but it's trivial to provide local, simplified implementations of them.
+
+
+</pre>
+    <h2>time</h2>
+    <pre>2014-10-12 12:53:38</pre>
+    <h2>version</h2>
+    <pre>16</pre></body></html>

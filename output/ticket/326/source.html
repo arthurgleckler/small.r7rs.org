@@ -1,0 +1,190 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #326</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #326</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-05 12:42:46</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>From Per Bothner:
+
+Copying a slice from one vector/string into another is such a fundamental operation that it should be added, IMO, considering  that it's tedious to write if &quot;by hand&quot;, and that a standard library routine is likely to be much more efficient (especially for strings, since that avoids the need for boxing and unboxing the characters).  [JC: Many implementations represent characters as immediates, however.]
+
+One could also argue that &quot;character&quot; operations don't really make  semantic sense in a Unicode world, and so `string-set!` has limited  usefulness.  Thus `string-copy` [with start/end arguments] and `string-copy!` are the actual useful &quot;primitive&quot; operations.
+
+JC: These would be the five-argument versions based on the current `bytevector-copy-partial!`, possibly with renumbering of arguments depending on the outcome of #325.
+</pre>
+    <h2>id</h2>
+    <pre>326</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Add destructive list-copy!, string-copy!, and vector-copy!</pre>
+    <h2>time</h2>
+    <pre>2012-01-10 08:31:11</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-05 12:42:46</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1349415766791444</pre>
+    <h2>ticket</h2>
+    <pre>326</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:42:46</pre>
+    <h2>Change at time 2012-10-05 12:42:46</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349415766791444</pre>
+    <h2>ticket</h2>
+    <pre>326</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:42:46</pre>
+    <h2>Change at time 2012-10-05 12:42:46</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349415766791444</pre>
+    <h2>ticket</h2>
+    <pre>326</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:42:46</pre>
+    <h2>Change at time 2012-04-09 15:13:02</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1333959182146773</pre>
+    <h2>ticket</h2>
+    <pre>326</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 15:13:02</pre>
+    <h2>Change at time 2012-04-09 15:13:02</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1333959182146773</pre>
+    <h2>ticket</h2>
+    <pre>326</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 15:13:02</pre>
+    <h2>Change at time 2012-04-09 15:13:02</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1333959182146773</pre>
+    <h2>ticket</h2>
+    <pre>326</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 15:13:02</pre>
+    <h2>Change at time 2012-04-05 09:50:49</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1333594249374613</pre>
+    <h2>ticket</h2>
+    <pre>326</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 09:50:49</pre>
+    <h2>Change at time 2012-04-05 09:50:49</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1333594249374613</pre>
+    <h2>ticket</h2>
+    <pre>326</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 09:50:49</pre>
+    <h2>Change at time 2012-04-05 08:58:34</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG voted to adopt the part of this proposal covering `string-copy!` and `vector-copy!`, but not `list-copy!`.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1333591114910554</pre>
+    <h2>ticket</h2>
+    <pre>326</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 08:58:34</pre></body></html>

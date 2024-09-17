@@ -1,0 +1,204 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #156</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #156</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-05 12:11:59</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>The following situations are described in draft 1 (and R5RS) with &quot;an error is signalled&quot;:
+
+ 1. The ''file-spec'' given to `call-with-input-file`, `call-with-output-file`, `open-input-file`, or `open-output-file` represents a file that cannot be opened.
+
+ 2. An end of file is read from a port by `read` after the beginning of an object's external representation, but the external representation is incomplete and therefore not parsable.
+
+I propose that in both cases the implementation be required to raise an exception as if by applying `raise` (that is, non-continuably) to an implementation-defined object, which means it can be caught by the R7RS exception system.  Note that there is no requirement to create a fresh object.</pre>
+    <h2>id</h2>
+    <pre>156</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Replace &quot;an error is signalled&quot; with &quot;an implementation-dependent object is raised as if by `raise`&quot;</pre>
+    <h2>time</h2>
+    <pre>2011-04-17 05:55:06</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-05 12:11:59</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1349413919010545</pre>
+    <h2>ticket</h2>
+    <pre>156</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:11:59</pre>
+    <h2>Change at time 2012-10-05 12:11:59</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349413919010545</pre>
+    <h2>ticket</h2>
+    <pre>156</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:11:59</pre>
+    <h2>Change at time 2012-10-05 12:11:59</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349413919010545</pre>
+    <h2>ticket</h2>
+    <pre>156</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:11:59</pre>
+    <h2>Change at time 2011-07-11 10:16:02</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1310354162000000</pre>
+    <h2>ticket</h2>
+    <pre>156</pre>
+    <h2>time</h2>
+    <pre>2011-07-11 10:16:02</pre>
+    <h2>Change at time 2011-07-11 10:16:02</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1310354162000000</pre>
+    <h2>ticket</h2>
+    <pre>156</pre>
+    <h2>time</h2>
+    <pre>2011-07-11 10:16:02</pre>
+    <h2>Change at time 2011-07-11 10:16:02</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1310354162000000</pre>
+    <h2>ticket</h2>
+    <pre>156</pre>
+    <h2>time</h2>
+    <pre>2011-07-11 10:16:02</pre>
+    <h2>Change at time 2011-07-10 18:14:14</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>We voted to make this clear.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1310296454000000</pre>
+    <h2>ticket</h2>
+    <pre>156</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:14:14</pre>
+    <h2>Change at time 2011-07-10 18:14:14</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1310296454000000</pre>
+    <h2>ticket</h2>
+    <pre>156</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:14:14</pre>
+    <h2>Change at time 2011-07-10 18:14:14</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1310296454000000</pre>
+    <h2>ticket</h2>
+    <pre>156</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:14:14</pre>
+    <h2>Change at time 2011-04-18 07:26:51</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>I like the general idea. I might also suggest that the language signally an error be considered synonymous with raising an appropriate condition using `raise`.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1303086411000000</pre>
+    <h2>ticket</h2>
+    <pre>156</pre>
+    <h2>time</h2>
+    <pre>2011-04-18 07:26:51</pre></body></html>

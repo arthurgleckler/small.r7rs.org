@@ -1,0 +1,185 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ModulesGanz version 9</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ModulesGanz version 9</h1>
+    <h2>author</h2>
+    <pre>steven_ganz</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>67.188.102.79</pre>
+    <h2>name</h2>
+    <pre>ModulesGanz</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= Title =
+
+WG1 Module Proposal
+
+= Authors = 
+
+Steven Ganz [steven_ganz] &lt;steven.ganz@gmail.com&gt;
+
+= Abstract = 
+
+A module syntax is provided that is general enough to allow imports to be specified when a module is included into a context.  Modules have separate namespaces, and can import and export variables and macros with fine-grained control.  Restrictions (not fully specified here) can be imposed on the use of these forms in macros to allow for varying levels of static analysis.
+
+
+= Rationale = 
+
+Modules should be true abstractions over syntax.  The charter indicates
+that a module system for WG1 should be defined to &quot;promote extensibility.&quot;  Extensibility is enhanced by the ability to reuse modules while varying their imports. 
+
+= Specification =
+
+This document proposes the following forms that can occur in any context where a definition is allowed (modulo any restrictions on their use in macro definitions) and that evaluate to an unspecified value: 
+
+  * module 
+  * include-module
+
+The following syntax is provided:
+
+{{{
+&lt;module&gt; := (module [&lt;module-name&gt;] (import &lt;import-spec&gt; ...) (export &lt;export-spec&gt; ...)                 
+               &lt;expr&gt; &lt;expr&gt; ...)
+
+&lt;import-spec&gt; := (include-module &lt;include-sets&gt;)
+               | &lt;identifier&gt;
+
+&lt;export-spec&gt; := &lt;identifier&gt;
+               | (&lt;identifier&gt; [(indirect-export &lt;identifier&gt; ...)])
+
+&lt;include&gt; := (include-module &lt;include-sets&gt;)
+
+&lt;include-sets&gt; := &lt;module-name&gt;
+                | (only &lt;include-sets&gt; &lt;export-identifier&gt; ...)
+                | (except &lt;include-sets&gt; &lt;export-identifier&gt; ...)
+                | (prefix &lt;include-sets&gt; &lt;export-identifier&gt; ...)
+                | (rename &lt;include-sets&gt; (&lt;old-identifier&gt; &lt;new-identifier&gt;) ...)
+}}}
+
+
+A module has an optional name that, if specified, is added to the following namespace and that can be referenced from within an `include-spec`.  A module specifies identifiers and modules to import and identifiers to export.  It has at least one body expression.  The exported identifiers of a module must be defined in the module body.  The imported identifiers (both explicit and via an &lt;include-sets&gt;) may appear free in the module body.  
+
+Modules may be included in three ways:
+    * If no module name is given, then the exports associated with the module form are made visible to then namespace following the module form.   
+    * They may be included into any definition context, in which case their exported identifiers become visible to the following namespace as bound in the body of the included module.
+    * As described above, they may be imported into another module, in which case their imported identifiers become imported identifiers of that module and their exported identifiers become visible to the body of that module as bound in the body of the included module.
+
+In either case, the import identifiers (restricted and renamed as described below) must be bound in the current scope.  This implies that for a module definition at top level, imported modules should have no such import identifiers.  The export identifiers are then considered bound in the following scope to their definitions in the module body.
+
+Upon inclusion of a module, its sets of imported and exported identifiers can be modified as follows:
+
+  * An `only` form produces a subset of the given import set,
+  including only the listed identifiers (after any renaming).  It is a
+  syntax error if any of the listed identifiers are not found in the
+  original set.
+
+  * An `except` form produces a subset of the given import set,
+  excluding the listed identifiers.  It is a syntax error if any of
+  the listed identifiers are not found in the original set.
+
+  * A `rename` form modifies the given import set and/or export set, replacing each
+  instance of &lt;old-identifier&gt; with &lt;new-identifier&gt;.  It is a syntax
+  error if any of the listed &lt;old-identifiers&gt; are not found in either
+  original set.
+
+  * A `prefix` form automatically renames all identifiers in the given
+  &lt;import-set, prefixing each with the specified identifier.
+
+It is a syntax error if the same identifier is imported twice, from
+any combination of modules or multiple `import` forms.
+
+
+Macros may be restricted to preclude expanding into module and/or include-module forms.
+
+Finally, there are two forms for exporting identifiers from a module.  The simple form just specifies the identifier.  
+
+The more complex form associates an identifier with a set of indirect exports.  If a macro is bound to an identifier with implicit-exports and that identifier is exported, then the macro may
+expand into identifiers that are implicitly exported without it being
+an unbound identifier error. This allows bindings to be implicitly
+visible to the outside world without requiring the module or library
+form to explicitly export them. Rather, a macro may expand into them,
+instead. By default, if no `implicit-export` form indicates the set of
+implicit identifiers associated with a given syntax, and that syntax is
+exported, then all of the definitions and bindings visible to the macro
+are implicitly exported (this corresponds to the R6RS behavior).
+However, if an `indirect-export` form does exist, the set of identifiers
+implicitly exported for that syntax is completely and fully specified by
+the `indirect-export` form. 
+
+
+= Example Usage =
+
+{{{
+(module monad-common (import star) (export mon-let)
+   (define-syntax mon-let
+      (syntax-rules ()
+         [(mon-let [x rhs] body)
+          ((star (lambda (x) body)) rhs)])))
+
+(module output-list-monad (import) (export unit mon-let)
+   (define unit
+      (lambda (x) `(,x . ())))
+   (define star
+      (lambda (recvr)
+         (lambda (comp)r
+            (let ([a (car comp)]
+                  [d (cdr comp)])
+               (let ([pr (recvr a)])
+                 `(,(car pr) . ,(append d (cdr pr))))))))
+   (include-module monad-common))
+
+(module env-monad (import) (export unit mon-let)
+   (define unit
+      (lambda (x)
+         (lambda (env)
+            x)))
+   (define star
+      (lambda (recvr)
+         (lambda (comp)
+            (lambda (env)
+               (recvr (comp env))))))
+   (include-module monad-common))
+
+(include-module (prefix output-list-monad ol-))
+(include-module (prefix env-monad env-))
+...
+}}}
+
+Note that it is only necessary to define mon-let once and we can retrieve two versions. 
+
+
+= Other Issues =
+
+The following are not considered in this proposal, but could potentially be considered in extensions/refinements of this proposal:
+
+* Mutability of bindings
+
+* How many times module forms may be evaluated
+
+* Import from files
+
+Also, the precise restrictions on macros, if any, are not specified here.
+
+
+= Compatibility = 
+
+The forms provided here are not unlike those of Chez's module system, but the flexibility they provide is more like units from PLT Scheme.  Although that flexibility is supported, the more commonly supported &quot;hard-wiring&quot; of modules is also supported here.  Much of the notation for modifying identifier sets is derived from R6RS.
+</pre>
+    <h2>time</h2>
+    <pre>2010-10-13 03:15:31</pre>
+    <h2>version</h2>
+    <pre>9</pre></body></html>

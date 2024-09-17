@@ -1,0 +1,132 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NumericVectorsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NumericVectorsCowan.md">NumericVectorsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Numeric&shy;Vectors&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-08-17 11:43:21</div>
+      <div class="version">8<span class="comment"></span><a href="/wiki/NumericVectorsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/NumericVectorsCowan/8/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a proposal for a simple numeric vector API.  It provides what appear to be a set of specialized numeric-only vectors distinguished by their <i>representation type</i>.  However, implementations may in fact use R7RS-small bytevectors to represent any or all of the vector types.  It is recommended that implementations use bytevectors unless (as on the JVM and the CLR) it is impossible to efficiently coerce bytevectors to numeric vectors.  Users can compel the creation of bytevectors rather than implementation-dependent numeric vectors.  Numeric vectors containing unsigned 8-bit exact integers (u8vectors) must be represented as bytevectors.</p>
+      <p>This design subsumes <a href="http://srfi.schemers.org/srfi-4/srfi-4.html">SRFI 4</a>, except that users cannot count on distinguishing different types of numeric vectors by predicates.  It differs from related designs such as SRFI 63, SRFI 66, and R6RS in that each procedure listed below actually represents many procedures, one for each defined representation type.  This makes for a <i>lot</i> of procedures, but many of them can be easily inlined by even a very dumb compiler, providing high efficiency.   The procedures provided in the present proposal are the numeric-vector analogues of the R7RS-small vector API.</p>
+      <h2 id="Representationtypes">Representation types</h2>
+      <p>A &lt;type&gt; consists of a &lt;principal type&gt; followed by an &lt;endianism&gt;.</p>
+      <p>The &lt;principal type&gt; values are:</p>
+      <dl>
+        <dt><span class="monospace">u8</span></dt>
+        <dd>unsigned 8-bit integer</dd>
+        <dt><span class="monospace">s8</span></dt>
+        <dd>signed 8-bit integer</dd>
+        <dt><span class="monospace">u16</span></dt>
+        <dd>unsigned 16-bit integer</dd>
+        <dt><span class="monospace">s16</span></dt>
+        <dd>signed 16-bit integer</dd>
+        <dt><span class="monospace">u32</span></dt>
+        <dd>unsigned 32-bit integer</dd>
+        <dt><span class="monospace">s32</span></dt>
+        <dd>signed 32-bit integer</dd>
+        <dt><span class="monospace">u64</span></dt>
+        <dd>unsigned 64-bit integer</dd>
+        <dt><span class="monospace">s64</span></dt>
+        <dd>signed 64-bit integer</dd>
+        <dt><span class="monospace">u128</span></dt>
+        <dd>unsigned 128-bit integer</dd>
+        <dt><span class="monospace">s128</span></dt>
+        <dd>signed 128-bit integer</dd>
+        <dt><span class="monospace">f32</span></dt>
+        <dd>32-bit float</dd>
+        <dt><span class="monospace">f64</span></dt>
+        <dd>64-bit float</dd>
+        <dt><span class="monospace">c64</span></dt>
+        <dd>64-bit complex number (two 32-bit floats, real followed by imaginary)</dd>
+        <dt><span class="monospace">c128</span></dt>
+        <dd>128-bit complex number (two 64-bit floats, real followed by imaginary)</dd></dl>
+      <p>The &lt;endianism&gt; values are:</p>
+      <dl>
+        <dt>(empty)</dt>
+        <dd>Native representations (system-dependent)</dd>
+        <dt><span class="monospace">le</span></dt>
+        <dd>Little-endian (for float and complex, IEEE format)</dd>
+        <dt><span class="monospace">be</span></dt>
+        <dd>Big-endian (for float and complex, IEEE format)</dd></dl>
+      <p>Endianism is not applicable to the <span class="monospace">u8</span> and <span class="monospace">s8</span> types.  Thus there are 3 * 14 - 4, or 38, representation types altogether.</p>
+      <p>The number of bytes occupied by a representation type is the number of bits expressed in its name divided by 8.  This value is designated by <i>b</i> in the descriptions of procedures.</p>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(make-&lt;type&gt;vector </span><i>k</i> [ <i>fill</i> ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated numeric vector of length <i>k</i>.  If the implementation chooses to allocate a bytevector, it will be of size <i>k * b</i>.  <i>Fill</i> is converted to a binary value according to `&lt;type&gt; and used to fill the vector; if <i>fill</i> is not specified, the values of the elements are unspecified.  It is an error if <i>fill</i> cannot be accurately converted to &lt;type&gt;.</p>
+      <p><span class="monospace">(&lt;type&gt;vector </span> <i>v</i> ... <span class="monospace">)</span></p>
+      <p>Returns a newly allocated numeric vector of length <i>k</i>, where <i>k</i> is the number of arguments to the procedure.  If the implementation chooses to allocate a bytevector, its length will be <i>k * b</i>.  It is filled with the binary values resulting from encoding the <i>v</i> arguments according to &lt;type&gt;.  It is an error if an argument cannot be accurately converted to &lt;type&gt;.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(&lt;type&gt;vector? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> can be treated as a &lt;type&gt;vector, and <span class="monospace">#f</span> if it cannot.  These predicates cannot be reliably used to discriminate between one numeric vector type and another, since any or all may share the same underlying types.  In particular, bytevectors return <span class="monospace">#t</span> to all of them.</p>
+      <p><span class="monospace">(numeric-vector-empty? </span> <i>numvector</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>numvector</i> has length 0, and <span class="monospace">#f</span> otherwise.  This procedure is not specialized for different numeric types.</p>
+      <h2 id="Selectors">Selectors</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-ref</span> <i>numvector k</i><span class="monospace">)</span></p>
+      <p>Returns a Scheme number corresponding to the <i>k</i>th element of <i>numvector</i>.  If <i>numvector</i> is a bytevector, this will be the binary value encoded according to &lt;type&gt; beginning at offset <i>k * b</i> in <i>bytevector</i>.  This procedure treats bytevectors as uniformly typed vectors.</p>
+      <p><span class="monospace">(bytevector-&lt;type&gt;-ref</span> <i>bytevector k</i><span class="monospace">)</span></p>
+      <p>Returns a Scheme number corresponding to the binary value encoded according to &lt;type&gt; beginning at offset <i>k</i> in <i>bytevector</i>.  This procedure treats <i>bytevector</i> as potentially containing more than one type.</p>
+      <p>Note that <span class="monospace">bytevector-u8-ref</span> is defined in the small language.</p>
+      <h2 id="Mutators">Mutators</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-set!</span> <i>numvector k v</i><span class="monospace">)</span></p>
+      <p>Converts <i>v</i> to a binary value encoded according to &lt;type&gt; and places it into the <i>k</i>th element of <i>numvector</i>.  If <i>numvector</i> is a bytevector, the value is placed beginning at offset <i>k * b</i>.  This procedure treats bytevectors as uniformly typed vectors.  It is an error if <i>v</i> cannot be converted to &lt;type&gt;.</p>
+      <p><span class="monospace">(bytevector-&lt;type&gt;-set!</span> <i>bytevector k v</i><span class="monospace">)</span></p>
+      <p>Converts <i>v</i> to a binary value encoded according to &lt;type&gt; and places it into <i>bytevector</i> beginning at offset <i>k</i>.  This procedure treats <i>bytevector</i> as potentially containing more than one type.  It is an error if <i>v</i> cannot be converted to &lt;type&gt;.</p>
+      <p>Note that <span class="monospace">bytevector-u8-set!</span> is defined in the small language.</p>
+      <h2 id="Conversionstonumericvectors">Conversions to numeric vectors</h2>
+      <p>It is an error if a value being used to fill an element of a &lt;type&gt;vector cannot be converted to &lt;type&gt;.</p>
+      <p><span class="monospace">(vector-&gt;&lt;type&gt;vector </span><i>vector</i> [<i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated &lt;type&gt;vector of length <i>end - start</i>, filled with the corresponding elements of <i>vector</i>.</p>
+      <p><span class="monospace">(list-&gt;&lt;type&gt;vector </span><i>list</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated &lt;type&gt;vector whose length is the length of <i>list</i>, filled with the elements of <i>list</i>.</p>
+      <p><span class="monospace">(bytevector-&gt;&lt;type&gt;vector </span><i>bytevector</i> [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Returns a &lt;type&gt;vector of length <i>end / b - start / b</i>, filled with the elements of <i>bytevector</i> taken <i>b</i> at a time.  The result may share storage with <i>bytevector</i>.</p>
+      <p><span class="monospace">(vector-&gt;&lt;type&gt;vector! </span><i>numvector at vector</i> [<i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Writes the elements of <i>vector</i> from <i>start</i> to <i>end</i> into <i>numvector</i> starting at <i>at</i>.</p>
+      <p><span class="monospace">(list-&gt;&lt;type&gt;vector! </span><i>list numvector at</i><span class="monospace">)</span></p>
+      <p>Writes the elements of <i>list</i> into <i>numvector</i> starting at <i>at</i>.</p>
+      <p><span class="monospace">(bytevector-&gt;&lt;type&gt;vector! </span><i>numvector at vector</i> [<i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Writes the elements of <i>bytevector</i> from <i>b * start</i> to <i>b * end</i> taken <i>b</i> at a time into <i>numvector</i> starting at <i>at</i>.</p>
+      <h2 id="Conversionsfromnumericvectors">Conversions from numeric vectors</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-&gt;vector </span><i>numvector</i> [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(&lt;type&gt;vector-&gt;list </span><i>numvector</i> [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated vector or list of length <i>end - start</i> with the elements of <i>numvector</i> from <i>start</i> to <i>end</i>.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-&gt;bytevector </span><i>numvector</i> [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated bytevector of length <i>b * end - b * start</i> with the elements of <i>numvector</i> from <i>start</i> to <i>end</i>.  The result may share structure with <i>numvector</i>; in particular</p>
+      <p><span class="monospace">(&lt;type&gt;vector-&gt;vector! </span><i>vector at numvector</i> [<i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(&lt;type&gt;vector-&gt;bytevector! </span><i>bytevector at numvector</i> [<i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Writes the elements of <i>numvector</i> from <i>start</i> to <i>end</i> into <i>vector</i> or <i>bytevector</i> starting at <i>at</i>.</p>
+      <h2 id="Thewholenumericvector">The whole numeric vector</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-length </span> <i>numvector</i><span class="monospace">)</span></p>
+      <p>Returns the length of <i>numvector</i>.  If <i>numvector</i> is a bytevector, returns its length divided by <i>b</i> and rounded toward zero.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-copy </span> <i>numvector</i> [ [ <i>start</i> ] <i>end</i> ] <span class="monospace">)</span></p>
+      <p>Copies the elements of <i>numvector</i> from <i>start</i> to <i>end</i> into a newly allocated numeric vector of the same representation type.  If <i>numvector</i> is a bytevector, this is equivalent to <span class="monospace">bytevector-copy</span>, except that <i>start</i> and <i>end</i> are multiplied by <i>b</i>.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-copy! </span><i>to at from</i> [ [ <i>start</i> ] <i>end</i> ] <span class="monospace">)</span></p>
+      <p>Copies the elements of <i>from</i> from <i>start</i> to <i>end</i> into <i>to</i> starting at <i>at</i>.  If <i>numvector</i> is a bytevector, the number of bytes copied is <i>(end - start) * b</i>.</p>
+      <p><span class="monospace">&lt;type&gt;vector-append </span> <i>numvector</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated &lt;type&gt;vector whose elements are the concatenation of the elements in <i>numvectors</i>.  It is an error if the <i>numvectors</i> are not all of the same type.  If they are all bytevectors, <span class="monospace">&lt;type&gt;vector-append</span> is equivalent to <span class="monospace">bytevector-append</span>.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-fill! </span><i>bytevector fill</i> [ [ <i>start</i> ] <i>end</i> ] <span class="monospace">)</span></p>
+      <p>Stores <i>fill</i> in the elements of <i>bytevector</i> viewed as a &lt;type&gt;vector from <i>start</i> to <i>end</i>. An error is signaled if <i>fill</i> cannot be accurately converted to &lt;type&gt;.</p>
+      <h2 id="Mapping">Mapping</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-map </span><i>proc numvector1</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated &lt;type&gt;vector which contains the results of applying <i>proc</i> to the elements of the <i>numvectors</i> in an unspecified order.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-for-each </span><i>proc numvector1</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to the elements of the <i>numvectors</i> in order from first to last.  Returns an unspecified value.</p>
+      <h2 id="ExtendednumericvectorAPI">Extended numeric vector API</h2>
+      <p>See the procedures of <a href="/wiki/VectorsCowan">VectorsCowan</a>, with the exceptions of the ones defined here.</p>
+      <h2 id="Structuredrepresentationtypes">Structured representation types</h2>
+      <p>For mapping C structs onto bytevectors, see <a href="/wiki/StructuresCowan">StructuresCowan</a> or <a href="https://gitorious.org/taylan-guile/bytestructures/source/0a5426d6b5a6bea66f0f6eea02690c22e11e251a:">StructuresTaylan</a>.</p>
+      <h2 id="Implementation">Implementation</h2>
+      <p><a href="https://gist.github.com/ijp/1e0e67ff93c486f66fc8">This syntax-rules macro by Ian Price</a> will be helpful in implementing lots of similar but not identical procedures for the 38 types.</p></div></body></html>

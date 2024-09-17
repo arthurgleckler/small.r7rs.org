@@ -1,0 +1,62 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>314: feature review</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 314: <span class="summary">feature review</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-02-15 17:41:36</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">duplicate</div>
+      <div class="source"><a href="/ticket/314/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-12-17 15:21:32</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>The list of standard features needs more careful review.</p>
+        <p>In particular, exact-complex seems odd - it's more likely
+that we want to test for any complex, and if we really want
+to distinguish exactness why not inexact-complex?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-12-18 01:18:40</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I don't know of any Schemes that support exact complex numbers but not inexact.  The normal cases are all types of complex numbers, or inexact-inexact complex numbers only (like SCM and some others -- I don't have access to my suite of Schemes today).  So the <span class="monospace">exact-complex</span> test is for the ability to do exact arithmetic on complex numbers.  To test for the presence of complex numbers of any kind, test for <span class="monospace">(module (scheme complex))</span>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-12-18 11:54:48</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Okay, back home.  Support for all types of complex numbers:  MIT, Gambit, Mosh, STklos.  (Also CLISP.)</p>
+              <p>Support for exact/exact and inexact/inexact complex numbers only (no mixed exactness): Racket, Chicken (with the numbers egg), Scheme48/scsh, Kawa, Chez, Vicare, Larceny, Ypsilon, IronScheme.  (Also Armed Bear CL, CMU CL, Clozure CL, ECL, GNU CL, Steel Bank CL.)</p>
+              <p>Support for inexact/inexact complex numbers only: Gauche, Guile, SISC, Chibi, SCM, KSi, Scheme 7, UMB.</p>
+              <p>No support for complex numbers at all:  Bigloo, Ikarus, SigScheme, RScheme, Elk, VX, Oaklisp, Owl Lisp.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-02-15 17:41:36</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">duplicate</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Equivalent to <a href="/ticket/320">#320</a>.</p></div></div></div></div></div></body></html>

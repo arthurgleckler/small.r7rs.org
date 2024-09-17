@@ -1,0 +1,102 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>259: Specify module name in cond-expand as (module &lt;name&gt;) instead of &lt;name&gt;</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 259: <span class="summary">Specify module name in cond-expand as (module &lt;name&gt;) instead of &lt;name&gt;</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-04-05 09:37:45</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/259/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-08-16 22:52:18</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>In <a href="/wiki/CondExpandCowan">CondExpandCowan</a>, the test for the existence/importability of a module is to specify the module name.  However, this means module names can't begin with <span class="monospace">and</span>, <span class="monospace">or</span>, or <span class="monospace">not</span>.  Draft 3 instead specifies <span class="monospace">(module </span><i>module-name</i><span class="monospace">)</span>, and I think this is better.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-02-03 02:36:08</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Now of course this is <span class="monospace">(library </span><i>library-name</i><span class="monospace">)</span>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-02-26 16:49:36</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The draft already specifies this, and there is currently
+no non-ambiguous alternative proposed, so closing the
+issue.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-02-26 17:54:11</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Reopening this, because even if there is no other proposal that resolves the ambiguity, it can be resolved by removing the feature.  I <i>want</i> the feature, but the WG has to vote it in if we are to have it.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">aag</div>
+            <div class="time">2012-02-27 02:07:06</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I'm not sure why there is an ambiguity here.  Unless a library name is automatically considered a &lt;feature identifier&gt;, which doesn't appear to be true, then <span class="monospace">library</span> must be wrapped around a library name in order to use it in a <span class="monospace">cond-expand</span> clause.</p>
+              <p>John, when you say &quot;I <i>want</i> the feature,&quot; which feature do you want?  The ability to specify a library directly as a &lt;feature identifier&gt;, or just the ability to specify a library through a <i>library</i> clause?</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-02-27 05:27:13</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <dl>
+                <dt>What <a href="/wiki/CondExpandCowan">CondExpandCowan</a> says, which is what we voted for in ballot 2</dt>
+                <dd>Library names can be used on the same level as feature identifiers (leads to unacceptable ambiguous BNF)</dd>
+                <dt>What the draft says, and what I now favor, but <i>not</i> what we voted for</dt>
+                <dd>Library names must be wrapped in a <span class="monospace">(library ...)</span> form</dd>
+                <dt>The alternative</dt>
+                <dd>Don't allow library names at all</dd></dl>
+              <p>So the choice for this ticket is between the last two.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-05 08:54:59</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to adopt this proposal.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-05 09:37:45</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

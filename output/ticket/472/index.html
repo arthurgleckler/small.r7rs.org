@@ -1,0 +1,165 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>472: clarify semantics of non-library library declarations</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 472: <span class="summary">clarify semantics of non-library library declarations</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 06:25:52</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/472/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-09-11 18:59:51</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>In items <a href="/ticket/91">#91</a>, <a href="/ticket/148">#148</a> and <a href="/ticket/150">#150</a> we voted to allow the
+use of <span class="monospace">include</span>, <span class="monospace">include-ci</span> and <span class="monospace">cond-expand</span>
+at the &quot;top-level&quot; respectively, but there remains
+some confusion as to their semantics.</p>
+        <p>Here &quot;top-level&quot; refers to repl and program body
+top-levels, but not library bodies.</p>
+        <p>One interpretation is that these behave like library
+declarations, and can expand into <span class="monospace">import</span> forms.
+In this case, for a purely static implementation of
+R7RS libraries, they must first be statically scanned
+from all top-level forms.  They cannot be used
+outside the top-level, and are not even available
+as bindings otherwise.  This is the <span class="monospace">declaration</span>
+proposal.</p>
+        <p>Another interpretation is that they are just normal
+macros with the obvious definitions (cond-expand
+in terms of the output of the <span class="monospace">features</span> procedure),
+are available in the <span class="monospace">(scheme base)</span> library, and
+consequently can't be used to expand into <span class="monospace">import</span>
+since imports have already been resolved.  This is
+the <span class="monospace">syntax</span> proposal.</p>
+        <p>Alternately, we could provide <span class="monospace">both</span>.  If you think
+this is all too confusing you could also vote <span class="monospace">remove</span>,
+to drop these extensions.</p>
+        <p>Related is the matter of whether multiple <span class="monospace">import</span>
+forms are allowed in programs or only one may
+allowed as in R6RS.  With either <span class="monospace">syntax</span> or <span class="monospace">remove</span>
+it could make sense to add this restriction, so the
+<span class="monospace">/single-import</span> variant is provided.
+Note the repl allows allows multiple <span class="monospace">import</span> forms.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-09-13 21:13:51</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">In items #91, #148 and #150 we voted to allow the
+use of `include`, `include-ci` and `cond-expand`
+at the &quot;top-level&quot; respectively, but there remains
+some confusion as to their semantics.
+
+Here &quot;top-level&quot; refers to repl and program body
+top-levels, but not library bodies.
+
+One interpretation is that these behave like library
+declarations, and can expand into `import` forms.
+In this case, for a purely static implementation of
+R7RS libraries, they must first be statically scanned
+from all top-level forms.  They cannot be used
+outside the top-level, and are not even available
+as bindings otherwise.  This is the `declaration`
+proposal.
+
+Another interpretation is that they are just normal
+macros with the obvious definitions (cond-expand
+in terms of the output of the `features` macro),
+are available in the `(scheme base)` library, and
+consequently can't be used to expand into `import`
+since imports have already been resolved.  This is
+the `syntax` proposal.
+
+Alternately, we could provide `both`.  If you think
+this is all too confusing you could also vote `remove`,
+to drop these extensions.
+
+Related is the matter of whether multiple `import`
+forms are allowed in programs or only one may
+allowed as in R6RS.  With either `syntax` or `remove`
+it could make sense to add this restriction, so the
+`/single-import` variant is provided.
+Note the repl allows allows multiple `import` forms.
+</span><span class="new-value">In items #91, #148 and #150 we voted to allow the
+use of `include`, `include-ci` and `cond-expand`
+at the &quot;top-level&quot; respectively, but there remains
+some confusion as to their semantics.
+
+Here &quot;top-level&quot; refers to repl and program body
+top-levels, but not library bodies.
+
+One interpretation is that these behave like library
+declarations, and can expand into `import` forms.
+In this case, for a purely static implementation of
+R7RS libraries, they must first be statically scanned
+from all top-level forms.  They cannot be used
+outside the top-level, and are not even available
+as bindings otherwise.  This is the `declaration`
+proposal.
+
+Another interpretation is that they are just normal
+macros with the obvious definitions (cond-expand
+in terms of the output of the `features` procedure),
+are available in the `(scheme base)` library, and
+consequently can't be used to expand into `import`
+since imports have already been resolved.  This is
+the `syntax` proposal.
+
+Alternately, we could provide `both`.  If you think
+this is all too confusing you could also vote `remove`,
+to drop these extensions.
+
+Related is the matter of whether multiple `import`
+forms are allowed in programs or only one may
+allowed as in R6RS.  With either `syntax` or `remove`
+it could make sense to add this restriction, so the
+`/single-import` variant is provided.
+Note the repl allows allows multiple `import` forms.
+</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-03 01:01:11</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to accept the <span class="monospace">syntax</span> alternative.  As a result, <span class="monospace">include</span>, <span class="monospace">include-ci</span>, and <span class="monospace">cond-expand</span> become normal syntax keywords in the <span class="monospace">(scheme base)</span> library as well as being library declarations.  They are no longer special either at the REPL or in top-level programs.</p>
+              <p>At least the first two cannot be expressed as <span class="monospace">syntax-rules</span> macros using only portable procedures, and so must be described as new primitive expression types in Section 4.1.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-04 22:44:00</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 06:25:52</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

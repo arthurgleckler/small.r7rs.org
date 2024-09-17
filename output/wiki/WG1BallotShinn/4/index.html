@@ -1,0 +1,528 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1BallotShinn</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1BallotShinn.md">WG1BallotShinn</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Ballot&shy;Shinn</h1>
+    <div class="wiki metadata">
+      <div class="author">alexshinn</div>
+      <div class="time">2010-11-03 20:55:19</div>
+      <div class="version">4<span class="comment">updating for re-ballot</span><a href="/wiki/WG1BallotShinn/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1BallotShinn/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="WG1NewBallotItems">WG1 New Ballot Items</h1>
+      <p>Notes about results:</p>
+      <ul>
+        <li>you may list as many of the options as you want in order of preference</li>
+        <li>options are comma-delimited (ignoring space) and case-insensitive</li>
+        <li>you may write in your own option if you announce it to the list first</li>
+        <li>everything but the <span class="monospace">preferences</span> line is free-form, and may be used for a rationale</li>
+        <li><span class="monospace">module</span> means &quot;yes, but I want it in a separate module&quot;</li>
+        <li><span class="monospace">wg2</span> means &quot;no, but I think it should go in WG2&quot;</li>
+        <li><span class="monospace">undecided</span> means I want to discuss this issue further</li>
+        <li>abstain by leaving the preferences blank</li>
+        <li>items up for final vote will be marked as such (none are final now)</li></ul>
+      <h2 id="WG1-Modules">WG1 - Modules</h2>
+      <h3 id="2ModuleSystem">2 Module System</h3>
+      <p>As per the charter, we need a module system
+proposal which allows sharing of code between
+implementations.</p>
+      <p>This is one issue where we can't default to
+the R5RS, since it has no module system. If
+we can't come to consensus, we will have to
+take the R6RS module system as-is.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>hsu:</b> <a href="/wiki/ModulesAndPackagesArcfide">ModulesAndPackagesArcfide</a></li>
+            <li><b>shinn:</b> <a href="/wiki/ModulesShinn">ModulesShinn</a></li></ul></li>
+        <li><b>Options:</b> ganz, hsu, shinn, r6rs, r6rs--, undecided</li>
+        <li><b>Preferences:</b> shinn, r6rs--, r6rs, ganz, hsu</li></ul>
+      <p>Anything beyond a static syntax is specifying too much, and
+would make integration with existing systems difficult to impossible.</p>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="50Byte-Vectors">50 Byte-Vectors</h3>
+      <p>Several SRFIs, R6RS, and most Scheme implementations
+support some sort of uniform packed integer vectors.
+In particular, these are necessary for efficient
+binary I/O, and for memory mapping, so WG2 will
+certainly want them.</p>
+      <p>Do we provide a syntax and basic API for these in WG1?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/BlobAPI">BlobAPI</a></li>
+            <li><b>snellpym:</b> <a href="/wiki/BlobsAndSRFI4SnellPym">BlobsAndSRFI4SnellPym</a></li></ul></li>
+        <li><b>Options:</b> cowan, snellpym, wg2, none, undecided</li>
+        <li><b>Preferences:</b> undecided</li></ul>
+      <p>I think the proposals need more work.</p>
+      <h3 id="69Parameters">69 <a href="/wiki/Parameters">Parameters</a></h3>
+      <p>Most Scheme implementations provide some form of dynamic bindings such
+as those provided by SRFI-39 parameters.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/ImmutableParametersCowan">ImmutableParametersCowan</a></li>
+            <li><b>snellpym:</b> <a href="/wiki/ParametersSnellPym">ParametersSnellPym</a></li></ul></li>
+        <li><b>Options:</b> cowan, snellpym, srfi-39, wg2, none, undecided</li>
+        <li><b>Preferences:</b> undecided</li></ul>
+      <p>I think we should have SRFI-9, with <span class="monospace">parameterize</span> required
+to be thread-safe and direct mutation unspecified in the context
+of threads.</p>
+      <h2 id="WG1-Exceptions">WG1 - Exceptions</h2>
+      <h3 id="18ExceptionSystem">18 Exception System</h3>
+      <p>R6RS provided a detailed exception system with
+support for raising and catching exceptions, using
+a hierarchy of exception types.</p>
+      <p>Do we use this, or parts of it, or a new exception
+system?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/ExceptionHandlingCowan">ExceptionHandlingCowan</a></li></ul></li>
+        <li><b>Options:</b> cowan, wg2, none, undecided</li>
+        <li><b>Preferences:</b> r6rs, cowan, wg2</li></ul>
+      <p>The core R6RS exception system is fine, it was the
+extensive condition hierarchy and required exception
+situations I had issues with.</p>
+      <p>----</p>
+      <h1 id="WG1ControversialBallotItems">WG1 Controversial Ballot Items</h1>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="40SRFIvs.R6RSprecedence">40 SRFI vs. R6RS precedence</h3>
+      <p>Given equal technical merit and compatible extensibility for WG2,
+should WG1 prefer SRFIs or standardized behaviors from R6RS when faced
+with the choice. For example, a version of syntax-violation
+vs. syntax-error.</p>
+      <ul>
+        <li><b>Options:</b> srfi,r6rs,undecided</li>
+        <li><b>Preferences:</b> srfi</li></ul>
+      <h3 id="32user-definetypes">32 user-define types</h3>
+      <p>Do we support any means of creating disjoint
+user-defined types, such as in SRFI-9, SRFI-99
+or the R6RS record system?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>hsu:</b> <a href="/wiki/RecordsArcfide">RecordsArcfide</a></li>
+            <li><b>rush:</b> <a href="/wiki/UserAggregatesRush">UserAggregatesRush</a></li>
+            <li><b>snellpym:</b> <a href="/wiki/UniqueTypesSnellPym">UniqueTypesSnellPym</a></li></ul></li>
+        <li><b>Options:</b> hsu,rush,snellpym,srfi-9,srfi-99,no,wg2,undecided</li>
+        <li><b>Preferences:</b> srfi-9, srfi-99</li></ul>
+      <p>SRFI-9 doesn't extend well, as shown by SRFI-99's ugliness.
+A fully keyword-based approach may be better.</p>
+      <h3 id="51supportforcyclicstructuresinprimitives">51 support for cyclic structures in primitives</h3>
+      <p>list?, length, equal? and other fundamental primitives may diverge
+when given cyclic data.  In the former two cases, avoiding this is
+simple and not inefficient, and the equivalents are already provided
+in SRFI-1.  In the latter case a proposal was made and rejected on the
+R6RS list.</p>
+      <p>Do we want to specify the behavior when these primitives encounter
+cyclic data?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>Definitely or list? and length, equal? might need more consideration.</p>
+      <h3 id="58exact-integer-sqrt">58 exact-integer-sqrt</h3>
+      <p>Should WG1 include <span class="monospace">exact-integer-sqrt</span> from R6RS?  It allows square
+root operations in Schemes that don't provide inexact arithmetic, and
+has different semantics from <span class="monospace">sqrt</span>, as it rounds its argument down to
+the nearest exact square.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> module, yes, wg2</li></ul>
+      <h3 id="61finite?nan?">61 finite? nan?</h3>
+      <p>Shall we add these numeric predicates?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> module, yes, wg2</li></ul>
+      <h3 id="63call/ccshortname">63 call/cc short name</h3>
+      <p>Should we allow <span class="monospace">call/cc</span> as an equivalent to
+<span class="monospace">call-with-current-continuation</span>?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <p>Emphatically no.  Aliases do <b>not</b> belong in a small standard.</p>
+      <h3 id="53ImplicitBEGINtoimplicitLET-NIL">53 Implicit BEGIN to implicit LET-NIL</h3>
+      <p>In general, in places where an implict BEGIN occurs, it is possible to
+change this to an implicit LET-NIL and remain backwards
+compatible. Should we do this?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <p>I'd only consider this on a case-by-case scenario.</p>
+      <h2 id="WG1-I/O">WG1 - I/O</h2>
+      <h3 id="52read/writecyclicdata">52 read/write cyclic data</h3>
+      <p>SRFI-38 standardizes the <a href="/ticket/0">#0</a>=(1 . <a href="/ticket/0">#0</a>#) shared
+structure notation for read/write.  In the case
+of write, this can be expensive to compute, but
+otherwise the common case of the repl printing
+a cyclic structure results in an infinite loop.</p>
+      <p>Do we want to add support for this, as an option
+or separate set of procedures?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> module</li></ul>
+      <p>It's crucial to be able to have control over whether
+or not shared structure is handled on read and write.</p>
+      <h2 id="WG1-Libraries">WG1 - Libraries</h2>
+      <h3 id="36hash-tables">36 hash-tables</h3>
+      <p>R6RS and SRFI-69 both provide hash-table interfaces.
+Do we provide either of these, or try to provide
+some primitives on which efficient hash-tables can
+be implemented?</p>
+      <ul>
+        <li><b>Options:</b> srfi-69,r6rs,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> r6rs, wg2</li></ul>
+      <p>SRFI-69 is broken.</p>
+      <h2 id="WG1-Macros">WG1 - Macros</h2>
+      <h3 id="6syntax-rules_patterns">6 syntax-rules _ patterns</h3>
+      <p>R6RS adds _ as a wild-card pattern, breaking
+some existing R5RS macros.  Do we add the _ wildcard,
+or leave it as a normal identifier as in R5RS?</p>
+      <p>Yes to add, no for R5RS.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,wg2,undecided</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h3 id="8SRFI-46ellipsespecifierinsyntax-rules">8 SRFI-46 ellipse specifier in syntax-rules</h3>
+      <p>As an alternative to <a href="/ticket/7">#7</a>, SRFI-46 proposed
+allowing an optional ellipse specified as
+an identifier before the literals list in
+syntax-rules:</p>
+      <p>(syntax-rules ::: ()
+     &lt;ellipse now represented as ::: instead of ...&gt;)</p>
+      <p>Do we allow this?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h3 id="9tailpatternsinsyntax-rules">9 tail patterns in syntax-rules</h3>
+      <p>SRFI-46 and R6RS both allow a fixed number of
+tail patterns following an ellipsis in a syntax-rules
+pattern:</p>
+      <p>(P1 ... Pk Pe &lt;ellipsis&gt; Pm+1 ... Pn)</p>
+      <p>R6RS further allows dotted tail patterns</p>
+      <p>(P1 ... Pk Pe &lt;ellipsis&gt; Pm+1 ... Pn . Px)</p>
+      <p>where Px only matches a dotted list.</p>
+      <p>Do we allow either or both of these extensions?</p>
+      <ul>
+        <li><b>Options:</b> tail,dotted-tail,both,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> tail</li></ul>
+      <p>The dotted-tail is useful, but breaks the rule of the
+pattern language where what you see is what you get.</p>
+      <h2 id="WG1-Numerics">WG1 - Numerics</h2>
+      <h3 id="21limitedtypearithmetic">21 limited type arithmetic</h3>
+      <p>R6RS provides libraries for limited type arithmetic
+on fixnums only and flonums only.  Do we want these?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> wg2</li></ul>
+      <h3 id="22mantissawidths">22 mantissa widths</h3>
+      <p>R6RS introduced the concept of mantissa widths
+as an alternative to the R5RS #s in numbers.
+Do we want either or both of these?</p>
+      <ul>
+        <li><b>Options:</b> r5rs,r6rs,both,no,wg2,undecided</li>
+        <li><b>Preferences:</b> r5rs</li></ul>
+      <h2 id="WG1-ReaderSyntax">WG1 - Reader Syntax</h2>
+      <h3 id="11case-sensitivity">11 case-sensitivity</h3>
+      <p>Does the reader fold case by default, and if so how?</p>
+      <p>Yes to fold-case (R5RS) no to preserve case (R6RS), additional votes
+to come later from specific proposals.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,undecided</li>
+        <li><b>Preferences:</b> no, yes, unspecified</li></ul>
+      <p>There are many pros and cons, but all things being equal
+I prefer case-sensitivity if for no other reason than it
+is more expressive - it can be used to write case-folding
+macros.</p>
+      <h2 id="WorkingGroup1">Working Group 1</h2>
+      <h3 id="1WhichVCSdoweuse?">1 Which VCS do we use?</h3>
+      <p>There is the question of the right VCS to use. I prefer
+Monotone. Currently we are having an email vote on the list. I have
+entered this ticket to play with the Trac ticketing system. We can
+finalize the ticket once we have chosen a VCS.</p>
+      <ul>
+        <li><b>Options:</b> bzr,darcs,git,hg,monotone,svn,undecided</li>
+        <li><b>Preferences:</b> hg,git,darcs</li></ul>
+      <p>----</p>
+      <h1 id="WG1OldItems">WG1 Old Items</h1>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="37transcript-onandtranscript-off">37 transcript-on and transcript-off</h3>
+      <p>These were relegated to a compatibility library
+in R6RS.  Do we want to keep them, drop them, or
+move them to a library?</p>
+      <p>Yes means to keep them in the core, as in R5RS,
+and no means to remove them entirely.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> module, no</li></ul>
+      <h3 id="38letrec*">38 letrec*</h3>
+      <p>R6RS added letrec* and defined the semantics
+of internal define to be equivalent.  Do we
+want to add this?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <h3 id="41ShouldweadopttheSRFI-1extensiontoMAPandFOR-EACH?">41 Should we adopt the SRFI-1 extension to MAP and FOR-EACH?</h3>
+      <p>This extension allows the list arguments to be of unequal length, and
+stops the procedure whenever any of them run out.  R5RS says the lists
+<i>must</i> be of the same length, R6RS says they <i>should</i> be.</p>
+      <p><span class="monospace">Yes</span> to allow unequal length.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <h3 id="42ShouldweadopttheSRFI-1extensiontoASSOCandMEMBER?">42 Should we adopt the SRFI-1 extension to ASSOC and MEMBER?</h3>
+      <p>This extension accepts a third argument, the equality predicate to be
+used.  Alternatively we could use the R6RS predicates ASSP and MEMP.</p>
+      <ul>
+        <li><b>Options:</b> srfi-1,r6rs,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> srfi-1,r6rs</li></ul>
+      <h3 id="33dynamic-wind">33 dynamic-wind</h3>
+      <p>New to R5RS, do we reaffirm the sometimes debated dynamic-wind?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> yes, module</li></ul>
+      <h3 id="34multiplevalues">34 multiple values</h3>
+      <p>New to R5RS, do we reaffirm multiple values, specifically the
+procedures <span class="monospace">call-with-values</span> and <span class="monospace">values</span>?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> module, yes</li></ul>
+      <p>I dislike MV for the complexity it introduces into any
+combinators or higher order utilities, but would rather
+preserve backwards compatibility by relegating it to a module.</p>
+      <h3 id="54optionalarguments">54 optional arguments</h3>
+      <p>Scheme's primitive mechanism of improper lambda-lists allows for
+optional arguments, but only with extra machinery.  CL, DSSSL, and
+some Schemes provide a special word such as <span class="monospace">#!optional</span> in
+lambda-lists, showing that the arguments which follow are optional and
+may have default values.  SRFI-89 provides both optional and keyword
+arguments via <span class="monospace">lambda*</span> and <span class="monospace">define*</span> and without introducing #!foo
+special tokens.</p>
+      <p>Note the original ticket description mentions <span class="monospace">case-lambda</span>, but this
+is easily provided as a separate module, and will be a separate item.</p>
+      <ul>
+        <li><b>Options:</b> dsssl,srfi-89,no,wg2,undecided</li>
+        <li><b>Preferences:</b> wg2, no</li></ul>
+      <p>Too much to work out, too many differing opinions, let's leave this to wg2.</p>
+      <h3 id="57Simplerandomness">57 Simple randomness</h3>
+      <p>Student programs often want a small amount of randomness, not
+necessarily of very high quality.  Shall we provide a simple interface
+to a random variables in WG1 Scheme?</p>
+      <ul>
+        <li><b>Options:</b> srfi-27,no,wg2,undecided</li>
+        <li><b>Preferences:</b> wg2, no</li></ul>
+      <p>This is actually pretty crucial for simple games, but
+I'd still rather leave it up to wg2.  Providing just
+<span class="monospace">current-seconds</span> is enough to allow users to implement
+a much better random library than any of the simplified
+interfaces suggested.</p>
+      <h3 id="59current-error-port">59 current-error-port</h3>
+      <p>Pretty much all Schemes except embedded ones provide a notion of
+current error distinct from current output.  Should this be exposed as
+a Scheme output port?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> yes, module</li></ul>
+      <h3 id="60Simplefileoperations">60 Simple file operations</h3>
+      <p>Should WG1 provide a module equivalent to the (rnrs files) module?
+This provides <span class="monospace">delete-file</span> and <span class="monospace">file-exists?</span>, which are pretty much
+necessities for any file-driven programming.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> module, wg2</li></ul>
+      <h3 id="64Consistencyinsequenceprocedures">64 Consistency in sequence procedures</h3>
+      <p>Should we add the 10 procedures mentioned at <a href="/wiki/CompleteSequenceCowan">CompleteSequenceCowan</a> in
+order to make the Scheme sequence types consistent?  They are
+`make-list copy-list list-set! string-map string-for-each
+string-&gt;vector copy-vector vector-map vector-for-each vector-&gt;string`,
+all with the obvious interface and semantics.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> module, wg2</li></ul>
+      <p>These should be in a module.  Arguably, the list equivalents like
+map and for-each should be in modules too.  Their extremely useful
+but a loop syntax is generally faster and easier to read.</p>
+      <h3 id="65Precisionindicators">65 Precision indicators</h3>
+      <p>R5RS requires that Scheme support five indicators for the precision of
+floating-point values, not only the default <span class="monospace">e</span> but also <span class="monospace">s</span>, <span class="monospace">f</span>,
+<span class="monospace">d</span>, and <span class="monospace">l</span>.  Only a few Schemes actually support more than one
+precision, so this is mostly noise.  Shall we make it an optional
+feature?</p>
+      <ul>
+        <li><b>Options:</b> required,optional,no,wg2,undecided</li>
+        <li><b>Preferences:</b> optional</li></ul>
+      <h3 id="66AddEXACT-INTEGER?">66 Add EXACT-INTEGER?</h3>
+      <p>Should we add an EXACT-INTEGER? predicate? Currently, to determine
+whether a number is both an integer and exact, we must test for both,
+which requires some hackery or poor pattern matching to optimize in
+existing Scheme implementations.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <h3 id="44Testingfunctionarity">44 Testing function arity</h3>
+      <p>We would like a standard for checking function arity. 
+SRFI-102 proposes a way to check function arity:</p>
+      <ul>
+        <li><b>Options:</b> srfi-102,no,wg2,undecided</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h2 id="WG1-Exceptions">WG1 - Exceptions</h2>
+      <h3 id="17error">17 error</h3>
+      <p>Do we support the near ubiquitous SRFI-23 error procedure,
+and if so should it use the SRFI-23 signature, R6RS, or
+type-dispatch on the first argument to allow both?</p>
+      <ul>
+        <li><b>Options:</b> srfi-23,r6rs,both,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> srfi-23</li></ul>
+      <p>Definitely not the R6RS version, it breaks too much code.</p>
+      <h2 id="WG1-I/O">WG1 - I/O</h2>
+      <h3 id="30stringports">30 string ports</h3>
+      <p>Do we support string ports, as implemented by SRFI-6
+or as by R6RS?</p>
+      <ul>
+        <li><b>Options:</b> srfi-6,r6rs,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> srfi-6, r6rs</li></ul>
+      <h2 id="WG1-Macros">WG1 - Macros</h2>
+      <h3 id="7(......)ellipseescapinginsyntaxpatterns">7 (... ...) ellipse escaping in syntax patterns</h3>
+      <p>A popular extension, formalized in the R6RS,
+is to allow &quot;(... &lt;templ&gt;)&quot; in a syntax-rules template
+to be an escape for &quot;&lt;templ&gt;&quot;.  Do we use this, and
+if so what does (... &lt;t1&gt; &lt;t2&gt;) mean?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,wg2,undecided</li>
+        <li><b>Preferences:</b> yes, wg2</li></ul>
+      <h3 id="39syntax-error">39 syntax-error</h3>
+      <p>Should we have syntax-error parallel to SRFI-23 error?  This is evoked
+when macros are expanded.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> yes, module</li></ul>
+      <h3 id="5syntax-rules">5 syntax-rules</h3>
+      <p>Do we keep syntax-rules in the core, relegate
+it to a standard module, or leave it out entirely
+(possibly letting WG2 specify it).</p>
+      <p><span class="monospace">Yes</span> to keep in core, <span class="monospace">no</span> to remove from Scheme entirely.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> module, yes</li></ul>
+      <h3 id="10identifiersyntax">10 identifier syntax</h3>
+      <p>R6RS introduced identifier syntax as a way to
+expand identifiers in non-macro positions.</p>
+      <p>Orthogonal to the overall macro system and what
+types of expanders are provided, do we provide
+a means to specify identifier syntax?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <p>Identifier syntax is actually really cool.
+I bash it only because it's a big semantic change,
+and not suitable for a small R5RS-compatible language.
+I would not be overly opposed to it in wg2.</p>
+      <h3 id="47internaldefine-syntax">47 internal define-syntax</h3>
+      <p>R6RS extends define-syntax to be allowed
+in local lexical contexts.  Do we allow
+this as well?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,wg2,undecided</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <h2 id="WG1-Numerics">WG1 - Numerics</h2>
+      <h3 id="20inexactinfinities">20 inexact infinities</h3>
+      <p>R6RS provides support for inexact infinities
+and NaN objects.  Do we keep these, and if so
+do we use the same literal syntax and arithmetic
+as in R6RS?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,wg2,undecided</li>
+        <li><b>Preferences:</b> yes, wg2</li></ul>
+      <h2 id="WG1-ReaderSyntax">WG1 - Reader Syntax</h2>
+      <h3 id="15#\foocharacternames">15 #\foo character names</h3>
+      <p>R6RS greatly extends the list of character names,
+as well as allowing #\xNN numeric escapes for characters.
+Do we allow any or all of these names?</p>
+      <ul>
+        <li><b>Options:</b> mnemonic,numeric,both,no,wg2,undecided</li>
+        <li><b>Preferences:</b> both</li></ul>
+      <p>Conservative in the names - we don't need to specify all
+control characters from 0..31.</p>
+      <h3 id="13[brackets]as(parens)">13 [brackets] as (parens)</h3>
+      <p>R6RS allows [] brackets as identical to parenthesis,
+with the condition that they must balance.  Do we
+accept this extension, propose some other use for
+brackets, or leave them unspecified?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <p>Over my dead body! :)</p>
+      <h3 id="14alternatecommentsyntax">14 alternate comment syntax</h3>
+      <p>R6RS provides support for #; nested sexp comments,
+and #| ... |# nested block comments.  Do we include
+either or both of these?</p>
+      <ul>
+        <li><b>Options:</b> sexp,block,both,no,wg2,undecided</li>
+        <li><b>Preferences:</b> sexp</li></ul>
+      <p>I don't like or use the block comments, but I suspect
+I'll get out-voted on this.</p>
+      <h3 id="16symbolescapes">16 symbol escapes</h3>
+      <p>[This ticket was originally about string escapes, but commenters have
+been talking about symbol escapes instead.]</p>
+      <p>R6RS provides character escapes in symbols of the form <span class="monospace">\xnnnn;</span>,
+where nnnn is 1-5 hex digits.  Do we accept this extension?  Do we
+also allow |...| to escape a whole symbol or a part of one?</p>
+      <ul>
+        <li><b>Options:</b> numeric,quoted,both,wg2,undecided</li>
+        <li><b>Preferences:</b> both</li></ul>
+      <h3 id="67stringescapes">67 string escapes</h3>
+      <p>R6RS provides character escapes in symbols of the form \xnnnn;, where
+nnnn is 1-5 hex digits, as well as \n, \t etc. C-like escapes for
+common control characters. Do we accept either or both of these
+extensions?</p>
+      <ul>
+        <li><b>Options:</b> numeric,mnemonic,both,no,wg2,undecided</li>
+        <li><b>Preferences:</b> both</li></ul>
+      <h2 id="WG1-StringsandChars">WG1 - Strings and Chars</h2>
+      <h3 id="24charandstringfolding">24 char and string folding</h3>
+      <p>R6RS provided operations to alter the case
+of strings and characters (upcase, downcase, titlecase
+and foldcase) using locale-independent Unicode
+mappings.  Do we provide equivalent mappings?</p>
+      <ul>
+        <li><b>Options:</b> strings,chars,both,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> strings</li></ul>
+      <h3 id="26stringnormalization">26 string normalization</h3>
+      <p>R6RS provides procedures to explicitly convert
+strings back and forth between the four Unicode
+normalization forms.  Do we provide any sort
+of string normalization?</p>
+      <ul>
+        <li><b>Options:</b> yes,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> no, wg2</li></ul>
+      <p>Totally inappropriate for wg1.</p>
+      <h3 id="27string-ref/set!accesstime">27 string-ref/set! access time</h3>
+      <p>R6RS suggests string-ref and string-set! work
+in O(1) time, implying strings are implemented
+as character arrays.  Do we reaffirm this?</p>
+      <p><span class="monospace">Yes</span> for required constant time.</p>
+      <ul>
+        <li><b>Options:</b> yes,no,wg2,undecided</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h3 id="23characterset">23 character set</h3>
+      <p>R5RS said almost nothing about character sets.
+R6RS specified full Unicode.  Do we specify a
+character set, or limit the options in any way?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/UnicodeCowan">UnicodeCowan</a></li></ul></li>
+        <li><b>Options:</b> cowan,r5rs,wg2,undecided</li>
+        <li><b>Preferences:</b> cowan</li></ul>
+      <p>Modulo string-normalization, and perhaps some
+details to be worked out later since it's a
+large proposal.</p></div></body></html>

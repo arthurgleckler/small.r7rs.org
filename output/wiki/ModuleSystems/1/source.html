@@ -1,0 +1,141 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ModuleSystems version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ModuleSystems version 1</h1>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>comment</h2>
+    <pre>initial module systems summary</pre>
+    <h2>ipnr</h2>
+    <pre>118.21.204.67</pre>
+    <h2>name</h2>
+    <pre>ModuleSystems</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>As the charter states, &quot;the purpose of this work is to facilitate
+sharing of Scheme code.&quot;  To this effect, a module system is
+explicitly given as a requirement in the charter.  We need to consider
+all the different types of module systems supported by R5RS and R6RS
+implementations and come up with a proposal that can gain widespread
+use.
+
+Module systems serve the purpose of encapsulating code and managing
+namespaces.  Although LAMBDA gives lets us manage local identifiers,
+it does't allow us to encapsulate macros, and it wants for a
+friendlier interface for module-like uses.  Some of the existing
+general strategies for implementations include:
+
+  * StaticModules
+
+    Many implementations provide a static module syntax which cannot
+    be extended.  It just provide the basics needed for importing and
+    exporting (optionally renamed) identifiers from other modules.
+    The module form itself, and any auxiliary forms such as `import'
+    and `export' may or may not be expandable as syntax.
+
+  * SyntacticModules
+
+    A natural approach to creating modules is to build them on top of,
+    and allow them to be composed with, macros.  It is relatively easy
+    to implement this for variables only (not importing or exporting
+    syntax), and one sample implementation can be found in lexmod.
+    Allowing importing and exporting syntax requires non-portable
+    extensions.  Chez Scheme uses this approach.
+
+  * ConfigModules
+
+    An alternative approach to extending a module system is to use a
+    DSL for the module syntax which can extend itself.  Scheme48 and
+    Chibi take this approach, supplying a DSL which is essentially
+    Scheme itself.  This allows equivalent extensibility to
+    SyntacticModules while keeping the module extensions clearly
+    separate from the language they describe, and making it easier to
+    statically analyze modules.
+
+  * FirstClassEnvironments
+
+    First-class environments which can be passed as a second argument
+    to `eval' (or the equivalent) can be used to implement modules
+    directly.  If macros are not first-class, the environments would
+    need some interface for passing back and forth macro bindings.
+    The disadvantage of this approach is that many implementations do
+    not support first-class environments.
+
+Whatever implementation strategy is used, a syntax for the standard
+module form must be chosen.  Modulo keyword names, options include:
+
+  * Unwrapped:
+
+    (module &lt;declarations ...)
+    &lt;body&gt; ...
+
+    Seen in most other programming languages, the `module' form is
+    just a single declaration, and the rest of the file contains the
+    actual code.  This has the distinct disadvantage that it can't be
+    implemented easily in many strategies, or on top of existing
+    module systems.
+
+  * Simple wrapper:
+
+    (module &lt;declarations&gt; ... &lt;body&gt; ...)
+
+    Used in the R6RS proposal and many Scheme implementations, this is
+    simple but opens questions of whether declarations may be expanded
+    from macros, and if so makes any static analysis of the module
+    impossible without expanding the body.  Sometimes disliked because
+    it requires indenting the body of the module.
+
+  * Delimited wrapper:
+
+    (module (&lt;declarations&gt; ...) &lt;body&gt; ...)
+
+    This avoids the issues above, simply by delimiting the
+    declarations with a pair of parenthesis so they are all known in
+    advance.  If they are static (can't be expanded from macros), then
+    a simple rule of allowing and ignoring any unknown declaration
+    keyword allows for easy forward-compatibility and
+    implementation-specific extensions.
+
+  * Declaration-only:
+
+    (module &lt;declarations&gt; ...)
+
+    The module form only allows declarations - any code needs to be
+    specified with declarations such as (include &lt;file&gt;) or (body
+    &lt;code&gt; ...).  This is the syntax used in Scheme48 and
+    Chibi-Scheme.  It is equivalent in expressiveness to the delimited
+    wrapper approach, trading an additional level of indentation for
+    no extra parens around the declarations.
+
+  * Declaration-only with embedded body shortcut:
+
+    (module &lt;declarations&gt; ... ---- &lt;body&gt; ...)
+
+    where `----' is some arbitrary symbol chosen to act as a delimiter
+    between the declarations and the body of the library.  Otherwise
+    the same as above, the shortcut syntax allows the body to have
+    only one level of indentation instead of two.
+
+Existing Proposals:
+
+  * [http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-10.html#node_chap_7 R6RS] (the default choice)
+
+  * ModulesAndPackagesArcfide
+
+</pre>
+    <h2>time</h2>
+    <pre>2010-03-04 21:43:35</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

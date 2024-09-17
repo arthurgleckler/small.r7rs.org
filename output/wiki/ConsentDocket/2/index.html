@@ -1,0 +1,34 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ConsentDocket</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ConsentDocket.md">ConsentDocket</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Consent&shy;Docket</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-09-13 21:06:47</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/ConsentDocket/history">history</a></div>
+      <div class="source"><a href="/wiki/ConsentDocket/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="WG2ConsentDocket">WG2 Consent Docket</h2>
+      <p>The following items will be approved without a formal vote unless someone objects, in which case they will be moved to another docket.</p>
+      <p>Note: &quot;Prefix stripping&quot; means that prefixes such as <span class="monospace">fx</span>, <span class="monospace">fl</span>, or <span class="monospace">bitwise-</span> are removed from identifiers exported by this package.  That way, users can add back their own prefixes using the facilities of <span class="monospace">import</span>.</p>
+      <p>Assertions: The R6RS procedure <span class="monospace">assertion-violation</span> (same as R6RS <span class="monospace">error</span>), with appropriate condition object support dependent on WG1 and WG2 decisions.</p>
+      <p>Bitwise: The R6RS <span class="monospace">arithmetic bitwise</span> library with prefix stripping.</p>
+      <p>Explicit renaming macros: Uses the <span class="monospace">er-macro-transformer</span> keyword (bare lambdas are unsupported).  Three arguments are provided to transformers: <span class="monospace">form rename compare</span>.</p>
+      <p>Fixnum arithmetic: The R6RS <span class="monospace">arithmetic fixnum</span> library with prefix stripping.</p>
+      <p>Flonum arithmetic: The R6RS <span class="monospace">arithmetic flonum</span> library with prefix stripping.</p>
+      <p>Format combinators: Alex Shinn's <a href="http://synthcode.com/scheme/fmt/">fmt library</a>, with prefix stripping and a touch of renaming.  The C formatting library is excluded.</p>
+      <p>Getopt/args-fold:  SRFI 37.</p>
+      <p>Regex (S-exps and strings): Alex Shinn's <a href="http://synthcode.com/scheme/irregex/">irregex library</a>, with prefix stripping and a touch of renaming.  Specify full PCRE compatibility even though the irregex implementation doesn't support all of it.</p>
+      <p>SRFIs 1, 2, 13, 14, 31, 41, 43: Per those SRFIs, with possible prefix stripping (don't want to overdo it).  Some of these procedures may wind up in WG1 Scheme per <a href="/wiki/CompleteSequenceCowan">CompleteSequenceCowan</a>.</p>
+      <p>When/unless: Part of the R6RS <span class="monospace">control</span> library.</p></div></body></html>

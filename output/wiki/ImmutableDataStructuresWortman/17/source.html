@@ -1,0 +1,568 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ImmutableDataStructuresWortman version 17</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ImmutableDataStructuresWortman version 17</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>ImmutableDataStructuresWortman</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Introduction ==
+
+This proposal defines ''immutable'' data structures for queues, sets, and maps. A structure is immutable when all its operations leave the structure unchanged. Note that none of the procedures specified here ends with a `!`.
+
+Immutable structures are sometimes called ''persistent'' and are closely related to ''pure-functional'' (a.k.a. ''pure'') structures. The availability of immutable data structures facilitates writing efficient programs in the pure-functional style.
+
+== Efficiency bounds ==
+
+We specify required time efficiency upper bounds using big-O notation. We note when, in some cases, there is &quot;slack&quot; between the required bound and the theoretically optimal bound for an operation. Implementations may use data structures with amortized time bounds, but should document which bounds hold in only an amortized sense. The use of randomized data structures with expected time bounds is discouraged.
+
+== Disjoint types ==
+
+Deques, sets, and maps are disjoint from all other Scheme types, and deques are disjoint from sets and maps.  It is unspecified whether sets and maps are disjoint.
+
+== Deque ==
+
+A deque (conventionally pronounced &quot;deck&quot;) is a queue data structure that supports efficient manipulation of either of its ends. It may be used in place of a (LIFO) stack or (FIFO) queue.
+
+The ''unlabeled finger tree'' data structure can meet all these requirements rather conveniently.  A pair of lists is also a suitable implementation.
+
+=== Construction ===
+
+`(ideque `[ ''element'' ...]`)`
+
+Returns a deque containing the ''elements''. The leftmost element (if any) will be at the front of the deque and the rightmost element (if any) will be at the back. Takes O(n) time, where ''n'' is the number of elements.
+
+`(ideque-tabulate `''n proc''`)`
+
+Invokes ''proc'' successively on the integers 0 through ''n'' - 1 inclusive, and returns a deque containing the results in the given order.  Takes O(n) time.
+
+`(ideque-unfold `''stop? mapper successor seed''`)`
+
+Invokes the predicate ''stop?'' on ''seed''.  If it returns false, generate the next result by applying ''mapper'' to ''seed'', generate the next seed by applying ''successor'' to ''seed'', and repeat this algorithm with the new seed.  If ''stop?'' returns true, return a deque containing the results in order of accumulation.  Takes O(n) time.
+
+`(ideque-unfold-right `''stop? mapper successor seed''`)`
+
+Invokes the predicate ''stop?'' on ''seed''.  If it returns false, generate the next result by applying ''mapper'' to ''seed'', generate the next seed by applying ''successor'' to ''seed'', and repeat the algorithm with the new seed.  If ''stop?'' returns true, return a deque containing the results in reverse order of accumulation.  Takes O(n) time.
+
+=== Predicates ===
+
+`(ideque? `''x''`)`
+
+Returns `#t` if ''x'' is an ideque, and `#f` otherwise.  Takes O(1) time.
+
+`(ideque-empty? `''deque''`)`
+
+Returns `#t` if ''deque'' contains zero elements, and `#f` otherwise.  Takes O(1) time.
+
+=== Queue operations ===
+
+`(ideque-front `''deque''`)`
+
+`(ideque-back `''deque''`)`
+
+Returns the front/back element of ''deque''. It is an error for ''deque'' to be empty. Each takes O(1) time.
+
+`(ideque-remove-front `''deque''`)`
+
+`(ideque-remove-back `''deque''`)`
+
+Returns a deque with the front/back element of ''deque'' removed. It is an error for ''deque'' to be empty. Each takes O(1) time.
+
+`(ideque-add-front `''deque obj''`)`
+
+`(ideque-add-back `''deque obj''`)`
+
+Returns a deque with ''obj'' pushed to the front/back of ''deque''. Each takes O(1) time.
+
+=== Other accessors ===
+
+`(ideque-take `''deque n''`)`
+
+`(ideque-take-right `''deque n''`)`
+
+Returns a deque containing the first/last ''n'' elements of ''deque''.  Takes O(n) time.
+
+`(ideque-drop `''deque n''`)`
+
+`(ideque-drop-right `''deque n''`)`
+
+Returns a deque containing all but the first/last ''n'' elements of ''deque''.  Takes O(n) time.
+
+`(ideque-split-at `''deque n''`)`
+
+Returns two values, the results of `(ideque-take `''deque n''`)` and `(ideque-drop `''deque n''`)` respectively.  Takes O(n) time.
+
+=== The whole deque ===
+
+`(ideque-length `''deque''`)`
+
+Returns the length of ''deque'' as an exact integer.  May take O(n) time, though O(1) is optimal.
+
+`(ideque-append `''deque'' ...`)`
+
+Returns a deque with the contents of the first argument deque followed by the others. Takes O(kn) time, where k is the number of deques and n is the number of elements involved, though O(k log n) is possible.
+
+`(ideque-concatenate `''list-of-deques''`)`
+
+Returns a deque with the contents of the first deque in ''list-of-deques'' followed by the others. This is provided for Schemes in which the number of arguments which can be passed to `apply` is limited.  Takes O(kn) time, where k is the number of deques and n is the number of elements involved, though O(k log n) is possible.
+
+`(ideque-reverse `''deque''`)`
+
+Returns a deque containing the elements of ''deque'' in reverse order.  Takes O(n) time.
+
+`(ideque-count `''pred deque''`)`
+
+Returns the number of elements of ''deque'' which satisfy ''pred'' as an exact integer.  Takes O(n) time.
+
+`(ideque-delete `''pred deque''`)`
+
+Returns a deque containing the elements of ''deque'', except for those which satisfy ''pred''.  Takes O(n) time.
+
+`(ideque-zip `''deque'' ...`)`
+
+Returns a deque of lists (not deques) each of which contains the corresponding element of the argument deques in the order specified.  Processing stops when all the elements of any deque have been seen. Takes O(kn) time, where ''k'' is the number of deques and ''n'' is the number of elements involved.
+
+=== Mapping ===
+
+`(ideque-map `''proc deque''`)`
+
+Applies ''proc'' to each element of ''deque'' and returns a deque containing the results in order.  Takes O(n) time.
+
+`(ideque-for-each `''proc deque''`)`
+
+Applies ''proc'' to each element of ''deque'' in order and returns an unspecified result.  Takes O(n) time.
+
+`(ideque-fold `''proc nil deque''`)`
+
+`(ideque-fold-right `''proc nil deque''`)`
+
+Invokes ''proc'' on each member of ''deque'' in order/reverse order, passing the result of the previous invocation as a second argument. For the first invocation, ''nil'' is used as the second argument. Returns the result of the last invocation, or ''nil'' if there was no invocation.  Takes O(n) time.
+
+`(ideque-append-map `''proc deque''`)`
+
+Applies ''proc'' to each element of ''deque''.  It is an error if the result is not a list.  Returns a deque containing the elements of the lists in order.  Takes O(n) time.
+
+=== Filtering ===
+
+`(ideque-filter `''pred deque''`)`
+
+`(ideque-remove `''pred deque''`)`
+
+Returns a deque which contains the elements of ''deque'' that do/do not satisfy ''pred''.  Takes O(n) time.
+
+`(ideque-partition `''proc deque''`)`
+
+=== Searching ===
+
+`(ideque-find `''pred deque failure''`)`
+
+`(ideque-find-right `''pred deque failure''`)`
+
+Returns the first/last element of ''deque'' that satisfies ''pred''.  If there is no such element, invokes the thunk ''failure'' and returns what it returns.  Takes O(n) time.
+
+`(ideque-take-while `''pred deque''`)`
+
+`(ideque-take-while-right `''pred deque''`)`
+
+Returns a deque containing the longest initial/final prefix of elements in ''deque'' all of which satisfy ''pred''.  Takes O(n) time.
+
+`(ideque-drop-while `''pred deque''`)`
+
+`(ideque-drop-while-right `''proc deque''`)`
+
+Returns a deque which omits the longest initial/final prefix of elements in ''deque'' all of which satisfy ''pred'', but includes all other elements of ''deque''.  Takes O(n) time.
+
+`(ideque-span `''pred deque''`)`
+
+`(ideque-break `''pred deque''`)`
+
+Returns two values, the initial prefix of the elements of ''deque'' which do/do not satisfy ''pred'', and the remaining elements.  Takes O(n) time.
+
+`(ideque-any? `''pred deque''`)`
+
+`(ideque-every? `''pred deque''`)`
+
+Invokes ''pred'' on the elements of ''deque'' in order until one of them returns a true/false value, which is then returned.  If there are no such elements, returns `#f`/`#t`.  Takes O(n) time.
+
+=== Conversion ===
+
+`(list-&gt;ideque `''list''`)`
+
+`(ideque-&gt;list `''deque''`)`
+
+Conversion between deque and list structures. FIFO order is preserved, so the front of a list corresponds to the front of a deque. Each operation takes O(n) time.
+
+=== Comparator ===
+
+`ideque-comparator`
+
+A comparator suitable for comparing ideques.  It does not provide comparison procedures, as there is no ordering between ideques.
+
+== Set ==
+
+A sorted set data structure stores a finite collection of unique elements with a defined [http://ccil.org/~cowan/temp/srfi-114.html comparator].
+
+These requirements can be satisfied by many flavors of ''self-balancing binary trees.'' Red-black trees, 1-2 brother trees, and labeled 2-3 finger trees are particularly convenient in an immutable context.
+
+=== Construction ===
+
+If two elements are to be inserted into a set that are equal in the sense of the set's comparator but are not `eqv?`, the first to be specified or generated prevails.
+
+`(iset `''comparator'' [ ''element'' ...]`)`
+
+Returns a set containing elements `element...`, where ''comparator'' provides the criterion of identity and ordering.  Takes O(n log n) time.
+
+`(iset-tabulate `''n proc''`)`
+
+Invokes ''proc'' successively on the integers 0 through ''n'' - 1 inclusive, and returns a set containing the results.  Takes O(n) time.
+
+`(iset-unfold `''stop? mapper successor seed''`)`
+
+Invokes the predicate ''stop?'' on ''seed''.  If it returns false, generate the next result by applying ''mapper'' to ''seed'', generate the next seed by applying ''successor'' to ''seed'', and repeat this algorithm with the new seed.  If ''stop?'' returns true, return a set containing the results.  Takes O(n) time.
+
+=== Predicates ===
+
+`(iset? `''obj''`)`
+
+Returns `#t` if ''obj'' is a set, and `#f` otherwise.  Takes O(1) time.
+
+`(iset-empty? `''set''`)`
+
+Returns `#t` if ''set'' contains zero elements, and `#f` otherwise.  Takes O(1) time.
+
+(iset-size set)
+(iset-comparator set)
+`
+
+`iset-size` may take O(n) time, though O(1) is optimal. The other procedures take O(1) time.
+
+=== Element queries ===
+
+`(iset-member? `''set obj''`)`
+
+Returns `#t` if ''set'' contains ''obj'', and `#f` otherwise.  Takes O(log n) time.
+
+`(iset-min `''set''`)`
+
+`(iset-max `''set''`)`
+
+Returns the least/greatest element of ''set''.  It is an error for''set'' to be empty. Takes O(log n) time; O(1) is optimal.
+
+=== Element operations ===
+
+`(iset-adjoin `''set obj''`)`
+
+Returns a set which contains the elements of ''set'' and ''obj'' as well.  If there is already an element of ''set'' that is equal (in the sense of the comparator) to ''obj'', the element of ''set'' prevails.  Takes O(log n) time.
+
+`(iset-adjoin-all `''set list''`)`
+
+Returns a set which contains the elements of ''set'' and the elements of ''list'' as well.  It is an error if the elements of ''list'' are not increasing in the sense of the comparator of ''set''.  If there is already an element of ''set'' which is equal (in the sense of the comparator) to an element of ''list'', the element of ''set'' prevails.  Takes O(k log n) time, where ''k'' is the length of ''list''.
+
+`(iset-replace `''set obj''`)`
+
+Returns a set which contains the elements of ''set'' and ''obj'' as well.  If there is already an element of ''set'' that is equal (in the sense of the comparator) to ''obj'', ''obj'' prevails.  Takes O(log n) time.
+
+`(iset-delete `''set obj''`)`
+
+Returns a set which contains the elements of ''set'' with the exception of ''obj'', if present.  If there is already an element of ''set'' that is equal (in the sense of the comparator) to ''obj'', the element of ''set'' prevails.  Takes O(log n) time.
+
+`(iset-delete-all `''set list''`)`
+
+Returns a set which contains the elements of ''set'', excluding the elements of ''list''.  It is an error if the elements of ''list'' are not increasing in the sense of the comparator of ''set''. Takes O(k log n) time, where ''k'' is the length of ''list''.
+
+`(iset-predecessor `''set obj failure''`)`
+
+`(iset-successor `''set obj failure''`)`
+
+Returns the element that immediately precedes/succeeds `x` in `set`'s ordering. If no such element exists because ''obj'' is the minimum/maximum element, or because ''set'' is empty, returns the result of invoking the thunk ''failure''. Takes O(log n) time.
+
+`(iset-search `''set obj failure success''`)`
+
+A continuation-based universal update procedure. Attempts to find an element equal (in the sense of the comparator) to ''obj'' in ''set''. When such an element is found,`iset-search` calls ''(success match update remove)''.  The ''success'' procedure either tail-calls '' (update new-element ret)'' to replace the matched element with the new element, or else tail-calls ''(remove ret)'' to remove the matched element  from ''set''.
+
+When no such match is found, `iset-search` calls ''(failure insert ignore)'', which either tail-calls ''(insert ret)'' to insert ''obj'' into ''set'', or else tail-calls ''(ignore ret)'' .`
+
+In all cases, `iset-search` returns two values, a set reflecting the indicated modification (if any) and the value ''ret'' produced by one of the continuations. It runs in O(log n) time.
+
+(This procedure is based on an analogous procedure for hash tables suggested by Alexey Radul and attributed to Taylor Campbell.)
+
+`(iset-find `''set obj failure''`)`
+
+Returns the element equal (in the sense of the comparator of ''set'') to ''obj'' in ''set'', or the result of invoking the thunk ''failure'' if no such element exists. Takes O(log n) time.
+
+=== Filtering ===
+
+`(iset-range= `''set obj''`)`
+
+`(iset-range&lt; `''set obj''`)`
+
+`(iset-range&gt; `''set obj''`)`
+
+`(iset-range&lt;= `''set obj''`)`
+
+`(iset-range&gt;= `''set obj''`)`
+
+Returns a set containing only the elements of `set` that are equal to/less than/greater than / less than or equal to /greater than or equal to ''obj''.  Takes O(k log k + log n) time, where n is the number of elements in the set and k is the number of elements returned; O(k + log n) is optimal.
+
+Note that since set elements are unique, `iset-range=` returns a set of at most one element.
+
+`(iset-between `''set least include-least most include-most''`)`
+
+Returns a set containing the elements of ''set'' in the interval between ''least''and ''most''. If ''include-least/include-most'' is true then the result includes an element equal to ''least/most'' respectively; otherwise those elements are not included. Takes O(k log k + log n) time, where n is the number of elements in the set and k is the number of elements returned; O(k + log n) is optimal.
+
+`(iset-filter `''pred set''`)`
+
+`(iset-remove `''pred set''`)`
+
+Returns a set containing only those elements `x` for which `(predicate? x)` returns true/false. Takes O(n log n) time; O(n) is optimal.
+
+`(iset-partition`''pred set''`)`
+
+Returns two values, `(iset-filter `''pred set''`)` and `(iset-remove `''pred set''`)` respectively.
+
+=== Folding and mapping ===
+
+`(iset-fold `''proc nil set''`)`
+
+The fundamental set iterator. Equivalent to, but may be more efficient than, `(fold `''proc base'' ` (iset-&gt;ordered-list `''set''`))`.  Takes O(n) time.
+
+`(iset-map/monotone `''proc set'' [ ''comparator'' ]`)`
+
+Returns a set containing the values returned by ''(proc x'') for every ''x'' in ''set''.  It is an error unless ''proc'' is a ''monotone'' unary procedure that preserves the order of set elements. Observe that mapping a set of unique elements with a monotone function yields a set of unique elements, so element uniqueness follows from the monotonicity assumption. If ''comparator'' is given, it is the comparator of the result; otherwise the result uses the same comparator as ''set''. Takes O(n) time.
+
+`(iset-map`''proc set'' [ ''comparator'' [ ''merger'' ] ]`)`
+
+Like `iset-map/monotone`, except that ''proc'' is not required to be monotone. The `merger` procedure is used to select among any duplicate elements (in the sense of the comparator of ''set'') that might be created; it returns the value to be used; if absent, the element chosen is implementation-specific.  Takes O(n log n) time.
+
+=== Conversion ===
+
+`(iset-&gt;list `''set''`)`
+
+Returns a list containing the elements of `set` in increasing order. Takes O(n) time.
+
+`(ordered-list-&gt;iset comparator list)`
+
+Returns a set containing the elements of ''list'' and using ''comparator''. It is an error for ''list'' to be anything other than a proper list of elements in increasing order. Takes O(n log n) time; O(n) is optimal.
+
+`(list-&gt;iset `''comparator list [ ''merger'' ]`)`
+
+Returns a set containing the elements of ''list'' and using ''comparator''. `list` must be a proper list, but may contain duplicates and need not be in order.  The `merger` procedure is used to select among any duplicate elements (in the sense of the comparator of ''set'') that might be created; it returns the value to be used.  Takes O(n log n) time.
+
+=== Set-theoretic operations ===
+
+`(iset-union `''set'' ... `)`
+
+`(iset-intersection `''set'' ... `)`
+
+`(iset-difference `''set'' ... `)`
+
+`(iset-xor `''set,,1,, set,,2,,''`)`
+
+Returns a set containing the union/intersection/difference/symmetric difference of the arguments. All the arguments must be sets sharing an equivalent comparator. The set operator is applied in a left-associative order. If an element is found in more than one set, the first set in the argument list prevails.  May take O(kn log n) time, where k is the number of sets and n is the number of elements involved, though O(kn) time is optimal.
+
+== Maps ==
+
+A map data structure stores key-value associations from a set of keys with an order predicate to arbitrary value objects. It is an alternative to an association list or hash table, which also store key-value associations, but with different key constraints and efficiency guarantees.
+
+In the same way that a list of key-value dotted pairs can implement an association list, a set of key-value dotted pairs can implement a map. Implementations may use this approach, or may implement a distinct data structure specific to maps.
+
+=== Construction ===
+
+=== Map-wide queries ===
+
+`
+(imap? x)
+(imap-empty? map)
+(imap-size map)
+(imap-order-predicate map)
+`
+
+The behavior and efficiency of these operations is the same as the analogous set procedures.
+
+=== Set-theoretic operations ===
+
+`
+(imap-union map...)
+(imap-intersection map...)
+(imap-difference map...)
+(imap-xor map1 map2)
+`
+
+The behavior and efficiency of these operations is the same as the analogous set procedures.
+
+=== Element queries ===
+
+`
+(imap-member? map key)
+(imap-min-key map)
+(imap-max-key map)
+`
+
+The behavior and efficiency of these operations is the same as the analogous set procedures.
+
+`
+(imap-min-value map)
+(imap-max-value map)
+`
+
+Returns the value associated with `(imap-min-key map)` and `(imap-max-key map)` respectively. O(log n) time; O(1) is optimal.
+
+=== Element operations ===
+
+`
+(imap-update map key failure success)
+`
+
+A continuation-based universal update procedure. Attempts to find a key equal (in the sense of the comparator of ''map'') to ''key'' in ''map'', and its associated `value`. When no such key is found, returns the result of calling ''(failure insert)'', where ''insert'' is a procedure such that ''(insert new-value)'' returns a version of `map` in which `key` is associated with `new-value`.
+
+When `key-match` exists, returns the result of calling
+`
+(success key-match value replace remove)
+`
+. `replace` is a procedure such that
+`
+(replace new-value)
+`
+returns a new version of `map` in which the `key` maps to `new-value` instead of `value`.
+
+`remove` is a thunk such that
+`
+(remove)
+`
+returns a new version of `map` with no association for `key`. 
+
+The `imap-update`, `insert`, `replace`, and `remove` procedures may take O(log n) time each. Thus if `failure` and `success` take constant (or even O(log n)) time and call their passed-in continuations at most once (or even any constant number of times), the entire update process takes O(log n) time.
+`
+(imap-find map key [failure])
+`
+Returns the value associated with `key` in `map`, or the result of evaluating `(failure)` if no such value exists. If `failure` is unspecified then a default procedure that always returns `#f` is used. O(log n) time.
+
+`
+(imap-include map key value)
+(imap-exclude map key)
+`
+Returns a set that certainly does/doesn't include an association from `key`. `imap-include` will replace any prior association from `key` that might exist in `map`. O(log n) time.
+
+`
+(imap-key-predecessor map key [failure])
+(imap-key-successor map key [failure])
+`
+
+The behavior and efficiency of these operations is the same as the analogous set procedures.
+
+=== Range queries ===
+
+`
+(imap-between map least include-least most include-most)
+`
+
+The behavior and efficiency of these operations is the same as the analogous set procedures. (Least and most are keys.)
+
+`
+(imap-range&lt; map key)
+(imap-range&lt;= map key)
+(imap-range= map key)
+(imap-range&gt;= map key)
+(imap-range&gt; map key)
+`
+
+The behavior and efficiency of these operations is the same as the analogous set procedures.
+
+=== Filter, fold, map ===
+
+`
+(imap-filter proc set)
+`
+
+Returns a set containing only those associations for which `(proc key value)` returns true. O(n log n) time; O(n) is optimal.
+
+`
+(imap-fold proc base map)
+`
+The fundamental map iterator. Calls
+`
+(proc key value accum)
+`
+successively to accumulate a value initialized to `base`. O(n) time.
+
+`
+(imap-map-values proc map)
+`
+Returns a map where each `value` is replaced with the result of evaluating ''(proc key value)'' for that value's key. Takes O(n) time.
+
+`
+(imap-map/monotone proc map [precedes?])
+`
+Returns a map containing the association values returned by calls to
+`
+(proc key value)
+`
+for each key-value association in `map`. `proc` must returns `(values new-key new-value)`. The key mapping must be a ''monotone,'' preserving the order and uniqueness of keys. The value mapping need not be monotone. If `precedes?` is given, it is the key order predicate of the map; otherwise the map uses the same order predicate as `map`. Takes O(n) time.
+
+`
+(imap-map proc map [precedes?])
+`
+As `imap-map/monotone`, except the `proc` is not required to be monotone. When multiple keys are mapped to the same `new-key`, only the association originating from the greatest pre-mapped key is retained. O(n log n) time.
+
+=== Conversion ===
+
+`
+(imap-&gt;ordered-alist map)
+`
+
+Returns an association list containing the associations of `map` in increasing order by key. O(n) time.
+
+`
+(imap-keys map)
+`
+Returns a set containing the keys of `map`. O(n log n) time; O(n) is optimal.
+
+`
+(imap-values map)
+`
+Returns a list containing the values of `map` in increasing order by key. O(n) time.
+
+`
+(ordered-alist-&gt;imap precedes? alist)
+`
+
+Returns a map containing the associations of `alist` and using order predicate `precedes?`. It is an error for `list` to be anything other than a proper association list in increasing order by key. O(n log n) time; O(n) is optimal.
+
+`
+(alist-&gt;imap precedes? alist)
+`
+
+The behavior and efficiency of these operations is the same as the analogous set procedures.
+
+=== Key comparison ===
+
+`
+(imap-key&lt;? map x y)
+(imap-key=? map x y)
+(imap-key&gt;? map x y)
+`
+
+The behavior and efficiency of these operations is the same as the analogous set procedures.
+</pre>
+    <h2>time</h2>
+    <pre>2015-05-27 00:39:12</pre>
+    <h2>version</h2>
+    <pre>17</pre></body></html>

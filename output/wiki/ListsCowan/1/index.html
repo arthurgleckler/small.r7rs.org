@@ -1,0 +1,33 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ListsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ListsCowan.md">ListsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Lists&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-23 15:05:35</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ListsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ListsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This proposal is a tiny extension to SRFI 1.  The procedures come from Common Lisp, with a little renaming.  Some Common Lisp procedures are already in SRFI 1 and don't appear here.</p>
+      <h2 id="Associationlists">Association lists</h2>
+      <p><span class="monospace">(make-alist </span><i>keys values</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated alist whose pairs are constructed from the elements of the lists <i>keys</i> and <i>values</i>.  (Common Lisp PAIRLIS.)</p>
+      <p><span class="monospace">Reverse-assq</span>, <span class="monospace">reverse-assv</span>, and <span class="monospace">reverse-assoc</span> are the same as <span class="monospace">assq</span>, <span class="monospace">assv</span>, and <span class="monospace">assoc</span> respectively, except that the key is matched against the cdr rather than the car of the pairs in the alist.  (Common Lisp RASSOC.)</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(atom? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#f</span> if <i>obj</i> is a pair, and <span class="monospace">#t</span> otherwise.  (Common Lisp ATOM.)</p>
+      <p><span class="monospace">(end? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is the empty list, <span class="monospace">#f</span> if <i>obj</i> is a pair.  It signals an error otherwise.  (Common Lisp ENDP.)</p>
+      <h2 id="Issues">Issues</h2>
+      <p>Should these procedures, if accepted, be merged into SRFI 1?</p></div></body></html>

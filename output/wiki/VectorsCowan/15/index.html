@@ -1,0 +1,92 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>VectorsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/VectorsCowan.md">VectorsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Vectors&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-12-24 06:34:19</div>
+      <div class="version">15<span class="comment"></span><a href="/wiki/VectorsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/VectorsCowan/15/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a preliminary list of procedures for the R7RS vector library.  It is an upward compatible extension of the vector libraries of <a href="http://www.schemers.org/Documents/Standards/R5RS/">R5RS</a>, <a href="/attachment/r7rs.pdf">R7RS-small</a>, and <a href="http://srfi.schemers.org/srfi-43/srfi-43.html">SRFI 43</a>, with additional procedures that are analogous to procedures in the <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> list library.  As a single exception, the <span class="monospace">vector-copy</span> procedure in R7RS-small does not provide the <i>fill</i> argument present in SRFI 43.</p>
+      <p>The procedures that are already in R7RS-small will not be overridden by this library, and are listed only for completeness.</p>
+      <h2 id="Notation">Notation</h2>
+      <ul>
+        <li>R5RS means the procedure is available in R5RS and R7RS-small</li></ul>
+      <ul>
+        <li>R5RS+ means the procedure is available in R5RS and with additional functionality in R7RS-small and SRFI 43.</li></ul>
+      <ul>
+        <li>R7RS means the procedure is available in R7RS-small and SRFI 43.</li></ul>
+      <ul>
+        <li>SRFI 43 means the procedure is available in SRFI 43.</li></ul>
+      <ul>
+        <li>SRFI 43+ means either the procedure is available in SRFI 43 but additional functionality is proposed (typically <i>start/end</i> and possibly <i>at</i> arguments), or an analogous procedure is available in SRFI 43.</li></ul>
+      <ul>
+        <li>SRFI 1 means an analogous procedure is available in SRFI 1.</li></ul>
+      <h2 id="Constructors">Constructors</h2>
+      <p>make-vector (R5RS), vector (R5RS), vector-iota (SRFI 1)  \\
+vector-unfold (SRFI 43), vector-unfold-right (SRFI 43) \\
+vector-copy (R7RS), vector-copy! (R7RS) \\
+vector-reverse-copy (SRFI 43+), vector-reverse-copy! (SRFI 43+) \\
+vector-append (R7RS), vector-append! (SRFI 1) \\
+vector-append-subvectors (see below) \\
+vector-concatenate (SRFI 43), vector-concatenate! (SRFI 1) \\
+vector-tabulate (SRFI 1), vector-tabulate! (SRFI 1)</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p>vector? (R5RS), vector-empty? (SRFI 43), vector= (SRFI 43+)</p>
+      <h2 id="Selectors">Selectors</h2>
+      <p>vector-ref (R5RS), vector-length (R5RS) \\
+vector-take (SRFI 1), vector-take-right (SRFI 1) \\
+vector-drop (SRFI 1), vector-drop-right (SRFI 1) \\
+vector-split-at (SRFI 1)</p>
+      <h2 id="Iteration">Iteration</h2>
+      <p>vector-fold (SRFI 43+), vector-fold-right (SRFI 43+) \\
+vector-reduce (SRFI 43+), vector-reduce-right (SRFI 43+) \\
+vector-map (SRFI 43+), vector-map! (SRFI 43+) \\
+vector-for-each (R7RS)</p>
+      <p>The above procedures do not pass the index value to the mapping function, for compatibility with R7RS <span class="monospace">vector-map</span> and <span class="monospace">vector-fold</span>.  The following versions, which are compatible with SRFI 43, pass the index value as the first argument.</p>
+      <p>vector-fold-index (SRFI 43+), vector-fold-right-index (SRFI 43+) \\
+vector-reduce-index (SRFI 43+), vector-reduce-right-index (SRFI 43+) \\
+vector-map-index (SRFI 43+), vector-map-index! (SRFI 43+) \\
+vector-for-each-index (R7RS)</p>
+      <h2 id="Filteringandpartitioning">Filtering and partitioning</h2>
+      <p>vector-count (SRFI 43+) \\
+vector-filter (SRFI 1), vector-remove (SRFI 1), vector-partition (SRFI 1) \\
+vector-filter! (SRFI 1), vector-remove! (SRFI 1), vector-partition! (SRFI 1)</p>
+      <h2 id="Deleting">Deleting</h2>
+      <p>vector-delete (SRFI 1), vector-delete-duplicates (SRFI 1) \\
+vector-delete! (SRFI 1), vector-delete-duplicates! (SRFI 1)</p>
+      <h2 id="Searching">Searching</h2>
+      <p>vector-find (SRFI 1) \\
+vector-index (SRFI 43+), vector-index-right (SRFI 43+) \\
+vector-skip (SRFI 43+), vector-skip-right (SRFI 43+) \\
+vector-any (SRFI 43+), vector-every (SRFI 43+) \\
+vector-take-while (SRFI 1+), vector-drop-while (SRFI 1+) \\
+vector-binary-search (SRFI 43+) \\
+vector-span (SRFI 1), vector-span! (SRFI 1) \\
+vector-break (SRFI 1), vector-break! (SRFI 1)</p>
+      <h2 id="Mutators">Mutators</h2>
+      <p>vector-set! (R5RS), vector-swap! (SRFI 43) \\
+vector-fill! (R5RS+), vector-reverse! (SRFI 43+) \\
+vector-copy! (R7RS), vector-reverse-copy! (SRFI 43+)</p>
+      <h2 id="Conversion">Conversion</h2>
+      <p>vector-&gt;list (R5RS+), reverse-vector-&gt;list (SRFI 43+) \\
+list-&gt;vector (R5RS), reverse-list-&gt;vector (SRFI 43) \\
+vector-&gt;string (R7RS), string-&gt;vector (R7RS)</p>
+      <h2 id="Additionalprocedures">Additional procedures</h2>
+      <p><span class="monospace">(vector-append-subvectors </span><i>k fill</i> ( <i>at vector start end stride</i> ) ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated vector of length <i>k</i> after copying every <i>stride</i>-th element of each <i>vector</i> from <i>start</i> to <i>end</i> into the new vector starting at <i>at</i>.  Any additional locations in the new vector are initialized with <i>fill</i>.  This procedure is a generalization of <span class="monospace">vector-copy</span> and <span class="monospace">vector-copy!</span>.  Implementations may optimize this procedure using an unsafe primitive that creates an uninitialized vector, in order to avoid touching each element of the result twice.</p>
+      <p><span class="monospace">(vector-cumulate </span><i>proc seed vector</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated vector of the same length as <i>vector</i>.  Each element is constructed by reducing (as if by <span class="monospace">vector-reduce</span>) successive prefixes of the elements of <i>vector</i>. (APL scan.)</p>
+      <p><span class="monospace">vector-rotate</span></p></div></body></html>

@@ -1,0 +1,625 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki FlonumsCowan version 11</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki FlonumsCowan version 11</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>FlonumsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Flonums package ==
+
+''Flonums'' are a subset of the inexact real numbers provided by a Scheme implementation.  In most Schemes, the flonums and the inexact reals are the same.
+
+The procedures in this package don't have hard-coded prefixes.  The intent is that they be placed in a module.  Users can then import this module with their own prefix such as `fl`, or `ƒ` if their Scheme implementation supports that character, or with no prefix at all if the intent is to override the normal Scheme arithmetic routines.
+
+== R6RS flonum library ==
+
+{{{
+#!html
+&lt;p&gt;
+This section uses &lt;i&gt;fl&lt;/i&gt;, &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;, &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;, etc., as
+parameter names for flonum arguments, and &lt;i&gt;ifl&lt;/i&gt;
+as a name for integer-valued flonum arguments, i.e., flonums for which the
+&lt;tt&gt;integer?&lt;/tt&gt; predicate returns true.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_950&quot;&gt;&lt;/a&gt;flonum?&lt;i&gt; obj&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+Returns &lt;tt&gt;#t&lt;/tt&gt; if &lt;i&gt;obj&lt;/i&gt; is a flonum, &lt;tt&gt;#f&lt;/tt&gt; otherwise.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_952&quot;&gt;&lt;/a&gt;real-&amp;gt;flonum&lt;i&gt; x&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+Returns the best flonum representation of
+&lt;i&gt;x&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;
+The value returned is a flonum that is numerically closest to the
+argument.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;&lt;em&gt;Note:&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;/em&gt;
+If flonums are represented in binary floating point, then
+implementations should break ties by preferring
+the floating-point representation whose least significant bit is
+zero.
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_954&quot;&gt;&lt;/a&gt;fl=?&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_956&quot;&gt;&lt;/a&gt;fl&amp;lt;?&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_958&quot;&gt;&lt;/a&gt;fl&amp;lt;=?&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_960&quot;&gt;&lt;/a&gt;fl&amp;gt;?&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_962&quot;&gt;&lt;/a&gt;fl&amp;gt;=?&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+These procedures return &lt;tt&gt;#t&lt;/tt&gt; if their arguments are (respectively):
+equal, monotonically increasing, monotonically decreasing,
+monotonically nondecreasing, or monotonically nonincreasing,
+&lt;tt&gt;#f&lt;/tt&gt; otherwise.  These
+predicates must be transitive.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(fl=&amp;nbsp;+inf.0&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;&lt;tt&gt;#t&lt;/tt&gt;
+&lt;p class=nopadding&gt;(fl=&amp;nbsp;-inf.0&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;&lt;tt&gt;#f&lt;/tt&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fl=&amp;nbsp;-inf.0&amp;nbsp;-inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;&lt;tt&gt;#t&lt;/tt&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fl=&amp;nbsp;0.0&amp;nbsp;-0.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;&lt;tt&gt;#t&lt;/tt&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fl&amp;lt;&amp;nbsp;0.0&amp;nbsp;-0.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;&lt;tt&gt;#f&lt;/tt&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fl=&amp;nbsp;+nan.0&amp;nbsp;&lt;i&gt;fl&lt;/i&gt;)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;&lt;tt&gt;#f&lt;/tt&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fl&amp;lt;&amp;nbsp;+nan.0&amp;nbsp;&lt;i&gt;fl&lt;/i&gt;)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;&lt;tt&gt;#f&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_964&quot;&gt;&lt;/a&gt;flinteger?&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_966&quot;&gt;&lt;/a&gt;flzero?&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_968&quot;&gt;&lt;/a&gt;flpositive?&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_970&quot;&gt;&lt;/a&gt;flnegative?&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_972&quot;&gt;&lt;/a&gt;flodd?&lt;i&gt; ifl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_974&quot;&gt;&lt;/a&gt;fleven?&lt;i&gt; ifl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_976&quot;&gt;&lt;/a&gt;flfinite?&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_978&quot;&gt;&lt;/a&gt;flinfinite?&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_980&quot;&gt;&lt;/a&gt;flnan?&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+These numerical predicates test a flonum for a particular property,
+returning &lt;tt&gt;#t&lt;/tt&gt; or &lt;tt&gt;#f&lt;/tt&gt;.
+The &lt;tt&gt;flinteger?&lt;/tt&gt; procedure tests whether the number object is an integer,
+&lt;tt&gt;flzero?&lt;/tt&gt; tests whether
+it is &lt;tt&gt;fl=?&lt;/tt&gt; to zero, &lt;tt&gt;flpositive?&lt;/tt&gt; tests whether it is greater
+than zero, &lt;tt&gt;flnegative?&lt;/tt&gt; tests whether it is less
+than zero, &lt;tt&gt;flodd?&lt;/tt&gt; tests whether it is odd, 
+&lt;tt&gt;fleven?&lt;/tt&gt; tests whether it is even,
+&lt;tt&gt;flfinite?&lt;/tt&gt; tests whether it is not an infinity and not a NaN,
+&lt;tt&gt;flinfinite?&lt;/tt&gt; tests whether it is an infinity, and
+&lt;tt&gt;flnan?&lt;/tt&gt; tests whether it is a NaN.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(flnegative?&amp;nbsp;-0.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;tt&gt;#f&lt;/tt&gt;
+&lt;p class=nopadding&gt;(flfinite?&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;tt&gt;#f&lt;/tt&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(flfinite?&amp;nbsp;5.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;tt&gt;#t&lt;/tt&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(flinfinite?&amp;nbsp;5.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;tt&gt;#f&lt;/tt&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(flinfinite?&amp;nbsp;+inf.0)&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;tt&gt;#t&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;&lt;em&gt;Note:&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;/em&gt;
+&lt;tt&gt;(flnegative? -0.0)&lt;/tt&gt; must return &lt;tt&gt;#f&lt;/tt&gt;,
+else it would lose the correspondence with
+&lt;tt&gt;(fl&amp;lt; -0.0 0.0)&lt;/tt&gt;, which is &lt;tt&gt;#f&lt;/tt&gt;
+according to IEEE 754&amp;nbsp;[&lt;a href=&quot;r6rs-lib-Z-H-21.html#node_bib_7&quot;&gt;7&lt;/a&gt;].
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_982&quot;&gt;&lt;/a&gt;flmax&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_984&quot;&gt;&lt;/a&gt;flmin&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+These procedures return the maximum or minimum of their arguments.
+They always return a NaN when one or more of the arguments is a NaN.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_986&quot;&gt;&lt;/a&gt;fl+&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_988&quot;&gt;&lt;/a&gt;fl*&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+These procedures return the flonum sum or product of their flonum
+arguments.  In general, they should return the flonum that best
+approximates the mathematical sum or product.  (For implementations
+that represent flonums using IEEE binary floating point, the
+meaning of &amp;ldquo;best&amp;rdquo; is defined by the IEEE standards.)&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(fl+&amp;nbsp;+inf.0&amp;nbsp;-inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;+nan.0
+&lt;p class=nopadding&gt;(fl+&amp;nbsp;+nan.0&amp;nbsp;&lt;i&gt;fl&lt;/i&gt;)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;+nan.0&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fl*&amp;nbsp;+nan.0&amp;nbsp;&lt;i&gt;fl&lt;/i&gt;)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;+nan.0&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_990&quot;&gt;&lt;/a&gt;fl-&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_992&quot;&gt;&lt;/a&gt;fl-&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_994&quot;&gt;&lt;/a&gt;fl/&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_996&quot;&gt;&lt;/a&gt;fl/&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+With two or more arguments, these procedures return the flonum
+difference or quotient of their flonum arguments, associating to the
+left.  With one argument, however, they return the additive or
+multiplicative flonum inverse of their argument.  In general, they
+should return the flonum that best approximates the mathematical
+difference or quotient.  (For implementations that represent flonums
+using IEEE binary floating point, the meaning of &amp;ldquo;best&amp;rdquo; is
+reasonably well-defined by the IEEE standards.)&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(fl-&amp;nbsp;+inf.0&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;+nan.0&lt;p&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;
+For undefined quotients, &lt;tt&gt;fl/&lt;/tt&gt; behaves as specified by the
+IEEE standards:&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(fl/&amp;nbsp;1.0&amp;nbsp;0.0)&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;+inf.0
+&lt;p class=nopadding&gt;(fl/&amp;nbsp;-1.0&amp;nbsp;0.0)&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;-inf.0&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fl/&amp;nbsp;0.0&amp;nbsp;0.0)&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;+nan.0&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_998&quot;&gt;&lt;/a&gt;flabs&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+Returns the absolute value of &lt;i&gt;fl&lt;/i&gt;.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1000&quot;&gt;&lt;/a&gt;fldiv-and-mod&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1002&quot;&gt;&lt;/a&gt;fldiv&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1004&quot;&gt;&lt;/a&gt;flmod&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1006&quot;&gt;&lt;/a&gt;fldiv0-and-mod0&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1008&quot;&gt;&lt;/a&gt;fldiv0&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1010&quot;&gt;&lt;/a&gt;flmod0&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+These procedures implement number-theoretic integer division and
+return the results of the corresponding mathematical operations
+specified in report section&amp;nbsp;on &amp;ldquo;Integer division&amp;rdquo;.  For zero divisors, these
+procedures may return a NaN or some unspecified flonum.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(fldiv&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;em&gt;d&lt;/em&gt;&lt;em&gt;i&lt;/em&gt;&lt;em&gt;v&lt;/em&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;
+&lt;p class=nopadding&gt;(flmod&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;em&gt;m&lt;/em&gt;&lt;em&gt;o&lt;/em&gt;&lt;em&gt;d&lt;/em&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fldiv-and-mod&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;br&gt;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;em&gt;d&lt;/em&gt;&lt;em&gt;i&lt;/em&gt;&lt;em&gt;v&lt;/em&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;,&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;em&gt;m&lt;/em&gt;&lt;em&gt;o&lt;/em&gt;&lt;em&gt;d&lt;/em&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;br&gt;
+;&amp;nbsp;two&amp;nbsp;return&amp;nbsp;values&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fldiv0&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;em&gt;d&lt;/em&gt;&lt;em&gt;i&lt;/em&gt;&lt;em&gt;v&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(flmod0&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;em&gt;m&lt;/em&gt;&lt;em&gt;o&lt;/em&gt;&lt;em&gt;d&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fldiv0-and-mod0&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;br&gt;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;em&gt;d&lt;/em&gt;&lt;em&gt;i&lt;/em&gt;&lt;em&gt;v&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;,&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;em&gt;m&lt;/em&gt;&lt;em&gt;o&lt;/em&gt;&lt;em&gt;d&lt;/em&gt;&lt;sub&gt;0&lt;/sub&gt;&amp;nbsp;&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;br&gt;
+;&amp;nbsp;two&amp;nbsp;return&amp;nbsp;values&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1012&quot;&gt;&lt;/a&gt;flnumerator&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1014&quot;&gt;&lt;/a&gt;fldenominator&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+These procedures return the numerator or denominator of &lt;i&gt;fl&lt;/i&gt;
+as a flonum; the result is computed as if &lt;i&gt;fl&lt;/i&gt; was represented as
+a fraction in lowest terms.  The denominator is always positive.  The
+denominator of 0.0 is defined to be 1.0.
+&lt;/p&gt;
+
+&lt;tt&gt;(flnumerator&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;+inf.0
+&lt;p class=nopadding&gt;(flnumerator&amp;nbsp;-inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;-inf.0&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fldenominator&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;1.0&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fldenominator&amp;nbsp;-inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;1.0&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(flnumerator&amp;nbsp;0.75)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;3.0&amp;nbsp;;&amp;nbsp;probably&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fldenominator&amp;nbsp;0.75)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;4.0&amp;nbsp;;&amp;nbsp;probably&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;
+Implementations should implement following behavior:&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(flnumerator&amp;nbsp;-0.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;-0.0&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1016&quot;&gt;&lt;/a&gt;flfloor&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1018&quot;&gt;&lt;/a&gt;flceiling&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1020&quot;&gt;&lt;/a&gt;fltruncate&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1022&quot;&gt;&lt;/a&gt;flround&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+These procedures return integral flonums for flonum arguments that are
+not infinities or NaNs.  For such arguments, &lt;tt&gt;flfloor&lt;/tt&gt; returns the
+largest integral flonum not larger than &lt;i&gt;fl&lt;/i&gt;.  The &lt;tt&gt;flceiling&lt;/tt&gt;
+procedure
+returns the smallest integral flonum not smaller than &lt;i&gt;fl&lt;/i&gt;.
+The &lt;tt&gt;fltruncate&lt;/tt&gt; procedure returns the integral flonum closest to &lt;i&gt;fl&lt;/i&gt; whose
+absolute value is not larger than the absolute value of &lt;i&gt;fl&lt;/i&gt;.
+The &lt;tt&gt;flround&lt;/tt&gt; procedure returns the closest integral flonum to &lt;i&gt;fl&lt;/i&gt;,
+rounding to even when &lt;i&gt;fl&lt;/i&gt; represents a number halfway between two integers.&lt;/p&gt;
+&lt;p&gt;
+Although infinities and NaNs are not integer objects, these procedures return
+an infinity when given an infinity as an argument, and a NaN when
+given a NaN:&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(flfloor&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;+inf.0
+&lt;p class=nopadding&gt;(flceiling&amp;nbsp;-inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;-inf.0&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fltruncate&amp;nbsp;+nan.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;+nan.0&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1024&quot;&gt;&lt;/a&gt;flexp&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1026&quot;&gt;&lt;/a&gt;fllog&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1028&quot;&gt;&lt;/a&gt;fllog&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1030&quot;&gt;&lt;/a&gt;flsin&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1032&quot;&gt;&lt;/a&gt;flcos&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1034&quot;&gt;&lt;/a&gt;fltan&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1036&quot;&gt;&lt;/a&gt;flasin&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1038&quot;&gt;&lt;/a&gt;flacos&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1040&quot;&gt;&lt;/a&gt;flatan&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1042&quot;&gt;&lt;/a&gt;flatan&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+These procedures compute the usual transcendental functions.  
+The &lt;tt&gt;flexp&lt;/tt&gt; procedure computes the base-&lt;em&gt;e&lt;/em&gt; exponential of &lt;i&gt;fl&lt;/i&gt;.
+The &lt;tt&gt;fllog&lt;/tt&gt; procedure with a single argument computes the natural logarithm of
+&lt;i&gt;fl&lt;/i&gt; (not the base ten logarithm); &lt;tt&gt;(fllog &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;
+&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&lt;/tt&gt; computes the base-&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; logarithm of &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;.
+The &lt;tt&gt;flasin&lt;/tt&gt;, &lt;tt&gt;flacos&lt;/tt&gt;, and &lt;tt&gt;flatan&lt;/tt&gt; procedures compute arcsine,
+arccosine, and arctangent, respectively.  &lt;tt&gt;(flatan &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;
+&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&lt;/tt&gt; computes the arc tangent of &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;/&lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;
+See report
+section&amp;nbsp;on &amp;ldquo;Transcendental functions&amp;rdquo; for the underlying
+mathematical operations.  In the event that these operations do not
+yield a real result for the given arguments, the result may be a NaN,
+or may be some unspecified flonum.&lt;/p&gt;
+&lt;p&gt;
+Implementations that use IEEE binary floating-point arithmetic 
+should follow the relevant standards for these procedures.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(flexp&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;+inf.0
+&lt;p class=nopadding&gt;(flexp&amp;nbsp;-inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;0.0&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fllog&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;+inf.0&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fllog&amp;nbsp;0.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;-inf.0&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fllog&amp;nbsp;-0.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&lt;i&gt;unspecified&lt;/i&gt;&lt;br&gt;
+;&amp;nbsp;if&amp;nbsp;-0.0&amp;nbsp;is&amp;nbsp;distinguished&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(fllog&amp;nbsp;-inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;+nan.0&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(flatan&amp;nbsp;-inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;br&gt;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;-1.5707963267948965&lt;br&gt;
+;&amp;nbsp;approximately&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(flatan&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;br&gt;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;1.5707963267948965&lt;br&gt;
+;&amp;nbsp;approximately&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1044&quot;&gt;&lt;/a&gt;flsqrt&lt;i&gt; fl&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+Returns the principal square root of &lt;i&gt;fl&lt;/i&gt;. For &amp;minus;0.0,
+&lt;tt&gt;flsqrt&lt;/tt&gt; should return &amp;minus;0.0; for other negative arguments,
+the result may be a NaN or some unspecified flonum.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(flsqrt&amp;nbsp;+inf.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;+inf.0
+&lt;p class=nopadding&gt;(flsqrt&amp;nbsp;-0.0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;-0.0&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1046&quot;&gt;&lt;/a&gt;flexpt&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+Either &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; should be non-negative, or, if &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; is
+negative, &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; should be an integer object.
+The &lt;tt&gt;flexpt&lt;/tt&gt; procedure returns &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; raised to the power &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;.  If &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; is
+negative and &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is not an integer object, the result may be a
+NaN, or may be some unspecified flonum.  If &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; is zero, then
+the result is zero.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;a name=&quot;node_idx_1048&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;&lt;tt&gt;&amp;amp;no-infinities&lt;/tt&gt;&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;condition type&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1050&quot;&gt;&lt;/a&gt;make-no-infinities-violation&lt;i&gt; obj&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1052&quot;&gt;&lt;/a&gt;no-infinities-violation?&lt;i&gt; obj&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;a name=&quot;node_idx_1054&quot;&gt;&lt;/a&gt;&lt;div align=left&gt;&lt;tt&gt;&lt;tt&gt;&amp;amp;no-nans&lt;/tt&gt;&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;condition type&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1056&quot;&gt;&lt;/a&gt;make-no-nans-violation&lt;i&gt; obj&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1058&quot;&gt;&lt;/a&gt;no-nans-violation?&lt;i&gt; obj&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+These condition types could be defined by the following code:&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;tt&gt;(define-condition-type&amp;nbsp;&amp;amp;no-infinities
+&lt;p class=nopadding&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;amp;implementation-restriction&lt;/p&gt;
+
+&lt;p class=nopadding&gt;&amp;nbsp;&amp;nbsp;make-no-infinities-violation&lt;/p&gt;
+
+&lt;p class=nopadding&gt;&amp;nbsp;&amp;nbsp;no-infinities-violation?)&lt;/p&gt;
+
+&lt;p class=nopadding&gt;&lt;/p&gt;
+
+&lt;p class=nopadding&gt;(define-condition-type&amp;nbsp;&amp;amp;no-nans&lt;/p&gt;
+
+&lt;p class=nopadding&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;amp;implementation-restriction&lt;/p&gt;
+
+&lt;p class=nopadding&gt;&amp;nbsp;&amp;nbsp;make-no-nans-violation&amp;nbsp;no-nans-violation?)&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;
+These types describe that a program has executed an arithmetic
+operations that is specified to return an infinity or a NaN,
+respectively, on a Scheme implementation that is not able to represent
+the infinity or NaN.  (See report section&amp;nbsp;on &amp;ldquo;Representability of infinities and NaNs&amp;rdquo;.)
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1060&quot;&gt;&lt;/a&gt;fixnum-&amp;gt;flonum&lt;i&gt; fx&lt;/i&gt;)&lt;/tt&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;procedure&amp;nbsp;&lt;/div&gt;
+&lt;p&gt;
+Returns a flonum that is numerically closest to &lt;i&gt;fx&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;&lt;em&gt;Note:&lt;span style=&quot;margin-left: .5em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;/em&gt;
+The result of this procedure may not be
+numerically equal to &lt;i&gt;fx&lt;/i&gt;, because the fixnum precision
+may be greater than the flonum precision.
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+}}}
+
+
+== R7RS-small-compatible procedures ==
+
+The following R7RS-small procedures have flonum equivalents:
+
+{{{
+= &lt; &lt;= &gt; &gt;= 
+integer? zero? positive? negative? odd? even? finite? infinite? nan?
++ - * /
+abs numerator denominator floor ceiling truncate round
+log sin cos tan asin acos atan
+sqrt expt
+}}}
+
+TODO: need to see about integer division procedures
+
+== C99 &lt;math.h&gt; constants ==
+
+The following constants are defined in terms of the constants of the &lt;math.h&gt; header of ISO/IEC 9899:1999 (C language).
+
+||Scheme name||C name||Comments||
+||`e`||`M_E`||Value of e||
+||`log2-e`||`M_LOG2E`||Value of log,,2,, e||
+||`log10-e`||`M_LOG10E`||Value of log,,10,, e||
+||`ln-2`||`M_LN2`||Value of log,,e,, 2||
+||`ln-10`||`M_LN10`||Value of log,,e,, 10||
+||`pi`||`M_PI`||Value of pi||
+||`pi/2`||`M_PI_2`||Value of pi/2||
+||`pi/4`||`M_PI_4`||Value of pi/4||
+||`one-over-pi`||`M_1_PI`||Value of 1/pi||
+||`two-over-pi`||`M_2_PI`||Value of 2/pi||
+||`two-over-sqrt-pi`||`M_2_SQRTPI`||Value of 2/sqrt(pi)||
+||`sqrt-2`||`M_SQRT2`||Value of sqrt(2)||
+||`one-over-sqrt-2`||`M_SQRT1_2`||Value of 1/sqrt(2)||
+||`maximum-flonum`||`HUGE_VAL`||`+inf.0` or else\\the largest finite flonum||
+||`fast-multiply-add`||`#t` if `FP_FAST_FMA` is 1,\\or `#f` otherwise||multiply-add is fast||
+||`integer-exponent-zero`||`FP_ILOGB0`||what `(integer-binary-log 0)` returns||
+||`integer-exponent-nan`||`FP_ILOGBNAN`||what `(integer-binary-log +0.nan)` returns||
+
+== C99 &lt;math.h&gt; procedures ==
+
+The following procedures are defined in terms of the functions of the &lt;math.h&gt; header of ISO/IEC 9899:1999 (C language).  In the C signatures, the types &quot;double&quot; and &quot;int&quot; are mapped to Scheme flonums and (suitably bounded) Scheme exact integers respectively.
+
+||Scheme name||C signature||Comments||
+||`acosh`||`double      acosh(double)`||hyperbolic arc cosine||
+||`asinh`||`double      asinh(double)`||hyperbolic arc sine||
+||`atanh`||`double      atanh(double)`||hyperbolic arc tangent||
+||`cbrt`||`double      cbrt(double);`||cube root||
+||`complementary-error-function`||`double      erfc(double)`||-||
+||`copy-sign`||`double      copysign(double x, double y)`||result has magnitude of x and sign of y||
+||`cosh`||`double      cosh(double)`||hyperbolic cosine||
+||`make-flonum`||`double      ldexp(double x, int n)`||x*2^n^||
+||`error-function`||`double      erf(double)`||-||
+||`exp`||`double exp(double)`||e^x^||
+||`exp-binary`||`double      exp,,2,,(double)`||base-2 exponential||
+||`exp-minus-1`||`double      expm1(double)`||e^x^-1||
+||`exponent`||`double      logb(double x)`||the exponent of x, which is the integral part of log_r(|x|), as a signed floating-point value, for non-zero x, where r is the radix of the machine's floating-point arithmetic||
+||`first-bessel-order-0`||`double      j0(double)`||bessel function of the first kind, order 0||
+||`first-bessel-order-1`||`double      j1(double)`||bessel function of the first kind, order 1||
+||`first-bessel`||`double      jn(int n, double)`||bessel function of the first kind, order n||
+||`fraction-exponent`||`double      modf(double, double *)`||returns two values, fraction and int exponent||
+||`gamma`||`double      tgamma(double)`||-||
+||`hypotenuse`||`double      hypot(double, double)`||sqrt(x^2^+y^2^)||
+||`integer-exponent`||`int         ilogb(double)`||binary log as int||
+||`log-binary`||`double      log2(double)`||log base 2||
+||`log-decimal`||`double      log10(double)`||log base 10||
+||`log-gamma`||`double      lgamma(double)`||returns two values, log(|gamma(x)|) and sgn(gamma(x))||
+||`log-one-plus`||`double      log1p(double x)`||log (1+x)||
+||`multiply-add`||`double      fma(double a, double b, double c)`||a*b+c||
+||`next-after`||`double      nextafter(double, double)`||next flonum following x in the direction of y||
+||`normalized-fraction-exponent`||`double      frexp(double, int *)`||returns two values, fraction in range [1/2,1) and int exponent||
+||`positive-difference`||`double      fdim(double, double)`||-||
+||`remquo`||`double      remquo(double, double, int *)`||returns two values, rounded remainder and low-order ''n'' bits of the quotient (''n'' is implementation-defined)
+||`scalbn`||`double      scalbn(double x, int y)`||x*r^y^, where r is the machine float radix||
+||`second-bessel-order-0`||`double      y0(double)`||bessel function of the second kind, order 0||
+||`second-bessel-order-1`||`double      y1(double)`||bessel function of the second kind, order 1||
+||`second-bessel`||`double      yn(int n, double)`||bessel function of the second kind, order ''n''||
+||`sinh`||`double      sinh(double)`||hyperbolic sine||
+||`tanh`||`double      tanh(double)`||hyperbolic tangent||
+
+
+== General remarks ==
+
+In the event that these operations do not yield a real result for the given arguments, the result may be `+nan.0`, or may be some unspecified flonum.
+
+Implementations that use IEEE binary floating-point arithmetic should follow the relevant standards for these procedures.
+
+== Compnum procedures from &lt;complex.h&gt; ==
+
+A ''compnum'' is a general complex number whose `real-part` and `imag-part` are both flonums.  The following procedures should be in a different library from the flonum procedures, since they will only be relevant to Schemes that support general complex numbers, and since there are conflicting names.
+
+||Scheme name||C signature||Comments||
+||`abs`||`double cabs(double complex)`||same as magnitude||
+||`acos`||`double complex cacos(double complex)`||-||
+||`acosh`||`double complex cacosh(double complex)`||-||
+||`angle`||`double carg(double complex)`||-||
+||`asin`||`double complex casin(double complex)`||-||
+||`asinh`||`double complex casinh(double complex)`||-||
+||`atan`||`double complex catan(double complex)`||-||
+||`atanh`||`double complex catanh(double complex)`||-||
+||`conjugate`||`double complex conj(double complex)`||complex conjugate||
+||`cos`||`double complex ccos(double complex)`||-||
+||`cosh`||`double complex ccosh(double complex)`||-||
+||`exp`||`double complex cexp(double complex)`||-||
+||`expt`||`double complex cpow(double complex, double complex)`||-||
+||`imag-part`||`double cimag(double complex)`||-||
+||`log`||`double complex clog(double complex)`||-||
+||`magnitude`||`double cabs(double complex)`||same as abs||
+||`projection`||`double complex  cproj(double complex)`||projects to Riemann sphere
+||`real-part`||`double creal(double complex)`||-||
+||`sin`||`double complex csin(double complex)`||-||
+||`sinh`||`double complex csinh(double complex)`||-||
+||`sqrt`||`double complex csqrt(double complex)`||-||
+||`tan`||`double complex ctan(double complex)`||-||
+||`tanh`||`double complex ctanh(double complex)`||-||
+
+== Derived procedures ==
+
+TODO: what library do these go in?
+
+`(cis `''z''`)`
+
+Returns e^i''z''^, a complex number whose real part is cos ''z'' and whose imaginary part is sin ''z''.
+
+`(signum `''z''`)`
+
+Returns a complex number whose phase is the same as ''z'' but whose magnitude is 1, unless ''z'' is zero, in which case it returns ''z''.  As a consequence of this definition, negative real numbers return -1, positive real numbers return 1, and zero returns zero.
+
+`(decode-float `''z''`)` and friends
+
+See [http://www.lispworks.com/documentation/lw50/CLHS/Body/f_dec_fl.htm CL DECODE-FLOAT and friends].
+ </pre>
+    <h2>time</h2>
+    <pre>2015-12-01 01:46:48</pre>
+    <h2>version</h2>
+    <pre>11</pre></body></html>

@@ -1,0 +1,81 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki BuffersCowan version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki BuffersCowan version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>98.14.172.212</pre>
+    <h2>name</h2>
+    <pre>BuffersCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= Edit Buffers =
+
+This is a very preliminary description of edit buffers, basically mutable variable-length strings with some pointers into them.  Temporarily, these functions are defined in terms of their [http://www.gnu.org/software/emacs/manual/html_node/elisp/Buffers.html#Buffers Emacs Lisp] equivalents, with the following exceptions:
+
+ * There is no notion of the current buffer, so many procedures have the buffer as the first argument.
+ * Buffers do not have intrinsic names, so ''buffer-or-name'' arguments accept only buffers.
+ * Point and markers are zero-based, as is usual in Scheme.
+
+== Procedures ==
+
+(buffer? obj) == (bufferp object)
+
+(buffer-modified? buffer) == (buffer-modified-p)
+
+(buffer-modified! buffer) == (restore-buffer-modified-p t)
+
+(buffer-unmodified! buffer) == (set-buffer-modified-p nil)
+
+(buffer-read-only? buffer) == buffer-read-only buffer local variable
+
+(buffer-read-only! buffer) == (toggle-read-only t)
+
+(buffer-read-write! buffer) == (toggle-read-only nil)
+
+(make-buffer) == simple constructor, no name provided
+
+(buffer-point buffer) == (point)
+
+(buffer-length buffer) == (buffer-size buffer)
+
+(buffer-set-point! buffer integer) == (goto-char integer)
+
+(buffer-point-increment) == (forward-char integer)
+
+(buffer-skip-chars-forward buffer string) == (skip-chars-forward string)
+
+(buffer-skip-chars-backward buffer string) == (skip-chars-forward string)
+
+(buffer-marker? obj) == (markerp obj)
+
+(make-marker buffer marker-or-integer insertion-type) == (copy-marker marker-or-integer insertion-type)
+
+(marker-position marker) == (marker-position marker)
+
+(marker-buffer marker) == (marker-buffer marker)
+
+(marker-insertion-type marker) == (marker-insertion-type marker)
+
+(marker-set-position! marker position) = (set-marker marker position)
+
+More to come....</pre>
+    <h2>time</h2>
+    <pre>2012-01-26 02:43:41</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

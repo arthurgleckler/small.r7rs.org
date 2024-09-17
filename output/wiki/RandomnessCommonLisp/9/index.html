@@ -1,0 +1,54 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RandomnessCommonLisp</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RandomnessCommonLisp.md">RandomnessCommonLisp</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Randomness&shy;Common&shy;Lisp</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-11-04 02:09:54</div>
+      <div class="version">9<span class="comment"></span><a href="/wiki/RandomnessCommonLisp/history">history</a></div>
+      <div class="source"><a href="/wiki/RandomnessCommonLisp/9/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="RandomnessinthestyleofCommonLisp">Randomness in the style of Common Lisp</h2>
+      <p>This proposal for random numbers is not a literal transcription of the Common Lisp (CL) interface, but it uses the same concepts, and the text is a heavily edited version of the CL Hyperspec.  This facility should not be used where strong randomness is required.</p>
+      <p>A <i>random-source object</i> is an encapsulation of the state information used by an implementation-dependent pseudo-random number generator.  The state can be printed out and successfully read back in by the same implementation, but might not function correctly as a state in another implementation.  Random-source objects are a disjoint type.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(make-random-source)</span></p>
+      <p>Constructs and returns a random-source object that has been randomly initialized by some implementation-defined means.  The CL equivalent is <span class="monospace">(make-random-state t)</span>.</p>
+      <p><span class="monospace">(random-source? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a random-source object, and <span class="monospace">#f</span> otherwise.  The CL equivalent is <span class="monospace">random-state-p</span>.</p>
+      <p><span class="monospace">(random-source-state </span><i>random-source</i><span class="monospace">)</span></p>
+      <p>Returns an implementation-specific object representing a copy of the state encapsulated by <i>random-source</i>.  This object must be printable and rereadable.  It must also be suitable for passing to <span class="monospace">make-random-source-from-state</span>.  Providing this mechanism makes it possible to save and reconstitute a random-source in a file or database, or to pass it across a network to an equivalent implementation.  Mutating the result of this procedure does not affect <i>random-source</i>.  There is no CL equivalent of this procedure, because CL <span class="monospace">random-state</span> objects are themselves required to be printable and rereadable (they are typically CL <span class="monospace">structs</span>).</p>
+      <p><span class="monospace">(make-random-source-from-state </span><i>state</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a random-source object whose state is a copy of <i>state</i>, so that mutating <i>state</i> does not affect the random-source object.  The result will generate the same sequence of pseudo-random numbers that the original random-source object would have generated as of the time <span class="monospace">random-source-state</span> was invoked on it.  It is an error to pass a <i>state</i> object that has been mutated.  There is no CL equivalent of this procedure.</p>
+      <p><span class="monospace">(copy-random-source </span><i>random-source</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a random-source object whose state is an independent copy of the state of <i>random-source</i>.  Calling this procedure is equivalent to calling <span class="monospace">(make-random-source-from-state (random-source-state </span><i>random-source</i><span class="monospace">))</span>, but potentially more efficient because it can avoid copying the state twice.  The result and <i>random-source</i> will henceforth return the same sequence of values, allowing the same series of pseudo-random numbers to be generated many times within a single program.   The CL equivalent is <span class="monospace">make-random-state</span> with a random-state argument.</p>
+      <p><span class="monospace">(current-random-source </span>[<i>random-source</i>]<span class="monospace">)</span></p>
+      <p>A parameter that returns or sets the default random-source object.  Its initial value must be a random-source object, but is implementation-dependent.  The CL equivalent is <span class="monospace">*random-state*</span>.</p>
+      <p>The equivalent of CL <span class="monospace">(make-random-state nil)</span> is <span class="monospace">(copy-random-source (current-random-source))</span>.</p>
+      <p><span class="monospace">(random </span><i>limit</i> [<i>random-source</i>]<span class="monospace">)</span></p>
+      <p>Returns the next pseudo-random number from <i>random-source</i>.  The result is a non-negative number less than <i>limit</i>.  <i>Limit</i> must be an exact integer (in which case <span class="monospace">random</span> returns an exact integer), or an inexact real number (in which case <span class="monospace">random</span> returns an inexact real number).  If <i>random-source</i> is not specified, the value of <span class="monospace">(current-random-source)</span> is used.</p>
+      <p>An approximately uniform choice distribution is used. If <i>limit</i> is an integer, each of the possible results occurs with (approximate) probability 1/<i>limit</i>.</p>
+      <p>The CL equivalent of this procedure is <span class="monospace">random</span>.</p>
+      <h2 id="Examples">Examples</h2><span class="monospace"> (&lt;= 0 (random 1000) 1000) =&gt;  true
+ (let ((state1 (copy-random-source (current-random-source)))
+       (state2 (copy-random-source (current-random-source))))
+   (= (random 1000 state1) (random 1000 state2))) =&gt;  true
+</span>
+      <h2 id="CommonLispHyperspeclinks">Common Lisp Hyperspec links</h2>
+      <ul>
+        <li><a href="http://www.lispworks.com/documentation/HyperSpec/Body/t_rnd_st.htm">System Class RANDOM-STATE</a></li>
+        <li><a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_mk_rnd.htm">Function MAKE-RANDOM-STATE</a></li>
+        <li><a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_random.htm">Function RANDOM</a></li>
+        <li><a href="http://www.lispworks.com/documentation/HyperSpec/Body/f_rnd_st.htm">Function RANDOM-STATE-P</a></li>
+        <li><a href="http://www.lispworks.com/documentation/HyperSpec/Body/v_rnd_st.htm">Variable *RANDOM-STATE*</a></li></ul></div></body></html>

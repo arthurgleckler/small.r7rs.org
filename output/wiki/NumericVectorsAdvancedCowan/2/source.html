@@ -1,0 +1,87 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki NumericVectorsAdvancedCowan version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki NumericVectorsAdvancedCowan version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>69.195.55.172</pre>
+    <h2>name</h2>
+    <pre>NumericVectorsAdvancedCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This page is an extension of NumericVectorsCowan that adds numeric vector versions of the following [http://srfi.schemers.org/srfi-43/srfi-43.html SRFI 43] procedures:
+
+== Folds and unfolds ==
+
+`(&lt;type&gt;vector-fold `''kons knil bytevector1 bytevector2'' ...`)` -&gt; value
+
+`(&lt;type&gt;vector-fold `''kons knil bytevector1 bytevector2'' ...`)` -&gt; value
+
+`(&lt;type&gt;vector-unfold `''proc length initial-seed'' ...`)` -&gt; bytevector
+
+`(&lt;type&gt;vector-unfold-right `''proc length initial-seed'' ...`)` -&gt; bytevector
+
+== Predicates ==
+
+`(&lt;type&gt;vector= `''= bytevector1 bytevector2'' ...`)` -&gt; boolean
+
+== Iteration ==
+
+`(&lt;type&gt;vector-map! `''proc bytevector1 bytevector2'' ...`)`
+
+Similar to `&lt;type&gt;vector-map`, but rather than mapping the new elements into a newly allocated bytevector, the results are destructively inserted into ``bytevector1``.  Returns an unspecified value.  Returns an unspecified value.
+
+`(&lt;type&gt;vector-count `''predicate bytevector1 bytevector2'' ...`)`
+
+Counts the number of parallel elements in the bytevectors, when viewed as &lt;type&gt;vectors&lt;/i&gt;, that satisfy ''predicate'', and returns the count as an exact non-negative integer.  The procedure is applied for each index ''i'' in the range from 0 (inclusive) to ''length'' (exclusive), where ''length'' is the length of the smallest bytevector argument, to ''i'' and the ''i''th element in each bytevector when viewed as a &lt;type&gt;vector, in order. 
+
+== Searching ==
+
+`(&lt;type&gt;vector-index `''predicate bytevector1 bytevector2'' ...`)` -&gt; exact nonnegative integer or `#f`
+
+`(&lt;type&gt;vector-index-right `''predicate bytevector1 bytevector2'' ...`)` -&gt; exact nonnegative integer or `#f`
+
+`(&lt;type&gt;vector-skip `predicate bytevector1 bytevector2'' ...`)` -&gt; exact nonnegative integer or `#f`
+
+`(&lt;type&gt;vector-skip-right `''predicate bytevector1 bytevector2'' ...`)` -&gt; exact nonnegative integer or #f
+
+`(&lt;type&gt;vector-binary-search `''bytevector value cmp''`)` -&gt; exact nonnegative integer or `#f`
+
+`(&lt;type&gt;vector-any predicate `''bytevector1 bytevector2'' ...`)` -&gt; value or `#f`
+
+`(&lt;type&gt;vector-every predicate `''bytevector1 bytevector2'' ...`)` -&gt; value or `#f`
+
+
+== Swap == 
+
+`(&lt;type&gt;vector-swap! `''bytevector i j''`)` -&gt; unspecified
+
+Exchanges the values of the locations in ''bytevector'', when viewed as a &lt;type&gt;vector, at indices ''i'' and ''j''.
+
+
+== Reverse operations ==
+
+`(&lt;type&gt;vector-reverse! `''bytevector'' [ ''start'' [ ''end'' ] ] `)`
+
+Destructively reverses the order of the elements in ''bytevector'' from ''start'' to ''end''.
+
+The `&lt;type&gt;vector-reverse-copy`, `&lt;type&gt;reverse-vector-&gt;vector`, `&lt;type&gt;reverse-vector-&gt;list`, `&lt;type&gt;reverse-list-&gt;vector`, and `&lt;type&gt;reverse-list-&gt;list` procedures are identical to their regular counterparts, but produce the bytevector argument, when viewed as a &lt;type&gt;vector, in reverse element order.  </pre>
+    <h2>time</h2>
+    <pre>2012-11-23 05:01:16</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

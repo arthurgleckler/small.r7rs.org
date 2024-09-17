@@ -1,0 +1,117 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ErrorSituations</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ErrorSituations.md">ErrorSituations</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Error&shy;Situations</h1>
+    <div class="wiki metadata">
+      <div class="author">alexshinn</div>
+      <div class="time">2010-09-03 01:08:20</div>
+      <div class="version">1<span class="comment">adding list of R5RS error situations</span><a href="/wiki/ErrorSituations/history">history</a></div>
+      <div class="source"><a href="/wiki/ErrorSituations/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>The following is a list of all error situations in R5RS,
+originally collected in a <a href="http://www.r6rs.org/r6rs-editors/2006-February/000917.html">post</a>
+by Will Clinger to the R6RS editors list.</p>
+      <p>----</p>
+      <ul>
+        <li>It is an error to attempt to store a new value into a location
+  that is denoted by an immutable object.</li></ul>
+      <ul>
+        <li>For example, it is an error for a procedure to be passed an
+  argument that the procedure is not explicitly specified to
+  handle, even though such domain errors are seldom mentioned in
+  this report.  Implementations may extend a procedure's domain
+  of definition to include such arguments.</li></ul>
+      <ul>
+        <li>It is an error to reference an unbound variable.</li></ul>
+      <ul>
+        <li>...it is an error to alter a constant (i.e. the value of a
+  literal expression) using a mutation procedure like
+  set-car! or string-set!.</li></ul>
+      <ul>
+        <li>It is an error for a &lt;variable&gt; to appear more than once in
+  &lt;formals&gt;.</li></ul>
+      <ul>
+        <li>It is an error for a &lt;variable&gt; to appear more than once in the
+  list of variables being bound.</li></ul>
+      <ul>
+        <li>It is an error for a &lt;variable&gt; to appear more than once in the
+  list of variables being bound.</li></ul>
+      <ul>
+        <li>One restriction on letrec is very important: it must be possible
+  to evaluate each &lt;init&gt; without assigning or referring to the
+  value of any &lt;variable&gt;.  If this restriction is violated, then
+  it is an error.</li></ul>
+      <ul>
+        <li>It is an error for a &lt;variable&gt; to appear more than once in the
+  list of do variables.</li></ul>
+      <ul>
+        <li>It is an error for a &lt;keyword&gt; to appear more than once in the
+  list of keywords being bound.</li></ul>
+      <ul>
+        <li>It is an error for the same pattern variable to appear more than
+  once in a &lt;pattern&gt;.</li></ul>
+      <ul>
+        <li>A subpattern followed by &lt;tt&gt;...&lt;/tt&gt; can match zero or more
+  elements of the input.  It is an error for &lt;tt&gt;...&lt;/tt&gt; to
+  appear in &lt;literals&gt;.  Within a pattern the identifier
+  &lt;tt&gt;...&lt;/tt&gt; must follow the last element of a nonempty sequence
+  of subpatterns.</li></ul>
+      <ul>
+        <li>It is an error to use a macro keyword, within the scope of its
+  binding, in an expression that does not match any of the patterns.</li></ul>
+      <ul>
+        <li>It is an error if the output cannot be built up as specified.</li></ul>
+      <ul>
+        <li>If &lt;variable&gt; is not bound, however, then the definition will
+  bind &lt;variable&gt; to a new location before performing the
+  assignment, whereas it would be an error to perform a
+  &lt;tt&gt;set!&lt;/tt&gt; on an unbound variable.</li></ul>
+      <ul>
+        <li>Although macros may expand into definitions and syntax definitions in
+  any context that permits them, it is an error for a definition or syntax
+  definition to shadow a syntactic keyword whose meaning is needed to
+  determine whether some form in the group of forms that contains the
+  shadowing definition is in fact a definition, or, for internal definitions,</li></ul>
+      <ul>
+        <li>Since it is an error to modify constant objects (those returned by
+  literal expressions), implementations are permitted, though not
+  required, to share structure between constants where appropriate.
+  Thus the value of &lt;tt&gt;eqv?&lt;/tt&gt; on constants is sometimes
+  implementation-dependent.&lt;p&gt;</li></ul>
+      <ul>
+        <li>The &lt;tt&gt;length&lt;/tt&gt;, &lt;tt&gt;vector-length&lt;/tt&gt;,
+  and &lt;tt&gt;string-length&lt;/tt&gt; procedures must return an exact
+  integer, and it is an error to use anything but an exact integer as an
+  index.</li></ul>
+      <ul>
+        <li>It is an error if no possible result makes this expression true.</li></ul>
+      <ul>
+        <li>The error case can occur only when z is not a complex number
+  or is a complex number with a non-rational real or imaginary part.</li></ul>
+      <ul>
+        <li>Note that it is an error to take the car of the empty list.</li></ul>
+      <ul>
+        <li>Note that it is an error to take the cdr of the empty list.</li></ul>
+      <ul>
+        <li>It is an error if list has fewer than k elements.</li></ul>
+      <ul>
+        <li>It is an error if list has fewer than k elements.</li></ul>
+      <ul>
+        <li>It is an error to apply mutation procedures like &lt;tt&gt;string-set!&lt;/tt&gt;
+  to strings returned by this procedure.</li></ul>
+      <ul>
+        <li>If a file with the given name already exists, the effect is
+  unspecified.</li></ul>
+      <ul>
+        <li>It is an error to read from a closed port.</li></ul></div></body></html>

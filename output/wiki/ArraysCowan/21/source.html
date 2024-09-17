@@ -1,0 +1,318 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ArraysCowan version 21</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ArraysCowan version 21</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>ArraysCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Introduction ==
+
+TBD - arrays are multidimensional objects based on top of one-dimensional storage objects
+
+== Specification ==
+
+=== Terminology ===
+
+TBD: array, storage class, storage object, index, dimension, rank, upper bound, lower bound, stride, offset, start, end
+
+See StorageClassesCowan for the storage class API.
+
+Note that &quot;rank&quot; is a Fortran, Common Lisp, and APL term that has nothing to do with matrix ranks.
+
+An array is an object with components arranged according to a rectilinear coordinate system. In principle, an array in Common Lisp may have any number of dimensions, including zero. (A zero-dimensional array has exactly one element.) In practice, an implementation may limit the number of dimensions supported, but every Common Lisp implementation must support arrays of up to seven dimensions. Each dimension is a non-negative integer; if any dimension of an array is zero, the array has no elements.
+
+An array may be a general array, meaning each element may be any Lisp object, or it may be a specialized array, meaning that each element must be of a given restricted type.
+
+Lexicographic order:  (that is, with the last component of the index varying most rapidly) 
+
+A Fortran 90 p g ro ram uses the DIMENSION
+attribute to declare arrays.
+zThe DIMENSION attribute requires three
+components in order to complete an array
+specification, rank, shape, and extent.
+zThe rank of an array is the number of “indices”
+or “subscripts.” The maximum rank is 7 (i.e.,
+seven-dimensional).
+zThe shape of an array indicates the number of
+elements in each “dimension.”
+
+The rank and shape of an array is represented The rank and shape of an array is represented
+as (s1,s2,…,sn), where n is the rank of the array
+and si (1≤ i ≤ n) is the number of elements in the i (1≤ i ≤ n) is the number of elements in the
+i-th dimension.
+(7) means a rank 1 array with 7 elements means a rank 1 array with 7 elements
+(5,9) means a rank 2 array (i.e., a table)
+wh fi t d d di i h 5 hose first and second dimensions have 5
+and 9 elements, respectively.
+(10,10,10,10) means a rank 4 array that has
+10 elements in each dimension.
+
+zThe extent is written as is written as m:n, where , where m and n (m
+≤ n) are INTEGERs. We saw this in the SELECT
+CASE, g, substring, etc.
+zEach dimension has its own extent.
+zAn ext t f di i tent of a dimension is th f it the range of its
+index. If m: is omitted, the default is 1.
+-3:2 means possi ii blend ces are -3, -2 , -1 0,,
+1, 2
+5:8 means possible indices are 5,6,7,8
+7 means possible indices are 1,2,3,4,5,6,7
+
+Note that each index must be an INTEGER or an
+expression evaluated to an INTEGER, and the
+val f i d tb lue o
+f an
+i
+n
+dex mus
+t
+be i th f th in the range of the
+corresponding extent. 
+
+
+=== Predicates ===
+
+`(array? `''obj''`)`
+
+Returns `#t` if ''obj'' is an array, and `#f` otherwise.
+
+`(array-mutable? `''array''`)`
+
+Returns `#t` if ''array'' is mutable, and `#f` otherwise.
+
+=== Constructors ===
+
+`(make-array `''storage-class'' [ ''lower-bounds'' ] ''upper-bounds''`)`
+
+Returns a newly allocated array with a newly allocated storage object.  The lower and upper bounds of the array's dimensions are specified as vectors: they must be of the same length.  If ''lower-bounds'' is not given, it is understood to be all zeros.
+
+=== Metadata accessors ===
+
+`(array-storage-class `''array''`)`
+
+Returns the storage class with which ''array'' was created.
+
+`(array-storage-object`''array''`)`
+
+Returns the storage object underlying this array.  Note that this may be `#f` in the case of storage classes without actual storage.
+
+`(array-rank `''array''`)`
+
+Return the rank (number of dimensions) of ''array''.
+
+`(array-lower-bound `''array''`)`
+
+Returns the index specifying the lower bound of ''array''.  It is an error to mutate this index.
+
+`(array-upper-bound `''array''`)`
+
+Returns the index specifying the upper bound of ''array''.  It is an error to mutate this index.
+
+`(array-strides `''array''`)`
+
+Return a vector containing the strides of ''array''.  It is an error to mutate this vector.
+
+`(array-offset `''array''`)`
+
+Returns the storage offset of ''array''.  This is the storage index of the location whose index is all zeros.
+
+=== Accessors ===
+
+`(array-ref `''array index''`)`
+
+Returns the value of the element of ''array'' specified by ''index''.  Note that this is different from the `array-ref` of most Lisp systems, which specify the index as a sequence of arguments.
+
+`(array-for-each `''proc array'' [ ''start'' [ ''end '' ] ]`)`
+
+Iterates over the elements of ''array'' in lexicographic orderstarting at the index ''start'' and ending at the index ''end'', and calling ''proc'' on each element.  Each invocation of ''proc'' receives ''array'', the current index, and the value of the element at that index.  The value returned by ''proc'' is discarded.  It is an error to mutate the index.
+
+`(array-for-each-index `''proc array'' [ ''start'' [ ''end '' ] ]`)`
+
+Iterates over the indexes of ''array'' in lexicographic order, starting at the index ''start'' and ending at the index ''end'', and calling ''proc'' on each index.  Each invocation of ''proc'' receives the current index.  The value returned by ''proc'' is discarded.  It is an error to mutate the index.
+
+=== Mutators ===
+
+`(array-set! `''array index value''`)`
+
+Sets the value of the element of ''array'' specified by ''index'' to ''value''.  Note that this is different from the `array-set!` of most Lisp systems, which specify the index as a sequence of arguments.
+
+`(array-tabulate! `''proc array'' [ ''start'' [ ''end '' ] ]`)`
+
+Iterates over the elements of ''array'' starting at the index ''start'' (each dimension is inclusive) and ending at the index ''end'' (each dimension is exclusive), and calling ''proc'' on each element.  Each invocation of ''proc'' receives ''array'' and the current index.  Whatever ''proc'' returns becomes the value of the array at the index.  It is an error for ''proc'' to mutate the index.
+
+FIXME from here down.
+
+== The whole array ==
+
+
+`(array-map `''proc array'' ...`)`
+
+Returns a newly allocated array with the same bounds as the ''arrays'', which must all have the same bounds.   For each valid index value, ''proc'' is invoked, passing each corresponding element of the ''arrays''.  The index may or may not be the same object for each call.  Whatever ''proc'' returns becomes the value of the storage element corresponding to that index in the result array.  The order of invocations of ''proc'' is not specified.
+
+`(array-map! `''proc array'' ...`)`
+
+The ''arrays'' must all have the same bounds.  For each valid index value, ''proc'' is invoked, passing each corresponding element of the ''arrays''.  The index may or may not be the same object for each call.  Whatever ''proc'' returns becomes the value of the storage element corresponding to that index in the first specified array.  The order of invocations of ''proc'' is not specified.  The result is an undefined value.
+
+
+`(array-fold `''proc seed array'' ...`)`
+
+Returns a newly allocated array with the same bounds as the ''arrays'', which must all have the same bounds.   For each valid index value, ''proc'' is invoked, passing each corresponding element of the ''arrays'' and a seed, whose initial value is ''seed''.  The index may or may not be the same object for each call.  ''Proc'' returns two values, the value of the storage element corresponding to that index in the result array, and the new value of the seed.  The invocations of ''proc'' are in lexicographic order.
+
+`(array-reduce `''proc''` `''array''` `''axis'' [ ''n'' ]`)`
+
+Returns a newly allocated array whose rank is one less than the rank of ''array'', by combining all the groups of elements of length ''n'' (default 1) along ''axis'' using ''proc'', a two-argument procedure.  The order and number of invocations of ''proc'' is unspecified.  If there is only one such element, it is unchanged.  (APL reduce.)
+
+`(array-cumulate `''proc''` `''array''` `''axis''`)`
+
+Returns a newly allocated array whose bounds are the same as the bounds of ''array''.  Each element along ''axis'' is constructed by reducing (as if by `array-reduce`) successive prefixes of the elements of ''array'' along that axis.  (APL scan.)
+
+TBD: count, index, any, every
+
+== Copying ==
+
+TBD: copy, copy!, append
+
+== Outer and inner products ==
+
+`(array-outer-product `''proc''` `''array1''` `''array2''`)`
+
+Returns a newly allocated array whose bounds are the concatenation of the bounds of ''array1'' and ''array2''.  Each component of the new array is the result of applying ''proc'' to every element of ''array1'' and every element of ''array2''.  The order and number of invocations of ''proc'' is unspecified.  (APL outer product.)
+
+`(array-inner-product `''proc1''` `''proc2''` `''array1''` `''array2''`)`
+
+Returns a newly allocated array whose bounds are equal to the bounds of ''array1'' without their last elements, concatenated with the bounds of ''array2'' without their first elements.  It is an error if the omitted upper bounds are not numerically equal; it is also an error if the omitted lower bounds are not numerically equal.  It is an error if both arrays have rank 0.
+
+Each element of the result array results from applying ''proc2'' to the corresponding elements of the last vectors of ''array1'' and the first vectors of ''array2'' and then reducing them with ''proc1'' to a single value.  The order and number of invocations of the procedures is unspecified.
+
+In particular, if both arrays have rank 1, the last and first vectors are the whole of the arrays, and the result has rank 0; if both arrays have rank 2, the last vectors of ''array1'' are the column-wise vectors, and the first vectors of ''array2'' are the row-wise vectors, and the result has rank 2.  (APL inner product.)
+
+Example:  `(array-inner-product + * array1 array2)`, where the arrays have rank 1, computes the usual dot product of two vectors.
+
+== Conversions ==
+
+`(array-&gt;nested-vector `''array''`)`
+
+Returns a newly allocated Scheme vector whose components are also newly constructed Scheme vectors, and so on as far down as necessary to cover every axis of the array.  Bottom-level Scheme vectors contain the components of ''array''.  Thus, if ''array'' has rank 1, the result is a Scheme vector; if the array has rank 2, the result is a Scheme vector containing Scheme vectors, and so on.  As a special case, if ''array'' has rank 0, the sole component is returned.
+
+`(nested-vector-&gt;array `''rank nested-vector''`)`
+
+Returns a newly allocated array with rank ''rank'' whose components are initialized from the Scheme vector''nested-vector''.  It is an error if ''nested-vector'' is not rectangular.  As a special case, if ''rank'' is 0, the sole component is ''nested-vector'', which need not be a Scheme vector.
+
+TBD: array-&gt;nested-list, nested-list-&gt;array
+
+== Transforms ==
+
+TBD: reshape, reverse, rearrange-axes, subarray, transpose, transform (SRFI 25)
+
+== Advanced procedures ==
+
+These procedures are mostly derived in function, and sometimes in name, from ISO/IEC 8485 and ISO 17351, which standardize basic and extended APL respectively.
+
+`(array-collapse `''array''` `''j''`)`
+
+Let ''k'' be the rank of ''array''.  This procedure constructs and returns an array of rank ''j'', which MUST be less than or equal to ''k'', whose components are arrays of rank ''k'' - ''j''.  The shape of the returned array is equal to the first ''j'' components of the shape of ''array'', and the shapes of its subarrays are equal to the remaining ''k''-''j'' components.
+
+`(array-explode `''array''` `''j''`)`
+
+Let ''k'' be the rank of ''array''.  This procedure constructs and returns an array of rank ''j'', which MUST be greater than or equal to ''k''.  Each component of ''array'' MUST be an array of rank ''j'' - ''k'', all of which MUST have the same shape.  The shape of the returned array is the shape of ''array'' concatenated with the shape of any of its components, and each component is the corresponding component of the corresponding subarray of ''array''.
+
+`(array-reshape `''shape''` `''array''`)`
+
+Constructs and returns a new array of shape ''shape'' whose components in row-major order are the same (in the sense of `eqv?`) as the components of ''array'' in row-major order.  (APL reshape.)
+
+`(array-reverse `''array''` `''axis''`)`
+
+Constructs and returns an array with the same shape as ''array'', but whose elements on the specified ''axis'' are reversed.  ''Axis'' must be a non-negative integer less than the rank of ''array''.  (APL reverse.)
+
+`(array-compress `''array''` `''booleans''` `''axis''`)`
+
+Constructs and returns an array with the same shape as ''array'' except possibly along the ''axis'' dimension.  The array is sliced along ''axis'' and the elements of ''booleans'' (a vector of boolean values) are used to decide which slices to incorporate into the result: if the corresponding boolean is `#t`, the slice is incorporated, otherwise not.  (APL compress.)
+
+`(array-expand `''array''` `''booleans''` `''nil''` `''axis''`)`
+
+Constructs and returns an array with the same shape as ''array'' except possibly along the ''axis'' dimension.  ''Array'' is sliced along ''axis'' and the elements of ''booleans'' (which MUST be a vector of boolean values) are used to decide where, if anywhere, ''nil'' (which must have the same shape as a slice) is to be interpolated: if the corresponding boolean is `#t`, ''nil'' is interpolated, otherwise the next slice is incorporated.  The size of ''booleans'' MUST be equal to the value of the ''axis'' dimension in the result.  (APL expand.)
+
+`(array-rearrange `''array''` `''vector''` `''axis''`)`
+
+Constructs and returns an array with the same shape as ''array''.  ''Array'' is sliced along the ''axis'' dimension, and the slices are reassembled in the order given by ''vector'', which MUST be a vector of exact integers.  The slice whose number appears in the first element of ''vector'' appears first in the result, and so on.  (Generalized version of APL rotate.)
+
+`(array-rearrange-axes `''array''` `''vector''`)`
+
+Constructs and returns an array whose shape is a permutation of the shape of ''array''.  ''Vector'', which MUST be a vector of exact integers, specifies how to permute it.  The axis whose number appears in the first element of ''vector'' appears as the first axis of the result, and so on.  (APL dyadic transpose with integer-valued vector.)
+
+`(subarray `''array''` `''start-subscripts''` `''end-subscripts''`)`
+
+Constructs and returns a smaller array with the same rank as ''array'' whose elements begin at the &quot;lower left&quot; corner specified by the list ''start-subscripts'' and end at the &quot;upper right&quot; corner specified by the list ''end-subscripts''.  (APL take and drop.)
+
+`(array-recursive-ref `''array''` `''subscript'' ...`)`
+
+Applies `array-ref` to the ''array'' using the first ''i'' subscripts, where ''i'' is the rank of ''array''.  If there are more subscripts, the result MUST be an array. Apply `array-ref` to the result using the next ''j'' subscripts, where ''j'' is the rank of the result.  Repeat until there are no more subscripts, returning the last result.  (APL enlist.)
+
+
+== Higher-order procedures ==
+
+These procedures are mostly derived in function, and sometimes in name, from ISO/IEC 8485 and ISO 17351, which standardize basic and extended APL respectively.
+
+== More ==
+
+transpose
+
+dyadic transpose
+
+append
+
+concatenate
+
+Numeric:  identity, inverse
+
+circular shift
+
+rotate-90, -180, -270 on two dimensions
+
+I/O: read, write, lexical syntax
+
+index-&gt;offset, offset-index
+
+
+diagonal
+
+rotate
+
+flatten
+
+flip
+
+squeeze
+
+expand
+
+repeate
+
+choose
+
+broadcast
+
+</pre>
+    <h2>time</h2>
+    <pre>2016-06-01 01:29:20</pre>
+    <h2>version</h2>
+    <pre>21</pre></body></html>

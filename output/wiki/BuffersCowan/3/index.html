@@ -1,0 +1,78 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BuffersCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BuffersCowan.md">BuffersCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Buffers&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-01-26 05:47:55</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/BuffersCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/BuffersCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="EditBuffers">Edit Buffers</h2>
+      <p>This is a very preliminary description of edit buffers, basically mutable variable-length strings with some pointers into them.  Temporarily, these functions are defined in terms of their <a href="http://www.gnu.org/software/emacs/manual/html_node/elisp/Buffers.html#Buffers">Emacs Lisp</a> equivalents, with the following exceptions:</p>
+      <ul>
+        <li>There is no notion of the current buffer, so most procedures have the buffer as the first argument.</li>
+        <li>Buffers do not have intrinsic names, so <i>buffer-or-name</i> arguments accept only buffers.</li>
+        <li>Point and markers are zero-based, as is usual in Scheme.</li>
+        <li>Ranges are min-inclusive and max-exclusive, also as is usual in Scheme.</li></ul>
+      <p>Issue:  Should start and end be made optional everywhere?  May partly depend on ticket <a href="/ticket/310">#310</a>.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p>This list is <i>very</i> tentative, and may grow to include SRFI 13, or shrink to exclude unnecessary cruft, or both.</p>
+      <h3 id="Wholebuffers">Whole buffers</h3>
+      <p>(buffer? obj) == (bufferp object)</p>
+      <p>(buffer-modified? buffer) == (buffer-modified-p)</p>
+      <p>(buffer-modified! buffer) == (restore-buffer-modified-p t)</p>
+      <p>(buffer-unmodified! buffer) == (set-buffer-modified-p nil)</p>
+      <h3 id="Constructors">Constructors</h3>
+      <p>(make-buffer [size-hint]) == simple constructor, no name provided</p>
+      <p>(buffer-&gt;string buffer) == (buffer-string)</p>
+      <h3 id="Point">Point</h3>
+      <p>(buffer-point buffer) == (point)</p>
+      <p>(buffer-length buffer) == (buffer-size buffer)</p>
+      <p>(buffer-set-point! buffer integer) == (goto-char integer)</p>
+      <p>(buffer-point-increment) == (forward-char integer)</p>
+      <p>(buffer-skip-forward buffer string) == (skip-chars-forward string)</p>
+      <p>(buffer-skip-backward buffer string) == (skip-chars-forward string)</p>
+      <p>(buffer-point-at-start? buffer) == (bobp)</p>
+      <p>(buffer-point-at-end? buffer) == (eobp)</p>
+      <h3 id="Markers">Markers</h3>
+      <p>If the <i>advancing?</i> argument to <span class="monospace">make-marker</span> is true, then if an insertion is done at the marker, the marker will automatically be repositioned to point to the end of the insertion.</p>
+      <p>(buffer-marker? obj) == (markerp obj)</p>
+      <p>(make-marker buffer marker-or-integer advancing?) == (copy-marker marker-or-integer insertion-type)</p>
+      <p>(marker-position marker) == (marker-position marker)</p>
+      <p>(marker-buffer marker) == (marker-buffer marker)</p>
+      <p>(marker-advancing? marker) == (marker-insertion-type marker)</p>
+      <p>(marker-set-position! marker position) == (set-marker marker position)</p>
+      <h3 id="Accessors">Accessors</h3>
+      <p>(buffer-ref buffer [position]) == (char-after [position]), returns #f on failure</p>
+      <p>(buffer-set! buffer [position]) == no exact equivalent, does what you expect</p>
+      <p>(buffer-substring buffer start end) == (buffer-substring start end)</p>
+      <p>(buffer-&gt;string buffer) == (buffer-string)</p>
+      <p>Depending on <a href="/ticket/310">#310</a>, possibly consolidate the last two.</p>
+      <h3 id="Comparison">Comparison</h3>
+      <p>No direct Emacs Lisp equivalents, but based on <span class="monospace">compare-buffer-substrings</span>.  Should probably be in a separate module because of its Unicode implications.</p>
+      <p>(buffer-substring=? buffer1 start1 end1 buffer2 start2 end2)</p>
+      <p>similarly <span class="monospace">buffer-substring&lt;?</span>, <span class="monospace">buffer-substring&gt;?</span>, <span class="monospace">buffer-substring&lt;=?</span>, <span class="monospace">buffer-substring&gt;=?</span>, and <span class="monospace">-ci</span> and <span class="monospace">-ni</span> analogues.</p>
+      <h3 id="Basicmutators">Basic mutators</h3>
+      <p>(buffer-insert! buffer . strings) == (buffer-insert . strings)</p>
+      <p>(buffer-insert-substring! to-buffer from-buffer [start [end]]) == (insert-buffer-substring ...)</p>
+      <p>(buffer-erase! buffer) == (erase-buffer)</p>
+      <p>(buffer-delete! buffer start end) == (delete-region start end)</p>
+      <p>(buffer-extract! buffer start end) == (delete-and-extract-region start end)</p>
+      <p>(buffer-delete-characters! buffer count) == (delete-char count)</p>
+      <h3 id="Casechanges">Case changes</h3>
+      <p>Should probably be in a separate module because of its Unicode implications.</p>
+      <p>(buffer-downcase! buffer start end) == (upcase-region start end)</p>
+      <p>(buffer-upcase! buffer start end) == (downcase-region start end)</p>
+      <p>(buffer-foldcase! buffer start end) = analogous to downcase-region</p></div></body></html>

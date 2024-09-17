@@ -1,0 +1,249 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #435</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #435</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-12 03:34:10</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Submitter's name: Marc Feeley
+
+Submitter's email: feeley at iro.umontreal.ca
+
+Relevant draft: r7rs draft 6
+
+Type: defect
+
+Priority: minor
+
+Relevant section of draft: 6.9. Bytevectors
+
+Summary: Bytevectors should be called u8vectors
+
+Many implementations of Scheme have adopted SRFI-4 where bytevectors are called u8vectors, and where the procedures operating on bytevectors have `u8vector` in their name.
+
+I see no reason to introduce new names.  It will require many implementations to implement the new names, and moreover the SRFI-4 names will have to be kept for code which uses SRFI-4.  This is needless bloat.
+
+The name `u8vector` is a very mnemonic way of expressing verbally the external representation `#u8(...)` which is used by R7RS for bytevectors.
+
+I also find the names `bytevector-u8-ref` and `bytevector-u8-set!` very clumsy and verbose compared to `u8vector-ref` and `u8vector-set!`.
+</pre>
+    <h2>id</h2>
+    <pre>435</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Formal Comment: Bytevectors should be called u8vectors</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 03:59:02</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-12 03:34:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1349987650027761</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 03:34:10</pre>
+    <h2>Change at time 2012-10-12 03:34:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349987650027761</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 03:34:10</pre>
+    <h2>Change at time 2012-10-12 03:34:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>accepted</pre>
+    <h2>raw-time</h2>
+    <pre>1349987650027761</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 03:34:10</pre>
+    <h2>Change at time 2012-07-03 13:08:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1341295706375262</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-07-03 13:08:26</pre>
+    <h2>Change at time 2012-07-03 13:08:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1341295706375262</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-07-03 13:08:26</pre>
+    <h2>Change at time 2012-07-03 13:08:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>accepted</pre>
+    <h2>oldvalue</h2>
+    <pre>reopened</pre>
+    <h2>raw-time</h2>
+    <pre>1341295706375262</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-07-03 13:08:26</pre>
+    <h2>Change at time 2012-07-03 13:08:16</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1341295696908947</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-07-03 13:08:16</pre>
+    <h2>Change at time 2012-07-03 13:08:16</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>wontfix</pre>
+    <h2>raw-time</h2>
+    <pre>1341295696908947</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-07-03 13:08:16</pre>
+    <h2>Change at time 2012-07-03 13:08:16</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>reopened</pre>
+    <h2>oldvalue</h2>
+    <pre>closed</pre>
+    <h2>raw-time</h2>
+    <pre>1341295696908947</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-07-03 13:08:16</pre>
+    <h2>Change at time 2012-07-02 06:09:01</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>We voted for `bytevector` explicitly, and no new arguments have been given here.  It would be inconsistent to use `u8vector-ref` given `bytevector`; the reason not to use simple `bytevector-ref` is for upward compatibility with [wiki:BlobAPI BlobAPI] or whatever replaces it.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1341184141241429</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 06:09:01</pre>
+    <h2>Change at time 2012-07-02 06:09:01</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1341184141241429</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 06:09:01</pre>
+    <h2>Change at time 2012-07-02 06:09:01</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1341184141241429</pre>
+    <h2>ticket</h2>
+    <pre>435</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 06:09:01</pre></body></html>

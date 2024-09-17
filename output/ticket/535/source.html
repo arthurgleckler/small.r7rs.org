@@ -1,0 +1,101 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #535</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #535</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Michael Montague writes:
+
+  I believe that a library should have at most one `begin` and it should have the semantics of a body (though no expressions are required). This would make the semantics of library bodies clear and make R7RS libraries much closer to R6RS libraries, with little loss in expressiveness.
+
+The question is, what gain is to counterbalance that loss?  It's easy for users who agree with this to make sure their libraries have at most one `begin`, and likewise to reformat existing libraries if they feel strongly about it.  The benefit, then, must be to implementers -- but what benefit is that?  The `define-library` form must be read as a whole, and the first step will normally be to concatenate the `begin` declarations.
+
+In addition, the restriction in the draft that imported identifiers cannot appear in a library textually before the `import` declaration that introduces them (see #353) means that it's possible to construct a library incrementally, adding new `import` and `begin` declarations as you go.  This is a convenience for programs that create libraries.
+
+Without a definite improvement visible from the restriction to a single `begin` declaration, this proposal would indeed be one of those &quot;weaknesses and restrictions&quot; that the Scheme standards denounce.</pre>
+    <h2>id</h2>
+    <pre>535</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Libraries should have at most one begin</pre>
+    <h2>time</h2>
+    <pre>2013-05-20 00:00:29</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG decided by unanimous consent to take no action on this ticket.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>535</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>535</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>535</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre></body></html>

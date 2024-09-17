@@ -1,0 +1,36 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>HashBangEof</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/HashBangEof.md">HashBangEof</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Hash&shy;Bang&shy;Eof</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-04-27 02:31:39</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/HashBangEof/history">history</a></div>
+      <div class="source"><a href="/wiki/HashBangEof/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>I tested the REPLs of the usual Schemes to determine which ones terminated when they read <span class="monospace">#!eof</span> from standard input.</p>
+      <p>Terminated: Chicken, SISC, Detroit, Chez, Vicare, KSi</p>
+      <p>Lexical syntax error: Racket, Gauche, Scheme48/scsh, Guile, Larceny, NexJ, SigScheme, MiniScheme, S7, Unlikely, SIOD, Rep, SXM, Sizzle, Foment, Chibi</p>
+      <p>Self-quoting object:  MIT, Gambit, Kawa</p>
+      <p>Special object: Llava, Owl Lisp</p>
+      <p>Unknown identifier: SigScheme, Shoe, BDC, XLisp, Schemik, UMB, Inlab</p>
+      <p>Attempts to evaluate an eof-object: Mosh</p>
+      <p>Apparently ignores it:  Bigloo, SCM, Ypsilon, IronScheme, JScheme, STklos, TinyScheme, Scheme 9, RScheme, Elk, FemtoLisp, Dfsch, Sagittarius, Picrin</p>
+      <p>I also tried evaluating <span class="monospace">(eof-object? #!eof)</span> in the REPL for a subset of the above.  Schemes that report a lexical syntax error or treat <span class="monospace">#!eof</span> as an identifier were not retested.  Schemes that ignore <span class="monospace">#!eof</span> usually ignored the closing <span class="monospace">)</span> as well; when one was supplied, they reported a missing argument to <span class="monospace">eof-object?</span>.</p>
+      <p>Reports premature EOF: MIT, Detroit, KSi, S7</p>
+      <p>Attempts to evaluate an EOF object: Vicare</p>
+      <p>Lexical syntax error: Mosh</p>
+      <p>Does not have <span class="monospace">eof-object?</span>: Owl Lisp</p>
+      <p>Returns <span class="monospace">#t</span>: Gambit, Chicken, Kawa, SISC, Chez</p>
+      <p>Returns <span class="monospace">#f</span>: Llava</p></div></body></html>

@@ -1,0 +1,54 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki NumericTower version 27</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki NumericTower version 27</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.10.177.1</pre>
+    <h2>name</h2>
+    <pre>NumericTower</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== The numeric tower ==
+
+This is an analysis of the R5RS provision that the full numeric tower may be subsetted.  Four boolean feature settings characterize different kinds of numeric towers: `exactness-preserving`, `ratios`, `inexact`, and `complex`.  These refer respectively to the closure of exact numbers under rational operations (except `/`), exact non-integer values, inexact rationals, and non-real numbers.
+
+There are therefore 16 possible numeric towers.  8 of them are known to have implementations, as shown below.  I write `+` if a feature is present and `-` if it is absent, and give a general description of the resulting tower and some Scheme implementations that provide it.
+
+||`exactness-preserving`||`ratios`||`inexact`||`complex`||Description||Implementations
+||-||-||-||-||A &quot;toy&quot; tower with bounded exact integers only (possibly appropriate where no numerical work will be done)||!SigScheme*||
+||-||-||+||-||Fixnums and flonums (all arithmetic runs in essentially constant time)||Plain Chicken, Shoe*, !TinyScheme*, RScheme, BDC*, XLisp*, Schemik*, VX, SXM*, Inlab, Sixx, Sizzle, Stalin (also Elisp*, C*)||
+||-||+||+||+||Limited-range exact and inexact numbers||S7, Wraith||
+||+||-||+||-||Exact integers and inexact real numbers (a good all-round compromise)||Bigloo, Scheme 9, Elk (also ISLisp)||
+||+||-||+||+||Exact integers, inexact real numbers, and inexact complex numbers||SCM||
+||+||+||-||-||Exact rational numbers only (reasonable for some purposes, but will often run very slowly without inexact support, so unsuitable for scientific-type work)||Dream, Oaklisp, Owl Lisp||
+||+||+||+||-||Real numbers only||Psyche, Ikarus, Rep (also Clojure)||
+||+||+||+||+||Full numeric tower||Racket, Gauche, MIT, Gambit, Chicken with the `numbers` egg, Scheme48/scsh, Kawa, SISC, Chibi, Guile, Chez, Vicare, Larceny, Ypsilon, Mosh, !IronScheme, STklos, KSi, UMB, Spark (also R6RS, Common Lisp, Pure)||
+
+*These systems are technically exactness-preserving, but silently return the wrong answers when their arithmetic operations overflow.
+
+See NumericTowerManisComments for Vincent Manis's comments on an earlier version of this page.
+
+See also ComplexRepresentations for information on which Schemes support exact, inexact, and mixed-exactness complex numbers.
+
+See also FloatPrecision for information on the different precisions of inexact numbers that some Schemes support.
+</pre>
+    <h2>time</h2>
+    <pre>2013-11-04 01:26:31</pre>
+    <h2>version</h2>
+    <pre>27</pre></body></html>

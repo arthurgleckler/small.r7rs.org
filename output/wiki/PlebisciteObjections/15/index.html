@@ -1,0 +1,114 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PlebisciteObjections</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PlebisciteObjections.md">PlebisciteObjections</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Plebiscite&shy;Objections</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-05-23 22:20:11</div>
+      <div class="version">15<span class="comment"></span><a href="/wiki/PlebisciteObjections/history">history</a></div>
+      <div class="source"><a href="/wiki/PlebisciteObjections/15/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>I (John Cowan) have extracted the following formal and informal objections to draft 9 of R7RS-small from votes cast in the R7RS-small plebiscite (and a few other email messages), and filed a ticket for each: the tickets are linked via their numbers.</p>
+      <p>Almost all of the tickets take the following form: an attributed quotation from one or more ballots or emails (I have consolidated the complaints into a single ticket if I thought they were substantially the same), followed by the names of people who substantially agreed but did not seem worth quoting, followed by my comments.  When my comments are factual in nature (by intent), they appear as part of the description; if they involve personal opinions, they appear as ticket comments.  In all cases the ticket titles are my own responsibility.</p>
+      <ul>
+        <li><a href="/ticket/478">#478</a>: Procedure equivalence should return.</li>
+        <li><a href="/ticket/479">#479</a>: Character names like 'xbeef' can be read two ways</li>
+        <li><a href="/ticket/480">#480</a>: Mapper output can share storage with input(s)</li>
+        <li><a href="/ticket/481">#481</a>: Draft is gratuitously incompatible with R6RS</li>
+        <li><a href="/ticket/482">#482</a>: Module system is pointlessly inflexible</li>
+        <li><a href="/ticket/483">#483</a>: Top-level semantics unspecified</li>
+        <li><a href="/ticket/484">#484</a>: The draft avoids making hard decisions</li>
+        <li><a href="/ticket/485">#485</a>: Many decisions were based on a tacit requirement to ignore R6RS</li>
+        <li><a href="/ticket/486">#486</a>: The draft is a step backwards from R6RS</li>
+        <li><a href="/ticket/487">#487</a>: The draft is not true to the spirit of Scheme</li>
+        <li><a href="/ticket/488">#488</a>: The draft is a move away from unity</li>
+        <li><a href="/ticket/489">#489</a>: The draft has little to offer over R5RS</li>
+        <li><a href="/ticket/490">#490</a>: The draft has little to offer over R6RS</li>
+        <li><a href="/ticket/491">#491</a>: Library versions, a pedagogically important feature, are not provided</li>
+        <li><a href="/ticket/492">#492</a>: Assertions are not provided</li>
+        <li><a href="/ticket/493">#493</a>: Full Unicode support is not portable</li>
+        <li><a href="/ticket/494">#494</a>: Including/loading doesn't belong in Scheme</li>
+        <li><a href="/ticket/495">#495</a>: The draft lacks many important libraries</li>
+        <li><a href="/ticket/496">#496</a>: Catastrophic failure should not be acceptable</li>
+        <li><a href="/ticket/497">#497</a>: The Scheme community is broken</li>
+        <li><a href="/ticket/498">#498</a>: Does the world need a better R5RS?</li>
+        <li><a href="/ticket/499">#499</a>: The draft is less expressive than (rnrs base 6)</li>
+        <li><a href="/ticket/500">#500</a>: &quot;The &quot;&quot;stack winding dance&quot;&quot; of guard clauses&quot;</li>
+        <li><a href="/ticket/501">#501</a>: Mutable strings are still provided</li>
+        <li><a href="/ticket/502">#502</a>: Call/cc should go</li>
+        <li><a href="/ticket/503">#503</a>: Setters should be allowed to return zero values</li>
+        <li><a href="/ticket/504">#504</a>: The treatment of sequences is still flawed</li>
+        <li><a href="/ticket/505">#505</a>: Internal definitions other than by define are problematic</li>
+        <li><a href="/ticket/506">#506</a>: Process issue: Late changes were not reviewable</li>
+        <li><a href="/ticket/507">#507</a>: R6RS/R7RS incompatibility of bytevector-copy! procedure</li>
+        <li><a href="/ticket/508">#508</a>: Library syntax should have been a subset of R6RS</li>
+        <li><a href="/ticket/509">#509</a>: Problematic interactions between dynamic-wind and exceptions</li>
+        <li><a href="/ticket/510">#510</a>: SRFI 9 records shouldn't be universal</li>
+        <li><a href="/ticket/511">#511</a>: <a href="/wiki/Parameters">Parameters</a> shouldn't be in the core</li>
+        <li><a href="/ticket/512">#512</a>: <a href="/wiki/Parameters">Parameters</a> should be used instead of proliferating names</li>
+        <li><a href="/ticket/513">#513</a>: Error should have been R6RS-compatible</li>
+        <li><a href="/ticket/514">#514</a>: New module syntax is ugly and unnecessary</li>
+        <li><a href="/ticket/515">#515</a>: Cond-expand doesn't scale and is hard to use</li>
+        <li><a href="/ticket/516">#516</a>: The lack of a fully-featured macro system requires sub-par constructs</li>
+        <li><a href="/ticket/517">#517</a>: The draft doesn't support user extensibility</li>
+        <li><a href="/ticket/518">#518</a>: The R7RS-small text should have been founded on the R6RS text</li>
+        <li><a href="/ticket/519">#519</a>: Toy Schemes shouldn't be the measure of what belongs in the standard</li>
+        <li><a href="/ticket/520">#520</a>: A library with no export declarations should export everything</li>
+        <li><a href="/ticket/521">#521</a>: Make library contents be at top level</li>
+        <li><a href="/ticket/522">#522</a>: WG1 was forbidden to remove restrictions</li>
+        <li><a href="/ticket/523">#523</a>: R7RS-large should have preceded R7RS-small</li>
+        <li><a href="/ticket/524">#524</a>: The draft's text-handling procedures are wrong in a Unicode world</li>
+        <li><a href="/ticket/525">#525</a>: Adding Unicode is too big a change from R5RS</li>
+        <li><a href="/ticket/526">#526</a>: #true and #false considered gratuitous</li>
+        <li><a href="/ticket/527">#527</a>: Block comment syntax considered unsightly</li>
+        <li><a href="/ticket/528">#528</a>: #!(no-)fold-case considered ugly</li>
+        <li><a href="/ticket/529">#529</a>: Read-line permits DoS attacks</li>
+        <li><a href="/ticket/530">#530</a>: The draft is too conservative in its changes to R5RS</li>
+        <li><a href="/ticket/531">#531</a>: Eq? should not be called an equivalence predicate</li>
+        <li><a href="/ticket/532">#532</a>: Delaying multiple values shouldn't be undefined</li>
+        <li><a href="/ticket/533">#533</a>: Define-library doesn't bind a name</li>
+        <li><a href="/ticket/534">#534</a>: Include at the library level should include declarations, not code</li>
+        <li><a href="/ticket/535">#535</a>: Libraries should have at most one begin</li>
+        <li><a href="/ticket/536">#536</a>: R6RS and R7RS libraries should be made closer</li>
+        <li><a href="/ticket/537">#537</a>: Minimal interface to sockets, concurrency, and hierarchical file systems</li>
+        <li><a href="/ticket/538">#538</a>: Falling off a cond-expand should be unspecified behavior</li></ul>
+      <p>Here is an author index, specifying which tickets each person's ballot or email is referred to in.  See <a href="/wiki/PlebisciteIndex">PlebisciteIndex</a> for links to the actual ballots.  Links to non-ballots are inside the tickets.</p>
+      <ul>
+        <li>Barzilay: <a href="/ticket/485">#485</a></li>
+        <li>Bex: <a href="/ticket/525">#525</a>, <a href="/ticket/526">#526</a>, <a href="/ticket/527">#527</a>, <a href="/ticket/528">#528</a>, <a href="/ticket/529">#529</a></li>
+        <li>Bothner: <a href="/ticket/507">#507</a>, <a href="/ticket/508">#508</a></li>
+        <li>Clinger: <a href="/ticket/531">#531</a></li>
+        <li>Dillinger: <a href="/ticket/502">#502</a>, <a href="/ticket/522">#522</a>, <a href="/ticket/523">#523</a>, <a href="/ticket/524">#524</a></li>
+        <li>Heidkamp: <a href="/ticket/502">#502</a></li>
+        <li>Hsu: <a href="/ticket/503">#503</a>, <a href="/ticket/510">#510</a>, <a href="/ticket/512">#512</a>, <a href="/ticket/513">#513</a>, <a href="/ticket/514">#514</a>, <a href="/ticket/515">#515</a>, <a href="/ticket/516">#516</a>, <a href="/ticket/517">#517</a>, <a href="/ticket/518">#518</a>, <a href="/ticket/519">#519</a></li>
+        <li>Kato: <a href="/ticket/486">#486</a></li>
+        <li>Manis: <a href="/ticket/478">#478</a></li>
+        <li>Medernach: <a href="/ticket/503">#503</a>, <a href="/ticket/509">#509</a>, <a href="/ticket/510">#510</a>, <a href="/ticket/511">#511</a></li>
+        <li>Montague: <a href="/ticket/533">#533</a>, <a href="/ticket/534">#534</a>, <a href="/ticket/535">#535</a>, <a href="/ticket/536">#536</a></li>
+        <li>More: <a href="/ticket/520">#520</a>, <a href="/ticket/521">#521</a></li>
+        <li>Piitulainen: <a href="/ticket/478">#478</a>, <a href="/ticket/504">#504</a>, <a href="/ticket/505">#505</a>, <a href="/ticket/538">#538</a></li>
+        <li>Radul: <a href="/ticket/479">#479</a>, <a href="/ticket/480">#480</a></li>
+        <li>Smyles: <a href="/ticket/506">#506</a></li>
+        <li>Snell-Pym: <a href="/ticket/503">#503</a></li>
+        <li>Sperber: <a href="/ticket/486">#486</a></li>
+        <li>Stone: <a href="/ticket/491">#491</a>, <a href="/ticket/492">#492</a>, <a href="/ticket/493">#493</a>, <a href="/ticket/494">#494</a>, <a href="/ticket/495">#495</a></li>
+        <li>Sussman: <a href="/ticket/478">#478</a></li>
+        <li>Tobin-Hochstadt: <a href="/ticket/481">#481</a>, <a href="/ticket/482">#482</a>, <a href="/ticket/483">#483</a>, <a href="/ticket/484">#484</a></li>
+        <li>Unknown: <a href="/ticket/530">#530</a></li>
+        <li>Watson: <a href="/ticket/478">#478</a></li>
+        <li>Weinholt: <a href="/ticket/496">#496</a>, <a href="/ticket/497">#497</a></li>
+        <li>Wingo: <a href="/ticket/498">#498</a>, <a href="/ticket/499">#499</a>, <a href="/ticket/500">#500</a>, <a href="/ticket/501">#501</a>, <a href="/ticket/502">#502</a>, <a href="/ticket/503">#503</a></li>
+        <li>Wise: <a href="/ticket/486">#486</a>, <a href="/ticket/487">#487</a>, <a href="/ticket/488">#488</a>, <a href="/ticket/489">#489</a>, <a href="/ticket/490">#490</a></li>
+        <li>Wittenberger: <a href="/ticket/532">#532</a></li>
+        <li>Wortman: <a href="/ticket/537">#537</a></li></ul></div></body></html>

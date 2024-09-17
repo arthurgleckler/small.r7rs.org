@@ -1,0 +1,75 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>144: strip prefix on import</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 144: <span class="summary">strip prefix on import</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-11-29 02:11:18</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/144/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-03-01 07:04:15</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>I'm thinking that for importing code that defines its external symbols as <span class="monospace">foo:this</span>, <span class="monospace">foo:that</span>, and <span class="monospace">foo:tother</span>, there should be a type of import clause that strips a specified prefix from imported symbols.  This is equivalent to renaming on import or renaming on export, but less painful, in the same way as the <span class="monospace">prefix</span> import clause does.</p>
+        <p>Specific proposal: <span class="monospace">(strip-prefix &lt;import-set&gt; &lt;prefix-identifier&gt;)</span>.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-03-01 13:02:37</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I agree that this is useful, though I wonder if we should consider it necessary for WG1? I would go for <span class="monospace">drop-prefix</span> instead of strip, since I think is sounds less aggressive, but other than that either WG2, at least, or WG1, maybe, should have this.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-03-01 13:56:15</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Technically, nothing is <i>necessary</i> except <span class="monospace">rename</span> and either <span class="monospace">only</span> or <span class="monospace">exclude</span>.  I'm fine with <span class="monospace">drop</span> instead of <span class="monospace">strip</span>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 18:07:40</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted no.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-11-29 02:10:59</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-11-29 02:11:18</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

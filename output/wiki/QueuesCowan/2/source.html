@@ -1,0 +1,150 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki QueuesCowan version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki QueuesCowan version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>QueuesCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Queues ==
+
+Queues (also known as deques) are mutable ordered collections that can contain any Scheme object.  Objects can be added to or removed from either end of a queue.  Each queue contains a list that contains the elements of the queue, and maintains pointers to the first and last element of the list.  Queues are disjoint from other types of Scheme objects.
+
+The API provided here is closely analogous to the R7RS-small API for lists.  Other list procedures can be applied to queues using `queue-&gt;list`, `list-&gt;queue`, and `list-queue!`.  It subsumes the [http://wiki.call-cc.org/man/4/Unit%20data-structures#queues Chicken] and [http://people.csail.mit.edu/jaffer/slib/Queues.html#Queues SLIB] APIs.
+
+== Procedures ==
+
+=== Constructors ===
+
+`(make-queue `''k'' [ ''fill'' ]`)`
+
+Returns a newly allocated queue of ''k'' elements whose value is ''fill''.  If ''fill'' is omitted, an implementation-dependent value is chosen.
+
+`(queue `''element'' ...`)`
+
+Returns a newly allocated queue containing the ''elements''.
+
+`(queue-copy` ''queue''`)`
+
+Returns a newly allocated queue containing the elements of ''queue''.
+
+=== Predicates ===
+
+`(queue? `''obj''`)`
+
+Returns `#t` if ''obj'' is a queue, and `#f` otherwise.
+
+`(queue-empty? `''queue''`)`
+
+Returns `#t` if ''obj'' is a queue with no elements, and `#f` otherwise.
+
+=== Accessors ===
+
+`(queue-first `''queue''` `''element''`)`
+
+Returns the first element of the queue.  This operation is O(1).
+
+`(queue-last`''queue''` `''element''`)`
+
+Returns the last element of the queue.  This operation is O(1).
+
+`(queue-ref ''queue k''`)`
+
+Returns the ''k''th element of ''queue''.  This operation is O(k).
+
+=== Mutators ===
+
+`(queue-add-first! `''queue''` `''element''`)`
+
+Adds ''element'' to the beginning of ''queue''.  Returns an unspecified value.  This operation is O(1).
+
+`(queue-add-last! `''queue''` `''element''`)`
+
+Adds ''element'' to the end of ''queue''.  Returns an unspecified value.  This operation is O(1).
+
+`(queue-remove-first! `''queue''`)`
+
+Removes the first element of the queue and returns it.  This operation is O(1).
+
+`(queue-remove-last! `''queue''`)`
+
+Removes the last element of the queue and returns it.  This operation is O(1).
+
+`(queue-set! ''queue k value''`)`
+
+Sets the ''k''th element of ''queue'' to ''value''.  This operation is O(k).
+
+=== The whole queue ===
+
+`(queue-length `''queue''`)`
+
+Returns the number of elements in ''queue''.
+
+`(queue-append`''queue'' ...`)`
+
+Returns a queue which contains all the elements in all the ''queues'' in the order in which they appear in the call.
+
+`(queue-reverse `''queue''`)`
+
+Returns a newly allocated queue with the same elements as in ''queue'' but in reverse order.
+
+`(queue-member? `''queue element predicate''`)`
+
+Returns `#t` if ''element'' is a member of ''queue'' (in the sense of ''predicate'') and `#f` otherwise.
+
+=== Mapping ===
+
+`(queue-map `''proc queue''`)`
+
+Applies ''proc'' to each element of ''queue'' in order and returns a newly allocated queue containing the results.
+
+`(queue-map! `''proc queue''`)`
+
+Applies ''proc'' to each element of ''queue'' in order and modifies ''queue'' to contain the results.
+
+`(queue-for-each `''proc''` `''queue''`)`
+
+Applies ''proc'' to each element of ''queue'' in order, discarding the returned values.  Returns an unspecified value.
+
+=== Conversion and list operations ===
+
+`(queue-&gt;list `''queue''`)`
+
+Returns the list that contains the members of ''queue'' in order.  It is an error to mutate the cdrs of such a list, as it shares storage with the queue.
+
+`(list-&gt;queue `''list''`)`
+
+Returns a newly allocated queue containing the elements of ''list'' in order.  It is an error to mutate the cdrs of ''list'' after calling this procedure, as it shares storage with the queue.
+
+To apply a non-destructive list procedure to a queue and return a new queue, use `(list-&gt;queue (`''proc''` (queue-&gt;list `''queue''`)))`.
+
+`(list-&gt;queue! `''queue list''`)`
+
+Replaces the list associated with ''queue'' with ''list'', effectively discarding all the elements of ''queue'' in favor of those in ''list''.  It is an error to mutate the cdrs of ''list'' after calling this procedure, as it may share storage with the queue.  Returns an unspecified value.
+
+To apply a destructive list procedure to a queue, use `(list-&gt;queue! (`''proc''` (queue-&gt;list `''queue''`)))`.
+
+
+</pre>
+    <h2>time</h2>
+    <pre>2014-08-04 10:22:41</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

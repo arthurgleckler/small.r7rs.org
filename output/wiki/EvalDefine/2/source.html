@@ -1,0 +1,61 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki EvalDefine version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki EvalDefine version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>EvalDefine</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Passing a definition to `eval` may or may  not work according to R5RS.  Furthermore, in many Schemes, but not in R5RS, it's possible to call `eval` with just one argument, implying the interaction environment.  I tested the suite of Schemes to determine whether and how it's possible to add definitions to the interaction environment by evaluating the following four forms at the REPL:
+
+{{{
+(eval '(define x 32) (interaction-environment))
+x
+(eval '(define y 55))
+y
+}}}
+
+The following Schemes allow definition by `eval`:
+
+ * Supports both `interaction-environment` and single-argument `eval`: Gambit, Chicken, Bigloo, Kawa, SISC, SCM, Chez, Larceny, NexJ, STklos, !TinyScheme, Sizzle, Spark
+
+ * Supports single-argument `eval` but not `interaction-environment`: Racket, RScheme, Scheme 7, XLisp, Rep, Elk, UMB, VX, Llava, SXM, !FemtoLisp, Inlab (SXM provides `interaction-environment` but calling it signals an error)
+
+ * Supports `interaction-environment` but not single-argument `eval`: Gauche, Scheme48/scsh, Guile, Vicare, Ypsilon, !IronScheme, !SigScheme, Dream, BDC
+
+The following Schemes do ''not'' allow definition by `eval`:
+
+ * Does not support `interaction-environment` or single-argument `eval`: MIT, Mosh, KSi, Oaklisp, Dfsch, Owl Lisp
+
+ * Supports both `interaction-environment` and single-argument `eval`, but definitions aren't visible in the interaction environment: Chibi
+
+ * Supports `interaction-environment` but not single-argument `eval`, but definitions aren't visible in the interaction environment: Shoe
+
+ * Does not support `eval` at all: Scheme 9, Schemik
+
+
+
+
+</pre>
+    <h2>time</h2>
+    <pre>2012-06-27 09:24:28</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

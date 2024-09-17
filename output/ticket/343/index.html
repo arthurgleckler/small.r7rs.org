@@ -1,0 +1,63 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>343: Editorial disagreement:  domain conditions before or after basic explanations?</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 343: <span class="summary">Editorial disagreement:  domain conditions before or after basic explanations?</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-15 11:48:45</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/343/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-02-20 03:46:06</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>R5RS sometimes places the domain conditions of a procedure before its explanation.  For example, <span class="monospace">map</span> is defined thus:</p>
+        <p>The <i>lists</i> must be lists, and <i>proc</i> must be a procedure taking as many arguments as there are <i>lists</i> and returning a single value. If more than one <i>list</i> is given, then they must all be the same length. <span class="monospace">Map</span> applies <i>proc</i> element-wise to the elements of the <i>lists</i> and returns a list of the results, in order. The dynamic order in which <i>proc</i> is applied to the elements of the <i>lists</i> is unspecified.</p>
+        <p>The equivalent language in R7RS draft 6 says:</p>
+        <p>It is an error if <i>proc</i> does not accept as many arguments as there are <i>lists</i> and return a single value.  The <span class="monospace">map</span> procedure applies <i>proc</i> element-wise to the elements of the <i>lists</i> and returns a list of the results, in order.  If more than one <i>list</i> is given and not all lists have the same length, <span class="monospace">map</span> terminates when the shortest list runs out.  It is an error for <i>proc</i> to mutate any of the lists.  The dynamic order in which <i>proc</i> is applied to the elements of the <i>lists</i> is unspecified.  If multiple returns occur from <span class="monospace">map</span>, the values returned by earlier returns are not mutated.</p>
+        <p>Note that the statement that the <i>lists</i> must be lists has been removed, being subsumed by the list of naming conventions in 1.3.3.</p>
+        <p>Cowan thinks this paragraph would be more readable if the purpose of <span class="monospace">map</span> appeared first, as this is the topic sentence, thus:</p>
+        <p>The <span class="monospace">map</span> procedure applies <i>proc</i> element-wise to the elements of the <i>lists</i> and returns a list of the results, in order.  If more than one <i>list</i> is given and not all lists have the same length, <span class="monospace">map</span> terminates when the shortest list runs out.  It is an error if <i>proc</i> does not accept as many arguments as there are <i>lists</i> and return a single value.  It is also an error for <i>proc</i> to mutate any of the lists.  The dynamic order in which <i>proc</i> is applied to the elements of the <i>lists</i> is unspecified.  If multiple returns occur from <span class="monospace">map</span>, the values returned by earlier returns are not mutated.</p>
+        <p>Shinn disagrees and insists on a vote, although there is no difference in substance.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-05 09:10:10</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to reject this proposal and leave the domain information in place, but to separate the additional domain restrictions from the initial description, as a separate short paragraph immediately following the prototype, possibly de-emphasized by making it smaller. This would keep the domain in one place and still allow the first line of the description stand out prominently in the initial paragraph.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-05-20 14:40:41</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-15 11:48:45</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

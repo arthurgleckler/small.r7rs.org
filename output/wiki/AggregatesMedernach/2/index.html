@@ -1,0 +1,82 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>AggregatesMedernach</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/AggregatesMedernach.md">AggregatesMedernach</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Aggregates&shy;Medernach</h1>
+    <div class="wiki metadata">
+      <div class="author">medernac</div>
+      <div class="time">2010-11-27 21:18:02</div>
+      <div class="version">2<span class="comment">minor change</span><a href="/wiki/AggregatesMedernach/history">history</a></div>
+      <div class="source"><a href="/wiki/AggregatesMedernach/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="AggregatesMedernach"><a href="/wiki/AggregatesMedernach">AggregatesMedernach</a></h1>
+      <h2 id="Rationale">Rationale</h2>
+      <p>Generating fixed sized data type disjoint from all other types, called AGGREGATES.</p>
+      <p>General other record or object features may be build on top of these aggregates.</p>
+      <h2 id="Aggregates(constructor/accessor)constructor">Aggregates ( constructor / accessor ) constructor</h2>
+      <p><span class="monospace">(create-aggregate </span><i>&lt;marker&gt;</i><span class="monospace"> </span><i>&lt;number-of-components&gt;</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(create-aggregate </span><i>&lt;marker&gt;</i><span class="monospace"> </span><i>&lt;number-of-components&gt;</i><span class="monospace"> </span><i>&lt;assertion&gt;</i><span class="monospace">)</span></p>
+      <p><i>&lt;marker&gt;</i> ensures that the call to create-aggregate is functionnal, the same aggregate functions are generated if parameters are the same. Notice that an unique value (such as cons cell) could be provided to obtain unique aggregate type.</p>
+      <p><i>&lt;number-of-components&gt;</i> is the fixed number of components of this new aggregate.</p>
+      <p>Optional: <i>&lt;assertion&gt;</i> contains an input function assertions (for data consistency).</p>
+      <p><i>create-aggregate</i> returns 2 functions as values:</p>
+      <p><i>make-&lt;aggregate&gt;</i> is a function taking a fixed number <i>&lt;number-of-components&gt;</i> of arguments, optionally checking its arguments with <i>&lt;assertion&gt;</i>, and returning a new aggregate containing arguments.</p>
+      <p><i>&lt;aggregate&gt;-switch</i> is explained below.</p>
+      <h2 id="Accessingaggregatecomponents">Accessing aggregate components</h2>
+      <p>Either</p>
+      <ol class="number">
+        <li>Unsafe access procedures must be invoked after a predicate checking data type</li>
+        <li>Or safe access procedure, then a check is performed before accessing and an error is signalled if the data type is not what is expected.</li></ol>
+      <p>However data are aggregated in order to retrieve many part, not only one, so solution 2. requires to perform redundant check for each accessed field and moreover the error in general is fatal to the program execution. Solution 1. alone is unsatisfactory as if an unsafe access procedure is applied to not of the correct kind data then random and unwanted behaviors may appear.</p>
+      <p>Another solution is to group together data type checking with accessing in a case analysis function (per aggregate types) :</p>
+      <p><span class="monospace">(&lt;aggregate&gt;-switch </span><i>&lt;aggregate-case&gt;</i><span class="monospace"> </span><i>&lt;else-case&gt;</i><span class="monospace">) = (lambda (</span><i>&lt;obj&gt;</i><span class="monospace">) ...)</span></p>
+      <p>Two cases are possible: if the data <i>&lt;obj&gt;</i> is of <i>&lt;aggregate&gt;</i> kind then <i>&lt;aggregate-case&gt;</i> function is called with the components of the <i>&lt;obj&gt;</i> data, else <i>&lt;else-case&gt;</i> is called with <i>&lt;obj&gt;</i>.</p>
+      <p>Examples:</p><span class="monospace">  ;; Creating my-null ...
+  
+  (my-null-switch &lt;null-case&gt; &lt;else-case&gt;)
+  
+  ;; Creating my-pair ...
+  
+  (my-pair-switch &lt;pair-case&gt; &lt;else-case&gt;)
+</span>
+      <p>With my-car, my-cdr for instance:</p><span class="monospace">  (define (my-car obj else)
+    ((pair-switch (lambda (first second) first) else)
+     obj))
+  
+  (define (my-cdr obj else)
+    ((pair-switch (lambda (first second) second) else)
+     obj))
+</span>
+      <p>The 'external' composition of aggregates is possible:</p><span class="monospace">  (define (my-list-switch &lt;null-case&gt; &lt;pair-case&gt; &lt;else-case&gt;)
+    (pair-switch &lt;pair-case&gt;
+      (null-switch &lt;null-case&gt;
+        &lt;else-case&gt;)))
+
+  (define (sequential-compose-aggregates switch-&gt;case-list &lt;else-case&gt;)
+    (if (null? switch-&gt;case-list)
+        &lt;else-case&gt; 
+        (let ((switch-&gt;case      (car switch-&gt;case-list))
+              (switch-&gt;case-list (cdr switch-&gt;case-list)))
+          (let ((switch (car  switch-&gt;case))
+                (case   (cadr switch-&gt;case)))
+             (switch case (sequential-compose-aggregates switch-&gt;case-list &lt;else-case&gt;))))))
+</span>
+      <h2 id="Issues">Issues</h2>
+      <ul>
+        <li>Maybe it is better to have instead of create-aggregate a syntactic construct to bind the created functions name ?</li></ul>
+      <ul>
+        <li>Do we need to define a function or macro to create unions of aggregates ?</li></ul>
+      <ul>
+        <li>An orthogonal mechanism is foreseen to allow securing data (like a lock mechanism with capabilities) but this is not the subject of this page.</li></ul>
+      <h2 id="References">References</h2>
+      <p>Jonathan A. Rees. &quot;User-defined data types&quot;. Lisp Pointers. 'The Scheme of Things' (column). 1993</p></div></body></html>

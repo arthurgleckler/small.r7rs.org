@@ -1,0 +1,46 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RecordsArcfide</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RecordsArcfide.md">RecordsArcfide</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Records&shy;Arcfide</h1>
+    <div class="wiki metadata">
+      <div class="author">arcfide</div>
+      <div class="time">2010-08-25 00:54:41</div>
+      <div class="version">4<span class="comment">Add emphasis</span><a href="/wiki/RecordsArcfide/history">history</a></div>
+      <div class="source"><a href="/wiki/RecordsArcfide/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="RecordProposal">Record Proposal</h1>
+      <p>By Aaron W. Hsu</p>
+      <h2 id="Overview">Overview</h2>
+      <p>WG1 is tasked with defining a record form suitable for its language. To that end, I feel that the following features are basic and fundamental to records and should be provided for and enabled in the WG1 record specification:</p>
+      <ul>
+        <li>The creation of disjoint types hierarchies, including inheritance</li>
+        <li>The abstraction over a finite set of data</li>
+        <li>Efficient implementation in even simple Scheme implementations</li></ul>
+      <p>To this end, I propose the following WG1 Record specification, which has as its goals the following:</p>
+      <ul>
+        <li>Efficiency</li>
+        <li>Simplicity</li>
+        <li>Extensibility</li></ul>
+      <h2 id="Specification">Specification</h2>
+      <p><b>I propose that the WG1 standardize only a syntactic record definition consisting of a subset of R6RS' functionality, which is syntactically compatible therewith.</b></p>
+      <p><span class="monospace">(define-record-type (&lt;name&gt; &lt;constructor&gt; &lt;predicate&gt;) &lt;clause&gt; ...)</span></p>
+      <p>Where <span class="monospace">&lt;name&gt;</span> is an identifier indicating the record type, and <span class="monospace">&lt;constructor&gt;</span> and <span class="monospace">&lt;predicate&gt;</span> will both be names bound to the record constructor and predicate, respectively. Each <span class="monospace">&lt;clause&gt;</span> is one of the following forms:</p>
+      <p><span class="monospace">(parent &lt;parent-rtd&gt; ...)</span><br>
+<span class="monospace">(fields &lt;field-spec&gt; ...)</span></p>
+      <p>For parent clauses, I propose that we permit multiple parents to be defined, but define and specify behavior for only one parent. The <span class="monospace">&lt;parent-rtd&gt;</span> should be an identifier defined by <span class="monospace">define-record-type</span> <span class="monospace">&lt;name&gt;</span>.</p>
+      <p>For field clauses, each <span class="monospace">&lt;field-spec&gt;</span> takes one of the following forms:</p>
+      <p><span class="monospace">(immutable &lt;field-name&gt; &lt;field-accessor&gt;)</span><br>
+<span class="monospace">(mutable &lt;field-name&gt; &lt;field-accessor&gt; &lt;field-mutator&gt;)</span></p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>This is the simplest record type definition that is easily extended to include other features in a nice interface. While it may be attractive to standardize on a procedural interface as the underlying core, it is my belief that the WG1 Charter is for the creation of a practical language, intended to be used in real work, where a small language is desirable, and not as an underlying assembly language for the construction of other forms that are more useful. To this end, it is expected that more people use a syntactic interface, and this represents the basic, largest common set of functionality that people use. particularly, this is a readily usable form, and has the necessary flexibility, and can be readily implemented in an efficient manner.</p></div></body></html>

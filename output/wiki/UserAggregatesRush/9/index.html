@@ -1,0 +1,64 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>UserAggregatesRush</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/UserAggregatesRush.md">UserAggregatesRush</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">User&shy;Aggregates&shy;Rush</h1>
+    <div class="wiki metadata">
+      <div class="author">kumoyuki</div>
+      <div class="time">2010-07-12 10:08:51</div>
+      <div class="version">9<span class="comment">more rationale, some specification text</span><a href="/wiki/UserAggregatesRush/history">history</a></div>
+      <div class="source"><a href="/wiki/UserAggregatesRush/9/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Title">Title</h2>
+      <p>WG1 User Defined Aggregate Types</p>
+      <h2 id="Authors">Authors</h2>
+      <p>David Rush</p>
+      <h2 id="Abstract">Abstract</h2>
+      <p>There is a significant fraction of the Scheme programming community which is looking for more expressive tools for data abstraction. When this desire is brought into contrast with the minimalist facilities of the existing Scheme Reports it can be difficult to reconcile the expectations many programmers have from more mainstream languages. SRFI-9 provides a facility which occupies a low-energy &quot;sweet spot&quot; in terms of semantic complexity and expressiveness, although it is unfortunately still somewhat primitive - lacking primarily in extensibility and integration with other Scheme facilities, most notably READ and WRITE.</p>
+      <p>Since most type-checking in Scheme is performed at run-time through the evaluation of predicate functions, the issues of type extensibility and integration ultimately come down to the the relationships expressible through those type predicate functions. This leads to an examination of the type structures within Scheme and a slight reorganization of the type predicates to enable a richer data abstraction facility.</p>
+      <h2 id="Issues">Issues</h2>
+      <ul>
+        <li>generative vs named</li>
+        <li>opacity of ports</li>
+        <li>relationship to <span class="monospace">VALUES</span></li>
+        <li>EQ? vs EQV? and extensibility</li></ul>
+      <h2 id="Rationale">Rationale</h2>
+      <p>Scheme provides a variety of primitive types from which program values are all taken. The majority (how many?) of them are atomic types, with little or no internal structure. The remaining primitive types aggregate multiple atomically typed values. Prior to SRFI-9 and R6RS there was no further type information available concerning Scheme values; however those documents introduced quasi-visible mutability types to certain classes of values. R5RS also allowed (but did not require) implementations to make literal constant aggregates (in particular, with cons cells) immutable, but provided no way to determine if a cons cell was actually mutable prior to actually attempting to change its value. This proposal takes the minimalist and REPL-friendly approach and provides no guarantees of immutability to aggregates by adopting the approach that all aggregate types are essentially specializations of vectors.</p>
+      <p>It is worth noting that lists are not an aggregate type which is addressed by this proposal, as lists are a recursive data type defined in terms of the primitive <span class="monospace">pair?</span> aggregate type.</p>
+      <h2 id="Specification">Specification</h2>
+      <ul>
+        <li><span class="monospace">atom?</span> =&gt; &lt;boolean&gt;</li>
+        <li><span class="monospace">aggregate?</span> =&gt; &lt;boolean&gt;</li></ul>
+      <p>These predicates split the type space of Scheme into two essential categories: types which are fully opaque, and types which are composed of multiple atomic objects. There is no guarantee that any accessors for an <span class="monospace">aggregate?</span> object will be in scope.</p>
+      <ul>
+        <li><span class="monospace">make-aggregate-type</span> [&lt;name&gt;] =&gt; &lt;type-id&gt;</li>
+        <li><span class="monospace">extend-aggregate-type</span> &lt;type-id&gt; [&lt;name&gt;] =&gt; &lt;type-id&gt;</li></ul>
+      <p>These functions provide access to type identifiers within the implementation. If the &lt;name&gt; parameter is specified, the implementation will provide a unique &lt;type-id&gt; associated with the &lt;name&gt;. When a &lt;name&gt; is not specified the implementation will generate a new unique &lt;type-id&gt;.</p>
+      <p>There is effectively a separate name space for any &lt;name&gt;s associated with &lt;type-id&gt;s. The type name space primarily facilitates exploratory programming via a REPL, allowing data structures to remain valid across multiple reloads of the same source code.</p>
+      <ul>
+        <li><span class="monospace">make-aggregate</span> &lt;type-id&gt; &lt;slots&gt; =&gt; &lt;aggregate&gt;</li>
+        <li><span class="monospace">aggregate-length</span>&lt;aggregate&gt; =&gt; &lt;exact integer&gt;</li>
+        <li><span class="monospace">aggregate-ref</span> &lt;aggregate&gt; &lt;slot&gt; =&gt; &lt;value&gt;</li>
+        <li><span class="monospace">aggregate-set!</span> &lt;aggregate&gt; &lt;slot&gt; &lt;value&gt; =&gt; *undefined*</li></ul>
+      <ul>
+        <li><span class="monospace">aggregate-type</span> &lt;pair&gt; =&gt; &lt;pair-type-id&gt;</li>
+        <li><span class="monospace">aggregate-type</span> &lt;vector&gt; =&gt; &lt;vector-type-id&gt;</li>
+        <li><span class="monospace">aggregate-type</span> &lt;string&gt; =&gt; &lt;string-type-id&gt;</li>
+        <li><span class="monospace">aggregate-type</span> &lt;aggregate&gt; =&gt; &lt;type-id&gt;</li>
+        <li><span class="monospace">aggregate-type</span> &lt;name&gt; =&gt; &lt;type-id&gt;</li></ul>
+      <h2 id="Top-LevelPrograms">Top-Level Programs</h2>
+      <h2 id="Implementation">Implementation</h2>
+      <h2 id="Compatibility">Compatibility</h2>
+      <h3 id="R5RS">R5RS</h3>
+      <h3 id="R6RS">R6RS</h3>
+      <h3 id="WG2">WG2</h3></div></body></html>

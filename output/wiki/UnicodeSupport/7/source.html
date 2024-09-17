@@ -1,0 +1,63 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki UnicodeSupport version 7</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki UnicodeSupport version 7</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>UnicodeSupport</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>I examined the results of `(integer-&gt;char 256)`, the first Unicode character outside the 8-bit range; `(integer-&gt;char 65536)`, the first Unicode character outside the Basic Multilingual Plane; `(integer-&gt;char 128)`, the first non-ASCII character; and `(integer-&gt;char 0)`, the ASCII NUL character.  I then attempted to wrap each character in a string.  In all cases where it was possible to create such a string, it correctly had a length of 1.
+
+I also checked that `(integer-&gt;char 65)` was the same as `#\A`; it was in all Schemes that support `integer-&gt;char`.  R5RS and earlier standards don't require that `integer-&gt;char` is an ASCII mapping, but in fact it always is.
+
+== Characters ==
+
+Full support:  Racket, Gauche, Gambit, MIT, Chicken, Scheme48/scsh, Guile, Kawa, Chez, Vicare, Larceny, Ypsilon, Mosh, STklos, KSi, !SigScheme, XLisp, BDC, Foment, Owl Lisp, Chibi, Sagittarius
+
+Characters 0-65535 only:  RScheme, SISC, !IronScheme, NexJ, JScheme
+
+Characters 0-255 only:  Bigloo, SCM, Shoe, !TinyScheme, Scheme 9, S7, UMB, Elk, SXM, Sizzle, Inlab
+
+No `integer-&gt;char` procedure: Rep, Schemik, Llava, !FemtoLisp, Dfsch
+
+== Strings ==
+
+Full support:  Racket, Gauche, Gambit, Chicken, Scheme48/scsh, Guile, Kawa, Chez, Vicare, Larceny, Ypsilon, Mosh, STklos, KSi, !SigScheme, XLisp, BDC, Foment, Owl Lisp, Chibi, Sagittarius
+
+Characters 0-65535 only: SISC, !IronScheme, NexJ, JScheme
+
+Characters 0-255 only:  MIT (but MIT Scheme has UTF8 and &quot;wide&quot; strings, which do support full Unicode), Bigloo, RScheme, SCM, Shoe, !TinyScheme, Scheme 9, S7, UMB, Elk, SXM, Sizzle, Inlab
+
+No `integer-&gt;char` procedure: Rep, Schemik, Llava, !FemtoLisp, Dfsch
+
+== Identifiers ==
+
+I tried to define the identifier π with the value 3.141592653 and then evaluate it.
+
+Successful:  Racket, Gauche, Gambit, Chicken, Bigloo, Scheme48/scsh, Guile, Kawa, SISC, SCM, Chez, Vicare, Larceny, Ypsilon, Mosh, !IronScheme, NexJ, JScheme, STklos, KSi, !SigScheme, Shoe, !TinyScheme, RScheme, S7, BDC, UMB, Elk, Llava, Sizzle, !FemtoLisp, Dfsch, Inlab, Foment, Owl Lisp, Chibi, Sagittarius
+
+Unsuccessful: MIT, Chez (can't enter π at the REPL), Scheme 9, XLisp, Rep, Schemik, SXM
+
+This test often succeeds because many Schemes treat anything that is not numeric or a delimiter as an identifier, even if they only understand 8-bit encodings.</pre>
+    <h2>time</h2>
+    <pre>2015-04-22 10:39:59</pre>
+    <h2>version</h2>
+    <pre>7</pre></body></html>

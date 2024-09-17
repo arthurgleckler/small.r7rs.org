@@ -1,0 +1,88 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki EnumContainersCowan version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki EnumContainersCowan version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>EnumContainersCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>'''THIS IS NOT A PROPOSAL.  It's just a dumping ground for some stuff I don't want to lose track of.  There will be a proper proposal later.'''
+
+== Enumerations ==
+
+Based on unique objects, not symbols.
+
+Each enum object has four properties:  enum type, name (a symbol), ordinal (a non-negative exact integer), value (anything).  Enum objects are unique across enum types.  Names and ordinals are unique within an enum type.  Accessors are `enum-type`, `enum-name`, `enum-ordinal`, `enum-value`.
+
+An enum type contains a map from names to enum objects and a vector indexed by the ordinal.  We need `enum-ref` (uses the vector) and `enum-name-&gt;enum` (uses the map) as fundamental procedures on enum types.  Simple composition gives us `enum-name-&gt;ordinal`, `enum-ordinal-&gt;name`, `enum-ordinal-&gt;value`, and `enum-&gt;name-&gt;value`.  There is no way to work backward from an enum value because it need not be unique.
+
+Possibly kill enum values in favor of just using enum maps?  A single value is very handy for C definitions, etc.
+
+`Make-enumeration-type` accepts either names or `(name value)` lists.  Ordinals are assigned in order.  `Define-enumeration-type` binds an identifier to the enumeration type and an identifier per enum (same as the name) to each enum.
+
+== Enumeration sets ==
+
+From SetsCowan, not yet consistent with the above.
+
+Except as noted below, the procedures for creating and manipulating enumeration sets are the same as those for sets, except that `set` is replaced by `enum-set` in their names.  Wherever a newly allocated enumeration set is returned, it has the same enumeration type as the source sets.  It is an error to operate on enumeration sets of different types.
+
+This design is founded on [http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-15.html R6RS enumerations], but with the addition of reified enumeration types along the lines suggested by [http://www.r6rs.org/formal-comments/comment-262.txt R6RS Formal Comment #262].  The prefix `enum` is used in all cases instead of using both `enum` and `enumeration` as R6RS does.
+
+`(enum-type-symbols `''enum-type''`)`
+
+Return a newly allocated list of the symbols in ''enum-type'' in the original order.
+
+`(enum-type-index `''enum-type symbol''`)`
+
+Return an exact integer corresponding to the position of ''symbol'' in the original list that created ''enum-type'', or `#f` if it was not one of those symbols.  The R6RS equivalent is the procedure returned by `enum-type-indexer` when applied to an enum-set belonging to `enum-type`.
+
+`(make-enum-set `''enum-type''`)`
+
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in ''enum-type''.  The set is empty.  The approximate R6RS equivalents are `enum-set-constructor` and `make-enumeration`.
+
+`(make-universal-enum-set `''enum-type''`)`
+
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in ''enum-type''.  The set contains all possible elements.  The approximate R6RS equivalent is `enum-set-universe`.
+
+`(enum-set `''enum-type''` `''element'' ...`)`
+
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in ''enum-type''. The set is initialized to contain the ''elements''.  There is no R6RS equivalent.
+
+`(list-&gt;enum-set `''enum-type''` `''list''`)`
+
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in ''enum-type''. The set is initialized to contain the elements of ''list''.  There is no R6RS equivalent.
+
+`(enum-set-complement `''enum-set''`)`
+
+Returns a newly allocated enumeration set that is the complement of ''enum-set''.  This procedure is also in R6RS.
+
+`(enum-set-projection `''enum-set''` `''enum-type''`)`
+
+Returns a newly allocated enumeration set of type ''enum-type''.  Its elements are the symbols belonging to ''enum-set'', ignoring any symbols which are not in ''enum-type''.  This procedure is also in R6RS, but uses a second enum-set in place of ''enum-type''.
+
+== Enumeration maps ==
+
+Based on vectors indexed by the enum's ordinal.  API is reduced form of HashTablesCowan.
+</pre>
+    <h2>time</h2>
+    <pre>2014-08-04 10:08:54</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

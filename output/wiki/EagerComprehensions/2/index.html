@@ -1,0 +1,108 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>EagerComprehensions</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/EagerComprehensions.md">EagerComprehensions</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Eager&shy;Comprehensions</h1>
+    <div class="wiki metadata">
+      <div class="author">aag</div>
+      <div class="time">2012-04-08 02:46:45</div>
+      <div class="version">2<span class="comment">Fixed SRFI link.</span><a href="/wiki/EagerComprehensions/history">history</a></div>
+      <div class="source"><a href="/wiki/EagerComprehensions/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="EagerComprehensions">Eager Comprehensions</h1>
+      <p>Eager comprehensions are a loop facility for Scheme based on list comprehensions.  Unlike Haskell's, and like Python's, they execute eagerly, in keeping with Scheme's general eager evaluation.</p>
+      <p>The details are at <a href="http://srfi.schemers.org/srfi-42/srfi-42.html">SRFI 42</a>.  This is just an epitome except for the comprehensions and generators derived from the <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.128.5560&amp;rep=rep1&amp;type=pdf">Shivers loop</a> (PDF) and <a href="http://mumble.net/~campbell/scheme/foof-loop.txt">foof-loop</a> loop macros, marked by subdivisions below.</p>
+      <h2 id="Comprehensions">Comprehensions</h2>
+      <p>These macros assemble streams of results from generators invoked inside them to produce a single (composite or summary) result.  There may be multiple generators, in which case they are understood to be nested and are run rightmost-fastest.</p>
+      <p><span class="monospace">do-ec</span> evaluates a command once for its side-effects; all other comprehensions are based on this one.</p>
+      <p><span class="monospace">list-ec</span> evaluates an expression repeatedly, returning a list of results.</p>
+      <p><span class="monospace">append-ec</span> evaluates an expression (which must return a list) repeatedly, appending the results together.</p>
+      <p><span class="monospace">string-ec</span> evaluates an expression (which must return a character) repeatedly, returning a string of the results.</p>
+      <p><span class="monospace">vector-ec</span> evaluates an expression repeatedly, returning a vector of results.</p>
+      <p><span class="monospace">vector-of-length-ec</span> is the same as <span class="monospace">vector-ec</span>, but is given the length of the final vector for efficiency.</p>
+      <p><span class="monospace">sum-ec</span> evaluates an expression (which must return a number) repeatedly, returning the sum of the results.</p>
+      <p><span class="monospace">product-ec</span> evaluates an expression (which must return a number) repeatedly, returning the product of the results.</p>
+      <p><span class="monospace">max-ec</span> evaluates an expression (which must return a number) repeatedly, returning the <span class="monospace">max</span> of the results.</p>
+      <p><span class="monospace">min-ec</span> evaluates an expression (which must return a number) repeatedly, returning the <span class="monospace">min</span> of the results.</p>
+      <p><span class="monospace">any?-ec</span> evaluates an expression repeatedly as a boolean.  Any true result aborts the loop and returns <span class="monospace">#t</span>; otherwise, <span class="monospace">#f</span> is returned.</p>
+      <p><span class="monospace">every?-ec</span> evaluates an expression repeatedly as a boolean.  Any false result aborts the loop and returns <span class="monospace">#f</span>; otherwise, <span class="monospace">#t</span> is returned.</p>
+      <p><span class="monospace">first-ec</span> returns the first value of the expression, aborting the loop.</p>
+      <p><span class="monospace">last-ec</span> returns the last value of the expression.</p>
+      <p><span class="monospace">fold-ec</span> evaluates an expression repeatedly and reduces the resulting sequence using a specified initial value and binary reduction procedure.</p>
+      <p><span class="monospace">fold-ec3</span> does what <span class="monospace">fold-ec</span> does, but the value is used only if the sequence is empty.  Otherwise, a specified unary procedure is applied to the first member of the sequence, and further reduction is done using the binary procedure.</p>
+      <h3 id="Suggestedcomprehensions">Suggested comprehensions</h3>
+      <p>The following comprehensions are suggested by SRFI 42 but are not part of it.</p>
+      <p><span class="monospace">array-ec</span> evaluates an expression repeatedly and uses the stream of values to construct an array of a specified shape in row-major order.</p>
+      <p><span class="monospace">bitwise-ec</span> evaluates an expression as a boolean repeatedly, mapping true values to 1 bits and false values to 0 bits, and returning an integer based on those bits taken in little-endian order.</p>
+      <p><span class="monospace">stream-ec</span> lazily generates a <a href="http://srfi.schemers.org/srfi-40/srfi-40.html">SRFI 40</a> stream, running generators only as needed.</p>
+      <p>The SRFI also mentions the possibility of <span class="monospace">begin-ec</span>, <span class="monospace">|-ec</span>, <span class="monospace">||-ec</span>, and <span class="monospace">&amp;&amp;-ec</span> for <a href="http://www.scsh.net/">scsh</a>.</p>
+      <h3 id="Not-recommendedcomprehensions">Not-recommended comprehensions</h3>
+      <p>The following comprehensions are mentioned by the SRFI but are considered too specialized:</p>
+      <p><span class="monospace">gcd-ec</span> evaluates an expression (which must return a number) repeatedly, returning the greatest common divisor of the results.</p>
+      <p><span class="monospace">lcm-ec</span> evaluates an expression (which must return a number) repeatedly, returning the least common multiple of the results.</p>
+      <h3 id="Proposedcomprehensionsfromfoof-loop">Proposed comprehensions from foof-loop</h3>
+      <p><span class="monospace">reverse-ec</span> is like <span class="monospace">list-ec</span> but produces its values in reverse (potentially more efficiently).</p>
+      <p><span class="monospace">append-reverse-ec</span> is like <span class="monospace">append-ec</span> but appends the reverse of each of its values (potentially more efficiently).</p>
+      <h2 id="Generators">Generators</h2>
+      <p>These macros are used within comprehensions to specify how streams of values are generated.  Each generator binds a variable to the value currently being generated; it may also bind another variable to an index number, an exact integer counting the number of generated values so far.  These variables are visible in expressions of generators to the right.</p>
+      <p><span class="monospace">:</span> examines its arguments to determine whether to use the <span class="monospace">:list</span>, <span class="monospace">:string</span>, <span class="monospace">:vector</span>, <span class="monospace">:range</span>, <span class="monospace">:real-range</span>, <span class="monospace">:char-range</span>, or <span class="monospace">:port</span> generator; it is extensible.</p>
+      <p><span class="monospace">:list</span> generates results from one or more lists.</p>
+      <p><span class="monospace">:string</span> generates character results from one or more strings.</p>
+      <p><span class="monospace">:vector</span> generates results from one or more vectors.</p>
+      <p><span class="monospace">:integers</span> generates the non-negative exact integers starting from 0.</p>
+      <p><span class="monospace">:range</span> generates a finite range of exact integers, with specified low (inclusive), high (exclusive) and step values.</p>
+      <p><span class="monospace">:real-range</span> is like <span class="monospace">:range</span>, but handles arbitrary real numbers.  Roundoff errors are avoided.</p>
+      <p><span class="monospace">:char-range</span> is like <span class="monospace">:range</span>, but generates characters in Unicode order, with a specified start (inclusive) and stop (exclusive); the stride is always 1.</p>
+      <p><span class="monospace">:port</span> generates results by reading a specified port with a specified reader procedure until an eof-object is returned.</p>
+      <p><span class="monospace">:do</span> defines a generator using a named-let with optional inner and outer lets; all other generators are based on this one.</p>
+      <p><span class="monospace">:let</span> defines a generator that binds a variable to a single value and generates that value.</p>
+      <p><span class="monospace">:parallel</span> runs several sub-generators in parallel, terminating when any of its sub-generators do.</p>
+      <p><span class="monospace">:while</span> evaluates a guard expression repeatedly and runs a sub-generator while the guard expression is true.</p>
+      <p><span class="monospace">:until</span> evaluates a guard expression repeatedly and runs a sub-generator until the guard expression is true.</p>
+      <h3 id="Suggestedgenerators">Suggested generators</h3>
+      <p>The following generators are suggested by SRFI 42 but are not part of it:</p>
+      <p><span class="monospace">:array</span> generates results from one or more arrays in row-major order.</p>
+      <p><span class="monospace">:random-integer</span> generates a specified number of random integers in a specified range.</p>
+      <p><span class="monospace">:random-real</span> generates a specified number of random real numbers between 0 (inclusive) and 1 (exclusive).</p>
+      <p><span class="monospace">:bitwise</span> generates a sequence of bits obtained by appending the binary digits of specified integers.</p>
+      <p><span class="monospace">:stream</span> is like <span class="monospace">:list</span>, but generates results from one or more <a href="http://srfi.schemers.org/srfi-40/srfi-40.html">SRFI 40</a> streams.</p>
+      <p><span class="monospace">:lines-of-file</span> is like <span class="monospace">:port</span>, but the reader is <span class="monospace">read-line</span> and the optional index variable indexes lines.</p>
+      <p><span class="monospace">:chars-of-file</span> is also like <span class="monospace">:port</span>, but the reader is <span class="monospace">read-char</span> and there are two optional index variables, one for lines and one for columns within a line.</p>
+      <p><span class="monospace">:directory</span> generates a sequence of filenames from a directory.</p>
+      <p><span class="monospace">:match</span> generates a sequence of strings matching a regular expression or glob.</p>
+      <p><span class="monospace">:env</span> generates a sequence of environment variables.</p>
+      <h3 id="Proposedgeneratorsfromfoof-loop">Proposed generators from foof-loop</h3>
+      <p><span class="monospace">:substring</span> iterates over the characters of part of a string specified by low (inclusive) and high (exclusive) bounds.</p>
+      <p><span class="monospace">:subvector</span> iterates over the elements of part of a vector specified by low (inclusive) and high (exclusive) bounds.</p>
+      <p><span class="monospace">:reverse-range</span> generates a sequence of exact integers in decreasing order, with specified low (inclusive), high (exclusive), and step values.</p>
+      <p><span class="monospace">:reverse-real-range</span> is like <span class="monospace">:reverse-range</span>, but handles arbitrary real numbers.  Roundoff errors are avoided.</p>
+      <p><span class="monospace">:reverse-substring</span> is like <span class="monospace">:substring</span>, but generates characters in reverse order.</p>
+      <p><span class="monospace">:reverse-subvector</span> is like <span class="monospace">:subvector</span>, but generates elements in reverse order.</p>
+      <p><span class="monospace">:list-pairs</span> is like <span class="monospace">:list</span>, but iterates over the pairs rather than the elements of lists.</p>
+      <p><span class="monospace">:let-values</span> is like <span class="monospace">:let</span>, but captures the multiple values of its expression in multiple variables.</p>
+      <h3 id="ProposedgeneratorsfromShiversloop">Proposed generators from Shivers loop</h3>
+      <p><span class="monospace">:previous</span> binds <i>n</i> variables to the last <i>n</i> values of the loop.</p>
+      <h2 id="Qualifiers">Qualifiers</h2>
+      <p>These macros can be intermixed with generators to control the behavior of generators to the right of them.</p>
+      <p><span class="monospace">if</span> examines an expression and runs generators to its right only if the expression is true.</p>
+      <p><span class="monospace">not</span>, <span class="monospace">and</span>, and <span class="monospace">or</span> are the compositions of <span class="monospace">if</span> that you'd expect.</p>
+      <p><span class="monospace">begin</span> takes a sequence of expressions, all but the last of which are evaluated for effect.</p>
+      <p><span class="monospace">nested</span> groups qualifiers and generators into a single parenthesized form, without any special semantic effect.</p>
+      <h2 id="Extensibility">Extensibility</h2>
+      <p>The basic approach to extension is to write new comprehensions and generators as syntax-rules macros which invoke an explicit continuation argument.  There are some macros and procedures that assist with this:</p>
+      <p><span class="monospace">:dispatched</span> is a macro that invokes a specified dispatch procedure over a list of arbitrary setup arguments.  The dispatch procedure returns either a generator procedure which when invoked repeatedly produces a stream of values, or <span class="monospace">#f</span> meaning that it does not know how to handle the arguments.  This is used to implement the <span class="monospace">:</span> generator.</p>
+      <p><span class="monospace">:generator-proc</span> is a macro that wraps a generator, returning a dispatch procedure for it.</p>
+      <p><span class="monospace">:-dispatch-ref</span> is a procedure that returns the current global dispatch procedure for the <span class="monospace">:</span> generator.</p>
+      <p><span class="monospace">:-dispatch-set!</span> is a procedure that changes the global dispatch procedure for the <span class="monospace">:</span> generator.</p>
+      <p><span class="monospace">make-initial-:-dispatch</span> is a procedure that returns the initial dispatch procedure for the <span class="monospace">:</span> generator.</p>
+      <p><span class="monospace">dispatch-union</span> is a procedure that returns a dispatcher providing the union of two dispatchers.  An error is signalled if arguments are passed that both dispatchers are able to handle.</p></div></body></html>

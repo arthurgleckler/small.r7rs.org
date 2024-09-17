@@ -1,0 +1,73 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki VectorsCowan version 18</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki VectorsCowan version 18</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>VectorsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Some cleanup and improvement is needed to SRFI 43.
+
+== R7RS vs. SRFI 43 ==
+
+The R7RS procedures `vector-map` and `vector-for-each` are incompatible with SRFI 43; they do not pass the current index, but only the values.  Here's a proposal to fork SRFI 43 to eliminate the problem:
+
+ * `vector-fold`, `vector-fold-right`, `vector-reduce`, `vector-reduce-right`, `vector-map`, `vector-map!`, `vector-for-each` are the R7RS-compatible versions that don't transmit index values to their procedure arguments.
+ * `vector-index-fold`, `vector-index-fold-right`, `vector-index-reduce`, `vector-index-reduce-right`, `vector-index-map`, `vector-index-map!`, `vector-index-for-each` do transmit index values, and are compatible with SRFI 43 conceptually but not in name.
+
+== Partitioning ==
+
+`(vector-partition `''pred vector''`)`
+
+Returns two values.  The first value is a vector index ''n'', and the second element is a newly allocated vector of the same length as ''vector'', reordered so that the elements which satisfy ''pred'' appear in the first ''n'' elements of the vector, and the elements which do not satisfy ''pred'' appear in the remaining elements.  The ordering of the elements is preserved in all other respects .  ''Pred'' may be called any number of times and in any order.
+
+`(vector-partition! `''pred vector''`)`
+
+The same as `vector-partition`, except that it mutates ''vector'' and returns only ''n''.
+
+
+== Appending ==
+
+`(vector-append-subvectors `''k fill'' ( ''at vector start end'' ) ...`)`
+
+Returns a newly allocated vector of length ''k'' after copying every element of each ''vector'' from ''start'' to ''end'' into the new vector starting at ''at''.  Any additional locations in the new vector are initialized with ''fill''.  This procedure is a generalization of `vector-copy` and `vector-copy!`.  Implementations may optimize this procedure using an unsafe primitive that creates an uninitialized vector, in order to avoid touching each element of the result twice. 
+
+== Cumulation ==
+
+`(vector-cumulate `''proc seed vector''`)`
+
+Returns a newly allocated vector of the same length as ''vector''.  Each element is constructed by reducing (as if by `vector-reduce`) successive prefixes of the elements of ''vector''. (APL scan.)
+
+== Bisecting ==
+
+`(vector-bisect-left `''vector comparator obj'' [ ''start'' [ ''end'' ] ]`)`
+
+`(vector-bisect-right `''vector comparator obj'' [ ''start'' [ ''end'' ] ]`)`
+
+Returns the insertion point for ''obj'' in ''vector'' to maintain the sorted order of the elements according to ''comparator''.  It is an error if ''vector'' is not already sorted.  If ''obj'' is equal to one or more elements of  ''vector'', `vector-bisect-left` will return the insertion point before (to the left of) all matching elements, whereas `vector-bisect-right` will return the insertion point after (to the right of) all matching elements.
+
+The returned value partitions ''vector'' into two halves so that all values with lower indexes are less than or equal to ''obj'' and all other values are greater than or equal to ''obj''.
+
+</pre>
+    <h2>time</h2>
+    <pre>2015-04-09 22:24:21</pre>
+    <h2>version</h2>
+    <pre>18</pre></body></html>

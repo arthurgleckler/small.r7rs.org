@@ -1,0 +1,196 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1ReBallotGleckler</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1ReBallotGleckler.md">WG1ReBallotGleckler</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Re&shy;Ballot&shy;Gleckler</h1>
+    <div class="wiki metadata">
+      <div class="author">aag</div>
+      <div class="time">2010-10-31 14:03:39</div>
+      <div class="version">13<span class="comment">Revised voted on #2 Module System.</span><a href="/wiki/WG1ReBallotGleckler/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1ReBallotGleckler/13/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Notes about results:</p>
+      <ul>
+        <li>you may list as many of the options as you want in order of preference</li>
+        <li>you are encouraged to list all options</li>
+        <li>options are comma-delimited (ignoring space) and case-insensitive</li>
+        <li>you may write in your own option if you announce it to the list first</li>
+        <li>everything but the <span class="monospace">preferences</span> line is free-form, and may be used for a rationale</li>
+        <li><span class="monospace">wg2</span> means &quot;pass this issue to WG2&quot;</li>
+        <li><span class="monospace">undecided</span> means I want to discuss this issue further</li>
+        <li>abstain by leaving the preferences blank</li></ul>
+      <h1 id="WG1BallotItemsToFinalizeByOct.31">WG1 Ballot Items To Finalize By Oct. 31</h1>
+      <h2 id="WG1-Modules">WG1 - Modules</h2>
+      <h3 id="#2ModuleSystem"><a href="/ticket/2">#2</a> Module System</h3>
+      <p>As per the charter, we need a module system
+proposal which allows sharing of code between
+implementations.</p>
+      <p>This is one issue where we can't default to
+the R5RS, since it has no module system. If
+we can't come to consensus, we will have to
+take the R6RS module system as-is.</p>
+      <p>Note the <b>r6rs--</b> option is just the
+R6RS module system without versioning or
+phasing.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>ganz:</b> <a href="/wiki/ModulesGanz">ModulesGanz</a></li>
+            <li><b>hsu:</b> <a href="/wiki/ModulesAndPackagesArcfide">ModulesAndPackagesArcfide</a></li>
+            <li><b>shinn:</b> <a href="/wiki/ModulesShinn">ModulesShinn</a></li></ul></li>
+        <li><b>Options:</b> ganz, hsu, shinn, r6rs, r6rs--, undecided</li>
+        <li><b>Preferences:</b> shinn, r6rs--, hsu, r6rs</li></ul>
+      <p>I've changed my top preference to <a href="/wiki/ModulesShinn">ModulesShinn</a> for two primary
+reasons: 1) It is a compatible subset of R6RS, with two syntactic
+differences that should be easy to implement, so it should be easy to
+use R6RS libraries that only make use of its subset of the R6RS module
+system; and 2) it includes the <span class="monospace">include</span> form, allowing code to be
+separated from its library specification, which makes it easy to use
+code that is intended to be loaded at top level, e.g. in R5RS
+implementations, eliminates unnecessary indentation, and feels more
+compatible with interactive development.</p>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="#57Simplerandomness"><a href="/ticket/57">#57</a> Simple randomness</h3>
+      <p>Student programs often want a small amount of randomness, not
+necessarily of very high quality.  Shall we provide a simple interface
+to a random variables in WG1 Scheme?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/RandomCowan">RandomCowan</a></li></ul></li>
+        <li><b>Options:</b> cowan/core, cowan/module, srfi-27/core, srfi-27/module, no, wg2, undecided</li>
+        <li><b>Preferences:</b> wg2, srfi-27/module, srfi-27/core, no, cowan/module</li></ul>
+      <p><a href="/wiki/RandomCowan">RandomCowan</a> does not allow control over the seed, so it is of such limited usefulness as to not be worth including.  The API defined by SRFI 27 does allow control of the seed, and makes random sources first class, both of which are good ideas.  However, the API is awkward, especially <span class="monospace">random-source-state-ref</span> and <span class="monospace">random-source-state-set!</span>.  I'd like to see WG2 do a survey of existing implementations and find something better than both of these proposals.</p>
+      <h2 id="WG1-Exceptions">WG1 - Exceptions</h2>
+      <h3 id="#18ExceptionSystem"><a href="/ticket/18">#18</a> Exception System</h3>
+      <p>R6RS provided a detailed exception system with
+support for raising and catching exceptions, using
+a hierarchy of exception types.</p>
+      <p>Do we use this, or parts of it, or a new exception
+system?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/ExceptionHandlingCowan">ExceptionHandlingCowan</a></li></ul></li>
+        <li><b>Options:</b> cowan/core, cowan/module, r6rs/core, r6rs/module, wg2, none, undecided</li>
+        <li><b>Preferences:</b> r6rs/module, r6rs/core, wg2, cowan/module, cowan/core</li></ul>
+      <p>While the R6RS exception system is not perfect, I'm happy with it.  In
+WG1, it belongs in a module, not in the core.</p>
+      <p>If we don't agree to use the R6RS system, then I'd rather see WG2
+refine it instead of including <a href="/wiki/ExceptionHandlingCowan">ExceptionHandlingCowan</a> in WG1, since
+the <a href="/wiki/ExceptionHandlingCowan">ExceptionHandlingCowan</a> proposal doesn't explain the rationale for
+its deviations from R6RS.  I've studied the mailing list archive and
+can't find a convincing argument for <a href="/wiki/ExceptionHandlingCowan">ExceptionHandlingCowan</a>, either,
+so I'm sticking with R6RS or, as a fallback position, WG2.</p>
+      <p>The largest flaw I see with the R6RS condition system is that its
+condition taxonomy is too coarse and focused on operating-system
+issues.  Compare it with the taxonomy of Gambit or MIT Scheme, for
+example.  (See <a href="/wiki/ExceptionTaxonomies">ExceptionTaxonomies</a> for details of the condition
+taxonomies of many Scheme implementations.)</p>
+      <p>Some people have proposed taking the R6RS exception system but not its
+condition taxonomy.  If we do, I hope we'll still standardize on some
+taxonomy rather than none.  Without a common taxonomy, it's hard to
+share code.</p>
+      <h2 id="WG1-I/O">WG1 - I/O</h2>
+      <h3 id="#52read/writecyclicdata"><a href="/ticket/52">#52</a> read/write cyclic data</h3>
+      <p>SRFI-38 standardizes the <a href="/ticket/0">#0</a>=(1 . <a href="/ticket/0">#0</a>#) shared
+structure notation for read/write.  In the case
+of write, this can be expensive to compute, but
+otherwise the common case of the repl printing
+a cyclic structure results in an infinite loop.</p>
+      <p>Do we want to add support for this, as an option
+or separate set of procedures?</p>
+      <p><span class="monospace">srfi-38</span> for separate procedures or <span class="monospace">native</span> to require <span class="monospace">read</span> and
+<span class="monospace">write</span> to handle cyclic notation.</p>
+      <ul>
+        <li><b>Options:</b> srfi-38/core, srfi-38/module, native, no, wg2, undecided</li>
+        <li><b>Preferences:</b> srfi-38/module, srfi-38/core, wg2, no, native</li></ul>
+      <p>SRFI 38 supports this notation, but doesn't require that <span class="monospace">read</span> and
+<span class="monospace">write</span> support it, so writing doesn't have to become more expensive.
+Since many programs won't need this feature, it belongs in a module.</p>
+      <h2 id="WG1-Macros">WG1 - Macros</h2>
+      <h3 id="#8SRFI-46ellipsespecifierinsyntax-rules"><a href="/ticket/8">#8</a> SRFI-46 ellipse specifier in syntax-rules</h3>
+      <p>As an alternative to <a href="/ticket/7">#7</a>, SRFI-46 proposed
+allowing an optional ellipse specified as
+an identifier before the literals list in
+syntax-rules:</p>
+      <p>(syntax-rules ::: ()
+     &lt;ellipse now represented as ::: instead of ...&gt;)</p>
+      <p>Do we allow this?</p>
+      <ul>
+        <li><b>Options:</b> yes/core, yes/module, no, wg2, undecided</li>
+        <li><b>Preferences:</b> no, wg2, yes/module</li></ul>
+      <h3 id="#9tailpatternsinsyntax-rules"><a href="/ticket/9">#9</a> tail patterns in syntax-rules</h3>
+      <p>SRFI-46 and R6RS both allow a fixed number of
+tail patterns following an ellipsis in a syntax-rules
+pattern:</p>
+      <p>(P1 ... Pk Pe &lt;ellipsis&gt; Pm+1 ... Pn)</p>
+      <p>R6RS further allows dotted tail patterns</p>
+      <p>(P1 ... Pk Pe &lt;ellipsis&gt; Pm+1 ... Pn . Px)</p>
+      <p>where Px only matches a dotted list.</p>
+      <p>Do we allow either or both of these extensions?</p>
+      <ul>
+        <li><b>Options:</b> tail/core, tail/module, dotted-tail/core, dotted-tail/module, both/core, both/module, no, wg2, undecided</li>
+        <li><b>Preferences:</b> both, tail, wg2</li></ul>
+      <p>I don't feel strongly about this issue, but the extensions seem
+harmless.</p>
+      <h2 id="WG1-Numerics">WG1 - Numerics</h2>
+      <h3 id="#22mantissawidths"><a href="/ticket/22">#22</a> mantissa widths</h3>
+      <p>R6RS introduced the concept of mantissa widths
+as an alternative to the R5RS #s in numbers.
+Do we want either or both of these?</p>
+      <ul>
+        <li><b>Options:</b> r5rs, r6rs, both, no, wg2, undecided</li>
+        <li><b>Preferences:</b> both, wg2, r6rs, r5rs</li></ul>
+      <p>I don't have a good enough understanding of the importance of this
+issue to have a strong opinion, so I'm following GJS, who is of course
+a great mathematician and programmer, and have chosen &quot;both&quot; as my
+first preference.</p>
+      <h2 id="WG1-ReaderSyntax">WG1 - Reader Syntax</h2>
+      <h3 id="#11case-sensitivity"><a href="/ticket/11">#11</a> case-sensitivity</h3>
+      <p>Does the reader fold case by default, and if so how?</p>
+      <p>Yes to fold-case (R5RS) no to preserve case (R6RS), additional votes
+to come later from specific proposals.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, implementation-determined, undecided</li>
+        <li><b>Preferences:</b> yes, implementation-determined</li></ul>
+      <h3 id="#14alternatecommentsyntax"><a href="/ticket/14">#14</a> alternate comment syntax</h3>
+      <p>R6RS provides support for #; nested sexp comments,
+and #| ... |# nested block comments.  Do we include
+either or both of these?</p>
+      <ul>
+        <li><b>Options:</b> sexp, block, both, no, wg2, undecided</li>
+        <li><b>Preferences:</b> both, block, wg2, sexp, no</li></ul>
+      <h2 id="WG1-StringsandChars">WG1 - Strings and Chars</h2>
+      <h3 id="#26stringnormalization"><a href="/ticket/26">#26</a> string normalization</h3>
+      <p>R6RS provides procedures to explicitly convert
+strings back and forth between the four Unicode
+normalization forms.</p>
+      <p>The previous phrasing of this option was overly vague, referring to
+&quot;any form of normalization.&quot;  I've had to treat <span class="monospace">yes</span> votes as
+undecided for lack of a better default.  If you voted <span class="monospace">yes</span> before
+please choose one of the following options or write in your own
+proposal.</p>
+      <ul>
+        <li>generic - <span class="monospace">string-normalize</span> converts to a single implementation-defined normal form</li>
+        <li>separate - <span class="monospace">string-compose-canonical</span>, <span class="monospace">string-decompose-canonical</span> and <span class="monospace">string-decompose-compatibility</span> gives orthogonal control over the normalization being performed</li>
+        <li>specific - <span class="monospace">string-normalize-{nfd,nfc,nfkd,nfkc}</span> converts explicitly to the four normal forms defined in the Unicode standard</li>
+        <li>agnostic - <span class="monospace">string-ni=?' etc. provides an API of basic normalization insensitive procedures without explicitly converting the strings, analagous to </span>string-ci=?'</li></ul>
+      <p>Note <a href="/wiki/UnicodeCowan">UnicodeCowan</a> currently provides specific normalization
+procedures.</p>
+      <ul>
+        <li><b>Options:</b> generic/core, generic/module, separate/core, separate/module, specific/core, specific/module, agnostic/core, agnostic/module, no, wg2, undecided</li>
+        <li><b>Preferences:</b> wg2, specific/module</li></ul>
+      <p>The complexity of Unicode should be, as much as possible, banished
+from WG1.  If it is included, however, I'll follow John's lead, since
+he is a Unicode expert, and vote for specific/module.</p></div></body></html>

@@ -1,0 +1,53 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>R6RSExceptionHandlingCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/R6RSExceptionHandlingCowan.md">R6RSExceptionHandlingCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">R6RSException&shy;Handling&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-11-16 09:22:45</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/R6RSExceptionHandlingCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/R6RSExceptionHandlingCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Exceptions">Exceptions</h2>
+      <p>This is a proposal for basic exception-handling and exception-raising constructs.</p>
+      <p>The exception system allows the program, when it detects an exceptional situation, to pass control to an <i>exception handler</i>, and to dynamically establish such exception handlers. Exception handlers are one-argument procedures that determine the action the program takes when an exceptional situation is signalled.  Exception handlers are always invoked with an object (which may be of any type) describing the exceptional situation.  The system implicitly maintains a <i>current exception handler</i>.</p>
+      <p>The program raises an exception by invoking the current exception handler, passing it an object encapsulating information about the exception. Any procedure accepting one argument may serve as an exception handler and any object (called a <i>condition object</i>) may be used to represent an exception.</p>
+      <p>The system maintains the current exception handler as part of the dynamic environment of the program.</p>
+      <p>When a program begins its execution, the current exception handler is expected to handle all exceptions by interrupting execution, reporting that an exception has been raised, and displaying information about the condition object that was provided. The handler may then exit, or may provide a choice of other options.  Interpretation of these expectations necessarily depends upon the nature of the system in which programs are executed, but the intent is that users perceive the raising of an exception as a controlled escape from the situation that raised the exception, not as a crash.</p>
+      <h2 id="Proceduresandsyntaxforms">Procedures and syntax forms</h2>
+      <p><span class="monospace">(with-exception-handler </span><i>handler</i><span class="monospace"> </span><i>thunk</i><span class="monospace">)</span></p>
+      <p><i>Handler</i> must be a procedure and should accept one argument. <i>Thunk</i> must be a procedure that accepts zero arguments. The <span class="monospace">with-exception-handler</span> procedure returns the results of invoking <i>thunk</i>. <i>Handler</i> is installed as the current exception handler for the dynamic extent (as determined by <span class="monospace">dynamic-wind</span>) of the invocation of <i>thunk</i>.</p>
+      <p>Implementation responsibilities: The implementation must check the restrictions on handler to the extent performed by applying it as described when it is called as a result of a call to <span class="monospace">raise</span> or <span class="monospace">raise-continuable</span>. An implementation may check whether <i>handler</i> is an appropriate argument before applying it.</p>
+      <p><span class="monospace">(guard (</span><i>variable</i><span class="monospace"> . </span><i>cond clauses</i><span class="monospace">) </span><i>body</i><span class="monospace">)</span></p>
+      <p>Syntax: Each <i>cond clause</i> is as in the specification of <span class="monospace">cond</span>.</p>
+      <p>Semantics: Evaluating a guard form evaluates <i>body</i> with an exception handler that binds the raised object to <i>variable</i> and within the scope of that binding evaluates the clauses as if they were the clauses of a <span class="monospace">cond</span> expression. That implicit <span class="monospace">cond</span> expression is evaluated with the continuation and dynamic environment of the guard expression.</p>
+      <p>If the test of every <i>cond clause</i> evaluates to <span class="monospace">#f</span> and there is no <span class="monospace">else</span> clause, then <span class="monospace">raise</span> is re-invoked on the raised object within the dynamic environment of the original call to <span class="monospace">raise</span>, except that the current exception handler is that of the guard expression.</p>
+      <p>The final expression in a <i>cond clause</i> is in a tail context if the <span class="monospace">guard</span> expression itself is.</p>
+      <p><span class="monospace">(raise </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Invokes the current exception handler on <i>obj</i>.  The handler is called with a continuation whose dynamic environment is that of the call to <span class="monospace">raise</span>, except that the current exception handler is the one that was in place when the handler being called was installed. If the handler returns, an exception is raised non-continuably in the same dynamic environment as the handler.</p>
+      <p><span class="monospace">(raise-continuable </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Invokes the current exception handler on <i>obj</i>.  The handler is called with a continuation that is equivalent to the continuation of the call to <span class="monospace">raise-continuable</span>, with these two exceptions:</p>
+      <p>1) the current exception handler is the one that was in place when the handler being called was installed,</p>
+      <p>2) if the handler being called returns, then it will again become the current exception handler. If the handler returns, the values it returns become the values returned by the call to <span class="monospace">raise-continuable</span>.</p>
+      <h2 id="Errorprocedures">Error procedures</h2>
+      <p><span class="monospace">(error </span><i>message-string</i><span class="monospace"> . </span><i>irritants</i><span class="monospace">)</span></p>
+      <p>Constructs an <i>error condition</i> and raises it as if using <span class="monospace">raise</span>.  The error condition may be of any Scheme type; the <i>message-string</i> and <i>irritants</i> must be retrievable from it.  The <i>message-string</i> is intended to be a human-readable report of the error.  This is SRFI 23 <span class="monospace">error</span>.</p>
+      <p><span class="monospace">(error-in </span><i>source</i><span class="monospace"> </span><i>message-string</i><span class="monospace"> . </span><i>irritants</i><span class="monospace">)</span></p>
+      <p>Constructs an <i>error condition</i> and raises it as if using <span class="monospace">raise</span>.  The error condition may be of any Scheme type; the <i>source</i>, <i>message-string</i> and <i>irritants</i> must be retrievable from it.  The <i>source</i> is a string or symbol describing the procedure or operation that detected the error; the <i>message-string</i> is intended to be a human-readable report of the error.  This is R6RS <span class="monospace">error</span>.</p>
+      <p><span class="monospace">(error-message </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns the message-string from <i>obj</i> if <i>obj</i> is an error condition, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(error-irritants </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns the irritants from <i>obj</i> if <i>obj</i> is an error condition, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(error-source </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns the source from <i>obj</i> if <i>obj</i> is an error condition, and <span class="monospace">#f</span> otherwise.</p></div></body></html>

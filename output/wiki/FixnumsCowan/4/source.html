@@ -1,0 +1,576 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki FixnumsCowan version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki FixnumsCowan version 4</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>FixnumsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>{{{
+#!html
+&lt;p&gt;
+Fixnums are an implementation-defined subset of the exact integers.
+Every implementation must define its fixnum range as a closed
+interval [-2&lt;sup&gt;w-1&lt;/sup&gt;, 2&lt;sup&gt;w-1&lt;/sup&gt;-1],
+such that &lt;em&gt;w&lt;/em&gt; is an integer &lt;em&gt;w&lt;/em&gt; greater than or equal to 24.  Every
+mathematical integer within an implementation's fixnum range must
+correspond to an exact integer that is representable within the
+implementation.
+A fixnum is an exact integer whose value lies within this
+fixnum range.&lt;/p&gt;
+&lt;p&gt;
+Fixnum operations perform integer arithmetic on their fixnum
+arguments.  If any argument is not a fixnum, or if the mathematical result
+is not representable as a fixnum, it is an error.  In particular, this means
+that fixnum operations may return a mathematically incorrect fixnum in these
+situations without raising an error.&lt;/p&gt;
+&lt;p&gt;
+This section uses &lt;i&gt;fx&lt;/i&gt;, &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;, &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;, etc., as parameter
+names for fixnum arguments.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_856&quot;&gt;&lt;/a&gt;fixnum?&lt;i&gt; obj&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+Returns &lt;tt&gt;#t&lt;/tt&gt; if &lt;i&gt;obj&lt;/i&gt; is an exact
+integer within the fixnum range, &lt;tt&gt;#f&lt;/tt&gt; otherwise.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_858&quot;&gt;&lt;/a&gt;fixnum-width&lt;i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_860&quot;&gt;&lt;/a&gt;least-fixnum&lt;i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_862&quot;&gt;&lt;/a&gt;greatest-fixnum&lt;i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+These procedures return &lt;em&gt;w&lt;/em&gt;,
+&amp;minus;2&lt;sup&gt;&lt;em&gt;w&lt;/em&gt;&amp;minus;1&lt;/sup&gt; and 2&lt;sup&gt;&lt;em&gt;w&lt;/em&gt;&amp;minus;1&lt;/sup&gt; &amp;minus; 1: the
+width, minimum and the maximum value of the fixnum range, respectively.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_864&quot;&gt;&lt;/a&gt;fx=?&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_866&quot;&gt;&lt;/a&gt;fx&amp;gt;?&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_868&quot;&gt;&lt;/a&gt;fx&amp;lt;?&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_870&quot;&gt;&lt;/a&gt;fx&amp;gt;=?&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_872&quot;&gt;&lt;/a&gt;fx&amp;lt;=?&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+These procedures return &lt;tt&gt;#t&lt;/tt&gt; if their arguments are (respectively):
+equal, monotonically increasing, monotonically decreasing,
+monotonically nondecreasing, or monotonically nonincreasing,
+&lt;tt&gt;#f&lt;/tt&gt; otherwise.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_874&quot;&gt;&lt;/a&gt;fxzero?&lt;i&gt; fx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_876&quot;&gt;&lt;/a&gt;fxpositive?&lt;i&gt; fx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_878&quot;&gt;&lt;/a&gt;fxnegative?&lt;i&gt; fx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_880&quot;&gt;&lt;/a&gt;fxodd?&lt;i&gt; fx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_882&quot;&gt;&lt;/a&gt;fxeven?&lt;i&gt; fx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+These numerical predicates test a fixnum for a particular property,
+returning &lt;tt&gt;#t&lt;/tt&gt; or &lt;tt&gt;#f&lt;/tt&gt;.  The five properties tested by
+these procedures are: whether the number object is zero, greater than zero,
+less than zero, odd, or even.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_884&quot;&gt;&lt;/a&gt;fxmax&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_886&quot;&gt;&lt;/a&gt;fxmin&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+These procedures return the maximum or minimum of their arguments.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_888&quot;&gt;&lt;/a&gt;fx+&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_890&quot;&gt;&lt;/a&gt;fx*&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+These procedures return the sum or product of their arguments.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_892&quot;&gt;&lt;/a&gt;fx-&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_894&quot;&gt;&lt;/a&gt;fx-&lt;i&gt; fx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+With two arguments, this procedure returns the difference
+&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;minus;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;
+With one argument, this procedure returns the additive
+inverse of its argument.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_896a&quot;&gt;&lt;/a&gt;fxfloor/&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_898a&quot;&gt;&lt;/a&gt;fxfloor-quotient&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_900a&quot;&gt;&lt;/a&gt;fxfloor-remainder&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_896b&quot;&gt;&lt;/a&gt;fxceiling/&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_898b&quot;&gt;&lt;/a&gt;fxceiling-quotient&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_900b&quot;&gt;&lt;/a&gt;fxceiling-remainder&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_896c&quot;&gt;&lt;/a&gt;fxtruncate/&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_898c&quot;&gt;&lt;/a&gt;fxtruncate-quotient&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_900c&quot;&gt;&lt;/a&gt;fxtruncate-remainder&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_896d&quot;&gt;&lt;/a&gt;fxround/&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_898d&quot;&gt;&lt;/a&gt;fxround-quotient&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_900d&quot;&gt;&lt;/a&gt;fxround-remainder&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_896e&quot;&gt;&lt;/a&gt;fxeuclidean/&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_898e&quot;&gt;&lt;/a&gt;fxeuclidean-quotient&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_900e&quot;&gt;&lt;/a&gt;fxeuclidean-remainder&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_896f&quot;&gt;&lt;/a&gt;fxbalanced/&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_898f&quot;&gt;&lt;/a&gt;fxbalanced-quotient&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_900f&quot;&gt;&lt;/a&gt;fxbalanced-remainder&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It is an error if &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is zero.
+These procedures implement integer division and
+return the results of the corresponding operations
+specified in &lt;a href=&quot;DivisionRiastradh&quot;&gt;DivisionRiastradh&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_908&quot;&gt;&lt;/a&gt;fx+/carry&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+Returns the two fixnum results of the following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(let*&amp;nbsp;((s&amp;nbsp;(+&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(s0&amp;nbsp;(mod0&amp;nbsp;s&amp;nbsp;(expt&amp;nbsp;2&amp;nbsp;(fixnum-width))))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(s1&amp;nbsp;(div0&amp;nbsp;s&amp;nbsp;(expt&amp;nbsp;2&amp;nbsp;(fixnum-width)))))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;(values&amp;nbsp;s0&amp;nbsp;s1))&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_910&quot;&gt;&lt;/a&gt;fx-/carry&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+Returns the two fixnum results of the following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(let*&amp;nbsp;((d&amp;nbsp;(-&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(d0&amp;nbsp;(mod0&amp;nbsp;d&amp;nbsp;(expt&amp;nbsp;2&amp;nbsp;(fixnum-width))))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(d1&amp;nbsp;(div0&amp;nbsp;d&amp;nbsp;(expt&amp;nbsp;2&amp;nbsp;(fixnum-width)))))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;(values&amp;nbsp;d0&amp;nbsp;d1))&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_912&quot;&gt;&lt;/a&gt;fx*/carry&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+Returns the two fixnum results of the following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(let*&amp;nbsp;((s&amp;nbsp;(+&amp;nbsp;(*&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(s0&amp;nbsp;(mod0&amp;nbsp;s&amp;nbsp;(expt&amp;nbsp;2&amp;nbsp;(fixnum-width))))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(s1&amp;nbsp;(div0&amp;nbsp;s&amp;nbsp;(expt&amp;nbsp;2&amp;nbsp;(fixnum-width)))))&lt;br/&gt;
+
+=&amp;nbsp;&amp;nbsp;(values&amp;nbsp;s0&amp;nbsp;s1))&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_914&quot;&gt;&lt;/a&gt;fxnot&lt;i&gt; &lt;i&gt;fx&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+Returns the unique fixnum that is congruent
+mod 2&lt;sup&gt;&lt;em&gt;w&lt;/em&gt;&lt;/sup&gt; to the one's-complement of &lt;i&gt;fx&lt;/i&gt;.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_916&quot;&gt;&lt;/a&gt;fxand&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_918&quot;&gt;&lt;/a&gt;fxior&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_920&quot;&gt;&lt;/a&gt;fxxor&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+These procedures return the fixnum that is the bit-wise &amp;ldquo;and&amp;rdquo;,
+&amp;ldquo;inclusive or&amp;rdquo;, or &amp;ldquo;exclusive or&amp;rdquo; of the two's complement
+representations of their arguments.  If they are passed only one
+argument, they return that argument.  If they are passed no arguments,
+they return the fixnum (either &amp;minus;1 or 0) that acts as identity for the
+operation.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_922&quot;&gt;&lt;/a&gt;fxif&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+Returns the fixnum that is the bit-wise &amp;ldquo;if&amp;rdquo; of the two's complement
+representations of its arguments, i.e. for each bit, if it is 1 in
+&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;, the corresponding bit in &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; becomes the value of
+the corresponding bit in the result, and if it is 0, the corresponding
+bit in &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; becomes the corresponding bit in the value of the
+result.  This is the fixnum result of the following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(fxior&amp;nbsp;(fxand&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&lt;br/&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxand&amp;nbsp;(fxnot&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;)&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;))&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_924&quot;&gt;&lt;/a&gt;fxbit-count&lt;i&gt; &lt;i&gt;fx&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+If &lt;i&gt;fx&lt;/i&gt; is non-negative, this procedure returns the
+number of 1 bits in the two's complement representation of &lt;i&gt;fx&lt;/i&gt;.
+Otherwise it returns the result of the following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(fxnot&amp;nbsp;(fxbit-count&amp;nbsp;(fxnot&amp;nbsp;&lt;i&gt;ei&lt;/i&gt;)))&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_926&quot;&gt;&lt;/a&gt;fxlength&lt;i&gt; &lt;i&gt;fx&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+Returns the number of bits needed to represent &lt;i&gt;fx&lt;/i&gt; if it is
+positive, and the number of bits needed to represent &lt;tt&gt;(fxnot
+&lt;i&gt;fx&lt;/i&gt;)&lt;/tt&gt; if it is negative, which is the fixnum result of the
+following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(do&amp;nbsp;((result&amp;nbsp;0&amp;nbsp;(+&amp;nbsp;result&amp;nbsp;1))&lt;br/&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(bits&amp;nbsp;(if&amp;nbsp;(fxnegative?&amp;nbsp;&lt;i&gt;fx&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxnot&amp;nbsp;&lt;i&gt;fx&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;i&gt;fx&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxarithmetic-shift-right&amp;nbsp;bits&amp;nbsp;1)))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;((fxzero?&amp;nbsp;bits)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;result))&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_928&quot;&gt;&lt;/a&gt;fxfirst-bit-set&lt;i&gt; &lt;i&gt;fx&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+Returns the index of the least significant 1 bit in
+the two's complement representation of &lt;i&gt;fx&lt;/i&gt;.  If 
+&lt;i&gt;fx&lt;/i&gt; is 0, then &amp;minus;1 is returned.
+&lt;/p&gt;
+
+&lt;tt&gt;(fxfirst-bit-set&amp;nbsp;0)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;-1&lt;br/&gt;
+(fxfirst-bit-set&amp;nbsp;1)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;0&lt;br/&gt;
+
+(fxfirst-bit-set&amp;nbsp;-4)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;2&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_930&quot;&gt;&lt;/a&gt;fxbit-set?&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+It is an error if &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is negative, or is greater than or equal to &lt;tt&gt;(fixnum-width)&lt;/tt&gt;.  The &lt;tt&gt;fxbit-set?&lt;/tt&gt; procedure returns
+&lt;tt&gt;#t&lt;/tt&gt; if the &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;th bit is 1 in the two's complement
+representation of &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;, and &lt;tt&gt;#f&lt;/tt&gt; otherwise.  This is the
+fixnum result of the following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(not
+&lt;br/&gt;&amp;nbsp;&amp;nbsp;(fxzero?&lt;/p&gt;
+
+&lt;br/&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxand&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxarithmetic-shift-left&amp;nbsp;1&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;))))&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_932&quot;&gt;&lt;/a&gt;fxcopy-bit&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+It is an error if &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is negative, or is greater than or equal to &lt;tt&gt;(fixnum-width)&lt;/tt&gt;. It is also an error if &lt;i&gt;Fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; is neither 0 nor
+1.  The &lt;tt&gt;fxcopy-bit&lt;/tt&gt; procedure returns the result of replacing
+the &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;th bit of &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; by &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;, which is
+the result of the following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(let*&amp;nbsp;((mask&amp;nbsp;(fxarithmetic-shift-left&amp;nbsp;1&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;(fxif&amp;nbsp;mask&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxarithmetic-shift-left&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;))&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_934&quot;&gt;&lt;/a&gt;fxbit-field&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+It is an error if either of &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; and &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; is negative, or if either is greater than or equal to
+&lt;tt&gt;(fixnum-width)&lt;/tt&gt;.  It is also an error if &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is greater than
+&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;.  The &lt;tt&gt;fxbit-field&lt;/tt&gt; procedure returns the
+number represented by the bits at the positions from &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; (inclusive) to
+&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; (exclusive), which is
+the fixnum result of the following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(let*&amp;nbsp;((mask&amp;nbsp;(fxnot&lt;br/&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxarithmetic-shift-left&amp;nbsp;-1&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;))))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;(fxarithmetic-shift-right&amp;nbsp;(fxand&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;mask)&lt;br/&gt;
+
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;))&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_936&quot;&gt;&lt;/a&gt;fxcopy-bit-field&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;4&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+It is an error if either &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; or &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; or if either is greater than
+or equal to &lt;tt&gt;(fixnum-width)&lt;/tt&gt;.  It is also an error if &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is greater than
+&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;.  The &lt;tt&gt;fxcopy-bit-field&lt;/tt&gt; procedure returns
+the result of replacing in &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; the bits at positions from
+&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; (inclusive) to &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; (exclusive) by the corresponding bits in &lt;i&gt;fx&lt;sub&gt;4&lt;/sub&gt;&lt;/i&gt;, which
+is the fixnum result of the following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(let*&amp;nbsp;((to&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;)&lt;br/&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(start&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(end&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(from&amp;nbsp;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;4&lt;/sub&gt;&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(mask1&amp;nbsp;(fxarithmetic-shift-left&amp;nbsp;-1&amp;nbsp;start))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(mask2&amp;nbsp;(fxnot&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxarithmetic-shift-left&amp;nbsp;-1&amp;nbsp;end)))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(mask&amp;nbsp;(fxand&amp;nbsp;mask1&amp;nbsp;mask2)))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;(fxif&amp;nbsp;mask&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxarithmetic-shift-left&amp;nbsp;from&amp;nbsp;start)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;to))&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_938&quot;&gt;&lt;/a&gt;fxarithmetic-shift&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+It is an error if the absolute value of &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is greater than or equal to 
+&lt;tt&gt;(fixnum-width)&lt;/tt&gt;.  If
+&lt;/p&gt;
+
+&lt;tt&gt;(floor&amp;nbsp;(*&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;&amp;nbsp;(expt&amp;nbsp;2&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)))&lt;p&gt;&lt;/tt&gt;
+is a fixnum, then that fixnum is returned; otherwise it is an error.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_940&quot;&gt;&lt;/a&gt;fxarithmetic-shift-left&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_942&quot;&gt;&lt;/a&gt;fxarithmetic-shift-right&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+It is an error if &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is negative, or is greater than or equal to &lt;tt&gt;(fixnum-width)&lt;/tt&gt;.
+The &lt;tt&gt;fxarithmetic-shift-left&lt;/tt&gt; procedure behaves the same as &lt;tt&gt;fxarithmetic-shift&lt;/tt&gt;, and &lt;tt&gt;(fxarithmetic-shift-right &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;
+&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&lt;/tt&gt; behaves the same as &lt;tt&gt;(fxarithmetic-shift &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;
+(fx- &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;))&lt;/tt&gt;.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_944&quot;&gt;&lt;/a&gt;fxrotate-bit-field&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;4&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+It is an error if any of &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;, &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;, and &lt;i&gt;fx&lt;sub&gt;4&lt;/sub&gt;&lt;/i&gt;
+are negative, or are greater than or equal to
+&lt;tt&gt;(fixnum-width)&lt;/tt&gt;.  It is also an error if &lt;i&gt;Fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is greater than
+&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;, or if &lt;i&gt;Fx&lt;sub&gt;4&lt;/sub&gt;&lt;/i&gt; is greater than or equal to the difference
+between &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; and &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;.  The &lt;tt&gt;fxrotate-bit-field&lt;/tt&gt;
+procedure returns the result of cyclically permuting in &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; the
+bits at positions from &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; (inclusive) to &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;
+(exclusive) by &lt;i&gt;fx&lt;sub&gt;4&lt;/sub&gt;&lt;/i&gt; bits
+towards the more significant bits, which is the result of the
+following computation:
+&lt;/p&gt;
+
+&lt;tt&gt;(let*&amp;nbsp;((n&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(start&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(end&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(count&amp;nbsp;&lt;i&gt;fx&lt;sub&gt;4&lt;/sub&gt;&lt;/i&gt;)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(width&amp;nbsp;(fx-&amp;nbsp;end&amp;nbsp;start)))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;(if&amp;nbsp;(fxpositive?&amp;nbsp;width)&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(let*&amp;nbsp;((count&amp;nbsp;(fxmod&amp;nbsp;count&amp;nbsp;width))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(field0&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxbit-field&amp;nbsp;n&amp;nbsp;start&amp;nbsp;end))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(field1&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxarithmetic-shift-left&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;field0&amp;nbsp;count))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(field2&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxarithmetic-shift-right&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;field0&amp;nbsp;(fx-&amp;nbsp;width&amp;nbsp;count)))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(field&amp;nbsp;(fxior&amp;nbsp;field1&amp;nbsp;field2)))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(fxcopy-bit-field&amp;nbsp;n&amp;nbsp;start&amp;nbsp;end&amp;nbsp;field))&lt;br/&gt;
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;n))&lt;/p&gt;
+&lt;p&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_946&quot;&gt;&lt;/a&gt;fxreverse-bit-field&lt;i&gt; &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+It is an error if either of &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; and &lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; is negative, or if either is
+greater than or equal to
+&lt;tt&gt;(fixnum-width)&lt;/tt&gt;.  It is also an error if &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is greater than
+&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt;.  The &lt;tt&gt;fxreverse-bit-field&lt;/tt&gt; procedure
+returns
+the fixnum obtained from &lt;i&gt;fx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; by reversing the
+order of the bits at positions from &lt;i&gt;fx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; (inclusive) to
+&lt;i&gt;fx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; (exclusive).
+&lt;/p&gt;
+
+&lt;tt&gt;(fxreverse-bit-field&amp;nbsp;&lt;tt&gt;#&lt;/tt&gt;b1010010&amp;nbsp;1&amp;nbsp;4)&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;br&gt;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&lt;span style=&quot;margin-left: 2em&quot;&gt;&amp;zwnj;&lt;/span&gt;&amp;rArr;&amp;nbsp;&amp;nbsp;88&amp;nbsp;;&amp;nbsp;&lt;tt&gt;#&lt;/tt&gt;b1011000&lt;p&gt;&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+}}}
+
+== Logical shift ==
+
+&quot;Logical&quot; right or left shift operations are not
+well defined on general integers; they are only defined
+on integers in some finite range. Remember that, in this library, integers
+are interpreted as *semi-infinite* bit strings that have only a finite
+number of ones or a finite number of zeroes. &quot;Logical&quot; shifting shifts bit
+strings of some fixed size. If we shift left, then leftmost bits &quot;fall off&quot;
+the end (and zeroes shift in on the right). If we shift right, then zeroes
+shift into the string on the left (and rightmost bits fall off the end). So
+to define a logical shift operation, *we must specify the size of the
+window.* Typically this is the width of the underlying machine's register
+set (e.g., 32 bits). This is blatantly machine-specific &amp; unportable, and
+clearly not the right thing for Scheme's more machine-independent general
+integers. For Scheme's integers, arithmetic shift is the right thing. Note
+that this situation pertains as well in Common Lisp, and Common Lisp does
+exactly what this SRFI does: arithmetic shift, but no logical shift.
+
+If we were to define a &quot;width 32&quot; or &quot;width 64&quot; or &quot;fixnum&quot; integer datatype,
+then we could meaningfully define logical shift for these values.
+
+</pre>
+    <h2>time</h2>
+    <pre>2016-08-04 22:16:57</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

@@ -1,0 +1,54 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki FactoringModuleProposals version 11</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki FactoringModuleProposals version 11</h1>
+    <h2>author</h2>
+    <pre>aag</pre>
+    <h2>comment</h2>
+    <pre>formatting headers</pre>
+    <h2>ipnr</h2>
+    <pre>216.239.45.4</pre>
+    <h2>name</h2>
+    <pre>FactoringModuleProposals</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Factoring Module Proposals ==
+
+This is an attempt to factor R6RS, ModulesShinn, the `library` and `module` parts of ModulesAndPackagesArcfide, and ModulesGanz into features that they have or don't have, to make decisions easier.  I have neglected purely syntactic features like the names and ordering constraints of forms and keywords.  I've added columns for a few existing Schemes.
+
+||'''Feature'''||'''r6rs'''||'''shinn'''||'''hsu-library'''||'''hsu-module'''||'''ganz'''||'''chicken'''||'''chez'''||'''PLT'''||
+||'''Module type'''||Static||Static||Syntactic||Syntactic||Syntactic||Syntactic||Syntactic||Static||
+||'''Top-level only'''||Yes||Yes||Yes||No||No||Yes||No||Yes||
+||'''Name'''||List||List||List||Identifier||Identifier||Identifier||Identifier||||
+||'''Anonymous self-importing modules'''||No||No||No||Yes||Yes||No||Yes||||
+||'''File inclusion within module'''||In most cases||Yes||Yes||Yes||No||Yes||Yes||Yes||
+||'''Body'''||Implicit||Explicit||Implicit||Implicit||Implicit||Implicit||Implicit||||
+||'''Exports syntax forms?'''||Yes||Yes||Yes||Yes||Yes||Yes||Yes||Yes||
+||'''Import qualifiers: `only` `except` `rename` `prefix`'''||Yes||Yes||Yes||Yes||Yes||Yes||Yes (also strip prefixes)||||
+||'''Rename on export'''||Yes||Yes||Yes||Yes||No||No||No||||
+||'''Macros can generate modules'''||No||No||Unclear||Yes||Unspecified restrictions||Yes||Yes||No||
+||'''Support for `co-export`'''||No||No||Yes||Yes||No||No||No||||
+||'''Implicit exports'''||Automatic||Must be explicit||Automatic/Overridable||Automatic/Overridable||Automatic/Overridable||Must be explicit||???||||
+||'''Import into REPL'''||No||Yes||Yes||Yes||Yes||Yes||Yes||Yes||
+||'''Phasing'''||Yes||No||No||No||No||Partial||Unclear||||
+||'''Versioning'''||Yes||No||No||No||No||No||No||||
+||'''Strict subset of R6RS'''||Obviously||Yes||Yes||No||No||No||No||No||
+||'''Supports parameterization of modules by imports'''||No||No||No||No||Yes||No||No||Yes||
+
+The difference between R6RS and R6RS-- is that R6RS-- does not have phasing or versioning.</pre>
+    <h2>time</h2>
+    <pre>2010-10-29 01:55:47</pre>
+    <h2>version</h2>
+    <pre>11</pre></body></html>

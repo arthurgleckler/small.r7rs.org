@@ -1,0 +1,51 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImmutableData</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImmutableData.md">ImmutableData</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Immutable&shy;Data</h1>
+    <div class="wiki metadata">
+      <div class="author">medernac</div>
+      <div class="time">2010-11-17 05:13:49</div>
+      <div class="version">2<span class="comment">Amemdment and clarification thanks to discussions</span><a href="/wiki/ImmutableData/history">history</a></div>
+      <div class="source"><a href="/wiki/ImmutableData/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Immutabledata">Immutable data</h2>
+      <p>This optional proposal is about managing data immutability.</p>
+      <p>Scheme data is mutable by default (except self-evaluating one like numbers or symbols), additional functions creating/managing immutable data are proposed.</p>
+      <p>In some case we wish to forbid change of some piece of data by further function call for instance.</p>
+      <p>Immutability is not the same as constant, as the content of an immutable data may refer to mutable data, while any part of a constant data is constant.</p>
+      <p>Primitives have to work on immutable data as on mutable one, except of course mutators which should return errors instead.</p>
+      <p>All data is either a mutable one or an immutable one.</p>
+      <h3 id="Associatedprocedures">Associated procedures</h3>
+      <p><span class="monospace">(make-immutable data)</span></p>
+      <p>Returns an immutable data containing a copy of data.</p>
+      <p><span class="monospace">(mutable? obj)</span></p>
+      <p>Returns #t if obj is a mutable, otherwise returns #f.</p>
+      <p><span class="monospace">(immutable-&gt;mutable obj)</span></p>
+      <p>This is an error if obj is not an immutable, else it returns a mutable copy of the data contained in obj.</p>
+      <h3 id="Notes">Notes</h3>
+      <p>Copy in both direction is needed in order to avoid side-effect mutation. Of course if data is a literal or is computed &quot;in place&quot; (without sharing a part with another variable) then copy is not needed.</p>
+      <p>Of course it is impossible to mutate the value contained inside an 'immutable' object:</p><span class="monospace">(let ((a (make-immutable (list 1 2 3)))) (set-car! a 10) a) ;; Error
+</span>
+      <p>However the 'immutable' object itself could be mutated. For instance it is possible to mutate a variable like a list containing an 'immutable' object :</p><span class="monospace">(define av (vector (make-immutable (list 1 2 3))))
+(vector-set! av 0 10) ;; Ok
+</span>
+      <h3 id="Problems">Problems</h3>
+      <p>An immutable data is globally immutable. Another proposal is needed if someone wants more data access management.</p>
+      <p>Do we need a proposal for defining constant data ?</p>
+      <p>Do we add a toggle-immutability! (sic) function ?</p>
+      <p>Helper functions to create immutable lists / tree may be added as sugar.</p>
+      <h3 id="Implementationsandissues">Implementations and issues</h3>
+      <p>Immutability tag bit: cost in space and in time as immutability has to be checked with mutators.
+ 
+ Memory Management Unit support: not available in general for embedded devices.</p></div></body></html>

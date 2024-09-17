@@ -1,0 +1,55 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>35: dynamically scoped values</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 35: <span class="summary">dynamically scoped values</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2010-11-15 09:51:41</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">duplicate</div>
+      <div class="source"><a href="/ticket/35/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-02-23 17:09:13</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Do we provide any values with dynamic scope,
+such as SRFI-39 parameters?  How do they
+interact with call/cc and/or threads?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-03-01 10:45:47</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>SRFI 39 parameters are supported (according to the documentation) by PLT, Gauche, Gambit, Chicken, Guile, Kawa, SISC, Chibi, IronScheme, Ikarus, Larceny, Mosh, STKlos.</p>
+              <p>MIT, Bigloo, Scheme48/scsh, Chez, SCM, Ypsilon, s7, SigScheme, SXM, Pocket, stk, Sizzle, Scheme 9 do not support them.</p>
+              <p>Call/cc should not interact with dynamic parameters.</p>
+              <p>I don't believe that WG1 should standardize threads, so I don't think we have to decide about them.  The SRFI notes three possible ways to interact: reset all parameters in each new thread, copy the current state of all parameters to new threads, share parameters with new threads.  In all cases, parameters in new threads are in the ground (un-parameterized) state.</p>
+              <p>As to why we should standardize them at all, it's because if portable code wants to expose parameters, it will have to provide the parameter procedures itself in a thread-unsafe way, which will combine badly on threaded systems with any existing parameter procedures.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2010-11-15 09:51:41</div></div>
+          <div class="changes">
+            <div><span class="field">milestone</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">duplicate</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Duplicate of <a href="/ticket/69">#69</a>.</p></div></div></div></div></div></body></html>

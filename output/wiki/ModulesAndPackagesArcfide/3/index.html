@@ -1,0 +1,107 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ModulesAndPackagesArcfide</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ModulesAndPackagesArcfide.md">ModulesAndPackagesArcfide</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Modules&shy;And&shy;Packages&shy;Arcfide</h1>
+    <div class="wiki metadata">
+      <div class="author">arcfide</div>
+      <div class="time">2010-02-21 08:12:21</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/ModulesAndPackagesArcfide/history">history</a></div>
+      <div class="source"><a href="/wiki/ModulesAndPackagesArcfide/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="ModulesandPackagesinScheme">Modules and Packages in Scheme</h1>
+      <p><b>An analysis by Aaron W. Hsu</b></p>
+      <p><i>Please note that these are just ideas and a tentative proposal. More discussion and debate may reveal a more preferable course of action.</i></p>
+      <h2 id="Introduction">Introduction</h2>
+      <p>One of the biggest issues I think the Working Groups face is how we deal with modules. I have argued that a syntactic module system is sufficient<sup>[1]</sup>. While I have gone back and forth on this issue, the more and more I discuss things, the more it seems that making modules syntax instead of a sort of out-of-band library form as R6RS has real merit. Moreover, I believe that all of my previous concerns about packaging system concerns are properly answerable (discussions have yielded convincing enough arguments for their implementability) provided that we agree that all libraries that are useful to use are those which have terminating expansions.</p>
+      <h2 id="DefineModule...">Define Module...</h2>
+      <p>What are the needs of a module system? What is a module system? At its heart a module system is a means of abstracting and hiding code from other code that interacts with a given body of code via a specific set of usually limited bindings. These bindings are both syntax and run-time variables. They allow for better syntactic abstraction and are essentially forms for controlling scope and visibility for both run-time and expansion time bindings.</p>
+      <h2 id="ExistingSystems">Existing Systems</h2>
+      <p>Java's packaging format, Scheme48's module system, and R6RS' library format are arguably forms of static, out-of-band systems. R6RS however, suffers from requiring evaluation of the source code. PLT has units, and Chez Scheme has its module format, the former being an example of run-time modules (a la ML's functors), and the later being an example of syntactic modules.</p>
+      <p>There are three interesting module systems I would like to examine. R6RS and Scheme48 modules are relatively static, while Chez Scheme modules presents a fairly different bent. R6RS libraries are a half-in half-out sort of part of the language. They are not language forms in the sense that any macro may generate them. However, there is not built in standard means of separating a code's implementation from its interface. Thus, in R6RS libraries, you must include the code along with the interface to the code in a single top-level form that has a special meaning to implementations. Scheme48's module system is a little more outside of the system in that it has a separate means of defining interface and implementation of an interface, and is almost a mini-language or packaging system that happens to reference or potentially embed some code. Chez Scheme's module system is a syntactic form that is used by the expander to control visibility of bindings. It support separate compilation, but does not support separate interfaces and implementation by default. However, because Chez Scheme's modules do not suffer from the top-level only status of R6RS libraries, it is possible to extend Chez Scheme's modules to support the separation of interface from implementation. In fact, it is possible to use modules in any sort of macro expansion in many interesting ways.</p>
+      <p>Another interesting point of R6RS libraries is their use of implicit exports. Because macro bindings in the <span class="monospace">export</span> form of an R6RS library are not marked as syntax explicitly, it is almost impossible for an implementation to statically analyze what additional bindings must be visible to the outside world in the case that the given exported macro expands to these definitions. This makes it very difficult for implementations to identify certain code in a library as unused, and hence, eliminate it upon compilation, resulting in potentially much smaller compiled files. Implicit exports do not see very widespread support, and indeed, R6RS libraries are the only place where I am aware that they see popular use.</p>
+      <h2 id="Proposal">Proposal</h2>
+      <p>The following module syntax is mostly based on R6RS with some modifications. The semantics have changed considerably.</p>
+      <h3 id="ModuleSyntax">Module Syntax</h3>
+      <p><i>module</i> ---&gt; <span class="monospace">(module</span> <i>library-name</i> <span class="monospace">(export</span> <i>export-spec</i> ...<span class="monospace">)</span> <i>definitions</i> ... <i>expressions</i> ...<span class="monospace">)</span><br>
+<i>import</i> ---&gt; <span class="monospace">(</span>[<span class="monospace">import</span> | <span class="monospace">import-only</span>] <i>import-spec</i> ...<span class="monospace">)</span><br>
+<i>library-name</i> ---&gt; <span class="monospace">(</span><i>identifier<sub>1</sub></i>  <i>identifier<sub>2</sub></i> ... [<i>version</i>]<span class="monospace">)</span> | <span class="monospace">()</span><br>
+<i>version</i> ---&gt; <span class="monospace">(</span><i>sub-version</i> ...<span class="monospace">)</span><br>
+<i>sub-version</i> ---&gt; <i>exact-non-negative-integer</i><br>
+<i>export-spec</i> ---&gt; <i>identifier</i> | <span class="monospace">(syntax</span> <i>identifier</i> ...<span class="monospace">)</span> | <span class="monospace">(rename</span> <span class="monospace">(</span><i>identifier<sub>1</sub></i> <i>identifier<sub>2</sub></i><span class="monospace">)</span> ...<span class="monospace">)</span><br>
+<i>import-spec</i> ---&gt; <i>library-reference</i> <br>
+                | <span class="monospace">(library</span> <i>library-reference</i><span class="monospace">)</span><br>
+                | <span class="monospace">(only</span> <i>import-spec</i> <i>identifier</i> ...<span class="monospace">)</span> <br>
+                | <span class="monospace">(except</span> <i>import-spec</i> <i>identifier</i> ...<span class="monospace">)</span> <br>
+                | <span class="monospace">(prefix</span> <i>import-spec</i> <i>identifier</i><span class="monospace">)</span> <br>
+                | <span class="monospace">(drop-prefix</span> <i>import-spec</i> <i>identifier</i><span class="monospace">)</span><br>
+                | <span class="monospace">(alias</span> <i>import-spec</i> <span class="monospace">(</span><i>identifier<sub>1</sub></i> <i>identifier<sub>2</sub></i><span class="monospace">)</span> ...<span class="monospace">)</span><br>
+                | <span class="monospace">(rename</span> <i>import-spec</i> <span class="monospace">(</span><i>identifier<sub>1</sub></i> <i>identifier<sub>2</sub></i><span class="monospace">)</span> ...<span class="monospace">)</span><br>
+<i>library-reference</i> ---&gt; <span class="monospace">(</span><i>identifier<sub>1</sub></i> <i>identifier<sub>2</sub></i> ... [<i>version-reference</i>]<span class="monospace">)</span><br>
+<i>version-reference</i> ---&gt; <span class="monospace">(</span><i>sub-version-reference<sub>1</sub></i> ... <i>sub-version-reference<sub>n</sub></i><span class="monospace">)</span> <br>
+                | <span class="monospace">(and</span> <i>version-reference</i> ...<span class="monospace">)</span> <br>
+                | <span class="monospace">(or</span> <i>version-reference</i> ...<span class="monospace">)</span> <br>
+                | <span class="monospace">(not</span> <i>version-reference</i><span class="monospace">)</span><br>
+<i>sub-version-reference</i> ---&gt; <i>sub-version</i> <br>
+                | <span class="monospace">(&gt;=</span> <i>sub-version</i><span class="monospace">)</span> <br>
+                | <span class="monospace">(&lt;=</span> <i>sub-version</i><span class="monospace">)</span> <br>
+                | <span class="monospace">(and</span> <i>sub-version-reference</i> ...<span class="monospace">)</span> <br>
+                | <span class="monospace">(or</span> <i>sub-version-reference</i> ...<span class="monospace">)</span> <br>
+                | <span class="monospace">(not</span> <i>sub-version-reference</i><span class="monospace">)</span><br></p>
+      <h3 id="ChangesfromR6RS">Changes from R6RS</h3>
+      <ul>
+        <li><span class="monospace">module</span> is now used instead of <span class="monospace">library</span>.</li>
+        <li>The <span class="monospace">for</span> syntax is obsoleted.</li>
+        <li>The name of a module can be <span class="monospace">()</span></li>
+        <li><span class="monospace">import</span> is now a separate form</li>
+        <li><span class="monospace">import-only</span> is added</li>
+        <li><span class="monospace">drop-prefix</span> import syntax is added</li>
+        <li><span class="monospace">alias</span> import syntax is added</li>
+        <li><span class="monospace">syntax</span> is added for exports.</li></ul>
+      <h3 id="Description">Description</h3>
+      <p>The basic syntax of the module system is the same as R6RS with a few changes. Notably, libraries which do not use <span class="monospace">for</span> import levels are expected to work simply by changing the <span class="monospace">library</span> to <span class="monospace">module</span> in the library form.</p>
+      <p>Anonymous modules are now supported by the use of an empty name <span class="monospace">()</span> which indicates that the library should be instantiated at the phase in which the <span class="monospace">module</span> form is found and the bindings exported by the module from should be implicity imported.</p>
+      <p>The <span class="monospace">module</span> form is syntactic in its nature, and can occur in any place definitions may occur. Named modules have names that are visible in the scope at which they occur. Macros can generate module forms, for example, enabling micro-module programming for the controlling of syntax and scope.</p>
+      <p>The import form is now a separate form, and can occur anywhere definitions may occur. It imports the bindings exported by the libraries it specifies into the scope where it occurs.</p>
+      <p>The <span class="monospace">for</span> syntax is obsoleted in favor of another proposal to add <span class="monospace">meta</span> which enables import forms to insert definitions into any phasing level without the need for an explicit syntax to do so.</p>
+      <p>The <span class="monospace">import-only</span> form works like the <span class="monospace">import</span> form except that it cleans the environment of the phase into which it is inserting definitions so that only the bindings imported from the import-only form are visible at the point where it is called. This allows one to create a clean module declaration.</p>
+      <p>Modules introduce a new lexical scope, but they are within a parent scope, which means that they inherit definitions and bindings that are outside of the module form, unless an <span class="monospace">import-only</span> form is used within the module's new scope.</p>
+      <p><span class="monospace">syntax</span> in the export form allows for explicit macro dependencies to be specified. Implicit exports are still permitted, but should an user wish to do so, the <span class="monospace">syntax</span> form allows the user to specify the precise dependencies of a macro that is exported.</p>
+      <p><span class="monospace">drop-prefix</span> and <span class="monospace">alias</span> are there for completeness in the import specification.</p>
+      <h3 id="AccompanyingProposals">Accompanying Proposals</h3>
+      <ul>
+        <li><a href="/wiki/MetaArcfide">MetaArcfide</a></li>
+        <li><a href="/wiki/LetSyntaxArcfide">LetSyntaxArcfide</a></li>
+        <li>IncludeArcfide</li>
+        <li>EnvironmentsArcfide</li></ul>
+      <h2 id="Rationale">Rationale</h2>
+      <h3 id="NameChange">Name Change</h3>
+      <p>Since modules are syntactic now, it makes sense to give them a name that distinguishes them from the R6RS form of libraries. It is also the more generic, general term, and more clearly indicates the more general nature of the form.</p>
+      <h3 id="Removalof`For`syntax">Removal of <span class="monospace">For</span> syntax</h3>
+      <p>Removing the <span class="monospace">for</span> syntax makes sense in the presence of <span class="monospace">meta</span>, because the <span class="monospace">for</span> syntax would be an otherwise special case of <span class="monospace">meta</span>. Since it is possible to achieve with <span class="monospace">meta</span> what can be achieved with <span class="monospace">for</span>, except more generally, there is no loss.</p>
+      <h3 id="AnonymousModules">Anonymous Modules</h3>
+      <p>Anonymous modules allow us to use modules in a micro manner which gives us important benefits for controlling and abstracting our programs. Moreover, it obsoletes <span class="monospace">let-syntax</span> and serves to make the language simpler.</p>
+      <h3 id="Localimports">Local imports</h3>
+      <p>With a syntactic module system, it makes sense to enable local imports. Local imports give more precise control over the visibility of bindings. They also allow macros to generate import forms without requiring them to general an otherwise useless module form.</p>
+      <h3 id="Import-only">Import-only</h3>
+      <p>Since modules are now scoped and fully inside the language, this means that without an <span class="monospace">import-only</span> form or the equivalent, it would be impossible to clearly indicate a specific environment, since the module could otherwise inherit any number of environments from its parent scope.</p>
+      <h3 id="aliasanddrop-prefix">alias and drop-prefix</h3>
+      <p>These exist for symmetry and completeness.</p>
+      <h3 id="ExplicitSyntaxDependencyExports">Explicit Syntax Dependency Exports</h3>
+      <p>Implicit exports are a well known inefficiency in R6RS library forms that make it very difficult, and often impossible, to perform certain sorts of optimizations. A module from should enable the production of better code if convenient. The explicit syntax gives the programmer precise control over the bindings that will be visible implicitly in an expansion of the macro call, enabling both better error reporting and better code generation.</p>
+      <h2 id="FurtherReading">Further Reading</h2>
+      <p>Oscar Waddell and R. Kent Dybvig, <a href="http://www.cs.indiana.edu/~dyb/pubs/popl99.pdf">Extending the scope of syntactic abstraction</a>. Conference Record of POPL'99: The 26th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages. January 1999</p>
+      <p>The benefits of module systems and lexically scoped syntactic abstraction (macro) facilities are well-established in the literature. This paper presents a system that seamlessly integrates modules and lexically scoped macros. The system is fully static, permits mutually recursive modules, and supports separate compilation. We show that more dynamic module facilities are easily implemented at the source level in the extended language supported by the system.</p>
+      <p>-----</p>
+      <h2 id="References">References</h2>
+      <p>[1] http://my.opera.com/arcfide/blog/2009/10/14/a-philosophy-on-scheme-modules</p></div></body></html>

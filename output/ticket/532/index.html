@@ -1,0 +1,42 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>532: Delaying multiple values shouldn't be undefined</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 532: <span class="summary">Delaying multiple values shouldn't be undefined</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:20:44</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/532/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-13 18:17:14</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Jörg F. Wittenberger posted to <a href="http://lists.nongnu.org/archive/html/chicken-hackers/2013-05/msg00039.html">chicken-hackers</a>:</p>
+        <p>I really don't like that the draft still leaves it undefined what the result of <span class="monospace">(force &lt;promise&gt;</span>) is, if the promise returns multiple values.  <span class="monospace">Force</span> [and] <span class="monospace">delay</span> are not that complicated to implement.  The way the R7RS draft is now, one would still need to duplicate the definition in applications if one wanted to be sure that multiple values are ok.</p>
+        <p>Because multiple values are not first class, supporting this requires collecting the multiple values in a data structure such as a list, remembering that they are not really a list but multiple values, and then returning them as multiple values.  You get no space benefit that way, and might as well put a call to <span class="monospace">call-with-values</span> inside the <span class="monospace">delay</span>.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:20:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG decided by unanimous consent to take no action on this ticket.</p></div></div></div></div></div></body></html>

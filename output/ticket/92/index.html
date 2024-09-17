@@ -1,0 +1,94 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>92: Case-folding flags</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 92: <span class="summary">Case-folding flags</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-05 06:42:20</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/92/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-11-15 05:28:44</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>I propose adopting the R6RS flags #!case-fold and #!no-case-fold to specify the case-sensitivity of files of Scheme code, even though most R5RS Schemes that support flags use #ci and #cs.  In Chicken, at least, the latter two refer to the next datum only, which is one argument for using the unambiguous R6RS forms.</p>
+        <p>For case-sensitivity control in files read by the program, I suggest the method of <a href="/wiki/PortsCowan">PortsCowan</a>, which is selective per-file rather than pervasive.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-11-15 05:29:57</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>What happens when a case-preserving module imports names from a case-folded module?  Since Unicode case folding is downcasing, the obvious answer is that all such names are implicitly exported in lower case.  Thus a case-preserving module must refer to them in lower case only, and an attempt to reference them in upper case will fail.</p>
+              <p>The reverse situation is more difficult.  A case-preserving module may export foo, Foo, and FOO as three separate names; how can they be written in a case-folding module that imports them?  The answer is that case-folding affects only reading and printing; small Scheme identifiers may contain both lowercase and uppercase letters, thanks to the presence of escaping mechanisms in identifier syntax.  Consequently, the case-folding module can refer to these identifiers as foo (or FOO), |Foo|, and |FOO| respectively.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 06:50:07</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to go with R6RS.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 12:01:00</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 12:01:14</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">assigned</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 12:01:24</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">assigned</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-02-20 13:47:49</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">&blank;</span><span class="new-value">alexshinn</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-05 06:42:20</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

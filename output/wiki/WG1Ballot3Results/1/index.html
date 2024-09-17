@@ -1,0 +1,1089 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1Ballot3Results</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1Ballot3Results.md">WG1Ballot3Results</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Ballot3Results</h1>
+    <div class="wiki metadata">
+      <div class="author">alexshinn</div>
+      <div class="time">2011-07-10 15:20:32</div>
+      <div class="version">1<span class="comment">updating results for ballot 3</span><a href="/wiki/WG1Ballot3Results/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1Ballot3Results/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="WG1Ballot3ResultsfromJuly1st">WG1 Ballot 3 Results from July 1st</h1>
+      <h1 id="PreviousUndecidedandRe-openedBallotItems">Previous Undecided and Re-opened Ballot Items</h1>
+      <h3 id="#32user-definedtypes"><a href="/ticket/32">#32</a> user-defined types</h3>
+      <p>Do we support any means of creating disjoint user-defined types, such
+as in SRFI-9, SRFI-99 or the R6RS record system?</p>
+      <p>WG1 voted <b>srfi-9</b> before.  New arguments against filter
+constructors were raised, so the ticket was re-opened.</p>
+      <p>References:</p>
+      <ul>
+        <li>https://groups.google.com/d/topic/scheme-reports-wg1/BX2F10MO6_k/discussion</li></ul>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/RecordsCowan">RecordsCowan</a></li>
+            <li><b>gleckler:</b> <a href="/wiki/RecordsGleckler">RecordsGleckler</a>, which is just <a href="/wiki/RecordsCowan">RecordsCowan</a> plus <a href="/wiki/RecordsArcfide">RecordsArcfide</a></li>
+            <li><b>hsu:</b> <a href="/wiki/RecordsArcfide">RecordsArcfide</a></li>
+            <li><b>medernach:</b> <a href="/wiki/AggregatesMedernach">AggregatesMedernach</a></li>
+            <li><b>rush:</b> <a href="/wiki/UserAggregatesRush">UserAggregatesRush</a></li>
+            <li><b>snellpym:</b> <a href="/wiki/UniqueTypesSnellPym">UniqueTypesSnellPym</a></li></ul></li>
+        <li><b>Options:</b> srfi-9, srfi-57, srfi-99, r6rs, cowan, hsu, medernach, rush, snellpym, none, wg2, undecided</li>
+        <li><b>Default:</b> srfi-9</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: srfi-9</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: gleckler, cowan, snellpym+inheritance+mutate, (medernach   snellpym+mutate), hsu, srfi-9, wg2, srfi-99, r6rs, snellpym</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: hsu, gleckler, wg2, no, srfi-9</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: srfi-9</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: medernach, snellpym, hsu, rush, srfi-9, cowan, wg2, srfi99, r6rs, snellpym+inheritance, snellpym+mutate, snellpym+inheritance+mutate, srfi-57, no, undecided</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: srfi-9</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: srfi-9, hsu, r6rs, srfi-99, srfi-57, rush, snellpym, cowan, medernach, wg2</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: gleckler, (snellpym cowan), hsu, medernach, rush</li></ul></li>
+        <li><b>Results:</b> hsu, ''srfi-9'', gleckler, snellpym, cowan, medernach, rush, wg2, r6rs, snellpym+mutate, snellpym+inheritance+mutate, srfi-99, srfi99, snellpym+inheritance, srfi-57, no, undecided</li>
+        <li><b>Ratios:</b> 4:4, 3:2, 3:2, 3:2, 3:2, 5:0, 5:0, 5:0, 4:1, 4:1, 5:0, 5:0, 5:0, 5:0, 5:0, 5:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>The most important thing about SRFI 9 is how pervasive it is (26 out of 30 implementations I track at http://tinyurl.com/scheme-s5 support it). Yes, it's messy. Yes, we should keep it.</dd>
+        <dt><span class="monospace">Gleckler</span></dt>
+        <dd>I had initially voted for SRFI 99 as my top choice, but I'm now convinced that that's just too complicated a system for core Scheme. We need something more fundamental upon which other systems can be built. However, I don't want to give up convenient syntax, so I've added a new choice, <a href="/wiki/RecordsGleckler">RecordsGleckler</a>, which is simple combination of <a href="/wiki/RecordsCowan">RecordsCowan</a> and <a href="/wiki/RecordsArcfide">RecordsArcfide</a>. That way, we get both. SRFI 9 is widely used and is about the simplest syntactic implementation one could hope for. It doesn't support inheritance. As Aaron Hsu has pointed out, it has problems with filtering constructors. <a href="/wiki/RecordsArcfide">RecordsArcfide</a> is also simple and, while an earlier version supported inheritance, this one doesn't. It is a syntactic system. It uses the name `define-disjoint-type'. It is car<a href="/wiki/WG1BallotGleckler">...</a></dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>SRFI-9 is flawed by the filtering constructor and a lack of extensibility in its syntax, but represents a good minimal set of features that are found everywhere.</dd>
+        <dt><span class="monospace">Medernach</span></dt>
+        <dd>Please notice that there was a Condorcet's paradox on this item in the last ballot: as such I think that we need to be open-minded and have space for alternatives record systems, instead having &quot;one record system to bind them all&quot;. I would put widespread srfi-9 into a module named (scheme record srfi-9) and let doors open for others (scheme record ...).</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>I'm a big fan of unique types since with unique types and vectors you can build records. However, SRFI-9 is so widespread and so relied upon by the R5RS community that it's worth it not to turn our backs on those users. Standards should be about reflecting the best of common practice, not handing down new untested practice.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>This is what we voted on before, it's extremely widely supported, and I remain unconvinced of the alternatives. Filtering constructors can be a useful convenience (and optimization) in some circumstances.</dd></dl>
+      <h3 id="#28BinaryI/Oports"><a href="/ticket/28">#28</a> Binary I/O ports</h3>
+      <p>Do we provide any binary input or output ports, and if so how do we
+construct them and operate on them?  Can binary and textual operations
+be mixed on the different port types?</p>
+      <p><a href="/wiki/BinaryPortsCowan">BinaryPortsCowan</a> provided binary port operations, being a mild
+revision of the relevant parts of <a href="/wiki/PortsCowan">PortsCowan</a>.  It has been removed
+by Cowan in favor of <a href="/wiki/PortsShinn">PortsShinn</a>.</p>
+      <p><a href="/wiki/PortsShinn">PortsShinn</a> provides binary port operations, with similar operations to
+<a href="/wiki/BinaryPortsCowan">BinaryPortsCowan</a> but keeping the binary/textual ports disjoint.</p>
+      <p>R6RS provides an entirely new I/O system, as well as a separate
+R5RS-compatible I/O system.</p>
+      <p>The withdrawn SRFI-91 provides yet another I/O system supporting
+binary ports.</p>
+      <p>Note this item as well as <a href="/ticket/29">#29</a> and <a href="/ticket/31">#31</a> specify semi-orthogonal aspects
+of I/O systems which are typically specified together by individual
+proposals.  If the same proposal doesn't win for all three, the
+aspects will be merged as needed.</p>
+      <p>WG1 voted weakly in favor of <a href="/wiki/PortsCowan">PortsCowan</a> before.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r6rs:</b> <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html#node_sec_8.2">R6RS Port I/O</a></li>
+            <li><b>r6rs-simple:</b> <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html#node_sec_8.3">R6RS Simple I/O</a></li>
+            <li><b>srfi-91:</b> <a href="http://srfi.schemers.org/srfi-91/srfi-91.html">SRFI-91</a></li>
+            <li><b>shinn:</b> <a href="/wiki/PortsShinn">PortsShinn</a></li></ul></li>
+        <li><b>Options:</b> r6rs, r6rs-simple, srfi-91, cowan, shinn, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: shinn</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: shinn, r6rs-simple, undecided</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: undecided, shinn, cowan, r6rs-simple</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: srfi-91, r6rs-simple, undecided</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: srfi-91</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: shinn, no, undecided</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: shinn</li></ul></li>
+        <li><b>Results:</b> <b>shinn</b>, undecided, srfi-91, r6rs-simple, no, cowan</li>
+        <li><b>Ratios:</b> 4:3, 5:2, 5:1, 5:0, 5:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I think we still need more time on this. R6RS' biggest trouble is its I/O system, and I don't want the same mistake being made again. We need more effort into this domain first by more people.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>The Gambit port system is a working, tested implementation generally regarded as a win.</dd></dl>
+      <h3 id="#83AuxiliaryKeywords"><a href="/ticket/83">#83</a> Auxiliary <a href="/wiki/Keywords">Keywords</a></h3>
+      <p>In R6RS auxiliary keywords (such as <span class="monospace">else</span> in <span class="monospace">cond</span> and <span class="monospace">case</span> forms)
+are explicitly exported from the <span class="monospace">(rnrs base (6))</span> library.  Do we
+want to bind and export these from the core library?</p>
+      <p>If <span class="monospace">else</span> is bound in the default module, then it must be imported at
+the call site whenever using it in <span class="monospace">cond</span> or it won't match
+hygienically.</p>
+      <p>If <span class="monospace">else</span> is <b>not</b> bound in the default module, then it must not
+be bound or imported at the call site whenever using it in <span class="monospace">cond</span> or
+it won't match hygienically.</p>
+      <p>Another option is to specify for <span class="monospace">cond</span> and <span class="monospace">case</span> that they match the
+<span class="monospace">else</span> identifier literally, ignoring any hygiene.  This breaks
+compatibility with R5RS and R6RS.</p>
+      <p>WG1 voted <b>unbound</b> previously.  New issues were brought up on the
+list so the ticket was re-opened.</p>
+      <p>References:</p>
+      <ul>
+        <li><a href="/wiki/Keywords">Keywords</a></li>
+        <li>http://lists.scheme-reports.org/pipermail/scheme-reports/2011-April/thread.html</li></ul>
+      <ul>
+        <li><b>Options:</b> bound, unbound, unhygienic, undecided</li>
+        <li><b>Default:</b> unbound</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: bound</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: bound</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: bound</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: bound, unbound</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: bound, unbound, unhygienic</li></ul></li>
+        <li><b>Results:</b> <b>bound</b>, undecided, unbound, unhygienic</li>
+        <li><b>Ratios:</b> 5:3, 5:0, 5:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>The arguments for binding this convince me.</dd>
+        <dt><span class="monospace">Gleckler</span></dt>
+        <dd>I just don't understand the issues here well, so I'll leave the debate to others for now.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>While there are advantages to being unbound, unbound is still too limited and the advantages do not outweight the disadvantages. Bound has a few disadvantages, but we gain much more flexibility and the advantages just outweigh the disadvantages. Unbound limits what you can do, while Bound presents only some minor inconvenience that sometimes occurs, but that is easily worked around in ways that aren't hacky.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>I'm reversing my former preference on this. <a href="/wiki/Keywords">Keywords</a> in Scheme are broken, but we can't break hygiene and we need to decide whether they are bound or not in this standard, pending future improvements. Leaving keywords unbound allows multiple unrelated macros to use the same keywords, but Chez breaks in this case. Fortunately, for the keywords used in the standard, all macros can refer to the same bindings, so I recommend we bind them and perhaps recommend third-party modules to _not_ bind their keywords.</dd></dl>
+      <h3 id="#3modulenamingconvention"><a href="/ticket/3">#3</a> module naming convention</h3>
+      <p>We need a naming convention for the core modules and standard
+libraries of the new module system.</p>
+      <p>The existing break down is based on John Cowan's earlier proposal of
+factorings in items <a href="/ticket/71">#71</a>, <a href="/ticket/72">#72</a>, <a href="/ticket/73">#73</a>, <a href="/ticket/74">#74</a>, <a href="/ticket/75">#75</a>, <a href="/ticket/76">#76</a>, <a href="/ticket/77">#77</a>, as well as an
+I/O module breakdown in <a href="/wiki/PortsCowan">PortsCowan</a>.  There have been various tickets
+proposing changing this, so we are re-opening the ticket.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>draft-1:</b> the first draft</li>
+            <li><b>r5rs:</b> one single module</li>
+            <li><b>r6rs:</b> no proposal yet</li>
+            <li><b>cowan:</b> <a href="/wiki/ModuleFactoringCowan">ModuleFactoringCowan</a></li>
+            <li><b>gleckler:</b> <a href="/wiki/ModuleFactoringGleckler">ModuleFactoringGleckler</a></li>
+            <li><b>shinn:</b> <a href="/wiki/ModuleFactoringShinn">ModuleFactoringShinn</a></li>
+            <li><b>medernach:</b> <a href="/wiki/ModuleFactoringMedernach">ModuleFactoringMedernach</a></li></ul></li>
+        <li><b>Options:</b> draft-1, r5rs, r6rs, cowan, shinn, medernach, undecided</li>
+        <li><b>Default:</b> draft-1</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: cowan</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: gleckler, cowan, shinn, r6rs, r5rs</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: gleckler</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: medernach, gleckler, shinn, cowan, undecided</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: medernach, shinn, gleckler, cowan, draft-1</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: cowan, shinn, medernach, r5rs</li></ul></li>
+        <li><b>Results:</b> ''medernach'', gleckler, cowan, shinn, undecided, r5rs, draft-1, r6rs</li>
+        <li><b>Ratios:</b> 3:2, 2:3, 2:2, 3:2, 3:1, 3:0, 3:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd><b>Note:</b> The <span class="monospace">(scheme io)</span> module in the draft was never voted on and doesn't belong there.</dd>
+        <dt><span class="monospace">Gleckler</span></dt>
+        <dd>My own proposal, <a href="/wiki/ModuleFactoringGleckler">ModuleFactoringGleckler</a>, is a simple combination of <a href="/wiki/ModuleFactoringCowan">ModuleFactoringCowan</a> and <a href="/wiki/ModuleFactoringShinn">ModuleFactoringShinn</a>.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I have not had enough time to look this over.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>I prefer Medernach's proposal to my own here.</dd></dl>
+      <h1 id="NewBallotItems">New Ballot Items</h1>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="#85Blobs,bytevectors,byte-vectors,octet-vectors,orsomethingelse?"><a href="/ticket/85">#85</a> Blobs, bytevectors, byte-vectors, octet-vectors, or something else?</h3>
+      <p>Now that we have blobs, we have to decide what to call them.  R6RS
+uses bytevector, SRFI-4 and SRFI-68 uses u8vector, while the original
+WG1 proposal used blob (which is therefore the default).</p>
+      <ul>
+        <li><b>Options:</b> blob, bytevector, byte-vector, u8vector, octet-vector, undecided</li>
+        <li><b>Default:</b> blob</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: blob</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: byte-vector, octet-vector, blob, bytevector, u8vector</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: bytevector, u8vector, octet-vector, byte-vector, blob</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: bytevector, u8vector</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: bytevector, byte-vector, blob, octet-vector, u8vector, undecided</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: bytevector, blob</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: bytevector, blob, u8vector</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: blob, u8vector, (bytevector byte-vector octet-vector)</li></ul></li>
+        <li><b>Results:</b> <b>bytevector</b>, blob, u8vector, byte-vector, octet-vector, undecided</li>
+        <li><b>Ratios:</b> 5:3, 6:1, 5:1, 5:1, 7:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>I call them blobs because I see them as objects whose size is measured in bytes, not specialized vectors of 8-bit unsigned integers. It's easy to layer such an interpretation, along with many other interpretations, on top of blobs, but blobs should themselves remain simple for WG1.</dd>
+        <dt><span class="monospace">Gleckler</span></dt>
+        <dd>While &quot;blob&quot; is a widely used term these days, I prefer a properly hyphenated, descriptive term.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>Blob doesn't give enough information to the reader and feels strange, despite its terseness. Bytevector very accurately describes the data structure we are dealing with. No matter how you decide to treat those bytes, we are still dealing with a vector of bytes, not a vector of 3 bits or something else. I disagree that there is confusion on how to use a bytevector just because the word &quot;byte&quot; appears in the name. On the other hand, blob gives no hints on how to use the structure at all, or even what sort of things might be available.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>I am partial to &quot;bytevector&quot; myself. Failing that the Erlang term for these things is &quot;a binary&quot;. I can understand where that might cause confusion, so &quot;blob&quot; is probably as good an alternative as any.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>This is pure bikeshedding, and the charter makes it clear we should prefer the R6RS option when there is no good reason otherwise.</dd>
+        <dt><span class="monospace">SnellPym</span></dt>
+        <dd>I think it's important to keep blobs distinct from typed arrays. A blob is a region of memory; u8vectors are a particular interpration thereof. Blobs may be measured in bytes, but that's just due to the granularity of access - they aren't necessarily composed of independent u8s (they might be composed of u16s, or floats, or a complex structure). However, if we have to conflate them, I'd rather go with SRFI-4 names.</dd></dl>
+      <h3 id="#118Simpleliteralsmustbeexplicitlydelimited."><a href="/ticket/118">#118</a> Simple literals must be explicitly delimited.</h3>
+      <p>In R5RS syntax such as <span class="monospace">#t#f</span> is left unspecified - some readers may
+parse this as the true literal followed by false.  R6RS requires
+identifiers, characters, booleans, number objects, and <span class="monospace">.</span> to be
+terminated with a &quot;delimiter&quot; or by the end of input.</p>
+      <p>References:</p>
+      <ul>
+        <li>http://scheme-punks.org/wiki/index.php?title=ERR5RS:Lexical_Syntax</li>
+        <li>http://lists.r6rs.org/pipermail/r6rs-discuss/2007-June/002649.html</li></ul>
+      <ul>
+        <li><b>Options:</b> delimited, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: delimited</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: delimited, unspecified</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: delimited, unspecified</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: delimited</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: delimited</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: delimited</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: delimited, unspecified</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: delimited, unspecified</li></ul></li>
+        <li><b>Results:</b> <b>delimited</b>, unspecified</li>
+        <li><b>Ratios:</b> 8:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>Allowing <span class="monospace">#true</span> to mean <span class="monospace">#t rue</span> is just silly. If implementations want to accept <span class="monospace">#true</span>, they should be able to do so.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I prefer to create less ambiguity here.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>What are we, 8-bit kiddies packing code into Microsoft BASIC? FORI=1TO10? Delimiters are there for a reason. We should make use of them.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>This is an ambiguity in R5RS that has no benefit and should be clarified.</dd></dl>
+      <h3 id="#119Whethertotreat#asadelimiter."><a href="/ticket/119">#119</a> Whether to treat # as a delimiter.</h3>
+      <p>In R5RS <span class="monospace">foo#f</span> is a valid identifier, whereas R6RS requires <span class="monospace">#</span> to
+act as a delimiter, so that this would parse as the identifier <span class="monospace">foo</span>
+followed by the false literal.</p>
+      <ul>
+        <li><b>Options:</b>  delimiter, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: no</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: no</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: delimiter</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: no</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: no</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: no</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: no, delimiter</li></ul></li>
+        <li><b>Results:</b> <b>no</b>, delimiter</li>
+        <li><b>Ratios:</b> 7:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>Backward compatibility rules here. Chicken depends heavily on identifiers with embedded <span class="monospace">#</span>s.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>We have ways such as with the vertical bar of enclosing data, so there is no reason to make something like # confusing to the reader. <span class="monospace">|foo#f|</span> is clear, while <span class="monospace">foo#f</span> is not, so let's make # a delimiter.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>You would break Gambit's namespace separator!!!</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>Several implementations make use of this for extended identifier syntax.</dd></dl>
+      <h3 id="#123Extendunquoteandunquote-splicingtomultiplearguments"><a href="/ticket/123">#123</a> Extend unquote and unquote-splicing to multiple arguments</h3>
+      <p>This is a change also made by R6RS (and CL).</p>
+      <p>References:</p>
+      <ul>
+        <li>http://lists.scheme-reports.org/pipermail/scheme-reports/2011-April/000448.html</li>
+        <li>http://www.rhinocerus.net/forum/lang-scheme/98742-quasiquote-syntax-rules-macro.html</li>
+        <li>http://www.mail-archive.com/guile-user@gnu.org/msg03899.html</li></ul>
+      <ul>
+        <li><b>Options:</b> multiple, single, undecided</li>
+        <li><b>Default:</b> single</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: single</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: multiple</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: multiple</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: r6rs</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: single</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: single</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: multiple</li></ul></li>
+        <li><b>Results:</b> <b>single</b>, multiple, undecided, r6rs</li>
+        <li><b>Ratios:</b> 3:3, 3:1, 3:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>I'm not convinced this is useful enough.</dd>
+        <dt><span class="monospace">Gleckler</span></dt>
+        <dd>One of the threads above indicates that Alan Bawden approves of this change. I defer to Alan's infinite wisdom in all things related to macros.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>Convincing arguments have been made as to why this is a good thing on the mailing list, and there are too many unsolved issues if we leave it as single.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>I'm unconvinced. The use cases seem rare (especially since WG1 has no low-level macros), and the semantics not obvious.</dd></dl>
+      <h3 id="#124Nestedquasiquotesemantics"><a href="/ticket/124">#124</a> Nested quasiquote semantics</h3>
+      <p>References:</p>
+      <ul>
+        <li>http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-14.html#node_sec_11.17</li>
+        <li>http://lists.nongnu.org/archive/html/chicken-hackers/2010-12/msg00008.html</li></ul>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r5rs:</b> unspecified</li>
+            <li><b>r6rs:</b> strict and multiple (implies multiple for <a href="/ticket/123">#123</a>)</li>
+            <li><b>chicken:</b> strict at level 0 (option 2 in second reference)</li>
+            <li><b>strict:</b> strict at all levels (R6RS with single for <a href="/ticket/123">#123</a>)</li></ul></li>
+        <li><b>Options:</b> r5rs, r6rs, chicken, strict, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: r6rs</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: r6rs, r5rs</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: r6rs, strict</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: r6rs</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: r6rs</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: r6rs</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: strict, chicken, r5rs</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: r6rs</li></ul></li>
+        <li><b>Results:</b> <b>r6rs</b>, strict, chicken, r5rs</li>
+        <li><b>Ratios:</b> 7:1, 7:1, 7:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>R6RS is better defined, and we should accept it. The vagueness in R5RS helps nobody.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>R6RS makes things much easier to work with in this regard. We should adopt this. I have encountered situations where this makes a great deal of sense, especially in macro writing.</dd></dl>
+      <h3 id="#125Allowproceduresnottobelocations(makingEQV?unspecifiedinsomeadditionalcases)"><a href="/ticket/125">#125</a> Allow procedures not to be locations (making EQV? unspecified in some additional cases)</h3>
+      <p>This is a change also made by R6RS, specifically:</p>
+      <blockquote class="citation">
+        <p>A quasiquote expression may return either fresh, mutable objects or literal structure
+ for any structure that is constructed at run time during the evaluation of the expression.
+ Portions that do not need to be rebuilt are always literal
+ BEFORE is called whenever execution enters the dynamic extent of the
+ call to THUNK and AFTER is called whenever it exits that dynamic
+ extent.
+ Jeronimo Pellegrini scripsit:
+ &gt; According to Section 6.7.1, &quot;Conversely, not all character ports are
+ &gt; binary ports -- for example, the /string ports/ discussed below&quot;.  It
+ &gt; is not really clear to wether the document *requires* string ports not
+ &gt; to be binary or if it was just an example of a port that *could* be
+ &gt; character but not binary.
+ I haven't thought about it, but I guess it *could* be the latter, if the
+ environment provides a default encoding for string ports.
+ Existing features of IEEE Scheme may be removed only if a strong
+ case can be made that they are fundamentally flawed. Insofar as
+ practical, the language should be backwards compatible with the IEEE
+ standard, the R5RS standard, and an appropriate subset of the R6RS
+ standard.
+ Unfortunately, most programming languages give nondescript names
+ such as DIV(IDE), QUOT(IENT), MOD(ULO), and REM(AINDER) to these
+ operations. The language should make clear to programmers what
+ division operations their programs are performing, especially when
+ negative dividends and divisors can arise, but perhaps may not often
+ arise during testing.
+ [...]
+ The R5RS gives the names <span class="monospace">quotient</span> and <span class="monospace">remainder</span> to the
+ truncating division operator pair, and the name <span class="monospace">modulo</span> to the
+ remainder half of the flooring division operator pair. For all these
+ three procedures in the R5RS, the dividend may be any integer, and
+ the divisor may be any nonzero integer.</p></blockquote>
+      <p>On the other hand, we may prefer relegating them to a
+backward-compatibility module.</p>
+      <p>Vote &quot;yes&quot; to keep, &quot;no&quot; to remove, and &quot;module&quot; to relegate to a
+module.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, module, undecided</li>
+        <li><b>Default:</b> yes</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: yes</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: module, yes, undecided, no</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: yes, yes, yes</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: yes</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: yes</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, module, undecided, no</li>
+        <li><b>Ratios:</b> 7:1, 8:0, 8:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>On reflection, every implementation will go on supporting them anyway, if just to keep old code working. Consistent with my &quot;modules = optional&quot; views, I see no reason to have a module here. There should be discouraging language in the report, though.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I think we can reasonably relegate these, but I'm hesitant to remove them completely, since they tend to be very commonly used. More discussion is a good thing here.</dd>
+        <dt><span class="monospace">Medernach</span></dt>
+        <dd>Please keep it, too much code rely on it and there are natural names.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>We should not suddenly take away what many Scheme programmers rely on.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>Too big a change.</dd>
+        <dt><span class="monospace">SnellPym</span></dt>
+        <dd>I'd love to see them removed to make Scheme more consistent, but in hindsight, it's a petty incompatibility with existing code.</dd></dl>
+      <h3 id="#151Extend`finite?`and`nan?`tonon-realvalues"><a href="/ticket/151">#151</a> Extend <span class="monospace">finite?</span> and <span class="monospace">nan?</span> to non-real values</h3>
+      <p>R6RS specifies the domain of <span class="monospace">finite?</span> and <span class="monospace">nan?</span> as the real numbers
+only.  I propose that <span class="monospace">finite?</span> return <span class="monospace">#t</span> on a non-real value iff
+both the real part and the imaginary part are finite and not <span class="monospace">+nan.0</span>,
+and that <span class="monospace">nan?</span> return <span class="monospace">#t</span> on a non-real value iff either the real or
+the imaginary part is <span class="monospace">+nan.0</span>.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> the above description</li></ul></li>
+        <li><b>Options:</b> cowan, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: cowan</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: cowan</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: undecided, cowan, unspecified</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: cowan</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: cowan</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: cowan</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: cowan</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: cowan</li></ul></li>
+        <li><b>Results:</b> <b>cowan</b>, undecided, unspecified</li>
+        <li><b>Ratios:</b> 7:1, 8:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>That is, what's proposed there. This is what people who do complex flonum programming need.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I don't know the ramifications of this, and I would like more discussion on this.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>This seems reasonable assuming the implementations have such numbers.</dd></dl>
+      <h3 id="#152exact-integer-sqrtinconsistentwithmultiplevaluesmodule"><a href="/ticket/152">#152</a> exact-integer-sqrt inconsistent with multiple values module</h3>
+      <p>R5RS does not actually specify any procedures which return multiple
+values, and so the decision to separate multiple values to a module
+was reasonable.  However, we also voted to make <span class="monospace">exact-integer-sqrt</span>,
+which is in the base module, return multiple values, namely the root
+and the remainder.  That would make the procedure useless unless
+multiple values are provided.</p>
+      <p>We can either make multiple values not a module, make
+<span class="monospace">exact-integer-sqrt</span> return a list (or single integer) rather than
+multiple values, relegate <span class="monospace">exact-integer-sqrt</span> to a new module, remove
+it altogether, or do nothing and leave the inconsistency.</p>
+      <ul>
+        <li><b>Options:</b> values-in-core, return-list, return-pair, return-root-only, new-module, remove, nothing, undecided</li>
+        <li><b>Default:</b> nothing</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: values-in-core</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: values-in-core, remove, return-root-only, return-list, return-pair, new-module</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: values-in-core, new-module, nothing, undecided, return-root-only, remove, return-pair, return-list</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: values-in-core, return-root-only</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: new-module, return-root-only, values-in-core, remove, undecided, return-list, return-pair, nothing</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: values-in-core</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: remove, return-root-only, return-list, return-pair, new-module, values-in-core</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: values-in-core, new-module, (return-list return-pair), return-root-only, (remove nothing)</li></ul></li>
+        <li><b>Results:</b> <b>values-in-core</b>, new-module, return-root-only, remove, return-list, return-pair, nothing, undecided</li>
+        <li><b>Ratios:</b> 6:2, 6:2, 7:1, 7:1, 7:1, 8:0, 8:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>Multiple values are cheap to provide poorly for implementations that don't care, and can be provided well with some effort by implementations that do. No need to make them optional, therefore. Doing so also removes an extra dependency from WG2 packages that want to return multiple values.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I don't want to have any procedure in the language that uses lists/pairs as intermediate container constructs, as I am offended (in some ways) by that sort of conflation of the use of lists. Values should be in the core.</dd>
+        <dt><span class="monospace">Medernach</span></dt>
+        <dd>Why not a module containing tricky arithmetic operations ?</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>Multiple values is the cleanest way to do this. Promote to core.</dd></dl>
+      <h3 id="#180Makecaseandcondclausesintobodies"><a href="/ticket/180">#180</a> Make case and cond clauses into bodies</h3>
+      <p>Andy Wingo suggests: make the clauses in <span class="monospace">case</span> and <span class="monospace">cond</span> forms
+(without <span class="monospace">=&gt;</span>, naturally) be BODY instances, to allow them to have
+definitions.  It is well defined AFAIK, and costs nothing.</p>
+      <p>The counter-argument is that it doesn't &quot;look&quot; like the sort of place
+definitions are allowed.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: no</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: no</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: yes, undecided, no</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: no</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: no</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>no</b>, yes, undecided</li>
+        <li><b>Ratios:</b> 5:2, 5:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>There is nothing in Scheme like ((= x y) (define z ...) (+ z x y)) except at top level. Let's not go there.</dd>
+        <dt><span class="monospace">Gleckler</span></dt>
+        <dd>Ugly, and let's not extend the language beyond common practice in trivial areas like this.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>There is no reason not to do this. If you don't like the style, then don't use it, but a standards body should not be in charge of dictating good style.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>Oh no you di'int.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>This is confusing.</dd></dl>
+      <h3 id="#181AddWHENandUNLESStothebasemodule"><a href="/ticket/181">#181</a> Add WHEN and UNLESS to the base module</h3>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: no</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: yes, undecided, no</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: yes</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, no, undecided</li>
+        <li><b>Ratios:</b> 5:2, 5:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>These are good things, and there is no reason to keep them separated out as if they were untouchables.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>These are very useful and help to discourage one-armed <span class="monospace">if</span>s.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>These sound like Perl or Ruby constructs. Scheme could use a dose of the brevity and convenience those languages provide. (Thought not too much...)</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>If anything, WG2.</dd></dl>
+      <h3 id="#182AddWHILEandUNTIL"><a href="/ticket/182">#182</a> Add WHILE and UNTIL</h3>
+      <p>These trivial syntaxes add familiarity for new Scheme programmers
+coming from other languages, as will almost always be the case.  LOOP
+is too big and named-LET too alien.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: no</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: no, undecided, yes</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: no</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: no</li></ul></li>
+        <li><b>Results:</b> <b>no</b>, yes, undecided</li>
+        <li><b>Ratios:</b> 5:2, 5:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>Yes, I know we are not supposed to encourage mutability. But we have a lot of it already, particularly when dealing with ports.</dd>
+        <dt><span class="monospace">Gleckler</span></dt>
+        <dd>These go against the grain of the language. Are they even widely supported?</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>They are rarely if ever used among non-beginner Scheme programmers, and I know of very few teachers who would encourage its use. Thus, they don't provide enough usefulness to the general Scheme community to warrant standardization.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>They are convenient. But what about DO?</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>Emphatically not - this actively encourages non-functional programming, and proper loop macros are more flexible anyway.</dd>
+        <dt><span class="monospace">SnellPym</span></dt>
+        <dd>named-let is a good thing to learn!</dd></dl>
+      <h3 id="#183Escapednewlineremovesfollowingwhitespace?"><a href="/ticket/183">#183</a> Escaped newline removes following whitespace?</h3>
+      <p>Andy Wingo suggests the R6RS handling of escaped embedded newlines:</p><span class="monospace">    &quot;asdadf \
+    asdfadf&quot;
+</span>
+      <p>in R6RS has the same meaning as &quot;asdf asdfadf&quot;.  It allows you to
+nicely indent strings that you need to line-break for width.  I
+suggest that the production</p><span class="monospace">   \ NEWLINE WHITESPACE*
+</span>
+      <p>within string literals be elided.</p>
+      <p>Note an alternate method for handling embedded strings with nice
+indentation is scribble syntax.</p>
+      <p>We voted on various string syntaxes previously but did not
+specifically propose this R6RS extension.  We should have a rationale
+if we don't follow it.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: no</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: yes, undecided, no</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: yes</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, no, undecided</li>
+        <li><b>Ratios:</b> 5:2, 5:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>Cheap and useful.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>This is really useful, but the scribble syntax is also very useful, and we should consider this as a separate ticket.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>Shell scripts and C use it all the time.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>This is ugly and confusing, and unnecessary if embedded newlines are specified.</dd></dl>
+      <h3 id="#184RequireCHAR=?,STRING=?etc.toacceptarbitrarynumbersofarguments?"><a href="/ticket/184">#184</a> Require CHAR=?, STRING=? etc. to accept arbitrary numbers of arguments?</h3>
+      <p>R5RS makes a point of specifying that supporting more than two
+arguments is optional.  (Everything not explicitly mentioned is
+optional, so this may have significance.)  R6RS requires accepting 2
+or more arguments.  Currently Racket, Gambit, Guile, Chez, Ikarus,
+Larceny, Ypsilon, Mosh, and Scheme 9 support the feature, whereas
+Gauche, MIT, Chicken, Bigloo, Scheme48/scsh, Kawa, SISC, Chibi,
+STklos, and SSCM don't.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: yes</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: undecided, yes, no</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: yes</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: yes</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, undecided, no</li>
+        <li><b>Ratios:</b> 5:2, 6:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>I think the R5RS implementations should be bootstrapped into the future here. It also meets the consistency guideline in the charter.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I don't understand why we would limit this. It seems like an strange limitation to enforce on users. I would like to see more rationale on why we might want to vote no, but otherwise I tihnk they should accept multiple numbers of arguments.</dd></dl>
+      <h3 id="#185Addsixth&quot;centered&quot;divisionoperator"><a href="/ticket/185">#185</a> Add sixth &quot;centered&quot; division operator</h3>
+      <p>From the Guile manual:</p>
+      <ul>
+        <li>Scheme Procedure: centered/ x y</li>
+        <li>Scheme Procedure: centered-quotient x y</li>
+        <li>Scheme Procedure: centered-remainder x y</li></ul>
+      <p>These procedures accept two real numbers x and y, where the divisor y
+must be non-zero. centered-quotient returns the integer q and
+centered-remainder returns the real number r such that x = q*y + r and
+-|y/2| &lt;= r &lt; |y/2|. centered/ returns both q and r, and is more
+efficient than computing each separately.</p>
+      <p>Note that centered-quotient returns x/y rounded to the nearest
+integer. When x/y lies exactly half-way between two integers, the tie
+is broken according to the sign of y. If y &gt; 0, ties are rounded
+toward positive infinity, otherwise they are rounded toward negative
+infinity. This is a consequence of the requirement that -|y/2| &lt;= r &lt;
+|y/2|.</p>
+      <p>Note that these operators are equivalent to the R6RS operators div0,
+mod0, and div0-and-mod0.</p>
+      <p>--Andy Wingo</p>
+      <p>Taylor Campbell thinks these are useless.  We should probably have use
+cases for _any_ division operator we include.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: no</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: no</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: no</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: no</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: no</li></ul></li>
+        <li><b>Results:</b> <b>no</b>, undecided</li>
+        <li><b>Ratios:</b> 6:2</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>I'm not convinced they are useful except maybe to do bignums with, in which case it's easy to define them. <b>Note:</b> There are rationales for most of the division operators at <a href="http://mumble.net/~campbell/tmp/division.txt">Riastradh's original proposal</a>.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I don't understand these well enough to vote on them yet.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>There are too many division operators already. What are they all used for? We need to revisit this.</dd></dl>
+      <h3 id="#195Editorial:proposedrewordingfor`begin`"><a href="/ticket/195">#195</a> Editorial: proposed rewording for <span class="monospace">begin</span></h3>
+      <p>The documentation for `begin' specifies that it is a sequential
+construct; but really it splices as well, and also of course it's a
+keyword for the module system currently.  This is inaccurate of the
+spec to say that &quot;begin is for sequencing&quot;.</p>
+      <p>Suggestion: adopt the language of R6RS section 11.4.7.</p>
+      <p>--Andy Wingo</p>
+      <p>We should explain somewhere the four kinds of <span class="monospace">begin</span>s: (begin expr
+...), (begin decl ...), top-level begin, and module-top-level begin.
+Note that R7RS like R5RS does not have (begin decl ... expr ...).</p>
+      <p>Vote <span class="monospace">yes</span> to adopt the R6RS description, modified for differences in
+the language.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: yes</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: yes, undecided, no</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: yes</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: yes</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: yes</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, undecided, no</li>
+        <li><b>Ratios:</b> 8:0, 8:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>I think this is a documentation issue only: the documentation Andy complained abuot is just for expression-<span class="monospace">begin</span>.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I think we ought to have a splicing <span class="monospace">begin</span> form, so I don't know what else would differ between R6RS and R7RS in this regard.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>We can revisit the language, though R5RS doesn't correspond exactly to R6RS here.</dd></dl>
+      <h3 id="#198MakeitanerrorforaproceduremappedbyMAPandfriendstomutatetheresultlist/string/vector"><a href="/ticket/198">#198</a> Make it an error for a procedure mapped by MAP and friends to mutate the result list/string/vector</h3>
+      <p>This is possibly difficult to enforce, and can break existing R5RS
+programs written in very bad style.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: yes</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: yes, undecided, no</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: no</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: yes</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, no, undecided</li>
+        <li><b>Ratios:</b> 6:1, 6:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>I don't see how it can break anything, because no R5RS program can count on <span class="monospace">map</span> using a mutable-result implementation anyway. <span class="monospace">Vector-map</span> and <span class="monospace">string-map</span> are more likely to.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>We don't have to enforce this, but it does let people write things in a way that they can get away with being slightly lazy. Making it an error is a good thing in this case.</dd>
+        <dt><span class="monospace">Medernach</span></dt>
+        <dd>No, but please put a warning about doing it in the report as &quot;shooting yourself in the foot&quot;.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>You don't want to modify a list you're mapping over. Not EVER. Map is a functor from scheme objects onto lists of scheme objects. It says nothing about HOW the function is to be mapped; if the list is mutated mid-map, you don't know what the results will be. &quot;It is an error&quot; means the behavior could be undefined, which is definitely the case here.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>But I don't expect many implementations will actually signal an error in this case.</dd></dl>
+      <h3 id="#199MakeitanerrorforaproceduremappedbyMAPandfriendstoreturnmorethanonce"><a href="/ticket/199">#199</a> Make it an error for a procedure mapped by MAP and friends to return more than once</h3>
+      <p>This is possibly difficult to enforce, and can break existing R5RS
+programs.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: no</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: undecided, yes, no</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: no</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, no, undecided</li>
+        <li><b>Ratios:</b> 4:3, 3:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>&quot;Difficult to enforce&quot; is irrelevant; &quot;is an error&quot; means no Scheme programmer should rely on the results of it.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I would like to know the ramifications of this.</dd>
+        <dt><span class="monospace">Medernach</span></dt>
+        <dd>Multiple returns is one Scheme essential feature, let not restrict it, there is no reason here.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>See above.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>Returning more than once is not inherently a bad thing, and if anything we should rely on <a href="/ticket/172">#172</a>. There's simply no reason to make this an error.</dd></dl>
+      <h3 id="#200Completingtheblobprocedures"><a href="/ticket/200">#200</a> Completing the blob procedures</h3>
+      <p>Add <span class="monospace">blob</span>, <span class="monospace">blob-map</span>, <span class="monospace">blob-for-each</span>, and blob conversion functions
+to and from lists/vectors/strings.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: no</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: no</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: undecided, yes, no</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: no</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: no</li></ul></li>
+        <li><b>Results:</b> <b>no</b>, yes, undecided</li>
+        <li><b>Ratios:</b> 5:2, 5:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>Too much for WG1.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>Ratione: I know that these would be useful, but I don't know what they would look like, and they should be in the spirit of blobs and not ad hoc.</dd>
+        <dt><span class="monospace">Medernach</span></dt>
+        <dd>Unappropriate for blobs.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>Too much - we'll want a blob library in WG2 anyway.</dd>
+        <dt><span class="monospace">SnellPym</span></dt>
+        <dd>Blob's don't have an internal structure to map or for-each over. Sure, we can measure positions in them in bytes, but that's distinct from saying they're *made* of bytes.</dd></dl>
+      <h3 id="#205Rollpartial-blob-copy(!)intoblob-copy(!)"><a href="/ticket/205">#205</a> Roll partial-blob-copy(!) into blob-copy(!)</h3>
+      <p>... with extra arguments.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: no</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: no</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: yes, undecided, no</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: yes</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: no</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: no</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: yes</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: no</li></ul></li>
+        <li><b>Results:</b> <b>no</b>, yes, undecided</li>
+        <li><b>Ratios:</b> 5:3, 5:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>We did not roll <span class="monospace">substring</span> into <span class="monospace">string-copy</span> with additional arguments; the only reason not to use <span class="monospace">subblob</span> as a name is its risibility.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>This simplifies the name space and should make things easier. I like this sort of interface better than remembering another name.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>These are redundant.</dd></dl>
+      <h3 id="#206Provideread-syntaxforblobs"><a href="/ticket/206">#206</a> Provide read-syntax for blobs</h3>
+      <p>R6RS provides a <span class="monospace">#vu8(...)</span> read-syntax for bytevectors.  SRFI-4 uses
+<span class="monospace">#u8(...)</span>.</p>
+      <ul>
+        <li><b>Options:</b> r6rs, srfi-4, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: no</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: r6rs, srfi-4</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: r6rs, srfi-4, undecided, no</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: srfi-4</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: no</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: no</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: r6rs</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: srfi-4, no, r6rs</li></ul></li>
+        <li><b>Results:</b> ''srfi-4'', no, r6rs, undecided</li>
+        <li><b>Ratios:</b> 4:3, 2:3, 4:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>I can't see anyone writing these by hand. They might add a little efficiency compared to a <span class="monospace">blob</span> procedure (analogous to <span class="monospace">string</span>, <span class="monospace">vector</span>, and <span class="monospace">list</span>).</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>We should have one, regardless of what we pick, and I prefer the more descriptive (slightly) R6RS version more than the SRFI-4 version.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>Ugly. Not likely to be used in code.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>Bikeshedding, R6RS wins.</dd></dl>
+      <h3 id="#207Editorial:Polarcomplexnumbersareinexact"><a href="/ticket/207">#207</a> Editorial: Polar complex numbers are inexact</h3>
+      <p>Add a note saying that <span class="monospace">1@2</span> and <span class="monospace">(make-polar 1 2)</span> MAY evaluate to an
+inexact complex number.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: yes</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: undecided, yes, no</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: yes</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: yes</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, undecided, no</li>
+        <li><b>Ratios:</b> 6:1, 7:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>This is obviously an oversight: exact values passed to <span class="monospace">make-polar</span> aren't going to come out exact from <span class="monospace">make-rectangular</span>, and essentially all Schemes store complex numbers as rectangulars internally. (The <a href="http://pure-lang.googlegroups.com">Pure language</a> supports both representations internally, but I can't see going there for standard -Scheme.)</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I haven't thought enough about this.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>If you must do computing with exact polar numbers, you know where to find the records/uniqueness types.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>This makes sense.</dd></dl>
+      <h3 id="#208Is||avalididentifier?"><a href="/ticket/208">#208</a> Is || a valid identifier?</h3>
+      <p>The grammar in 7.1.1 allows <span class="monospace">||</span> as an &lt;identifier&gt;. However, page 5
+suggests the <span class="monospace">|...|</span> form is only for convenience (e.g. <span class="monospace">|foo bar|</span> is
+equivalent to <span class="monospace">foo\x20;bar</span>). There's no way to normalise <span class="monospace">||</span> to
+anything without the vertical bars that's a valid identifier. Was that
+intentional, or should the rule be</p><span class="monospace">&lt;vertical bar&gt; &lt;symbol element&gt;+ &lt;vertical bar&gt;
+</span>
+      <p>Vote <span class="monospace">remove</span> to remove the <span class="monospace">|...|</span> syntax altogether.</p>
+      <ul>
+        <li><b>Options:</b> remove, empty-valid, empty-invalid, undecided</li>
+        <li><b>Default:</b> empty-valid</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: empty-valid</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: empty-invalid, empty-valid, remove</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: empty-valid, empty-invalid, undecided, removed</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: empty-invalid</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: empty-valid</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: remove, empty-valid</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: empty-valid</li></ul></li>
+        <li><b>Results:</b> <b>empty-valid</b>, empty-invalid, remove, undecided, removed</li>
+        <li><b>Ratios:</b> 5:2, 5:1, 6:1, 6:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>Not sure why this is supposed to be the default. || is convenient on occasion, and allows <span class="monospace">string-&gt;symbol</span> to accept any string.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>There's no reason to limit the bar syntax when || is a perfectly good identifier. We should remove language that suggests it is only for convenience.</dd>
+        <dt><span class="monospace">SnellPym</span></dt>
+        <dd>What else would (string-&gt;symbol &quot;&quot;) return?</dd></dl>
+      <h3 id="#191IncludeCLOSE-PORT?"><a href="/ticket/191">#191</a> Include CLOSE-PORT ?</h3>
+      <p>Should we include <span class="monospace">close-port</span>, as a generic version of
+<span class="monospace">close-input-port</span> and <span class="monospace">close-output-port</span>?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: no</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: yes</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: yes, no</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: yes</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: yes</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: undecided</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: no</li></ul></li>
+        <li><b>Results:</b> ''yes'', no, undecided</li>
+        <li><b>Ratios:</b> 4:3, 4:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>I could see adding this to a Scheme that has input/output ports to close both sides of the port, but the WG1 standard doesn't have them. Just as a generic procedure, no.</dd>
+        <dt><span class="monospace">Gleckler</span></dt>
+        <dd>It seems silly to omit this since it's so useful and common. I note that the title of this ballot item takes advantage of case-insensitivity.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>It's useful and general, but I'm not attached to it.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>You generally know whether it's an input or output port.</dd></dl>
+      <h3 id="#188Clarifywordingof`and`and`or`definitions"><a href="/ticket/188">#188</a> Clarify wording of <span class="monospace">and</span> and <span class="monospace">or</span> definitions</h3>
+      <p>The definitions of <span class="monospace">and</span> and <span class="monospace">or</span> may be slightly confusing. Reword
+them to be more clear. One possible hiccup is that the current
+language permits the return of different false values, while a clearer
+wording may preclude this.</p>
+      <p>R6RS provides a clearer definition that does not provide wiggle room
+for multiple false values. Should we use that?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: yes</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: yes, undecided, no</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: yes</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: yes</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: no</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, no, undecided</li>
+        <li><b>Ratios:</b> 7:1, 7:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>I know why Guile needs multiple false values (to handle Emacs Lisp as well as Scheme), but I'd rather see such a system saying it overrides the Standard in this respect.</dd>
+        <dt><span class="monospace">Gleckler</span></dt>
+        <dd>I don't see any reason we should have to vote on whether to make things clearer. However, I don't see any reason to worry about permitting different false values.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>We should clarify this wording specifically to eliminate this ambiguity about false values.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>I've seen where multiple falses can lead us in Python. I don't want to go there.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>I don't see why we need to go out of our way to forbid multiple false values if an implementation has them.</dd></dl>
+      <h3 id="#187Clarifyduplicatebindingsin`let*`"><a href="/ticket/187">#187</a> Clarify duplicate bindings in <span class="monospace">let*</span></h3>
+      <p>The language of the standard could clarify that duplicate bindings are
+permitted in the clauses of a <span class="monospace">let*</span>.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: yes</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: yes, undecided, no</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: yes</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: yes</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: yes</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, undecided, no</li>
+        <li><b>Ratios:</b> 7:0, 7:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>Why not?</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>Arguably this is not necessary, but it does help people who are trying to read the standard. This is an issue that has cropped up from time to time so maybe it makes sense to include language about it in the standard, even at the expense of a bit of verbosity.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>Given the sequential nature of <span class="monospace">let*</span>, it makes more sense than for <span class="monospace">let</span> or <span class="monospace">letrec</span>.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>Meh.</dd></dl>
+      <h3 id="#215initialvalueargumenttomake-blob"><a href="/ticket/215">#215</a> initial value argument to make-blob</h3>
+      <p><span class="monospace">make-blob</span> should either have an initial value argument, or rationale
+why it is inconsistent with <span class="monospace">make-vector</span> and <span class="monospace">make-string</span>.</p>
+      <p>Vote <span class="monospace">yes</span> for an initial value argument.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: yes</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: yes</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: yes, undecided, no</li>
+            <li><a href="/wiki/WG1BallotLucier">Lucier</a>: yes</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: yes</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: yes</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: yes</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: no</li></ul></li>
+        <li><b>Results:</b> <b>yes</b>, no, undecided</li>
+        <li><b>Ratios:</b> 7:1, 7:0</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>As noted, I don't see blobs as specialized vectors. Still, I suppose initialization to all zeros couldn't hurt. Okay.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>I assume that this will be an optional argument, so, yes.</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>Consistency is good.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>This is pretty useful, especially without <span class="monospace">blob-fill!</span>.</dd>
+        <dt><span class="monospace">SnellPym</span></dt>
+        <dd>BLobs don't have an internal structure to &quot;fill&quot;. Let new blobs be all zeroes, as there's no boundaries in a string of zero bits...</dd></dl>
+      <h3 id="#216Controllinguseofreaderlabelsonoutput"><a href="/ticket/216">#216</a> Controlling use of reader labels on output</h3>
+      <p>There are cases when one does not want to output reader labels for
+shared structure, such as when you don't care (and want the output to
+be more legible), or when you know that the time or space requirements
+to construct the table will be too large.</p>
+      <p>We could offer a parameter to control this, or have a separate
+procedure (e.g. <span class="monospace">write/simple</span>) which doesn't use the reader labels.</p>
+      <p>Finer grained control may also let use specify a predicate for which
+values are interesting (e.g. never use labels for strings), or only
+use labels for cycles, etc.</p>
+      <ul>
+        <li><b>Options:</b> parameter, write/simple, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li><a href="/wiki/WG1BallotCowan">Cowan</a>: write/simple</li>
+            <li><a href="/wiki/WG1BallotGleckler">Gleckler</a>: write/simple, parameter</li>
+            <li><a href="/wiki/WG1BallotHsu">Hsu</a>: undecided, no, parameter, write/simple</li>
+            <li><a href="/wiki/WG1BallotMedernach">Medernach</a>: write/simple</li>
+            <li><a href="/wiki/WG1BallotRead">Read</a>: write/simple</li>
+            <li><a href="/wiki/WG1BallotShinn">Shinn</a>: write/simple</li>
+            <li><a href="/wiki/WG1BallotSnellPym">SnellPym</a>: write/symbol, no, parameter</li></ul></li>
+        <li><b>Results:</b> <b>write/simple</b>, no, parameter, write/symbol, undecided</li>
+        <li><b>Ratios:</b> 5:2, 5:2, 6:1, 5:1</li>
+        <li><b>Rationales:</b></li></ul>
+      <dl>
+        <dt><span class="monospace">Cowan</span></dt>
+        <dd>I think a separate procedure is marginally better than a parameter.</dd>
+        <dt><span class="monospace">Gleckler</span></dt>
+        <dd>However, I don't like the name. I'd prefer <span class="monospace">write-simple', </span>write-simply', or `write-without-reader-labels'.</dd>
+        <dt><span class="monospace">Hsu</span></dt>
+        <dd>Is this is common use? What would this look like? I want more discussion on this, but otherwise, I am not sure it makes sense, so I'm going with none after undecided.</dd>
+        <dt><span class="monospace">Medernach</span></dt>
+        <dd>However write-simple would be a better name (Ok, this is bikeshed)</dd>
+        <dt><span class="monospace">Read</span></dt>
+        <dd>A separate procedure makes sense, and is easy for the programmer to comprehend.</dd>
+        <dt><span class="monospace">Shinn</span></dt>
+        <dd>This control is necessary.</dd>
+        <dt><span class="monospace">SnellPym</span></dt>
+        <dd>Putting too much of this stuff into parameters means it's easy to assume wrongly about how <span class="monospace">write</span> will behave, forgetting that some caller might tinker with some parameter and BREAK YOU.</dd></dl></div></body></html>

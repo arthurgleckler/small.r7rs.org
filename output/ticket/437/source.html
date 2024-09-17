@@ -1,0 +1,209 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #437</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #437</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-07-02 04:10:10</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Formal Comment
+
+Submitter's name: Marc Feeley
+Submitter's email: feeley at iro.umontreal.ca
+Relevant draft: r7rs draft 6
+
+Type: defect
+Priority: major
+Relevant section of draft: 6.7. Strings, 6.8. Vectors, 6.9. Bytevectors
+
+Summary: Inconsistency of sequence copying procedures
+
+R7RS has three vector-like data types: strings, vectors and
+bytevectors.  The inconsistencies in their properties and sequence
+copying procedures (names and API) make it harder than it needs to be
+for the programmer to remember.
+
+1) self-evaluation inconsistencies
+
+Vectors and bytevectors have a similar external representation, yet
+bytevectors are self evaluating (page 46) and vectors are not self
+evaluating.  I do not care very much if they are, or if they are not
+self-evaluating, but it should be the same for vectors and
+bytevectors.
+
+2) sequence copying procedures inconsistencies
+
+Subsequences of strings can be extracted using the procedure substring
+which takes 3 required parameters, i.e.
+
+  (substring string start end)
+
+There is also a string-copy procedure which takes a single required
+parameter and returns a copy of the string.  These procedures are
+related like so:
+
+  (string-copy string) = (substring string 0 (string-length string))
+
+Subsequences of vectors can be extracted using the procedure
+vector-copy only, which takes one required parameter and 3 optional
+parameters, i.e.
+
+  (vector-copy vector [start [end [fill]]])
+
+With a single parameter a copy of the whole vector is returned,
+otherwise a subsequence is returned.
+
+Subsequences of bytevectors can be extracted using the procedure
+bytevector-copy-partial, which takes 3 required parameters and behaves
+exactly like substring except for the fact that bytevectors are being
+processed and returned, i.e.
+
+  (bytevector-copy-partial bv start end)
+
+There is also a bytevector-copy procedure which takes a single
+required parameter and returns a copy of the bytevector.  These
+procedures are related like so
+
+  (bytevector-copy bv) = (bytevector-copy-partial bv 0 (bytevector-length bv))
+
+There are also 2 procedures to copy the content of a bytevector to
+another bytevector imperatively: bytevector-copy and
+bytevector-copy-partial!.
+
+I do not see a good reason for having different APIs (mix of required
+and optional parameters) and naming conventions for similar
+operations.
+
+The naming convention could be based on the one which has been in
+place for strings for a long time, i.e. substring, subvector, and
+subbytevector for extracting subsequences.  The same API should
+be used consistently for all the procedures, in other words:
+
+  (substring     string     [start [end [fill]]])
+  (subvector     vector     [start [end [fill]]])
+  (subbytevector bytevector [start [end [fill]]])
+
+Note that it reads even better if bytevector operations are named using
+the SRFI-4 naming convention:
+
+  (substring   string   [start [end [fill]]])
+  (subvector   vector   [start [end [fill]]])
+  (subu8vector u8vector [start [end [fill]]])
+
+The functional copy procedures would remain for consistency:
+
+  (string-copy   string)   = (substring   string)
+  (vector-copy   vector)   = (subvector   vector)
+  (u8vector-copy u8vector) = (subu8vector u8vector)
+
+The imperative partial copy procedure defined for bytevectors
+
+  (bytevector-copy-partial! from start end to at)
+
+should exist for other sequences too.  Better consistency would be
+achieved by exchanging the order of the destination and source, in
+order to benefit from the same pattern of optional parameters as the
+other procedures:
+
+  (substring-move!   to at from [start [end [fill]]])
+  (subvector-move!   to at from [start [end [fill]]])
+  (subu8vector-move! to at from [start [end [fill]]])
+
+I don't think the imperative copy operation performed by
+bytevector-copy! is sufficiently common to be included in R7RS (and
+applied to the other sequence types).  In any case the same operation
+could be obtained by using a ...-move! procedure with an additional
+constant 0 used for the &quot;at&quot; parameter.
+
+Finally, I think the handling of the fill parameter is questionable.
+It is a bad idea for the fill parameter to have a default.  When fill
+is absent, it should be an error when start and end are not within the
+bounds of the sequence.  Otherwise, some index calculation errors
+(off-by-one on &quot;end&quot;) may go unnoticed.  Moreover, when it is
+supplied, the fill should also be used when start is less than 0, for
+consistency with the case where end is greater to the length of the
+sequence.</pre>
+    <h2>id</h2>
+    <pre>437</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>alexshinn</pre>
+    <h2>resolution</h2>
+    <pre>duplicate</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Formal Comment: Inconsistency of sequence copying procedures</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 04:08:30</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-07-02 04:10:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Duplicate of #438 (which has better formatting)</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1341177010790869</pre>
+    <h2>ticket</h2>
+    <pre>437</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 04:10:10</pre>
+    <h2>Change at time 2012-07-02 04:10:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>duplicate</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1341177010790869</pre>
+    <h2>ticket</h2>
+    <pre>437</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 04:10:10</pre>
+    <h2>Change at time 2012-07-02 04:10:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1341177010790869</pre>
+    <h2>ticket</h2>
+    <pre>437</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 04:10:10</pre></body></html>

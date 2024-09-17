@@ -1,0 +1,124 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki VectorsCowan version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki VectorsCowan version 4</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>VectorsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This is a preliminary list of procedures for the R7RS vector library.  It is an upward compatible extension of the vector libraries of [http://www.schemers.org/Documents/Standards/R5RS/ R5RS], [http://trac.sacrideo.us/wg/raw-attachment/wiki/WikiStart/r7rs.pdf R7RS-small], and [http://srfi.schemers.org/srfi-43/srfi-43.html SRFI 43], with additional procedures that are analogous to procedures in the [http://srfi.schemers.org/srfi-1/srfi-1.html SRFI 1] list library and the [http://srfi.schemers.org/srfi-13/srfi-13.html SRFI 13] string library.  As a single exception, the `vector-copy` procedure in R7RS-small does not provide the ''fill'' argument present in SRFI 43.
+
+The procedures that are already in R7RS-small will not be overridden by this library, and are included only for completeness.
+
+== Notation ==
+
+* R5RS means the procedure is available in R5RS and R7RS-small
+
+* R5RS+ means the procedure is available in R5RS and with additional functionality in R7RS-small and SRFI 43.
+
+* R7RS means the procedure is available in R7RS-small and SRFI 43.
+
+* SRFI 43 means the procedure is available in SRFI 43.
+
+* SRFI 43+ means the procedure is available in SRFI 43 but additional ''start'' and ''end'' arguments are proposed.
+
+* SRFI 13 means an analogous procedure is available in SRFI 13.
+
+* SRFI 1 means an analogous procedure is available in SRFI 1.
+
+* SRFI 1/13 means an analogous procedure is available in both SRFI 1 and SRFI 13.
+
+== Constructors ==
+
+make-vector (R5RS), vector (R5RS), 
+vector-unfold (SRFI 43), vector-unfold-right (SRFI 43),
+vector-copy (R7RS), vector-reverse-copy (SRFI 43+),
+vector-append (R7RS), vector-concatenate (SRFI 43),
+vector-tabulate (SRFI 1/13)
+
+== Predicates ==
+
+vector? (R5RS),
+vector-empty? (SRFI 43),
+vector= (SRFI 43)
+
+== Selectors ==
+
+vector-ref (R5RS), vector-length (R5RS), 
+vector-take (SRFI 1/13), vector-take-right (SRFI 1/13),
+vector-drop (SRFI 1/13), vector-drop-right (SRFI 13),
+vector-split-at (SRFI 1),
+vector-pad (SRFI 13), vector-pad-right (SRFI 13),
+vector-trim (SRFI 13), vector-trim-right (SRFI 13), vector-trim-both (SRFI 13)
+
+== Iteration ==
+
+vector-fold (SRFI 43), vector-fold-right (SRFI 43),
+vector-reduce (SRFI 43), vector-reduce-right (SRFI 43),
+vector-map (SRFI 43), vector-map! (SRFI 43), vector-append-map (SRFI 1),
+vector-for-each (SRFI 43), vector-count (SRFI 43)
+
+== Filtering and partitioning ==
+
+vector-filter (SRFI 1/13), vector-remove (SRFI 1/13), vector-partition (SRFI 1)
+
+== Deleting ==
+
+vector-delete (SRFI 1/13), vector-delete-duplicates (SRFI 1)
+
+== Prefixes and suffixes ==
+
+vector-prefix-length (SRFI 13), vector-suffix-length (SRFI 13), 
+vector-prefix? (SRFI 13), vector-suffix? (SRFI 13)
+ 
+== Searching ==
+
+vector-find (SRFI 1),
+vector-index (SRFI 43), vector-index-right (SRFI 43), 
+vector-skip (SRFI 43), vector-skip-right (SRFI 43), 
+vector-any (SRFI 43), vector-every (SRFI 43)
+vector-take-while (SRFI 1), vector-drop-while (SRFI 1),
+vector-binary-search (SRFI 43+), 
+
+
+== Zip and unzip ==
+
+vector-zip (SRFI 1),
+vector-unzip1 (SRFI 1), vector-unzip2 (SRFI 1),
+vector-unzip3 (SRFI 1), vector-unzip4 (SRFI 1), vector-unzip5 (SRFI 1)
+
+== Mutators ==
+
+vector-set! (R5RS), vector-swap! (SRFI 43), 
+vector-fill! (R5RS+),
+vector-reverse! (SRFI 43+), 
+vector-copy! (R7RS), vector-reverse-copy! (SRFI 43+)
+
+== Conversion ==
+
+vector-&gt;list (R5RS+), reverse-vector-&gt;list (SRFI 43+), 
+list-&gt;vector (R5RS), reverse-list-&gt;vector (SRFI 43), 
+vector-&gt;string (R7RS), string-&gt;vector (R7RS)
+</pre>
+    <h2>time</h2>
+    <pre>2014-07-27 23:09:00</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

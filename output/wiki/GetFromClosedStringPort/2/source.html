@@ -1,0 +1,50 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki GetFromClosedStringPort version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki GetFromClosedStringPort version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>GetFromClosedStringPort</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This test examines whether the SRFI 6 procedure `get-output-string` retrieves the value from a closed string output port.  The test code is:
+
+{{{
+(define p (output-string-port))
+(write 32 p)
+(close-output-port p)
+(get-output-string p)
+}}}
+
+Returns 32:  Racket, Gauche, MIT, Gambit, Chicken, Kawa, Chez, !IronScheme, STklos, Sizzle, Foment
+
+Throws an exception saying the port is closed:  Bigloo, Guile, SCM, !SigScheme, !TinyScheme, RScheme, S7, Elk, SXM, Sagittarius, Picrin
+
+Architecture-dependent: Chibi
+
+Returns the empty string: Inlab
+
+No built-in support for SRFI 6 (I did not attempt to load support from implementation libraries):  Scheme48/scsh, SISC, Vicare, Larceny, Ypsilon, Mosh, NexJ, JScheme, KSi, Shoe, Scheme 9, BDC, XLisp, Rep, Schemik, UMB, Llava, !FemtoLisp, Dfsch, Oaklisp, Owl Lisp
+
+</pre>
+    <h2>time</h2>
+    <pre>2015-01-14 12:43:22</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

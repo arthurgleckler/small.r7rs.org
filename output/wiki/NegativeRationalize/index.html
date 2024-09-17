@@ -1,0 +1,27 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NegativeRationalize</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NegativeRationalize.md">NegativeRationalize</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Negative&shy;Rationalize</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-07-01 13:31:29</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/NegativeRationalize/history">history</a></div>
+      <div class="source"><a href="/wiki/NegativeRationalize/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>The correct value of <span class="monospace">(rationalize 20 1)</span> is 19, because 19/1 is the simplest rational that differs from 20 by an amount no more than 1.  But it is not clear what the value of <span class="monospace">(rationalize 20 -1)</span> should be.  Is it also 19, or should an error be signaled?</p>
+      <p><span class="monospace">(rationalize 20 1)</span> =&gt; 19 and <span class="monospace">(rationalize 20 -1)</span> =&gt; 19:  Racket, MIT, Chicken with the numbers egg, Scheme48/scsh, Guile, Kawa, SISC, Chez, Vicare, Larceny, Ypsilon, Mosh, IronScheme, STklos, KSi, S7, Sagittarius, Foment, Chibi</p>
+      <p><span class="monospace">(rationalize 20 1)</span> =&gt; 19 but <span class="monospace">(rationalize 20 -1)</span> signals an error: Gauche, Gambit</p>
+      <p><span class="monospace">rationalize</span> unsupported:  Chicken, Bigloo, Detroit, Stalin, Scheme-&gt;C, SCM, NexJ, JScheme, SigScheme, Shoe, Mini-Scheme, TinyScheme, Scheme 9, RScheme, Unlikely, SIOD, BDC, XLisp, Rep, Schemik, Llava, Sizzle, FemtoLisp, Dfsch, Inlab, Picrin</p>
+      <p><span class="monospace">(rationalize 20 1)</span> =&gt; 20 and <span class="monospace">(rationalize 20 -1)</span> =&gt; 20: UMB, SXM, Owl Lisp</p>
+      <p>Note that for a procedure that's been in the language since R2RS there are a remarkable number of Schemes that don't support it.  I suspect this is because implementers assume that if they don't support arbitrary exact ratnums there is no point in implementing <span class="monospace">rationalize</span>, though its arguments can be either exact or inexact.</p></div></body></html>

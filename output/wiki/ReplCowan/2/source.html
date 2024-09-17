@@ -1,0 +1,94 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ReplCowan version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ReplCowan version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>66.108.19.185</pre>
+    <h2>name</h2>
+    <pre>ReplCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Read-eval-print loop ==
+
+`(repl` [''eval'' [''write'' [''read'']]]`)`
+
+This procedure invokes an implementation-dependent read-eval-print loop (REPL), which reads a datum representing an expression or definition using ''read'', evaluates it using ''eval'', and prints the results if any using ''write''.  It then loops until an eof-object is read.
+
+By default, ''eval'' is `repl-eval`, ''write'' is `repl-write`, and ''read'' is `repl-read`.  The arguments are given in the order of most likely replacement, not the order of use.  Allowing these defaults to be individually overridden means that languages written in Scheme can make use of the host implementation's REPL smarts, whatever they may be.  The ''write'' argument should respect `current-output-port` and the ''read'' argument should respect `current-input-port` if it makes sense to do so.
+
+`(repl-read)`
+
+This procedure is implementation-dependent, but has the general effect of reading a datum from the current input port, possibly with some additional features.
+
+`(repl-write `''obj''`)`
+
+This procedure is implementation-dependent, but has the general effect of writing a datum to the current output port, possibly with some additional features.
+
+`(repl-eval `''obj''`)`
+
+This procedure is implementation dependent, but is similar to `(lambda (x) (eval x (interaction-environment))` with the interaction environment augmented with the variables listed below.  In addition, ''obj'' may be a definition, which extends the interaction environment.  There may be other implementation-dependent features.
+
+The following variables are known to `repl-eval`; their values are local to a specific invocation of `repl`.  They are equivalent to the Common Lisp variables with the same names but without the leading `-` character; this is necessary because Scheme is a Lisp-1, so `+ - * /` are already bound.
+
+`--`
+
+The expression or definition currently being evaluated by `repl-eval`.
+
+`-+`
+
+The expression or definition last evaluated by `repl-eval`.
+
+`-++`
+
+The previous value of `-+`.
+
+`-+++`
+
+The previous value of `-++`.
+
+
+`-*`
+
+The result of the expression or definition most recently evaluated by `repl-eval`.  If a definition was last evaluated, the value of `-*` is implementation-dependent.  If the expression returned zero values, the value of `-*` is #f; if the expression returned more than one value, the value of `-*` is the first value returned.
+
+
+`-**`
+
+The previous value of `-*`.
+
+`-***`
+
+The previous value of `-**`.
+
+`-/`
+
+A list of the results of the expression most recently evaluated by `repl-eval`.  If a definition was last evaluated, the value of `-/` is implementation-dependent.
+
+
+`-//`
+
+The previous value of `-/`.
+
+`-///`
+
+The previous value of `-//`.</pre>
+    <h2>time</h2>
+    <pre>2012-04-11 05:23:04</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

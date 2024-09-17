@@ -1,0 +1,125 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RecordStandards</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RecordStandards.md">RecordStandards</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Record&shy;Standards</h1>
+    <div class="wiki metadata">
+      <div class="author">medernac</div>
+      <div class="time">2011-01-07 16:19:00</div>
+      <div class="version">12<span class="comment"></span><a href="/wiki/RecordStandards/history">history</a></div>
+      <div class="source"><a href="/wiki/RecordStandards/12/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Here's a list of the features provided by different kinds of standard and proposed record systems.  <i>The specific syntax of syntax forms and the exact calling conventions of procedures is ignored here.</i></p>
+      <h1 id="Glossary:">Glossary:</h1>
+      <ul>
+        <li>A <i>record constructor</i> is a procedure that constructs a record of a specified type</li>
+        <li>A <i>record accessor</i> is a procedure that gets the value of a particular element of a record</li>
+        <li>A <i>record mutator</i> is a procedure that sets the value of a particular element of a record</li>
+        <li>A <i>record predicate</i> is a procedure that returns <span class="monospace">#t</span> or <span class="monospace">#f</span> depending on whether its argument is an instance of a given record type</li></ul>
+      <ul>
+        <li>An <i>RTD</i> (record-type-descriptor) is a run-time object representing a record type.</li></ul>
+      <h2 id="Features:">Features:</h2>
+      <ul>
+        <li>[SyntacticRecords <i>Syntactic</i>] means record types are specified by one or more macros that bind identifiers to record types, constructors, accessors, mutators, and predicates.</li>
+        <li><a href="/wiki/ProceduralRecords">''Procedural''</a> means that record types are created by a procedure which returns an RTD, and that by applying other procedures to the RTD, constructors, accessors, mutators, and predicates are returned</li></ul>
+      <ul>
+        <li>[GenerativeRecords <i>Generative</i>] record types are unique in each definition</li>
+        <li>[NonGenerativeRecords <i>Non-generative</i>] record types have a uid (a symbol) and are identical if they share the same symbol</li></ul>
+      <ul>
+        <li>A <a href="/wiki/NaturalRecordConstructor">''natural constructor''</a> is a procedure whose arguments correspond to the fields of the record in the order they were specified when creating the RTD</li>
+        <li>A <a href="/wiki/FilteringRecordConstructor">''filtering constructor''</a> is a procedure whose arguments correspond to some of the fields of the record in an order which may or may not be the specification order.</li>
+        <li>A <a href="/wiki/GeneralizedRecordConstructor">''generalized constructor''</a> is one which applies an arbitrary procedure, called the protocol procedure, that transforms its arguments in any way desired and then calls a natural constructor.</li>
+        <li>A <a href="/wiki/LabelRecordConstructor">''label constructor''</a> is one which maps field labels to values independent of order.</li></ul>
+      <h1 id="Standards">Standards</h1>
+      <h2 id="(srfi9)issyntactic.Itprovides:">(srfi 9) is syntactic.  It provides:</h2>
+      <ul>
+        <li>Distinct types</li>
+        <li>Opaque RTD bindings with no interface</li>
+        <li>A single filtering constructor</li>
+        <li>Mutable fields</li>
+        <li>Immutable fields</li>
+        <li>Generative records</li>
+        <li>Top-level definitions only</li></ul>
+      <h2 id="(srfi57)issyntactic.Itextends(srfi9)asfollows:">(srfi 57) is syntactic.  It extends (srfi 9) as follows:</h2>
+      <ul>
+        <li>Multiple interface inheritance</li>
+        <li>A label constructor</li>
+        <li>Record composition</li>
+        <li>Functional record update</li>
+        <li>In-place record update</li></ul>
+      <h2 id="(srfi99recordssyntactic)issyntactic.Itextends(srfi9)asfollows:">(srfi 99 records syntactic) is syntactic.  It extends (srfi 9) as follows:</h2>
+      <ul>
+        <li>Record definitions appear where other definitions appear</li>
+        <li>Single inheritance</li>
+        <li>A default natural constructor when the constructor parameters are unspecified</li>
+        <li>Auto-generated non-hygienic names</li></ul>
+      <h2 id="(rnrsrecordssyntactic6)issyntactic.Itextends(srfi99recordssyntactic)asfollows:">(rnrs records syntactic 6) is syntactic.  It extends (srfi 99 records syntactic) as follows:</h2>
+      <ul>
+        <li>Generalized constructor</li>
+        <li>Sealed RTDs from which other RTDs cannot inherit (optional in SRFI-99)</li>
+        <li>Opaque RTDs that create records that don't satisfy RECORD? (optional in SRFI-99)</li>
+        <li>Non-generative RTDs (optional in SRFI-99)</li></ul>
+      <h2 id="(srfi99recordsprocedural)isprocedural.Itextends(srfi99recordssyntactic)asfollows:">(srfi 99 records procedural) is procedural.  It extends (srfi 99 records syntactic) as follows:</h2>
+      <ul>
+        <li>RTDs have names (symbols)</li>
+        <li>Procedure to create an RTD</li>
+        <li>Procedure to create natural and filtering constructors from an RTD</li>
+        <li>Procedure to create predicates from an RTD</li>
+        <li>Procedure to create accessors and mutators from an RTD and a field name</li></ul>
+      <h2 id="(srfi99recordsinspection)isprocedural.Itprovidesthefollowing:">(srfi 99 records inspection) is procedural.  It provides the following:</h2>
+      <ul>
+        <li>Predicate that returns #t on any record</li>
+        <li>Procedure to extract RTD from a record</li>
+        <li>Procedures to access name, parent, field names, inherited field names from an RTD</li></ul>
+      <h2 id="(rnrsrecordsprocedural6)isprocedural.Itextends(rnrsrecordssyntactic6)asfollows:">(rnrs records procedural 6) is procedural.  It extends (rnrs records syntactic 6) as follows:</h2>
+      <ul>
+        <li>Procedure to create an RTD</li>
+        <li>Procedure to create a constructor-descriptor (which can then create a constructor) for natural and generalized constructors from an RTD</li>
+        <li>Procedure to create predicates from an RTD</li>
+        <li>Procedure to create accessors and mutators from an RTD and a field index (doesn't work for inherited fields)</li></ul>
+      <h2 id="(rnrsrecordsinspection6)isprocedural.Itextends(srfi99recordsinspection)asfollows:">(rnrs records inspection 6) is procedural.  It extends (srfi 99 records inspection) as follows:</h2>
+      <ul>
+        <li>Procedures to extract sealedness, opaqueness, and nongenerative id from an RTD; these are optional in SRFI-99</li></ul>
+      <h2 id="RecordsArcfideissyntactic.ItextendsSRFI9asfollows:"><a href="/wiki/RecordsArcfide">RecordsArcfide</a> is syntactic.  It extends SRFI 9 as follows:</h2>
+      <ul>
+        <li>Single inheritance (with multiple inheritance as possible future extension)</li></ul>
+      <h2 id="AggregatesMedernachisprocedural.Itprovides:"><a href="/wiki/AggregatesMedernach">AggregatesMedernach</a> is procedural.  It provides:</h2>
+      <ul>
+        <li>Distinct types</li>
+        <li>Natural constructor</li>
+        <li>Mutable fields</li>
+        <li>Generative records</li>
+        <li>An accessor that applies a procedure to the fields in the record</li></ul>
+      <h2 id="UserAggregatesRushisprocedural.Itprovides:"><a href="/wiki/UserAggregatesRush">UserAggregatesRush</a> is procedural.  It provides:</h2>
+      <ul>
+        <li>Distinct types</li>
+        <li>Subtype/supertype predicates</li>
+        <li>Universal constructors/predicate/accessors/mutators that require a RTD argument</li>
+        <li>Natural constructors that specify the number of fields</li>
+        <li>Mutable fields</li>
+        <li>No inheritance, only subtyping</li>
+        <li>Generative records</li></ul>
+      <h2 id="UniqueTypesSnellPymisprocedural.Itprovides:"><a href="/wiki/UniqueTypesSnellPym">UniqueTypesSnellPym</a> is procedural.  It provides:</h2>
+      <ul>
+        <li>Distinct types</li>
+        <li>No RTD objects; type constructor returns procedures directly</li>
+        <li>A single filtering constructor</li>
+        <li>Immutable fields</li>
+        <li>Generative and non-generative records</li>
+        <li>Single inheritance (optional proposal)</li>
+        <li>Mutable fields (optional proposal)</li></ul>
+      <h1 id="IssuesandDiscussions">Issues and Discussions</h1>
+      <ul>
+        <li><a href="/wiki/EfficiencyConcerns">EfficiencyConcerns</a></li>
+        <li>InterfaceComparison</li></ul>
+      <p>Eventually there should be a companion page for native record systems provided by individual Schemes.</p></div></body></html>

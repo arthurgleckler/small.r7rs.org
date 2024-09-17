@@ -1,0 +1,113 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PathnamesPython</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PathnamesPython.md">PathnamesPython</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Pathnames&shy;Python</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-11-06 08:33:23</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/PathnamesPython/history">history</a></div>
+      <div class="source"><a href="/wiki/PathnamesPython/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Pathobjects">Path objects</h2>
+      <p>Path objects represent filesystem paths with semantics appropriate for different operating systems.  This proposal is essentially a straight transliteration of the pure portion of the Python <a href="http://docs.python.org/3/library/pathlib.html">pathlib</a> library into Scheme.  As a result, it does not provide any support for accessing the file system.  See also <a href="http://legacy.python.org/dev/peps/pep-0428">PEP 428</a>.</p>
+      <p>Path objects are immutable objects of a disjoint type.  They are divided into two subtypes, Posix paths and Windows paths.  Most procedures in this proposal operate correctly on both subtypes.</p>
+      <p>Every path object has a <i>drive</i>, a <i>root</i>, and a possibly empty sequence of <i>components</i>, all of which are strings.</p>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(make-posix-path </span><i>string</i><span class="monospace">)</span></p>
+      <p>Parses <i>string</i> as a Posix pathname and returns a corresponding path object, setting the components to the slash-separated substrings of <i>string</i>.  The drive and root are set according to the following examples:</p><span class="monospace">(define absolute (make-posix-path &quot;/etc/passwd))
+(path-drive absolute) =&gt; &quot;&quot;
+(path-root absolute) =&gt; &quot;/&quot;
+
+(define relative (make-posix-path &quot;foo&quot;))
+(path-drive relative) =&gt; &quot;&quot;
+(path-root relative) =&gt; &quot;&quot;
+
+(define implementation-defined (make-posix-path &quot;//foo/bar&quot;))
+(path-drive implementation-defined) =&gt; &quot;&quot;
+(path-root implementation-defined) =&gt; &quot;//&quot;
+</span>
+      <p>Except for the case of two initial slashes, consecutive slashes and backslashes are collapsed, and components consisting of a single period are removed.  However, components consisting of two periods are not removed, as this would produce the wrong result in the presence of symbolic links.</p>
+      <p><span class="monospace">(make-windows-path </span><i>string</i><span class="monospace">)</span></p>
+      <p>Parses <i>string</i> as a Windows pathname and returns a corresponding path object, setting the components to the slash-separated or backslash-separated substrings of <i>string</i>.  The drive and root are set according to the following examples:</p><span class="monospace">(define absolute (make-windows-path &quot;C:\\Windows))
+(path-drive absolute) =&gt; &quot;C:&quot;
+(path-root absolute) =&gt; &quot;/&quot;
+
+(define unc (make-windows-path &quot;\\\\host\\share\\file&quot;))
+(path-drive unc) =&gt; &quot;//host/share&quot;
+(path-root unc) =&gt; &quot;/&quot;
+
+(define drive-relative (make-windows-path &quot;\\Windows\\System32&quot;))
+(path-drive drive-relative) =&gt; &quot;&quot;
+(path-root drive-relative) =&gt; &quot;/&quot;
+
+(define relative (make-windows-path &quot;foo&quot;))
+(path-drive relative) =&gt; &quot;&quot;
+(path-root relative) =&gt; &quot;&quot;
+</span>
+      <p>Consecutive slashes or backslashes are collapsed, and components consisting of a single period are removed.  However, components consisting of two periods are not removed, as this would produce the wrong result in the presence of symbolic links.</p>
+      <p>If any of the characters of <i>string</i> are illegal in Windows pathnames, an error is signaled.</p>
+      <p><span class="monospace">(make-path </span><i>string</i><span class="monospace">)</span></p>
+      <p>Invokes <span class="monospace">make-posix-path</span> on non-Windows systems and <span class="monospace">make-windows-path</span> on Windows systems.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(path? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a path object and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(posix-path? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a Posix path object and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(windows-path? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a Windows path object and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(path-absolute? </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>path</i> represents an absolute path and <span class="monospace">#f</span> otherwise.  On Posix, a path is absolute if its root is non-empty.  On Windows, both the drive and the root must be non-empty.</p>
+      <p><span class="monospace">(path-reserved? </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>path</i> is a Windows path containing a reserved component <a href="http://msdn.microsoft.com/en-us/library/aa365247.aspx">from this list</a>, possibly with a suffix, and <span class="monospace">#f</span> otherwise.  Posix paths always return <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(path=? </span><i>path<sub>1</sub> path<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>path<sub>1</sub></i> and <i>path<sub>2</sub></i> are the same path; that is, the drive, root, and components are equal.  Posix paths are compared case-sensitively; Windows paths are compared case-insensitively.  It is implementation-defined whether a Windows path is ever <span class="monospace">path=?</span> to a Posix path.  In all other cases, <span class="monospace">path=?</span> returns <span class="monospace">#f</span>.</p>
+      <h2 id="Accessors">Accessors</h2>
+      <p><span class="monospace">(path-drive </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns the drive part of <i>path</i>.</p>
+      <p><span class="monospace">(path-root </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns the root part of <i>path</i>.</p>
+      <p><span class="monospace">(path-anchor </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns the drive and root parts of <i>path</i> concatenated.</p>
+      <p><span class="monospace">(path-parts </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns a list whose car is the anchor of <i>path</i> and whose cdr is a list of the components of <i>path</i>.</p>
+      <p><span class="monospace">(path-parent </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns a path representing the parent directory of <i>path</i>, or <i>path</i> itself if it is a root directory.</p>
+      <p><span class="monospace">(path-filename </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns the filename (last component) of <i>path</i>, or the empty string if there are no components.</p>
+      <p><span class="monospace">(path-suffix </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns the suffix (the rightmost part after a period) of the filename of <i>path</i>, or the empty string if there are no periods.</p>
+      <p><span class="monospace">(path-suffixes </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns a list of all the suffixes of the filename of <i>path</i>.</p>
+      <p><span class="monospace">(path-stem </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns the filename of <i>path</i> with all suffixes removed.</p>
+      <h2 id="Conversion">Conversion</h2>
+      <p><span class="monospace">(path-&gt;string </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns a string pathname based on the contents of <i>path</i>.  Windows paths use backslash as the separator.</p>
+      <p><span class="monospace">(path-&gt;slashed-string </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns a string pathname based on the contents of <i>path</i>.  Windows paths use slash as the separator.</p>
+      <p><span class="monospace">(path-&gt;file-uri </span><i>path</i><span class="monospace">)</span></p>
+      <p>Returns a file URI corresponding to <i>path</i>.  If <i>path</i> is not absolute, an error is signaled.</p>
+      <h2 id="Pathoperations">Path operations</h2>
+      <p><span class="monospace">(path-join </span>path string-or-path'' ...<span class="monospace">)</span></p>
+      <p>If a single <i>string-or-path</i> argument is given, <span class="monospace">path-join</span> returns a path object representing the results of appending the components of the <i>string-or-path</i> arguments to <i>path</i> in order.  If the <i>string-or-path</i> argument is a string, <span class="monospace">path-join</span> behaves as if it was converted to a path first by <span class="monospace">make-posix-path</span> or <span class="monospace">make-windows-path</span>, depending on the subtype of <i>path</i>.</p>
+      <p>If the <i>string-or-path</i> argument has a non-empty drive, the drive, root, and components of <i>path</i> are discarded.  If the drive is empty, but the root is non-empty, the root and components of <i>path</i> are discarded.</p>
+      <p>If two <i>string-or-path</i> arguments are given, <span class="monospace">path-join</span> returns what <span class="monospace">(path-join (path-join </span><i>path</i> <i>string-or-path<sub>1</sub></i><span class="monospace">)</span> <i>string-or-path<sub>2</sub></i><span class="monospace">)</span> returns, and so on for any additional arguments.</p>
+      <p><span class="monospace">(path-match </span><i>path string</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>path</i> matches the glob pattern in <i>string</i>.  Glob patterns may contain the wildcards <span class="monospace">*</span>, <span class="monospace">?</span>, and <span class="monospace">[...]</span> where ... represents a set of characters to match.  If <i>string</i> is relative, the path can be either relative or absolute, and matching is done from the right.  If <i>string</i> is absolute, the path must be absolute, and the whole path must match.  Posix paths are compared case-sensitively; Windows paths are compared case-insensitively.</p>
+      <p><span class="monospace">(path-relative-to </span><i>path<sub>1</sub> path<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Return a version of <i>path<sub>1</sub></i> that is relative to <i>path<sub>2</sub></i>.  If it is not possible to do so without introducing double-period components, an error is signaled.</p>
+      <p><span class="monospace">(path-with-name </span><i>path name</i><span class="monospace">)</span></p>
+      <p>Returns a path object based on <i>path</i> with the name (including any suffixes) replaced by <i>name</i>.  If the path does not contain a name, an error is signaled.</p>
+      <p><span class="monospace">(path-with-suffix </span><i>path suffix</i><span class="monospace">)</span></p>
+      <p>Returns a path object based on <i>path</i> with the final suffix of the name replaced by <i>suffix</i>.  If the name does not contain a suffix, <i>suffix</i> is appended after a separating period.  If the path does not contain a name, an error is signaled.</p></div></body></html>

@@ -1,0 +1,117 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>65: Precision indicators</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 65: <span class="summary">Precision indicators</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-05 00:51:19</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/65/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-05-03 11:59:41</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>R5RS requires that Scheme support five indicators for the precision of floating-point values, not only the default <span class="monospace">e</span> but also <span class="monospace">s</span>, <span class="monospace">f</span>, <span class="monospace">d</span>, and <span class="monospace">l</span>.  Only a few Schemes actually support more than one precision, so this is mostly noise.  Shall we make it an optional feature?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-10-18 02:40:44</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to make the precision indicators optional.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-10-18 02:41:19</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 11:22:11</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 11:22:23</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">assigned</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 11:22:33</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">assigned</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-03-03 23:00:55</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">&blank;</span><span class="new-value">alexshinn</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-03-03 23:19:41</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>There's nothing in particular to change here - the standard
+already states:</p>
+              <p>Although Scheme allows a variety of written notations for
+    numbers, any particular implementation may support only
+    some of them.</p>
+              <p>I considered making the optionality more clear in the section
+on precision indicators, but it already uses &quot;may&quot; for everything.
+But it's a lot of text for something almost all implementations
+ignore - suggestions welcome.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-03-03 23:51:32</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The &quot;may&quot;s in 6.2.4 are not RFC 2119; they express what the user can do to achieve a certain result.  Since the purpose of a standard is to define the agreement between users and implementers, the whole thing should be recast in terms of what implementations MUST, SHOULD, or MAY do.  I just filed a ticket for RFC 2119 compliance.</p>
+              <p>Here's my suggestion:</p>
+              <p>In systems with inexact numbers of varying precisions it may be useful to specify the precision of a constant. For this purpose, implementations MAY accept numerical constants written with an exponent marker s, f, d, or l in place of e.  The effect of these markers is implementation-defined.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-05 00:51:19</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

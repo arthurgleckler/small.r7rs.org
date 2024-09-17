@@ -1,0 +1,47 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ThreadsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ThreadsCowan.md">ThreadsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Threads&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-12-07 11:21:29</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ThreadsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ThreadsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Threads">Threads</h2>
+      <p>This is a simple threads proposal based on SRFI-18, but eliminating <span class="monospace">thread-terminate!</span>, which has dodgy semantics: it does not give the thread any chance to recover.  Its Java equivalent, <span class="monospace">Thread.destroy()</span>, is deeply deprecated for the same reason.</p>
+      <h2 id="Threadprocedures">Thread procedures</h2>
+      <p><span class="monospace">(current-thread)</span></p>
+      <p>Returns the current thread.</p>
+      <p><span class="monospace">(thread? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a thread, otherwise returns <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(make-thread </span><i>thunk</i><span class="monospace"> </span>[<i>name</i>]<span class="monospace">)</span></p>
+      <p>Constructs and returns a new thread.  <i>Thunk</i> is a procedure returning one value; <i>name</i> can be any Scheme object.</p>
+      <p>A thread has the following fields: <i>name</i>, <i>specific</i>, <i>end-result</i>, <i>end-condition</i>, and <i>mutex-list</i>, a list of locked/owned mutexes it owns.   The first four fields can contain any Scheme object, and default to an unspecified value.  The <i>name</i> field is set from the optional <i>name</i> argument: it is an arbitrary Scheme object which identifies the thread (useful for debugging).</p>
+      <p>This thread is not automatically made runnable (the procedure <span class="monospace">thread-start!</span> must be used to start it).  A thread's execution consists of a call to <i>thunk</i> with a continuation that causes the thread to store the value of <i>thunk</i> in its <i>end-result</i> field, abandon all mutexes in <i>mutex-list</i>, and finally terminate. The dynamic-wind stack of the initial continuation is empty.</p>
+      <p>The thread inherits the dynamic environment from the current thread, except that the exception handler is bound to a procedure which causes the thread to store in its <i>end-condition</i> field a FIXME object, abandon all mutexes on <i>mutex-list</i>, and finally terminate.</p>
+      <p><span class="monospace">(thread-name </span><i>thread</i><span class="monospace">)</span></p>
+      <p>Returns the content of the <i>name</i> field  of <i>thread</i>.</p>
+      <p><span class="monospace">(thread-specific </span><i>thread</i><span class="monospace">)</span></p>
+      <p>Returns the content of the <i>specific</i> field of <i>thread</i>.</p>
+      <p><span class="monospace">(thread-specific-set! </span><i>thread</i><span class="monospace"> </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Sets <i>specific</i> field of <i>thread</i> to <i>obj</i>.  Returns unspecified values.</p>
+      <p><span class="monospace">(thread-start! </span><i>thread</i><span class="monospace">)</span></p>
+      <p>Makes <i>thread</i> (which must be a new thread) runnable.  Returns <i>thread</i>.  Thread creation and thread activation are separated in order to avoid the race condition that would occur if the created thread tries to examine a data structure in which the current thread stores the created thread.</p>
+      <p><span class="monospace">(thread-yield!)</span></p>
+      <p>The current thread exits the running state as if its quantum had expired. Returns unspecified values.</p>
+      <p><span class="monospace">(thread-sleep! </span><i>timeout</i><span class="monospace">)</span></p>
+      <p>The current thread waits until the value of <span class="monospace">(elapsed-time)</span> is greater than or equal to <i>timeout</i>. This blocks the thread only if <i>timeout</i> represents a point in the future.  Returns unspecified values.</p>
+      <p><span class="monospace">(thread-join! </span><i>thread</i> [<i>timeout</i> [<i>timeout-result</i>]]<span class="monospace">)</span></p>
+      <p>The current thread waits until <i>thread</i> terminates (normally or not) or until the timeout is reached if <i>timeout</i> is supplied. If <i>timeout</i> is reached, returns <i>timeout-result</i> if it is supplied, otherwise a FIXME exception is raised. If <i>thread</i> terminated normally, the content of its <i>end-result</i> field is returned, otherwise the content of the <i>end-condition</i> field is raised.</p></div></body></html>

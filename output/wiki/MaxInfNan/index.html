@@ -1,0 +1,35 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>MaxInfNan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/MaxInfNan.md">MaxInfNan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Max&shy;Inf&shy;Nan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-12-28 10:02:47</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/MaxInfNan/history">history</a></div>
+      <div class="source"><a href="/wiki/MaxInfNan/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Maxof+inf.0and+nan.0">Max of +inf.0 and +nan.0</h2>
+      <p>R6RS requires that <span class="monospace">(max +inf.0 x)</span> for any real x return <span class="monospace">+inf.0</span>; it is silent about <span class="monospace">(max x +inf.0)</span>, but I'd think that was entailed.  I tested <span class="monospace">(max +inf.0 +nan.0)</span> against the test suite.</p>
+      <p>Racket, Gauche, MIT, Chicken (with and without the numbers egg), Scheme48, Guile, Ypsilon, Mosh, IronScheme, STklos, Elk, VX return <span class="monospace">+inf.0</span>.</p>
+      <p>Gambit, Bigloo, Kawa, SISC, Chibi, Chez, Vicare, Larceny, NexJ, UMB, Spark, FemtoLisp, Sagittarius return <span class="monospace">+nan.0</span>.</p>
+      <p>My other Schemes throw errors, either because they don't like inexact numbers, they don't like division by 0.0, or they produce cockeyed values of <span class="monospace">(/ 1.0 0.0)</span> and/or <span class="monospace">(/ 0.0 0.0)</span>.</p>
+      <p>Note that the six R6RS implementations are split 3-3 (or 4-3 if Guile, which does not fully implement R6RS, is included), and that all the Java ones prefer <span class="monospace">+nan.0</span>, as Java does.</p>
+      <h2 id="Maxof+nan.0and0">Max of +nan.0 and 0</h2>
+      <p>IEEE says that <span class="monospace">(max +nan.0 0.0) should return 0.0, and R7RS says </span>(max +nan.0 0)` has to return an inexact number, but is silent about which number.  The latter is tested here.</p>
+      <p>Racket, Gauche, Gambit, Chicken with the numbers egg, Scheme48, Guile, Chez, Vicare, Ypsilon, Mosh, IronScheme, NexJ, STklos, RScheme, BDC, Elk, Sagittarius return <span class="monospace">+nan.0</span>.</p>
+      <p>Bigloo, scsh, Kawa, SISC, Larceny, Scheme 9, UMB return <span class="monospace">0.0</span>.</p>
+      <p>Chibi, FemtoLisp return <span class="monospace">0</span>.</p>
+      <p>Plain Chicken, KSi, S7, XLisp, Rep, Schemik, Oaklisp, SXM, Sizzle, Dfsch, Inlab, Owl Lisp raise a division by zero error.</p>
+      <p>SigScheme, Dream do not support inexact numbers.</p>
+      <p>Shoe, TinyScheme, Llava do not support <span class="monospace">max</span>.</p></div></body></html>

@@ -1,0 +1,57 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>354: mutating exports</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 354: <span class="summary">mutating exports</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-04-05 09:39:20</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/354/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-03-11 11:05:22</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>We define mutating imports to be an error, however
+the standard currently says nothing about what
+happens when an exported binding is mutated from
+within the library where it's defined.</p>
+        <p>In many common library implementations there
+will be no effect (i.e. the import effectively gets
+a copy of the original), whereas in a namespace
+based implementation the change will be reflected,
+so a conservative approach is to add a note saying
+the result is unspecified.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-05 09:11:54</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to reject this proposal and leave the validity of mutating exports unspecified.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-05 09:39:20</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

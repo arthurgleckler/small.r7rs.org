@@ -1,0 +1,59 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>516: The lack of a fully-featured macro system requires sub-par constructs</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 516: <span class="summary">The lack of a fully-featured macro system requires sub-par constructs</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:20:44</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/516/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-13 09:03:36</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Aaron Hsu writes:</p>
+        <p>By requiring that we work in certain constraints (the lack of a full featured macro system, for instance) necessitates the use of sub-par constructs which are more complicated, the complication of which needed to exist only in the absence of more general, and more expressive forms. Contrary to the nature of simplicity and elegance, I believe that much of what WG1 has accomplished is to use patches on a self-constrained system, resulting in features piled on that could easily have been removed or more cleanly implemented in the presence of more general and expressive features. If WG2 could do it better with more expressive features, then why should WG1 duplicate features in a more ugly and less clean manner that does not scale as well just to have them? Rather, the correct approach would have been to allow implementations who wanted such features to use WG2 features that were designed. Unfortunately, we will likely now have a set of overlapping features implemented in WG2, and this doesn’t do anyone any favors.</p>
+        <p>There are a lot of fully-featured macro systems around, and WG1 believed that none of them were appropriate for the small language, bringing in as they do considerations of phasing.  There is no reason why the large language cannot provide more than one.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2013-05-13 11:06:13</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>To clarify here. My complain stems not from WG1 resistance to a full-featured macro system, but rather, in the choice to standardize forms which only appear necessary because of the lack of said macro system. Better to have not standardized what WG2 could standardize better than to standardize a less elegant solution now, with the very strong likelihood of having additional functions to do the same thing more elegantly later in WG2.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-21 01:33:28</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>It's this sort of thing which kept <span class="monospace">syntax-rules</span> out of IEEE and R4RS, only to have it standardized years later with essentially no changes.  Contrary to popular belief, something once standardized in RnRS is not necessarily standardized forever, though there is certainly a presumption in that direction that standardizers should respect:  see <a href="/wiki/StandardsIncompatibilities">StandardsIncompatibilities</a> for the changes between R2RS and R5RS.</p>
+              <p>What's more,  I don't think our library declarations are particularly inelegant at all.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:20:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG decided by unanimous consent to take no action on this ticket.</p></div></div></div></div></div></body></html>

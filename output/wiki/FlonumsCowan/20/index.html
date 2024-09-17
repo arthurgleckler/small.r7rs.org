@@ -1,0 +1,226 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>FlonumsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/FlonumsCowan.md">FlonumsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Flonums&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-09-16 04:05:50</div>
+      <div class="version">20<span class="comment"></span><a href="/wiki/FlonumsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/FlonumsCowan/20/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Abstract">Abstract</h2>
+      <p><i>Flonums</i> are a subset of the inexact real numbers provided by a Scheme implementation.  In most Schemes, the flonums and the inexact reals are the same.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>Flonum arithmetic is already supported by many systems, mainly to remove type-dispatching overhead. Standardizing flonum arithmetic increases the portability of code that uses it. Standardizing the range or precision of flonums would make flonum operations inefficient on some systems, which would defeat their purpose. Therefore, this SRFI specifies some of the semantics of flonums, but makes the range and precision implementation-dependent.</p>
+      <p>The sources of the procedures in this SRFI are R7RS-small, <a href="http://srfi.schemers.org/srfi-141/srfi-141.html">SRFI 141</a>, <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-12.html#node_sec_11.3">the R6RS flonum library</a>, and the <a href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/math.h.html">C99/Posix library</a> <span class="monospace">&lt;math.h&gt;</span>, which should be available directly or indirectly to Scheme implementers.  (The C90 version of <span class="monospace">&lt;math.h&gt;</span> lacks `<span class="monospace">arcsinh</span><span class="monospace">, </span><span class="monospace">arccosh</span><span class="monospace">, </span><span class="monospace">arctanh</span><span class="monospace">, </span><span class="monospace">erf</span><span class="monospace">, and </span><span class="monospace">tgamma</span>`.)</p>
+      <p>Scheme implementations that use IEEE 754 floating point numbers should follow the specifications of that standard.</p>
+      <h2 id="Specification">Specification</h2>
+      <p>It is required that if two flonums are equal in the sense of <span class="monospace">=</span>, they are also equal in the sense of <span class="monospace">eqv?</span>.  That is, if 12.0f0 is a 32-bit inexact number, and 12.0 is a 64-bit inexact number, they cannot both be flonums.  In this situation, it is recommended that the 64-bit numbers be flonums.</p>
+      <p>It is an error, except as otherwise noted, for an argument not to be a flonum.  If the mathematically correct result is a non-real number, the result is <span class="monospace">+nan.0</span> if the implementation supports that number, or an arbitrary flonum if not.</p>
+      <p>Flonum operations must be at least as accurate as their generic counterparts applied to flonum arguments.  In some cases, operations should be more accurate than their naive generic expansions because they have a smaller total roundoff error.</p>
+      <p>This SRFI uses <i>x, y, z</i> as
+parameter names for flonum arguments, and <i>ix</i>
+as a name for an integer-valued flonum argument, i.e., a flonum for which the
+<span class="monospace">integer?</span> predicate returns true.</p>
+      <h3 id="Constants">Constants</h3>
+      <p>The following (mostly C99) constants are provided as Scheme variables.</p>
+      <p><span class="monospace">fl-e</span></p>
+      <p>Bound to the value of the mathematical constant <i>e</i>.  (C99 <span class="monospace">M_E</span>)</p>
+      <p><span class="monospace">fl-log2-e</span></p>
+      <p>Bound to the value of <span class="monospace">(fllog fl-e 2.0)</span>.  (C99 <span class="monospace">M_LOG2E</span>)</p>
+      <p><span class="monospace">fl-log10-e</span></p>
+      <p>Bound to the value of <span class="monospace">(fllog fl-e 10.0)</span>.  (C99 <span class="monospace">M_LOG10E</span>)</p>
+      <p><span class="monospace">fl-ln-2</span></p>
+      <p>Bound to the value of <span class="monospace">(fllog 2.0)</span>  (C99 <span class="monospace">M_LN2</span>)</p>
+      <p><span class="monospace">fl-ln-10</span></p>
+      <p>Bound to the value of <span class="monospace">(fllog 10.0)</span>  (C99 <span class="monospace">M_LN10</span>)</p>
+      <p><span class="monospace">fl-pi</span></p>
+      <p>Bound to the value of the mathematical constant π.  (C99 <span class="monospace">M_PI</span>)</p>
+      <p><span class="monospace">fl-pi/2</span></p>
+      <p>Bound to the value of <span class="monospace">(fl/ fl-pi 2.0)</span>  (C99 <span class="monospace">M_PI_2</span>)</p>
+      <p><span class="monospace">fl-pi/4</span></p>
+      <p>Bound to the value of <span class="monospace">(fl/ fl-pi 4.0)</span>  (C99 <span class="monospace">M_PI_4</span>)</p>
+      <p><span class="monospace">fl-1/pi</span></p>
+      <p>Bound to the value of <span class="monospace">(fl/ 1.0 fl-pi)</span>.  (C99 <span class="monospace">M_1_PI</span>)</p>
+      <p><span class="monospace">fl-2/pi</span></p>
+      <p>Bound to the value of <span class="monospace">(fl/ 2.0 fl-pi)</span>.  (C99 <span class="monospace">M_2_PI</span>)</p>
+      <p><span class="monospace">fl-2/sqrt-pi</span></p>
+      <p>Bound to the value of <span class="monospace">(fl/ 2.0 (flsqrt fl-pi))</span>.  (C99 <span class="monospace">M_2_SQRTPI</span>)</p>
+      <p><span class="monospace">fl-sqrt-2</span></p>
+      <p>Bound to the value of <span class="monospace">(flsqrt 2.0)</span>.  (C99 <span class="monospace">M_SQRT2</span>)</p>
+      <p><span class="monospace">fl-1/sqrt-2</span></p>
+      <p>Bound to the value of <span class="monospace">(fl/ 1,0 (flsqrt 2.0))</span>.  (C99 <span class="monospace">M_SQRT1_2</span>)</p>
+      <p><span class="monospace">fl-maximum</span></p>
+      <p>Bound to the value of the largest finite flonum.</p>
+      <p><span class="monospace">fl-fast-+*</span></p>
+      <p>Bound to <span class="monospace">#t</span> if <span class="monospace">(fl+* x y z)</span> is known to be faster than <span class="monospace">(fl+ (fl* x y) z), or </span>#f<span class="monospace"> otherwise.  (C99 </span>FP_FAST_FMA`)</p>
+      <p><span class="monospace">fl-integer-exponent-zero</span></p>
+      <p>Bound to whatever value is returned by <span class="monospace">(flinteger-binary-log 0)</span>.  (C99 <span class="monospace">FP_ILOGB0</span>)</p>
+      <p><span class="monospace">fl-integer-exponent-nan</span></p>
+      <p>Bound to whatever value is returned by <span class="monospace">(flinteger-binary-log +0.nan)</span>.  (C99 <span class="monospace">FP_ILOGBNAN</span>)</p>
+      <p><span class="monospace">fl-radix</span></p>
+      <p>Value of the floating-point radix (2 on most machines).</p>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(flonum </span><i>number</i><span class="monospace">)</span></p>
+      <p>Returns the closest flonum equivalent to <i>number</i> in the sense of <span class="monospace">=</span> and <span class="monospace">&lt;</span>.</p>
+      <p><span class="monospace">(fladjacent </span><i>x y</i><span class="monospace">)</span></p>
+      <p>Returns a flonum adjacent to <i>x</i> in the direction of <i>y</i>.  Specifically: if <i>x &lt; y</i>, returns the smallest flonum larger than <i>x</i>; if <i>x &gt; y</i>, returns the largest flonum smaller than <i>x</i>; if <i>x = y</i>, returns <i>x</i>.  (C99 <span class="monospace">nextafter</span>)</p>
+      <p><span class="monospace">(flcopysign </span><i>x y</i><span class="monospace">)</span></p>
+      <p>Returns a flonum whose magnitude is the magnitude of <i>x</i> and whose sign is the sign of <i>y</i>.  (C99 <span class="monospace">copysign</span>)</p>
+      <h3 id="Predicates">Predicates</h3>
+      <p><span class="monospace">(flonum? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a flonum and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(fl= </span><i>x y z</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(fl&lt; </span><i>x y z</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(fl&gt; </span><i>x y z</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(fl&lt;= </span><i>x y z</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(fl&gt;= </span><i>x y z</i> ...<span class="monospace">)</span></p>
+      <p>These procedures return <span class="monospace">#t</span> if their arguments are (respectively): equal, monotonically increasing, monotonically decreasing, monotonically nondecreasing, or monotonically nonincreasing; they return <span class="monospace">#f</span> otherwise. These predicates must be transitive.</p>
+      <p><span class="monospace">(flinteger? </span><i>x</i>`)‌‌</p>
+      <p><span class="monospace">(flzero? </span><i>x</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(flpositive? </span><i>x</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(flnegative? </span><i>x</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(flodd? </span><i>ix</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(fleven? </span><i>ix</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(flfinite? </span><i>x</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(flinfinite? </span><i>x</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(flnan? </span><i>x</i><span class="monospace">)</span></p>
+      <p>These numerical predicates test a flonum for a particular property, returning <span class="monospace">#t</span> or <span class="monospace">#f</span>. The <span class="monospace">flinteger?</span> procedure tests whether the flonum is an integer, <span class="monospace">flzero?</span> tests whether it is <span class="monospace">fl=?</span> to zero, <span class="monospace">flpositive?</span> tests whether it is greater than zero, <span class="monospace">flnegative?</span> tests whether it is less than zero, <span class="monospace">flodd?</span> tests whether it is odd, <span class="monospace">fleven?</span> tests whether it is even, <span class="monospace">flfinite?</span> tests whether it is not an infinity and not a NaN, <span class="monospace">flinfinite?</span> tests whether it is an infinity, and <span class="monospace">flnan?</span> tests whether it is a NaN.</p>
+      <p>Note that <span class="monospace">(flnegative? -0.0)</span> must return <span class="monospace">#f</span>;
+otherwise it would lose the correspondence with
+<span class="monospace">(fl&lt; -0.0 0.0)</span>, which is <span class="monospace">#f</span>
+according to IEEE 754.</p>
+      <h3 id="Arithmetic">Arithmetic</h3>
+      <p><span class="monospace">(fl+ </span><i>x</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(fl* </span><i>x</i><span class="monospace">)</span></p>
+      <p>Return the flonum sum or product of their flonum
+arguments.  In general, they should return the flonum that best
+approximates the mathematical sum or product.</p>
+      <p><span class="monospace">(fl+* </span><i>x y z</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">(fl+ (fl* x y) z)</span>, possibly faster.  If the constant <span class="monospace">fl-fast-fl+*</span>
+is <span class="monospace">#f</span>, it will definitely be faster.  (C99 <span class="monospace">fma</span>)</p>
+      <p><span class="monospace">(fl- </span><i>x y</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(fl/ </span><i>x y</i> ...<span class="monospace">)</span></p>
+      <p>With two or more arguments, these procedures return the 
+difference or quotient of their arguments, associating to the
+left.  With one argument, however, they return the additive or
+multiplicative inverse of their argument.</p>
+      <p>In general, they
+should return the flonum that best approximates the mathematical
+difference or quotient.</p>
+      <p><span class="monospace">(flmax </span><i>x</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(flmin </span><i>x</i> ...<span class="monospace">)</span></p>
+      <p>Return the maximum/minimum argument.  If there are no arguments,
+these procedures return <span class="monospace">+inf.0</span>/<span class="monospace">-inf.0</span> if the implementation
+provides these numbers, and <span class="monospace">fl-maximum</span> / its negation otherwise.</p>
+      <p><span class="monospace">(flabs </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns the absolute value of <i>x</i>.</p>
+      <p><span class="monospace">(flabsdiff </span><i>x y</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">(flabs (fl- x y))</span> without internal overflow.  (C99 <span class="monospace">fdim</span>)</p>
+      <p><span class="monospace">(flsgn </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">(flcopy-sign 1.0 x)</span>.</p>
+      <p><span class="monospace">(flnumerator </span><i>x</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(fldenominator </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns the numerator/denominator of <i>x</i>
+as a flonum; the result is computed as if <i>x</i> was represented as
+a fraction in lowest terms.  The denominator is always positive.  The
+denominator of 0.0 is defined to be 1.0.</p>
+      <p><span class="monospace">(flfloor </span><i>x</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(flceiling </span><i>x</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(flround </span><i>x</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(fltruncate </span><i>x</i><span class="monospace">)</span></p>
+      <p>These procedures return integral flonums for flonum arguments that are
+not infinities or NaNs.  For such arguments, <span class="monospace">flfloor</span> returns the
+largest integral flonum not larger than <i>x</i>.  The <span class="monospace">flceiling</span>
+procedure
+returns the smallest integral flonum not smaller than <i>x</i>.
+The <span class="monospace">fltruncate</span> procedure returns the integral flonum closest to <i>x</i> whose
+absolute value is not larger than the absolute value of <i>x</i>.
+The <span class="monospace">flround</span> procedure returns the closest integral flonum to <i>x</i>,
+rounding to even when <i>x</i> represents a number halfway between two integers.</p>
+      <p>Although infinities and NaNs are not integers, these procedures return
+an infinity when given an infinity as an argument, and a NaN when
+given a NaN.</p>
+      <h3 id="Exponentsandlogarithms">Exponents and logarithms</h3><span class="monospace">flexp	double exp(double)	ex
+fl2	double exp2(double)	base-2 exponential
+flexp-minus-1	double expm1(double)	exp-1
+flsquare
+flsqrt
+flcbrt	double cbrt(double)	cube root
+flhypot	double hypot(double, double)	sqrt(x2+y2)
+flexp
+fl2exp	double ldexp(double x, int n)	x*2n
+flexponent	double logb(double x)	the exponent of x,
+which is the integral part of
+log_r(|x|), as a signed floating-point value, for non-zero x,
+where r is the radix of the machine's floating-point arithmetic
+flfraction-exponent	double modf(double, double *
+returns two values, fraction and int exponent
+flinteger-exponent	int ilogb(double)	binary log as int
+fllog
+fllog2	double log2(double)	log base 2
+fllog10	double log10(double)	log base 10
+fllog+1	double log1p(double x)	log (1+x)
+flnormalized-fraction-exponent	double frexp(double, int *)
+returns two values, fraction in range [1/2,1) and int exponent
+flscalbn	double scalbn(double x, int y)	x*ry,
+where r is the machine float radix
+</span>
+      <p>The <span class="monospace">flsqrt</span> procedure returns the principal square root of <i>x</i>. For -0.0,
+<span class="monospace">flsqrt</span> should return -0.0.</p>
+      <p>The <span class="monospace">flexpt</span> procedure returns <i>x</i> raised to the power <i>y</i>
+if <i>x</i> is non-negative or <i>y</i> is an integral flonum.  If <i>x</i> is
+negative and <i>y</i> is not an integer, the result may be a
+NaN, or may be some unspecified flonum.  If <i>x</i> is zero, then
+the result is zero.</p>
+      <h3 id="Trigonometricfunctions">Trigonometric functions</h3>
+      <p><span class="monospace">(flsin </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">sin</span>)</p>
+      <p><span class="monospace">(flcos </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">cos</span>)</p>
+      <p><span class="monospace">(fltan </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">tan</span>)</p>
+      <p><span class="monospace">(flasin </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">asin</span>)</p>
+      <p><span class="monospace">(flacos </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">acos</span>)</p>
+      <p><span class="monospace">(flatan </span><i>x</i> [<i>y</i>]<span class="monospace">)</span>  (C99 <span class="monospace">atan</span> and <span class="monospace">atan2</span>)</p>
+      <p><span class="monospace">(flsinh </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">sinh</span>)</p>
+      <p><span class="monospace">(flcosh </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">cosh</span>)</p>
+      <p><span class="monospace">(fltanh </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">tanh</span>)</p>
+      <p><span class="monospace">(flasinh </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">asinh</span>)</p>
+      <p><span class="monospace">(flacosh </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">acosh</span>)</p>
+      <p><span class="monospace">(flatanh </span><i>x</i><span class="monospace">)</span>  (C99 <span class="monospace">atanh</span>)</p>
+      <p>These are the usual trigonometric functions. The <span class="monospace">flatan</span> function, when passed two arguments, returns <span class="monospace">(flatan (/ y x))</span> without requiring the use of complex numbers.</p>
+      <p><span class="monospace">(flremquo </span><i>x y</i><span class="monospace">)</span></p>
+      <p>Returns two values, the result of <span class="monospace">(flround-remainder x y)</span> and the low-order <i>n</i> bits (as a correctly signed exact integer) of the rounded quotient.  The value of <i>n</i> is implementation-dependent but at least 3.  This function can be used to reduce the argument of the inverse trigonometric functions, while preserving the correct quadrant or octant.</p>
+      <h3 id="Integerdivision">Integer division</h3>
+      <p>The following procedures are the flonum counterparts of procedures from <a href="http://srfi.schemers.org/srfi-141/srfi-141.html">​SRFI 141</a>:</p><span class="monospace">flfloor/ flfloor-quotient flfloor-remainder
+flceiling/ flceiling-quotient flceiling-remainder
+fltruncate/ fltruncate-quotient fltruncate-remainder
+flround/ flround-quotient flround-remainder
+fleuclidean/ fleuclidean-quotient fleuclidean-remainder
+flbalanced/ flbalanced-quotient flbalanced-remainder
+</span>
+      <p>They have the same arguments and semantics as their generic counterparts,
+except that it is an error if the arguments are not flonums.</p>
+      <h3 id="Specialfunctions">Special functions</h3>
+      <p><span class="monospace">(flgamma </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns Γ(<i>x</i>), the gamma function applied to <i>x</i>.  This is equal to (<i>x</i>-1)! for
+integers.  (C99 <span class="monospace">tgamma</span>)</p>
+      <p><span class="monospace">(flloggamma </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns two values, log Γ(|<i>x</i>|) without internal overflow, and sgn(Γ(<i>x</i>)).  (C99 <span class="monospace">lgamma</span>)</p>
+      <p><span class="monospace">(first-bessel </span><i>x n</i><span class="monospace">)</span></p>
+      <p>Returns the <i>n</i>th order Bessel function of the first kind applied to <i>x</i>, J<sub>n</sub>(x).  (C99 <span class="monospace">j0</span>, <span class="monospace">j1</span>, <span class="monospace">jn</span>)</p>
+      <p><span class="monospace">(second-bessel </span><i>x n</i><span class="monospace">)</span></p>
+      <p>Returns the <i>n</i>th order Bessel function of the second kind applied to <i>x</i>, Y<sub>n</sub>(x).  (C99 <span class="monospace">y0</span>, <span class="monospace">y1</span>, <span class="monospace">yn</span>)</p>
+      <p><span class="monospace">(erf </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns the error function erf(<i>x</i>).  (C99 <span class="monospace">erf</span>)</p>
+      <p><span class="monospace">(erfc </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns the complementary error function, <span class="monospace">(- 1 (erf x))</span>.  (C99 <span class="monospace">erfc</span>)</p></div></body></html>

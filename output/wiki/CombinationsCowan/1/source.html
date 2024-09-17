@@ -1,0 +1,57 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki CombinationsCowan version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki CombinationsCowan version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>CombinationsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>{{{
+#!html
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-permutations_002dof&quot;&gt;&lt;/a&gt;&lt;code&gt;make-permutation-generator&lt;/code&gt;&lt;i&gt; vector&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yields random permutations of &lt;var&gt;vector&lt;/var&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (make-permutation-generator '(1 2 3)) 3)
+ &amp;rArr; ((1 2 3) (2 3 1) (3 2 1))
+
+(generator-&amp;gt;list (make-permutation-generator &amp;quot;abc&amp;quot;) 3)
+ &amp;rArr; (&amp;quot;cba&amp;quot; &amp;quot;cba&amp;quot; &amp;quot;cab&amp;quot;)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-combinations_002dof&quot;&gt;&lt;/a&gt;&lt;code&gt;make-combination-generator&lt;/code&gt;&lt;i&gt; size vector&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yields vectors of &lt;var&gt;size&lt;/var&gt; elements
+randomly picked from &lt;var&gt;vector&lt;/var&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (make-combination-generatorh 2 #(a b c)) 5)
+ &amp;rArr; (#(a c) #(a b) #(a c) #(b a) #(a c))
+
+(generator-&amp;gt;list (make-combination-generator 2 '#(a b c)) 5)
+ &amp;rArr; (#(a c) #(b c) #(c b) #(b a) #(b c))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+}}}</pre>
+    <h2>time</h2>
+    <pre>2017-06-16 01:58:11</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

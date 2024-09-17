@@ -1,0 +1,140 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>FiveToSixToSeven</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/FiveToSixToSeven.md">FiveToSixToSeven</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Five&shy;To&shy;Six&shy;To&shy;Seven</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-05-04 10:55:09</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/FiveToSixToSeven/history">history</a></div>
+      <div class="source"><a href="/wiki/FiveToSixToSeven/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>These are the language changes listed in R6RS Appendix E, with notes on the extent to which R7RS-small has taken them up.</p>
+      <ul>
+        <li>Scheme source code now uses the Unicode character set.  Specifically, the character set that can be used for identifiers has been greatly expanded.
+          <ul>
+            <li>Permitted but not required.</li></ul></li>
+        <li>Identifiers can now start with the characters <span class="monospace">-&gt;</span>.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>Identifiers and symbol literals are now case-sensitive.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>Identifiers and representations of characters, booleans, number objects, and <span class="monospace">.</span> must be explicitly delimited.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li><span class="monospace">#</span> is now a delimiter.
+          <ul>
+            <li>Rejected for compatibility with existing Schemes.</li></ul></li>
+        <li>Bytevector literal syntax has been added.
+          <ul>
+            <li>Adopted in principle, but SRFI 4 lexical syntax is used.</li></ul></li>
+        <li>Matched square brackets can be used synonymously with parentheses.
+          <ul>
+            <li>Rejected on the grounds that implementations may wish to use brackets for better things.</li></ul></li>
+        <li>The read-syntax abbreviations #' (for <span class="monospace">syntax</span>), #<span class="monospace"> (for </span>quasisyntax<span class="monospace">), #, (for </span>unsyntax<span class="monospace">), and #,@ (for </span>unsyntax-splicing`) have been added.
+          <ul>
+            <li>Not adopted, because <span class="monospace">syntax-case</span> is not part of R7RS-small.</li></ul></li>
+        <li><span class="monospace">#</span> can no longer be used in place of digits in number representations.
+          <ul>
+            <li>No longer required, but still permitted.</li></ul></li>
+        <li>The external representation of number objects can now include a mantissa width.
+          <ul>
+            <li>Rejected.</li></ul></li>
+        <li>Literals for NaNs and infinities were added.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>String and character literals can now use a variety of escape sequences.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>Block and datum comments have been added.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>The <span class="monospace">#!r6rs</span> comment for marking report-compliant lexical syntax has been added.
+          <ul>
+            <li>Not adopted, nor any analogue of it.</li></ul></li>
+        <li>Characters are now specified to correspond to Unicode scalar values.
+          <ul>
+            <li>Adopted in part: implementations are not required to handle all Unicode scalar values.</li></ul></li>
+        <li>Many of the procedures and syntactic forms of the language are now part of the <span class="monospace">(rnrs base (6))</span> library.  Some procedures and syntactic forms have been moved to other libraries.
+          <ul>
+            <li>Adopted in principle, but the details differ.</li></ul></li>
+        <li>The base language has the following new procedures and syntactic forms: <span class="monospace">letrec*</span>, <span class="monospace">let-values</span>, <span class="monospace">let*-values</span>, <span class="monospace">real-valued?</span>, <span class="monospace">rational-valued?</span>, <span class="monospace">integer-valued?</span>, <span class="monospace">exact</span>, <span class="monospace">inexact</span>, <span class="monospace">finite?</span>, <span class="monospace">infinite?</span>, <span class="monospace">nan?</span>, <span class="monospace">div</span>, <span class="monospace">mod</span>, <span class="monospace">div-and-mod</span>, <span class="monospace">div0</span>, <span class="monospace">mod0</span>, <span class="monospace">div0-and-mod0</span>, <span class="monospace">exact-integer-sqrt</span>, <span class="monospace">boolean=?</span>, <span class="monospace">symbol=?</span>, <span class="monospace">string-for-each</span>, <span class="monospace">vector-map</span>, <span class="monospace">vector-for-each</span>, <span class="monospace">error</span>, <span class="monospace">assertion-violation</span>, <span class="monospace">assert</span>, <span class="monospace">call/cc</span>, <span class="monospace">identifier-syntax</span>.
+          <ul>
+            <li>All adopted except the <span class="monospace">-valued</span> procedures, the division procedures (R7RS-small has different ones), assertions, and identifier syntax.</li></ul></li>
+        <li>The following procedures have been removed: <span class="monospace">char-ready?</span>, <span class="monospace">transcript-on</span>, <span class="monospace">transcript-off</span>, <span class="monospace">load</span>.
+          <ul>
+            <li>Only <span class="monospace">transcript-on</span> and <span class="monospace">transcript-off</span> are removed.</li></ul></li>
+        <li>The case-insensitive string comparisons (<span class="monospace">string-ci=?</span>, <span class="monospace">string-ci&lt;?</span>, <span class="monospace">string-ci&gt;?</span>, <span class="monospace">string-ci&lt;=?</span>, <span class="monospace">string-ci&gt;=?</span>) operate on the case-folded versions of the strings rather than as the simple lexicographic ordering induced by the corresponding character comparison procedures.
+          <ul>
+            <li>Adopted.  However, the non-<span class="monospace">ci</span> versions are implementation-dependent in R7RS-small.</li></ul></li>
+        <li>Libraries have been added to the language.
+          <ul>
+            <li>Adopted, but the details differ slightly.</li></ul></li>
+        <li>A number of standard libraries are described.
+          <ul>
+            <li>Adopted, but the details differ.</li></ul></li>
+        <li>Many situations that &quot;were an error&quot; now have defined or constrained behavior.  In particular, many are now specified in terms of the exception system.
+          <ul>
+            <li>Rejected for backward compatibility with existing Schemes.</li></ul></li>
+        <li>The full numerical tower is now required.
+          <ul>
+            <li>Rejected.</li></ul></li>
+        <li>The semantics for the transcendental functions has been specified more fully.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>The semantics of <span class="monospace">expt</span> for zero bases has been refined.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>In <span class="monospace">syntax-rules</span> forms, a <span class="monospace">_</span> may be used in place of the keyword.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>The <span class="monospace">let-syntax</span> and <span class="monospace">letrec-syntax</span> no longer introduce a new environment for their bodies.
+          <ul>
+            <li>Rejected for backward compatibility with existing Schemes.</li></ul></li>
+        <li>For implementations that support NaNs or infinities, many arithmetic operations have been specified on these values consistently with IEEE 754.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>For implementations that support a distinct -0.0, the semantics of many arithmetic operations with regard to -0.0 has been specified consistently with IEEE 754.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>Scheme's real number objects now have an exact zero as their imaginary part.
+          <ul>
+            <li>Rejected for backward compatibility with existing Schemes.</li></ul></li>
+        <li>The specification of <span class="monospace">quasiquote</span> has been extended.  Nested quasiquotations work correctly now, and <span class="monospace">unquote</span> and <span class="monospace">unquote-splicing</span> have been extended to several operands.
+          <ul>
+            <li>Adopted in part.</li></ul></li>
+        <li>Procedures now may or may not refer to locations.  Consequently, <span class="monospace">eqv?</span> is now unspecified in a few cases where it was specified before.
+          <ul>
+            <li>Mostly rejected, although <span class="monospace">eq?</span> may now distinguish between procedures where <span class="monospace">eqv?</span> does not.</li></ul></li>
+        <li>The mutability of the values of <span class="monospace">quasiquote</span> structures has been specified to some degree.
+          <ul>
+            <li>Not adopted.</li></ul></li>
+        <li>The dynamic environment of the <i>before</i> and <i>after</i> procedures of <span class="monospace">dynamic-wind</span> is now specified.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>Various expressions that have only side effects are now allowed to return an arbitrary number of values.
+          <ul>
+            <li>Rejected for backward compatibility with existing Schemes.</li></ul></li>
+        <li>The order and semantics for macro expansion has been more fully specified.
+          <ul>
+            <li>Irrelevant.</li></ul></li>
+        <li>Internal definitions are now defined in terms of <span class="monospace">letrec*</span>.
+          <ul>
+            <li>Adopted.</li></ul></li>
+        <li>The old notion of program structure and Scheme's top-level environment has been replaced by top-level programs and libraries.
+          <ul>
+            <li>Adopted in parellel with the old semantics.</li></ul></li>
+        <li>The denotational semantics has been replaced by an operational semantics.
+          <ul>
+            <li>Not adopted.</li></ul></li></ul></div></body></html>

@@ -1,0 +1,45 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki RandomR6rs version 3</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki RandomR6rs version 3</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>67.158.178.7</pre>
+    <h2>name</h2>
+    <pre>RandomR6rs</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This is a dumping ground for random R6RS base library procedures that might be wanted in WG2.
+
+`boolean=?` compares booleans for identity.  '''Added to R7RS-small.'''
+
+`symbol=?` compares symbols for identity.  '''Added to R7RS-small.'''
+
+`real-valued?`, `rational-valued?`, and `integer-valued?` test whether a given number object can be coerced to the specified type without loss of numerical accuracy. Specifically, the behavior of these predicates differs from the behavior of `real?`, `rational?`, and `integer?` on complex number objects whose imaginary part is inexact zero.  '''Rejected for R7RS-small.'''
+
+`infinite?` returns `#t` on `+inf.0` and `-inf.0`  '''Added to R7RS-small.'''
+
+`assert` raises an error if its argument is `#f`.  '''Rejected for R7RS-small.'''
+
+There are now RevoteDocket entries for the `assert` and `*-valued` procedures.
+
+</pre>
+    <h2>time</h2>
+    <pre>2012-05-28 06:43:37</pre>
+    <h2>version</h2>
+    <pre>3</pre></body></html>

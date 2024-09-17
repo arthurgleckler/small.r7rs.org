@@ -1,0 +1,28 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StringTitlecase</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StringTitlecase.md">StringTitlecase</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">String&shy;Titlecase</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-11-12 15:06:44</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/StringTitlecase/history">history</a></div>
+      <div class="source"><a href="/wiki/StringTitlecase/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This page shows how different Schemes implement the <span class="monospace">string-titlecase</span> procedure when the character to be titlecased has a multi-character titlecase mapping.  The string-titlecase routine may come from SRFI-13, from R6RS, or may be a Scheme extension.  The example used is <span class="monospace">ﬂoo</span>, which begins with a <span class="monospace">fl</span> ligature character.</p>
+      <p>The Unicodely correct way of titlecasing this string is to treat the ligature the same as <span class="monospace">fl</span>, in which case the result is <span class="monospace">Floo</span>.  However, by the strict letter of R6RS, the <span class="monospace">ﬂ</span> character is passed to <span class="monospace">char-titlecase</span>, which in this case will return its argument unchanged.  What is more, if the <span class="monospace">ﬂ</span> character is not even seen as a letter, then the result will be <span class="monospace">ﬂOo</span>.</p>
+      <p>Result is <span class="monospace">Floo</span>: Racket, Chicken (with the utf8 egg), Larceny</p>
+      <p>Result is <span class="monospace">ﬂoo</span>: Scheme48/scsh, Guile, Kawa, SCM, Ypsilon, Mosh, STklos, Dfsch, Sagittarius</p>
+      <p>Result is <span class="monospace">ﬂOo</span>: Gauche, plain Chicken, Chez, Vicare, Sizzle</p>
+      <p>No <span class="monospace">string-titlecase</span> procedure that I could find: MIT, Gambit, Bigloo, JScheme, KSi, Sigscheme, Shoe MiniScheme, TinyScheme, Scheme 9, S7, XLisp, Rep, Schemik, UMB, Elk, Llava, SXi, FemtoLisp, LMU, Inlab, Foment, Picrin, Owl Lisp, Chibi</p>
+      <p>Failure of some other kind: IronScheme, NexJ, RScheme, Unlikely, SIOD, BD</p></div></body></html>

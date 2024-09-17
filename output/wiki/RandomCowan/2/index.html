@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RandomCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RandomCowan.md">RandomCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Random&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-09-12 20:20:42</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/RandomCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/RandomCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="TrivialRandomness">Trivial Randomness</h2>
+      <p>I believe that WG1 Scheme should provide just a little randomness.  Student programs often want a source of random reals or integers, and don't want to have to implement it themselves.  Implementations may be able to provide truly random data, or may provide a high-quality PRNG.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p>These two procedures have the same syntax and semantics as their SRFI 27 counterparts.</p>
+      <p><span class="monospace">(random-integer </span><i>n</i><span class="monospace">)</span> -&gt; <i>x</i>
+    The next integer <i>x</i> in {0, ..., <i>n</i> - 1} obtained from a source of random bits. Subsequent results of this procedure appear to be independent and uniformly distributed over the range {0, ..., <i>n</i> - 1}. The argument <i>n</i> must be a positive integer.</p>
+      <p><span class="monospace">(random-real)</span> -&gt; <i>x</i>
+    The next number 0 &lt; <i>x</i> &lt; 1 obtained from a source of random bits. Subsequent results of this procedure appear to be independent and uniformly distributed. The numerical type of the results and the quantization of the output range depend on the implementation.</p>
+      <h2 id="DesignRationale(fromSRFI27)">Design Rationale (from SRFI 27)</h2>
+      <dl>
+        <dt> Why not combine <span class="monospace">random-integer</span> and <span class="monospace">random-real</span>?</dt>
+        <dd>We avoid combining the two procedures into a single variable-arity procedure in order to save a little time and space during execution. Although some Scheme systems can deal with variable arity as efficiently as with fixed arity, this is not always the case, and time efficiency is very important here.</dd>
+        <dt>Why is there not just a generator with a fixed range?</dt>
+        <dd>A bare fixed-range generator is of very limited use. Nearly every application has to add some functionality to make use of the random numbers. The most fundamental task in manipulating random numbers is to change the range and quantization. This is exactly what is provided by <span class="monospace">random-integer</span> and <span class="monospace">random-real</span>. In addition, it saves the user from the pitfall of changing the range with a simple modulo computation, which may substantially reduce the quality of the numbers being produced.
+The design of the interface is based on three prototype applications:
+1. Repeatedly choose from relatively small sets: As the size of the set is likely to vary from call to call, <span class="monospace">random-integer</span> accepts a range argument n in every call. The implementation should try to avoid boxing/unboxing of values if the ranges fit into immediate integers.
+2. Generate a few large integers with a fixed number of bits: As generating the random number itself is expensive, passing the range argument in every call does not hurt performance. Hence, the same interface as in the first case can be used.
+3. Generate real numbers: Unlike the first case, the range and the quantization are constant over a potentially very large number of calls. In addition, there is usually only one distinct instance of quantization and number type, most likely corresponding to the underlying C <span class="monospace">double</span> representation.  (A few Schemes implement more than one kind of inexact number.)  Therefore, <span class="monospace">random-real</span> does not accept any parameters. </dd>
+        <dt>Why bother about floating-point numbers at all?</dt>
+        <dd>A proper floating-point implementation of a random number generator is potentially much more efficient that an integer implementation because it can use more powerful arithmetic hardware. If in addition the application needs floating-point random numbers, it would be an intolerable waste to run an integer generator to produce floating point random numbers. A secondary reason is to save the user from the 'not as easy as it seems' task of converting an integer generator into a real generator.</dd>
+        <dt>Why are zero and one excluded from random-real?</dt>
+        <dd>The procedure <span class="monospace">random-real</span> does not return <i>x</i> = 0 or <i>x</i> = 1 in order to allow <span class="monospace">(log </span><i>x</i><span class="monospace">)</span> and <span class="monospace">(log (- 1 </span><i>x</i><span class="monospace">))</span> without the danger of a numerical exception. </dd></dl></div></body></html>

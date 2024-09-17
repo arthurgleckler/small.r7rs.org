@@ -1,0 +1,33 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StringTitlecaseCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StringTitlecaseCowan.md">StringTitlecaseCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">String&shy;Titlecase&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-11-17 09:51:58</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/StringTitlecaseCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/StringTitlecaseCowan/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Rationale">Rationale</h2>
+      <p>This SRFI explains how to implement Unicodely correct and R7RS-style <span class="monospace">char-titlecase?</span>, <span class="monospace">char-titlecase</span>, and <span class="monospace">string-titlecase</span> procedures similar to those specified in <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-2.html#node_sec_1.2">R6RS</a> and <a href="http://srfi.schemers.org/srfi-13/srfi-13.html">SRFI 13</a>.  The algorithm does not depend on the availability of full Unicode, however, and will work just as well with a purely ASCII repertoire.</p>
+      <p>Consider the string <span class="monospace">ﬂoo bar</span>, which begins with a ligature of the characters <span class="monospace">fl</span>.  The Unicode way of titlecasing this string is to treat the ligature the same as <span class="monospace">fl</span>, in which case the result is <span class="monospace">Floo Bar</span>.  However, by the strict letter of R6RS, the <span class="monospace">ﬂ</span> character must be passed to <span class="monospace">char-titlecase</span>, which in this case will return its argument unchanged, and the result is <span class="monospace">ﬂoo Bar</span>.  What is more, if the <span class="monospace">ﬂ</span> character is not even seen as a casing letter, then the result will be <span class="monospace">ﬂOo Bar</span>.  Different Schemes show all of these behaviors.</p>
+      <h2 id="Specification">Specification</h2>
+      <p><span class="monospace">(char-titlecase? </span><i>char</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>char</i> is a Unicode titlecase character, and <span class="monospace">#f</span> otherwise.  (Not in R6RS.)</p>
+      <p><span class="monospace">(char-titlecase </span><i>char</i><span class="monospace">)</span></p>
+      <p>Returns the titlecase version of <i>char</i>, if that character exists in the implementation.  Note that this is not necessarily a titlecase character: for most values of <i>char</i>, it is an uppercase character.  Note that language-sensitive mappings are not used.  (The same as the R6RS equivalent.)</p>
+      <p><span class="monospace">(string-titlecase </span><i>string</i> [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>When strict compatibility with R6RS is desired, the <i>start</i> and <i>end</i> arguments must not be used.</p>
+      <p>This procedure applies the Unicode full string lowercasing algorithm to the substring of its argument beginning with <i>start</i> and ending with <i>end</i>.  However, any character preceded by a non-cased character, or by no character at all, is processed by a different algorithm.  If such a character has a multi-character titlecase mapping specified by Unicode, and all the characters of the mapping are supported by the implementation, then it is replaced by that mapping.  Otherwise, it is replaced by its single-character titlecase mapping as if by <span class="monospace">char-titlecase</span>.  The result of the application of these algorithms is returned.</p>
+      <p>In certain cases, the result differs in length from the argument. If the result is equal to the argument in the sense of <span class="monospace">string=?</span>, the argument may be returned. Note that language-sensitive mappings are not used.  (The R6RS version does not make use of multi-character titlecase mappings.)</p></div></body></html>

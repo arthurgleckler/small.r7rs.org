@@ -1,0 +1,126 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StringSlicesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StringSlicesCowan.md">StringSlicesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">String&shy;Slices&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-11-08 01:13:58</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/StringSlicesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/StringSlicesCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Stringslicelibrary">String slice library</h2>
+      <p>This is a library for manipulating textual content based on <i>string slices</i>, which are references to part of a Scheme string, and <i>string cursors</i>, which are pointers into strings.  It is not defined whether the string slice type is disjoint from strings, or whether string cursors are a disjoint type at all.  String slices are immutable, and it is an error to mutate the underlying string.</p>
+      <p>In addition, string cursors may or may not be the same as character-based indexes into strings.  For example, in an implementation whose internal representation of strings is UTF-8, string cursors may be pointers to individual bytes in the string.  However, the operations provided here (with the exception of those in the Compatibility section) are entirely independent of the character repertoire supported by the implementation.</p>
+      <p>This proposal contains a useful subset of SRFI 13, which manipulates strings directly with some allowances for shared substrings (which are both then and now provided only on Guile).  The string operations are defined in terms of the string slice operations.  Unlike SRFI 13, it does not provide <i>start</i> and <i>end</i> arguments, as their functionality is subsumed by slices.  In addition, the low-level procedures are not provided, nor are any mutation operations.</p>
+      <p>Procedures marked [R7RS-small] are available in the small language, and are not exported by implementations of this proposal.  They are included only for completeness.</p>
+      <p>All predicates passed to procedures defined in this proposal may be called in any order and any number of times, except as otherwise noted.</p>
+      <h2 id="Stringconstructors">String constructors</h2>
+      <p>In addition to the R7RS-small constructors <span class="monospace">make-string</span> and <span class="monospace">string</span>, the following constructors for strings are provided:</p>
+      <p><span class="monospace">(string-tabulate </span><i>proc len</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-unfold </span><i>stop? mapper successor</i> [ <i>seed</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-unfold-right </span><i>stop? mapper successor</i> [ <i>seed</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(char-&gt;string </span><i>char</i><span class="monospace">)</span></p>
+      <h2 id="Stringsliceconstructors">String slice constructors</h2>
+      <p><span class="monospace">(string-slice-whole </span><i>string</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-slice </span><i>string start end</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-subslice </span><i>slice start end</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-slice/cursors </span><i>string start-cursor end-cursor</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-subslice/cursors </span><i>string start-cursor end-cursor</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-slice-transform </span><i>proc slice arg</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(char-&gt;string-slice </span><i>char</i><span class="monospace">)</span></p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(string-slice? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string? </span><i>obj</i><span class="monospace">)</span>  [R7RS-small]</p>
+      <p><span class="monospace">(string-slice-null? </span><i>slice</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-null? </span><i>string</i><span class="monospace">)</span>  [R7RS-small]</p>
+      <p><span class="monospace">(string-slice-every </span><i>pred slice</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-every </span><i>pred string</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-slice-any </span><i>pred slice</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-any </span><i>pred string</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-slice-whole? </span><i>slice</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(is-char? </span><i>char</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(in-char-set? </span><i>char-set</i><span class="monospace">)</span></p>
+      <h2 id="Selection">Selection</h2><span class="monospace">string-slice-ref                     string-ref [R7RS-small]
+string-slice-take                    string-take
+string-slice-take-right              string-take-right
+string-slice-drop                    string-drop
+string-slice-drop-right              string-drop-right
+string-slice-pad                     string-pad
+string-slice-pad-right               string-pad-right
+string-slice-trim                    string-trim
+string-slice-trim-right              string-trim-right
+string-slice-replicate               string-replicate
+</span>
+      <h2 id="Prefixesandsuffixes">Prefixes and suffixes</h2><span class="monospace">string-slice-prefix-length           string-prefix-length
+string-slice-suffix-length           string-suffix-length
+string-slice-prefix?                 string-prefix?
+string-slice-suffix?                 string-suffix?
+string-slice-common-prefix           string-common-prefix
+string-slice-common-suffix           string-common-suffix
+</span>
+      <h2 id="Searching">Searching</h2><span class="monospace">string-slice-index                   string-index
+string-slice-index-right             string-index-right
+string-slice-skip                    string-skip
+string-slice-skip-right              string-skip-right
+string-slice-count                   string-count
+string-slice-contains                string-contains
+string-slice-take-while              string-take-while
+string-slice-drop-while              string-drop-while
+string-slice-break                   string-break
+string-slice-span                    string-span
+</span>
+      <h2 id="Thewholestringslice">The whole string slice</h2><span class="monospace">string-slice-length                  string-length [R7RS-small]
+string-slice-copy                    string-copy [R7RS-small]
+string-slice-reverse                 string-reverse [R7RS-small]
+string-slice-append                  string-append [R7RS-small]
+string-slice-concatenate             string-concatenate
+string-slice-concatenate-reverse     string-concatenate-reverse
+string-slice-compress                string-compress
+</span>
+      <h2 id="Foldingandmapping">Folding and mapping</h2><span class="monospace">string-slice-map                     string-map [R7RS-small]
+string-slice-fold                    string-fold
+string-slice-fold-right              string-fold-right
+string-slice-for-each                string-for-each
+string-slice-for-each-index          string-for-each-index
+</span>
+      <h2 id="Parsing">Parsing</h2><span class="monospace">string-slice-tokenize                string-tokenize
+string-slice-split                   string-split
+</span>
+      <h2 id="Filteringandpartitioning">Filtering and partitioning</h2><span class="monospace">string-slice-filter                  string-filter
+string-slice-remove                  string-remove
+string-slice-partition               string-partition
+</span>
+      <h2 id="Functionalupdate">Functional update</h2><span class="monospace">string-slice-set                     string-set
+string-slice-fill                    string-fill
+</span>
+      <h2 id="Compatibility">Compatibility</h2><span class="monospace">string-slice-upcase     string-slice-downcase   string-slice-foldcase
+string-slice=?          string-slice&lt;?          string-slice&gt;?
+string-slice&lt;=?         string-slice&gt;=?
+
+string-slice-titlecase  string-titlecase
+</span>
+      <h2 id="Low-leveloperations">Low-level operations</h2><span class="monospace">string-slice-start
+string-slice-end
+string-slice-string
+</span>
+      <h2 id="Stringcursors">String cursors</h2><span class="monospace">string-cursor-start                  string-cursor-end
+string-cursor-ref
+string-cursor-next                   string-cursor-previous
+string-cursor-forward                string-cursor-backward
+string-cursor-forward-until          string-cursor-backward-until
+string-cursor=?
+string-cursor&lt;?                      string-cursor&gt;?
+string-cursor&lt;=?                     string-cursor&gt;=?
+string-cursors-&gt;string
+</span></div></body></html>

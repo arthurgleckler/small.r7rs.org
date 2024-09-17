@@ -1,0 +1,27 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NumberStringUnicode</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NumberStringUnicode.md">NumberStringUnicode</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Number&shy;String&shy;Unicode</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-04-23 07:42:47</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/NumberStringUnicode/history">history</a></div>
+      <div class="source"><a href="/wiki/NumberStringUnicode/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Procedures">Procedures</h2>
+      <p>These procedures allow the creation and processing of numerals using any set of Unicode digits.</p>
+      <p><span class="monospace">(number-&gt;numeral </span><i>z zero</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(numeral-&gt;number </span><i>string zero</i><span class="monospace">)</span></p>
+      <p>It is an error if <i>zero</i> is not a character whose Unicode general category is Nd (decimal digit) and whose numeric value is zero.</p>
+      <p>These procedures behave identically to <span class="monospace">number-&gt;string</span> and <span class="monospace">string-&gt;number</span> from the <span class="monospace">(scheme base)</span> library, except that where <span class="monospace">number-&gt;string</span> generates and <span class="monospace">string-&gt;number</span> accepts a <span class="monospace">0</span> character, these procedures generate and accept a character equal to <i>zero</i>.  Similarly, the successor of <i>zero</i> is generated and accepted in place of <span class="monospace">1</span>, the successor of the successor of <i>zero</i> is generated and accepted in place of <span class="monospace">2</span>, and so on.  Note that the radix is always decimal.</p></div></body></html>

@@ -1,0 +1,84 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>469: Change definition of (atan -0.0 -0.0)</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 469: <span class="summary">Change definition of (atan -0.0 -0.0)</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 06:24:02</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/469/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-08-29 12:10:17</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description"><span class="monospace">On Wed, Aug 8, 2012 at 5:11 AM, Mark H Weaver &lt;mhw@netris.org&gt; wrote:
+&gt;&gt; There is widespread agreement in the relevant floating point standards
+&gt;&gt; (C99, C11, ISO/IEC 10967, and probably IEEE 754 although I haven't
+&gt;&gt; purchased a copy) that (angle -0.0-0.0i) = (atan -0.0 -0.0) = -pi, but
+&gt;&gt; the definition of 'angle' on page 36 of R7RS-draft-6 (section 6.2.6)
+&gt;&gt; asserts that -pi&lt;  (angle z)&lt;= pi for all complex 'z'.  I suggest that
+&gt;&gt; this be changed to -pi&lt;= (angle z)&lt;= pi.
+&gt;
+&gt; Another problem along the same lines: earlier on page 36, R7RS-draft-6
+&gt; asserts that the value of &quot;log z is defined to be the one whose
+&gt; imaginary part lies in the range from -pi (exclusive) to pi
+&gt; (inclusive)&quot;, and then proceeds to define the inverse trigonometric
+&gt; functions in terms of log.  That should be changed to '-pi (inclusive)'.
+&gt;
+&gt; Note that X3J13 voted for these changes to Common Lisp in January 1989.
+&gt;   Search for &quot;COMPLEX-ATAN-BRANCH-CUT&quot; in the following pages for more
+&gt; details:
+</span>
+        <p>http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node128.html</p>
+        <p>http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node129.html</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-29 12:11:46</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>See also http:<i>www.lispworks.com/documentation/lw61/CLHS/Issues/iss069_w.htm and http:</i>www.lispworks.com/documentation/lw61/CLHS/Issues/iss192_w.htm.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-09-19 00:20:46</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 accepted this under no-objection procedure.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-09-19 00:33:29</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The first point has been added.  The second point was already added as an editorial change.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 06:24:02</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

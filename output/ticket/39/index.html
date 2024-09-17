@@ -1,0 +1,110 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>39: syntax-error</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 39: <span class="summary">syntax-error</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-05 00:34:07</div>
+      <div class="component">WG1 - Macros</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/39/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-03-01 09:39:21</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Should we have syntax-error parallel to SRFI-23 error?  This is evoked when macros are expanded.</p>
+        <p>There is a definition in JRM's Syntax-Rules Primer using syntax-rules, but it relies on the syntax-rules implementation reporting an unmatchable pattern with a complaint that includes the pattern.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-05-28 08:51:25</div></div>
+          <div class="changes">
+            <div><span class="field">milestone</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>There's an issue here that no one has brought up. In order for the SYNTAX-ERROR binding to be invoked and evaluated at macro time, it would have to be a macro. This causes a problem if we also want to support later macro systems that allow for arbitrary code evaluation. If a syntax error is desired when the code is being evaluated at macro time, then it can't be a syntax, as it will evaluate and signal the error even when it should not. This necessitates two forms, one syntactic and one procedural. Is this a good thing?</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-05-29 09:47:21</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>SYNTAX-ERROR is intended to be invoked only from syntax-rules macros.  Procedural macros should invoke ERROR (or some lower-level equivalent), and the system would intercept this and report a syntax error, since it is known when we are running macro code and when we are not.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">kumoyuki</div>
+            <div class="time">2010-05-29 16:02:28</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>All of the syntax-rules implementations that i have used report syntax errors, if not exactly as described in the ticket, so i don't see why we are multiplying entities here</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-10-18 02:54:56</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to accept <span class="monospace">syntax-error</span> as part of the core.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 11:33:38</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 11:33:50</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">assigned</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 11:34:00</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">assigned</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-02-26 17:48:05</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">&blank;</span><span class="new-value">alexshinn</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-05 00:34:07</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

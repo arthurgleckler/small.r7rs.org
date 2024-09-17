@@ -1,0 +1,30 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>GeneralizedEqualCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/GeneralizedEqualCowan.md">GeneralizedEqualCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Generalized&shy;Equal&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-29 14:05:15</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/GeneralizedEqualCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/GeneralizedEqualCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Generalized`equal?`predicate">Generalized <span class="monospace">equal?</span> predicate</h2>
+      <p><span class="monospace">(generalized-equal? </span><i>obj1 obj2</i> [ <i>=</i> [ <i>string=?</i> [ <i>char=?</i> [ <i>symbol=?</i> [ <i>recursive=?</i> ] ] ] ] ] <span class="monospace">)</span></p>
+      <p>Compares <i>obj1</i> and <i>obj2</i> for equality.  If both are pairs, vectors, or bytevectors, or belong to the same implementation-defined container types, returns <span class="monospace">#t</span> if they are equal in length and the same call to <span class="monospace">generalized-equal?</span> returns <span class="monospace">#t</span> on all the components.  If both are numbers, they are compared with the procedure <i>=</i>; if both are characters, they are compared with the procedure <i>char=?</i>; if both are strings, they are compared with the procedure <i>string=?</i>; if both are symbols, they are compared with the procedure <i>symbol=?</i>.  The default values of these are <span class="monospace">=</span>, <span class="monospace">char=?</span>, <span class="monospace">string=?</span>, and <span class="monospace">symbol=?</span> respectively.</p>
+      <p>In all other cases, the procedure <i>recursive=?</i> is invoked with three arguments:  <i>obj1</i>, <i>obj2</i>, and a two-argument procedure which returns what <span class="monospace">generalized-equal?</span> returns given the seven arguments passed to or defaulted on it in this call.  This allows <i>recursive=?</i> to return whatever it likes on atomic types it knows about, and to invoke its third argument on the components of composite types it knows how to descend into.  It is recommended that when <i>recursive=?</i> receives arguments it does not know how to handle, that it invokes <span class="monospace">eqv?</span> on them.  The default value of <i>recursive=?</i> always applies <span class="monospace">eqv?</span> to its first two arguments.</p>
+      <h2 id="Objections">Objections</h2>
+      <p>It does not permit implementation-defined container types to be different in aspects which either are not &quot;components&quot; (if that is narrowly defined) or which should be compared by means other than <span class="monospace">generalized-equal?</span>. Furthermore, it requires implementation-defined container types to have a notion of length instead of shape.</p>
+      <p>The four default arguments for builtin types strikes me as a wart, in that it is not extensible to a future version which has additional builtin types.</p>
+      <p>The language for the argument to <i>recursive=?</i> is a little unclear.</p>
+      <p>It is not possible to interpose on specific types of containers without building a full wrapper around <span class="monospace">generalized-equal?</span>, because the built-in-containers case comes before <i>recursive=?</i>. This means that it is a breaking change for an implementation to *add support for* a given container type to <span class="monospace">generalized-equal?</span>, because an application might have been specially handling it.</p></div></body></html>

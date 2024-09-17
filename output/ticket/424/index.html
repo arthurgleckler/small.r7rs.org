@@ -1,0 +1,88 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>424: Formal Comment: Add write-string procedure to (scheme base)</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 424: <span class="summary">Formal Comment: Add write-string procedure to (scheme base)</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 03:20:01</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/424/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-06-28 12:27:03</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Submitter's Name: Arthur Smyles</p>
+        <p>Submitter's Email Address: atsmyles at verizon.net</p>
+        <p>Draft Version of Report: 6th</p>
+        <p>Section of draft R7RS: 6.13.3. Output</p>
+        <p>Summary:  Add <span class="monospace">write-string</span> procedure to <span class="monospace">(scheme base)</span></p>
+        <p>Full Description:</p>
+        <p>For binary-ports there are the procedures <span class="monospace">write-u8</span> and <span class="monospace">write-bytevector</span>. However, for textual ports there is only <span class="monospace">write-char</span>.  This proposal requests the addition of <span class="monospace">write-string</span>. It may be argued that <span class="monospace">display</span> already provides this, however it is in a library that is optional. Strings written with <span class="monospace">write-string</span> are not enclosed in double quotes, and no characters are escaped within those strings. Change <span class="monospace">display</span> procedure for strings to say that they are written as if by <span class="monospace">write-string</span>.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-06-28 12:27:29</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">Submitter's Name: Arthur Smyles
+
+Submitter's Email Address: atsmyles at verizon.net
+
+Draft Version of Report: 6th
+
+Section of draft R7RS: 6.13.3. Output
+
+Summary:  Add `write-string` procedure to `(scheme base)`
+
+Full Description:
+
+For binary-ports there are the procedures `write-u8` and `write-bytevector`. However, for textual ports there is only `write-char`.  This proposal requests the addition of `write-string`. It may be argued that `display` already provides this, however it is in a library that is optional. Strings written with `write-string` are not enclosed in double quotes, and no characters are escaped within those strings. Change `display procedure for strings to say that they are written as if by `write-string`.
+</span><span class="new-value">Submitter's Name: Arthur Smyles
+
+Submitter's Email Address: atsmyles at verizon.net
+
+Draft Version of Report: 6th
+
+Section of draft R7RS: 6.13.3. Output
+
+Summary:  Add `write-string` procedure to `(scheme base)`
+
+Full Description:
+
+For binary-ports there are the procedures `write-u8` and `write-bytevector`. However, for textual ports there is only `write-char`.  This proposal requests the addition of `write-string`. It may be argued that `display` already provides this, however it is in a library that is optional. Strings written with `write-string` are not enclosed in double quotes, and no characters are escaped within those strings. Change `display` procedure for strings to say that they are written as if by `write-string`.
+</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-06-28 12:55:07</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 03:20:01</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

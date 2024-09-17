@@ -1,0 +1,85 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ErrorSituations version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ErrorSituations version 4</h1>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>comment</h2>
+    <pre>adding error signalling situations</pre>
+    <h2>ipnr</h2>
+    <pre>69.181.162.79</pre>
+    <h2>name</h2>
+    <pre>ErrorSituations</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>The following are situations in which R5RS programs are required to
+signal an error:
+
+    * specifying an unsupported version number to `scheme-report-environment`
+    * failure to open a file via any of the standard port opening procedures
+    * encountering EOF while trying to `read` an incomplete datum
+
+----
+
+The following is a list of all &quot;error situations&quot; in R5RS,
+originally collected in a [http://www.r6rs.org/r6rs-editors/2006-February/000917.html post]
+by Will Clinger to the R6RS editors list.  The semantics of
+these situations are unspecified in R5RS.
+
+== Syntax errors: ==
+
+    * ...it is an error to alter a constant (i.e. the value of a literal expression) using a mutation procedure like set-car! or string-set!.
+    * Since it is an error to modify constant objects (those returned by literal expressions), implementations are permitted, though not required, to share structure between constants where appropriate. Thus the value of &lt;tt&gt;eqv?&lt;/tt&gt; on constants is sometimes implementation-dependent.&lt;p&gt;      
+    * It is an error for a &lt;variable&gt; to appear more than once in &lt;formals&gt;.     
+    * It is an error for a &lt;variable&gt; to appear more than once in the list of variables being bound. 
+    * It is an error for a &lt;variable&gt; to appear more than once in the list of variables being bound. 
+    * It is an error for a &lt;variable&gt; to appear more than once in the list of do variables. 
+    * It is an error for a &lt;keyword&gt; to appear more than once in the list of keywords being bound. 
+    * It is an error for the same pattern variable to appear more than once in a &lt;pattern&gt;. 
+    * A subpattern followed by &lt;tt&gt;...&lt;/tt&gt; can match zero or more elements of the input. It is an error for &lt;tt&gt;...&lt;/tt&gt; to appear in &lt;literals&gt;. Within a pattern the identifier &lt;tt&gt;...&lt;/tt&gt; must follow the last element of a nonempty sequence of subpatterns.
+    * It is an error to use a macro keyword, within the scope of its binding, in an expression that does not match any of the patterns.
+    * It is an error if the output cannot be built up as specified. 
+    * Although macros may expand into definitions and syntax definitions in any context that permits them, it is an error for a definition or syntax definition to shadow a syntactic keyword whose meaning is needed to determine whether some form in the group of forms that contains the shadowing definition is in fact a definition, or, for internal definitions,
+
+== Evalutation-time errors: ==
+
+===  Environment errors: ===
+
+    * It is an error to attempt to store a new value into a location that is denoted by an immutable object. 
+    * It is an error to reference an unbound variable.
+    * One restriction on letrec is very important: it must be possible to evaluate each &lt;init&gt; without assigning or referring to the value of any &lt;variable&gt;. If this restriction is violated, then it is an error.
+    * If &lt;variable&gt; is not bound, however, then the definition will bind &lt;variable&gt; to a new location before performing the assignment, whereas it would be an error to perform a &lt;tt&gt;set!&lt;/tt&gt; on an unbound variable.     
+    * It is an error to apply mutation procedures like &lt;tt&gt;string-set!&lt;/tt&gt; to strings returned by this procedure.
+
+===  Typechecking errors: ===
+
+    * For example, it is an error for a procedure to be passed an argument that the procedure is not explicitly specified to handle, even though such domain errors are seldom mentioned in this report. Implementations may extend a procedure's domain of definition to include such arguments. 
+    * The &lt;tt&gt;length&lt;/tt&gt;, &lt;tt&gt;vector-length&lt;/tt&gt;, and &lt;tt&gt;string-length&lt;/tt&gt; procedures must return an exact integer, and it is an error to use anything but an exact integer as an index.    
+    * Note that it is an error to take the car of the empty list. 
+    * Note that it is an error to take the cdr of the empty list. 
+    * It is an error if list has fewer than k elements. 
+    * It is an error if list has fewer than k elements. 
+    * It is an error to read from a closed port. (Do we add a closed-port? predicate ?)
+
+== Function domain errors: == 
+
+    * It is an error if no possible result makes this expression true. 
+    * The error case can occur only when z is not a complex number or is a complex number with a non-rational real or imaginary part.
+    * If a file with the given name already exists, the effect is unspecified.
+</pre>
+    <h2>time</h2>
+    <pre>2010-11-21 06:16:59</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

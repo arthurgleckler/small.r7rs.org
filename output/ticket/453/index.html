@@ -1,0 +1,158 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>453: Formal Comment: The denotational semantics</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 453: <span class="summary">Formal Comment: The denotational semantics</span></h1>
+    <div class="ticket metadata">
+      <div class="cc">sperber@deinprogramm.de</div>
+      <div class="changetime">2012-10-12 06:22:10</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/453/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-07-05 04:04:10</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Formal Comment</p>
+        <p>the submitter's name: Michael Sperber
+The submitter's email address: sperber at deinprogramm.de
+the draft version of the report: draft 6
+a one-sentence summary of the issue: The denotational semantics is inadequate
+a full description of the issue:</p>
+        <p>The denotational semantics in the draft, which seems to be copied from
+R5RS, is inadequate for helping to describe those parts of the semantics
+where the semantics is especially tricky, especially evaluation order
+and `dynamic-wind'.  This is a pity, especially as there's an R5RS
+version of the semantics in R6RS:</p>
+        <p>http://www.cs.uchicago.edu/~jacobm/pubs/scheme-semantics.pdf</p>
+        <p>Moreover, there is a version of the denotational semantics that does
+include `dynamic-wind' in this paper:</p>
+        <p>Martin Gasbichler, Eric Knauel, Michael Sperber Richard A. Kelsey: How
+to Add Threads to a Sequential Language Without Getting Tangled Up, In
+The 2003 Scheme Workshop, Boston, Ma., October 2003.</p>
+        <p>http://www.deinprogramm.de/sperber/papers/adding-threads.pdf</p>
+        <p>(I'd be happy to supply LaTeX if anybody is interested.)</p>
+        <p>PS: This is a general issue with the draft - the R6RS document contains
+many improvements of the description of the language that are not about
+changes in the language.  (To name two other prominent examples: the
+distinction and relationship between numbers and the objects that
+represent them, and the description of the syntax with respect to
+macros.  Especially embarrassing is the pointer to the Indiana Scheme
+repository, which has not been maintained for something like 14 years.)
+Many parts of R7RS are throwbacks to the old, inferior wording.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-07-05 04:04:56</div></div>
+          <div class="changes">
+            <div><span class="field">cc</span><span class="old-value">&blank;</span><span class="new-value">sperber@deinprogramm.de</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-07-05 04:13:43</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-07-05 04:14:27</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">Formal Comment
+
+the submitter's name: Michael Sperber
+The submitter's email address: sperber@deinprogramm.de
+the draft version of the report: draft 6
+a one-sentence summary of the issue: The denotational semantics is inadequate
+a full description of the issue:
+
+The denotational semantics in the draft, which seems to be copied from
+R5RS, is inadequate for helping to describe those parts of the semantics
+where the semantics is especially tricky, especially evaluation order
+and `dynamic-wind'.  This is a pity, especially as there's an R5RS
+version of the semantics in R6RS:
+
+http://www.cs.uchicago.edu/~jacobm/pubs/scheme-semantics.pdf
+
+Moreover, there is a version of the denotational semantics that does
+include `dynamic-wind' in this paper:
+
+Martin Gasbichler, Eric Knauel, Michael Sperber Richard A. Kelsey: How
+to Add Threads to a Sequential Language Without Getting Tangled Up, In
+The 2003 Scheme Workshop, Boston, Ma., October 2003.
+
+http://www.deinprogramm.de/sperber/papers/adding-threads.pdf
+
+(I'd be happy to supply LaTeX if anybody is interested.)
+
+PS: This is a general issue with the draft - the R6RS document contains
+many improvements of the description of the language that are not about
+changes in the language.  (To name two other prominent examples: the
+distinction and relationship between numbers and the objects that
+represent them, and the description of the syntax with respect to
+macros.  Especially embarrassing is the pointer to the Indiana Scheme
+repository, which has not been maintained for something like 14 years.)
+Many parts of R7RS are throwbacks to the old, inferior wording.</span><span class="new-value">Formal Comment
+
+the submitter's name: Michael Sperber
+The submitter's email address: sperber at deinprogramm.de
+the draft version of the report: draft 6
+a one-sentence summary of the issue: The denotational semantics is inadequate
+a full description of the issue:
+
+The denotational semantics in the draft, which seems to be copied from
+R5RS, is inadequate for helping to describe those parts of the semantics
+where the semantics is especially tricky, especially evaluation order
+and `dynamic-wind'.  This is a pity, especially as there's an R5RS
+version of the semantics in R6RS:
+
+http://www.cs.uchicago.edu/~jacobm/pubs/scheme-semantics.pdf
+
+Moreover, there is a version of the denotational semantics that does
+include `dynamic-wind' in this paper:
+
+Martin Gasbichler, Eric Knauel, Michael Sperber Richard A. Kelsey: How
+to Add Threads to a Sequential Language Without Getting Tangled Up, In
+The 2003 Scheme Workshop, Boston, Ma., October 2003.
+
+http://www.deinprogramm.de/sperber/papers/adding-threads.pdf
+
+(I'd be happy to supply LaTeX if anybody is interested.)
+
+PS: This is a general issue with the draft - the R6RS document contains
+many improvements of the description of the language that are not about
+changes in the language.  (To name two other prominent examples: the
+distinction and relationship between numbers and the objects that
+represent them, and the description of the syntax with respect to
+macros.  Especially embarrassing is the pointer to the Indiana Scheme
+repository, which has not been maintained for something like 14 years.)
+Many parts of R7RS are throwbacks to the old, inferior wording.</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 06:22:10</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

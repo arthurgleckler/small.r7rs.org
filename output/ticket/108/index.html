@@ -1,0 +1,118 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>108: Optionally turning data to immutable one</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 108: <span class="summary">Optionally turning data to immutable one</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-11-29 02:34:42</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">minor</div>
+      <div class="reporter">medernac</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/108/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-12-01 04:41:26</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>A generic immutable property interface is described here: 
+<a href="/wiki/ImmutableData">ImmutableData</a>.</p>
+        <p>Do we add an optional way to copy data to immutable one (and back) ?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-12-17 15:46:05</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">
+A generic immutable property interface is described here: 
+[http://trac.sacrideo.us/wg/wiki/ImmutableData]
+
+Do we add an optional way to copy data to immutable one (and back) ? 
+</span><span class="new-value">
+A generic immutable property interface is described here: 
+ImmutableData.
+
+Do we add an optional way to copy data to immutable one (and back) ? 
+</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Is this something that any Schemes have right now?</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">medernac</div>
+            <div class="time">2010-12-18 18:00:44</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Replying to [comment:1 arcfide]:</p>
+              <blockquote class="citation">
+                <p>Is this something that any Schemes have right now?</p></blockquote>
+              <p>Hello Aaron,</p>
+              <p>The rationale is instead to have immutable and mutable versions for each kind of data (like cons / mcons) to have orthogonal recursive copy functions to &quot;toggle the mutability flag&quot; (See R5RS &quot;Storage Model&quot; section) or any other mean implementation may choose.</p>
+              <p>A predicate for mutability checking is associated with these functions.  Racket already has an 'immutable?' generic function and one could write recursive conversion functions easily with the help of immutable and mutable version of each kind of data, but IMHO it helps to view mutability as an orthogonal property and not to have 2 constructors versions for each kind of data.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-01-11 06:07:59</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I agree that this has some appeal, but I do not see any justification for this in the standard since I do not see any implementations taking this approach already. It feels far too uncharted for me to be fairly comfortable about this in WG1.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">medernac</div>
+            <div class="time">2011-01-11 16:00:51</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>You are right and I agree with you, though the WG is a good place for debate. I am lacking good discussions about having an immutability concept orthogonal to datatype to see more clearly benefits/drawbacks of this idea. There is the SRFI-65 which is alike but it is not popular and has been withdrawn.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 06:54:37</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">
+A generic immutable property interface is described here: 
+ImmutableData.
+
+Do we add an optional way to copy data to immutable one (and back) ? 
+</span><span class="new-value">A generic immutable property interface is described here: 
+ImmutableData.
+
+Do we add an optional way to copy data to immutable one (and back) ? 
+</span></div>
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to take no action.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-11-29 02:34:35</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-11-29 02:34:42</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

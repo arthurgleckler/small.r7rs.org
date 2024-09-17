@@ -1,0 +1,32 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>TimeCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/TimeCowan.md">TimeCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Time&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-11-22 11:38:53</div>
+      <div class="version">6<span class="comment"></span><a href="/wiki/TimeCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/TimeCowan/6/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Time">Time</h2>
+      <p><span class="monospace">(current-posix-millisecond)</span></p>
+      <p>Returns a rational number representing the current millisecond of the Posix epoch, which began on 00:00:00 on 1 January 1970, Coordinated Universal Time but excludes all leap seconds.  Implementations SHOULD return a value that is as precise and accurate as possible.  Implementations MAY return exact or inexact values, and SHOULD return inexact values unless:</p>
+      <ul>
+        <li>The value is an integer.</li>
+        <li>The range of most-efficiently-implemented exact integers in the implementation exceeds the integer range of inexact rationals.</li></ul>
+      <p>In practice this means that implementations with fixnums greater than 2<sup>53</sup> should return fixnums unless they have time-of-day clocks that provide more than 1 ms precision, and all other implementations should return IEEE 64-bit floats.</p>
+      <h2 id="AdvancedTime(WG2)">Advanced Time (WG2)</h2>
+      <p>See <a href="/wiki/TimeAdvancedCowan">TimeAdvancedCowan</a>.</p>
+      <h2 id="TimeDurationsandPeriods(WG2)">Time Durations and Periods (WG2)</h2>
+      <p>See <a href="/wiki/TimePeriodsCowan">TimePeriodsCowan</a>.</p></div></body></html>

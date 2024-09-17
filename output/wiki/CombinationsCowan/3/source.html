@@ -1,0 +1,260 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki CombinationsCowan version 3</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki CombinationsCowan version 3</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>CombinationsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>{{{
+#!html
+&lt;p&gt;This SRFI implements several useful procedures of
+combinations, permutations and related operations.
+&lt;/p&gt;
+
+&lt;h3&gt;Set operations&lt;/h3&gt;
+
+&lt;p&gt;Sets in the following procedures are in
+the sense of SRFI 1, that is, lists.
+Some of these procedures have two variants: a procedure without
+star (e.g. &lt;code&gt;permutations&lt;/code&gt;) treats all elements in the given
+set distinct, while a procedure with star (e.g. &lt;code&gt;permutations*&lt;/code&gt;)
+considers duplication.  The procedures with star take a &lt;var&gt;pred&lt;/var&gt;
+argument that is used to test equality.
+&lt;/p&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-permutations&quot;&gt;&lt;/a&gt;&lt;code&gt;permutations&lt;/code&gt; &lt;em&gt;set&lt;/em&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-permutations_002a&quot;&gt;&lt;/a&gt;&lt;code&gt;permutations*&lt;/code&gt; &lt;em&gt;pred set&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a list of all permutations of a list &lt;var&gt;set&lt;/var&gt;.
+&lt;/p&gt;
+&lt;div class=&quot;example&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;(permutations '(a b c))
+  &amp;rArr; ((a b c) (a c b) (b a c) (b c a) (c a b) (c b a))
+
+(permutations '(a a b))
+  &amp;rArr; ((a a b) (a b a) (a a b) (a b a) (b a a) (b a a))
+
+(permutations* '(a a b))
+  &amp;rArr; ((a a b) (a b a) (b a a))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The number of possible permutations explodes if &lt;var&gt;set&lt;/var&gt; has
+more than several elements.  Use with care.  If you want to process
+each permutation at a time, consider &lt;code&gt;permutations-for-each&lt;/code&gt; below.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-permutations_002dfor_002deach&quot;&gt;&lt;/a&gt;&lt;code&gt;permutations-for-each&lt;/code&gt; &lt;em&gt;proc set&lt;/em&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-permutations_002a_002dfor_002deach&quot;&gt;&lt;/a&gt;&lt;code&gt;permutations*-for-each&lt;/code&gt; &lt;em&gt;proc pred set&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;For each permutation of a list &lt;var&gt;set&lt;/var&gt;, calls &lt;var&gt;proc&lt;/var&gt;.
+Returns an undefined value.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-combinations&quot;&gt;&lt;/a&gt;&lt;code&gt;combinations&lt;/code&gt; &lt;em&gt;set n&lt;/em&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-combinations_002a&quot;&gt;&lt;/a&gt;&lt;code&gt;combinations*&lt;/code&gt; &lt;em&gt;pred set n&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a list of all possible combinations of &lt;var&gt;n&lt;/var&gt; elements out
+of a list &lt;var&gt;set&lt;/var&gt;.
+&lt;/p&gt;
+&lt;div class=&quot;example&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;(combinations '(a b c) 2)
+  &amp;rArr; ((a b) (a c) (b c))
+
+(combinations '(a a b) 2)
+  &amp;rArr; ((a a) (a b) (a b))
+
+(combinations* '(a a b) 2)
+  &amp;rArr; ((a a) (a b))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Watch out for the explosion of combinations when &lt;var&gt;set&lt;/var&gt; is large.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-combinations_002dfor_002deach&quot;&gt;&lt;/a&gt;&lt;code&gt;combinations-for-each&lt;/code&gt; &lt;em&gt;proc set n&lt;/em&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-combinations_002a_002dfor_002deach&quot;&gt;&lt;/a&gt;&lt;code&gt;combinations*-for-each&lt;/code&gt; &lt;em&gt;proc pred set n&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Calls &lt;var&gt;proc&lt;/var&gt; for each combination of &lt;var&gt;n&lt;/var&gt; elements out of &lt;var&gt;set&lt;/var&gt;.
+Returns an undefined value.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-power_002dset&quot;&gt;&lt;/a&gt;&lt;code&gt;power-set&lt;/code&gt; &lt;em&gt;set&lt;/em&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-power_002dset_002a&quot;&gt;&lt;/a&gt;&lt;code&gt;power-set*&lt;/code&gt; &lt;em&gt;pred set&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns power set (all subsets) of a list &lt;var&gt;set&lt;/var&gt;.
+&lt;/p&gt;
+&lt;div class=&quot;example&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;(power-set '(a b c))
+  &amp;rArr; (() (a) (b) (c) (a b) (a c) (b c) (a b c))
+
+(power-set* '(a a b)
+  &amp;rArr; (() (a) (b) (a a) (a b) (a a b))
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-power_002dset_002dfor_002deach&quot;&gt;&lt;/a&gt;&lt;code&gt;power-set-for-each&lt;/code&gt; &lt;em&gt;proc set&lt;/em&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-power_002dset_002a_002dfor_002deach&quot;&gt;&lt;/a&gt;&lt;code&gt;power-set*-for-each&lt;/code&gt; &lt;em&gt;proc pred set&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Calls &lt;var&gt;proc&lt;/var&gt; for each subset of &lt;var&gt;set&lt;/var&gt;.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-power_002dset_002dbinary&quot;&gt;&lt;/a&gt;&lt;code&gt;power-set-binary&lt;/code&gt; &lt;em&gt;set&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns power set of &lt;var&gt;set&lt;/var&gt;, like &lt;code&gt;power-set&lt;/code&gt;, but in different order.
+&lt;code&gt;Power-set-binary&lt;/code&gt; traverses subset space in depth-first order,
+while &lt;code&gt;power-set&lt;/code&gt; in breadth-first order.
+&lt;/p&gt;
+&lt;div class=&quot;example&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;(power-set-binary '(a b c))
+  &amp;rArr; (() (c) (b) (b c) (a) (a c) (a b) (a b c))
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-cartesian_002dproduct&quot;&gt;&lt;/a&gt;&lt;code&gt;cartesian-product&lt;/code&gt; &lt;em&gt;list-of-sets&lt;/em&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-cartesian_002dproduct_002dright&quot;&gt;&lt;/a&gt;&lt;code&gt;cartesian-product-right&lt;/code&gt; &lt;em&gt;list-of-sets&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a cartesian product of sets in &lt;var&gt;list-of-sets&lt;/var&gt;.
+&lt;code&gt;Cartesian-product&lt;/code&gt; construct the result in left fixed order
+(the rightmost element varies first), while
+&lt;code&gt;cartesian-product-right&lt;/code&gt; in right fixed order
+(the leftmost element varies first).
+&lt;/p&gt;
+&lt;div class=&quot;example&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;(cartesian-product '((a b c) (0 1)))
+  &amp;rArr; ((a 0) (a 1) (b 0) (b 1) (c 0) (c 1))
+
+(cartesian-product-right '((a b c) (0 1)))
+  &amp;rArr; ((a 0) (b 0) (c 0) (a 1) (b 1) (c 1))
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-group_002dlist&quot;&gt;&lt;/a&gt;&lt;code&gt;group-list&lt;/code&gt; &lt;em&gt;list [ key [ test ]
+ ]&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Groups consecutive elements in a list &lt;var&gt;list&lt;/var&gt; which
+have the common key value.  A key value of an element is
+obtained by applying the procedure &lt;var&gt;key&lt;/var&gt; to the element;
+the default procedure is &lt;code&gt;identity&lt;/code&gt;.
+For each element in &lt;var&gt;list&lt;/var&gt;, &lt;var&gt;key&lt;/var&gt; is applied exactly once.
+The equal-ness of keys are compared by &lt;var&gt;test&lt;/var&gt; procedure,
+whose default is &lt;code&gt;eqv?&lt;/code&gt;.
+&lt;/p&gt;
+&lt;div class=&quot;example&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;(group-list '(1 1 1 2 3 4 4 2 2 3 1 1 3))
+  &amp;rArr; ((1 1 1) (2) (3) (4 4) (2 2) (3) (1 1) (3))
+
+(group-list '(1 1 1 2 3 4 4 2 2 3 1 1 3)
+                :key (cut modulo &amp;lt;&amp;gt; 2)))
+  &amp;rArr; ((1 1 1) (2) (3) (4 4 2 2) (3 1 1 3))
+
+(group-list '#(&amp;quot;a&amp;quot; &amp;quot;a&amp;quot; &amp;quot;b&amp;quot; &amp;quot;b&amp;quot; &amp;quot;c&amp;quot; &amp;quot;d&amp;quot; &amp;quot;d&amp;quot;)
+                :test string=?)
+  &amp;rArr; ((&amp;quot;a&amp;quot; &amp;quot;a&amp;quot;) (&amp;quot;b&amp;quot; &amp;quot;b&amp;quot;) (&amp;quot;c&amp;quot;) (&amp;quot;d&amp;quot; &amp;quot;d&amp;quot;))
+
+(group-list &amp;quot;aabbcdd&amp;quot;
+                :test char=?)
+  &amp;rArr; ((#\a #\a) (#\b #\b) (#\c) (#\d #\d))
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-permute&quot;&gt;&lt;/a&gt;&lt;code&gt;permute&lt;/code&gt; &lt;em&gt;vector permuter [ fallback ]&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a newly created vector, in which
+the elements are permuted from &lt;var&gt;src&lt;/var&gt; according to &lt;var&gt;permuter&lt;/var&gt;.
+&lt;/p&gt;
+&lt;p&gt;&lt;var&gt;Permuter&lt;/var&gt; is a list of exact integers.  When the &lt;var&gt;k&lt;/var&gt;-th element
+of &lt;var&gt;permuter&lt;/var&gt; is &lt;var&gt;i&lt;/var&gt;, the &lt;var&gt;k&lt;/var&gt;-th element of the result
+is &lt;code&gt;(ref &lt;var&gt;src&lt;/var&gt; &lt;var&gt;i&lt;/var&gt;)&lt;/code&gt;.   Therefore, the size of the result
+list is the same as the size of &lt;var&gt;permuter&lt;/var&gt;.  &lt;var&gt;Permuter&lt;/var&gt;
+can be any kind of list, unrelated to the type of &lt;var&gt;src&lt;/var&gt;.
+&lt;/p&gt;
+&lt;p&gt;The same index &lt;var&gt;i&lt;/var&gt; can appear more than once
+in &lt;var&gt;permuter&lt;/var&gt;.
+&lt;/p&gt;
+&lt;div class=&quot;example&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;(permute '#(a b c d) '(3 2 0 1))     &amp;rArr; #(d c a b)
+(permute '#(a b c d) '(0 2))         &amp;rArr; #(a c)
+(permute '#(a b c d) '(0 0 1 1 2 2)) &amp;rArr; #(a a b b c c)
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If an integer in &lt;var&gt;permuter&lt;/var&gt; is out of the valid range for an index
+of &lt;var&gt;vector&lt;/var&gt;, then &lt;var&gt;fallback&lt;/var&gt; is returned.
+&lt;/p&gt;
+&lt;div class=&quot;example&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;(permute '#(a b c) '(3 2 1 0) 'foo) &amp;rArr; #(foo c b a)
+
+(permute &amp;quot;!,HWdelor&amp;quot; #(2 5 6 6 7 1 -1 3 7 8 6 4 0) #\space)
+  &amp;rArr; &amp;quot;Hello, World!&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;h3&gt;Random operations&lt;/h3&gt;
+
+These procedures use &lt;code&gt;default-random-source&lt;/code&gt; from
+&lt;a href=&quot;http://srfi.schemers.org/srfi-27/srfi-27.html&quot;&gt;SRFI 27&lt;/a&gt;.
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-permutations_002dof&quot;&gt;&lt;/a&gt;&lt;code&gt;make-permutation-generator&lt;/code&gt;&lt;i&gt; vector&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yields random permutations of &lt;var&gt;vector&lt;/var&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (make-permutation-generator '(1 2 3)) 3)
+ &amp;rArr; ((1 2 3) (2 3 1) (3 2 1))
+
+(generator-&amp;gt;list (make-permutation-generator &amp;quot;abc&amp;quot;) 3)
+ &amp;rArr; (&amp;quot;cba&amp;quot; &amp;quot;cba&amp;quot; &amp;quot;cab&amp;quot;)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-combinations_002dof&quot;&gt;&lt;/a&gt;&lt;code&gt;make-combination-generator&lt;/code&gt;&lt;i&gt; size vector&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yields vectors of &lt;var&gt;size&lt;/var&gt; elements
+randomly picked from &lt;var&gt;vector&lt;/var&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (make-combination-generatorh 2 #(a b c)) 5)
+ &amp;rArr; (#(a c) #(a b) #(a c) #(b a) #(a c))
+
+(generator-&amp;gt;list (make-combination-generator 2 '#(a b c)) 5)
+ &amp;rArr; (#(a c) #(b c) #(c b) #(b a) #(b c))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-shuffle&quot;&gt;&lt;/a&gt;&lt;code&gt;shuffle&lt;/code&gt; &lt;em&gt;vector [ random-source ]&lt;/em&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a new vector of the same size as &lt;var&gt;vector&lt;/var&gt;,
+in which elements are randomly permuted.
+&lt;/p&gt;
+&lt;div class=&quot;example&quot;&gt;
+&lt;pre class=&quot;example&quot;&gt;(shuffle '#(a b c d e))  &amp;rArr; #(e b d c a)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+
+
+
+
+
+}}}</pre>
+    <h2>time</h2>
+    <pre>2017-06-24 05:15:05</pre>
+    <h2>version</h2>
+    <pre>3</pre></body></html>

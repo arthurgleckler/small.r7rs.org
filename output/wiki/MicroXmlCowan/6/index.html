@@ -1,0 +1,176 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>MicroXmlCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/MicroXmlCowan.md">MicroXmlCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Micro&shy;Xml&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-08-16 02:03:28</div>
+      <div class="version">6<span class="comment"></span><a href="/wiki/MicroXmlCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/MicroXmlCowan/6/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Events">Events</h2>
+      <p>A MicroXML event is either an end-of-file object or a list representing a parsing event, in one of the following formats.  <i>Stack</i> is a list of element names currently being processed; the first element of the list is the current element.</p>
+      <p><span class="monospace">($start </span><i>stack attr-list</i><span class="monospace">)</span></p>
+      <p>Represents a start-tag.  <i>Attr-list</i> is a <a href="/wiki/JsoCowan">JSO</a> representing the attributes.</p>
+      <p><span class="monospace">($end </span><i>stack</i><span class="monospace">)</span></p>
+      <p>Represents an end-tag.</p>
+      <p><span class="monospace">($text </span><i>text</i><span class="monospace">)</span></p>
+      <p>Represents character content.  <i>Text</i> is the character content as a string.</p>
+      <p><span class="monospace">($error </span><i>stack error-code . other</i><span class="monospace">)</span></p>
+      <p>Represents a parsing error.  <i>Error-code</i> is a symbol.  <i>Other</i> is implementation-dependent.</p>
+      <p><span class="monospace">($pi </span><i>stack target content</i><span class="monospace">)</span></p>
+      <p>Represents a processing instruction (which is not part of MicroXML).  <i>Target</i> is a symbol; <i>content</i> is a string.  Parsers may return <span class="monospace">$error</span> objects instead of <span class="monospace">$pi</span> objects; they are provided as a way of allowing a MicroXML parser to read some (but not all) XML documents. Note that any XML declaration is taken to be a processing instruction, as in SGML.</p>
+      <h2 id="SXML">SXML</h2>
+      <p>MicroXML uses a simplified version of SXML as the internal representation of documents.  Each SXML element is a list whose first member is a symbol representing the element name, whose second member is a JSO mapping the attribute names (as symbols) to their values (as strings), and whose remaining members (if any) are either SXML elements or strings.  The prototype of a JSO representing an attribute list is ignored.  There is no representation of comments or processing instructions in this version of SXML, and no notion of document objects (a document is just an element that has no parent).  The parent of an element that has one is stored as an attribute named <span class="monospace">$parent</span> whose value is a SRFI 111 box containing the parent element.  This pseudo-attribute is ignored by all other attribute processing.  The box is used to prevent SXML elements from being circular tree structure.</p>
+      <h2 id="Parsing,building,andprintingprocedures">Parsing, building, and printing procedures</h2>
+      <p><i>Options</i> is a list of symbols that control how MicroXML is written.  All implementations recognize <span class="monospace">apos</span> to wrap attribute values in apostrophes, <span class="monospace">end-tags</span> to write end-tags for empty elements, and <span class="monospace">ascii</span> to escape all characters outside the ASCII range.  Other symbols are also allowed.</p>
+      <p><span class="monospace">(uxml-&gt;sxml </span><i>port</i> [ <i>handler</i> ]<span class="monospace">)</span></p>
+      <p>Reads all the characters from the textual input port <i>port</i> as a MicroXML document and returns the SXML equivalent.  The procedure <i>handler</i> is invoked when a <span class="monospace">$error</span> or <span class="monospace">$pi</span> event is produced.  The default handler signals an error that satisfies <span class="monospace">uxml-error?</span>.  If the handler is <span class="monospace">#f</span>, errors and processing instructions are ignored; this relaxed parsing mode allows some XML documents that are not well-formed MicroXML to be parsed.</p>
+      <p><span class="monospace">(sxml-&gt;uxml </span><i>element port options</i><span class="monospace">)</span></p>
+      <p>Writes the SXML <i>element</i> in MicroXML format to the textual output port <i>port</i>, using the symbols in <i>options</i>.</p>
+      <p><span class="monospace">(make-uxml-generator </span><i>port</i><span class="monospace">)</span></p>
+      <p>Returns a generator of event objects representing a MicroXML document read from the textual input port <i>port</i>.  Processing continues no matter how many errors there are until all characters have been read.</p>
+      <p><span class="monospace">(make-sxml-generator </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns a generator of event objects representing the SXML <i>element</i>.</p>
+      <p><span class="monospace">(event-generator-&gt;uxml </span><i>gen port options</i><span class="monospace">)</span></p>
+      <p>Invokes the generator <i>gen</i> to obtain event objects and writes the corresponding MicroXML document to the textual output port <i>port</i>, using the symbols in <i>options</i>.  If the resulting document would not be well-formed MicroXML, an error is signaled that satisfies <span class="monospace">uxml-error?</span>.</p>
+      <p><span class="monospace">(event-generator-&gt;sxml </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Invokes the generator <i>gen</i> to obtain event objects, constructs the corresponding SXML element, and returns it.  If the resulting object would not be well-formed SXML, an error is signaled that satisfies <span class="monospace">uxml-error?</span>.</p>
+      <p><span class="monospace">(write-uxml </span><i>port options</i><span class="monospace">)</span></p>
+      <p>Returns a procedure that accepts an event object.  When invoked repeatedly, it writes the corresponding MicroXML representation to the textual output port <i>port</i> using the symbols in <i>options</i>.    If the resulting document would not be well-formed MicroXML, an error is signaled that satisfies <span class="monospace">uxml-error?</span>.</p>
+      <p><span class="monospace">(build-sxml)</span></p>
+      <p>Returns a builder procedure that accepts an event object or an end of file object.  When invoked repeatedly, it builds the corresponding SXML representation.  If the object is an end of file object, the procedure returns the SXML element; if not, it returns an unspecified value.  If the resulting document would not be well-formed MicroXML, an error is signaled that satisfies <span class="monospace">uxml-error?</span>.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(sxml-element? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an SXML element and <span class="monospace">#f</span> otherwise.  The procedure checks that <i>obj</i> is a list whose first element is a symbol and whose second element is a JSO; further elements of the list are not examined.</p>
+      <p><span class="monospace">(sxml-empty? </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>element</i> is an empty SXML element and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(sxml-wf-element-name? </span><i>string attribute</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>string</i> matches the MicroXML name production; returns <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(sxml-wf-attribute-name? </span><i>string attribute</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>string</i> matches the MicroXML attribute name production; returns <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(sxml-wf-string? </span><i>string</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if all the characters in <i>string</i> are allowed in MicroXML character content and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(sxml-wf-element? </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>element</i> is well-formed.  The first element of <i>element</i> must be a symbol whose print name satisfies <span class="monospace">sxml-wf-element-name?</span>.  The second element of <i>element</i> must be a JSO that maps symbols whose print name satisfies <span class="monospace">sxml-wf-attribute-name?</span> to strings that satisfy <span class="monospace">sxml-wf-string?</span>.  The remaining elements must be either strings that satisfy <span class="monospace">sxml-wf-string?</span> or lists that satisfy <span class="monospace">sxml-wf-element?</span>.</p>
+      <p><span class="monospace">(sxml-attribute? </span><i>element attr-name</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>attr-name</i> (a symbol) is an attribute of <i>element</i> and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(sxml-id-valid? </span><i>element id-mapping idref-list</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if all idref attributes contain valid ids.  An id is valid if it appears as a key in <i>id-mapping</i> (see <span class="monospace">make-id-mapping</span>).  <i>Idref-list</i> is a list of 2-element sublists, where the first element of each sublist is an element name and the second element is an attribute name.</p>
+      <p><span class="monospace">(sxml-language? </span><i>element language</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if the language of <i>element</i>, as specified by the value of a <span class="monospace">lang</span> or <span class="monospace">xml:lang</span> attribute (the latter is not well-formed MicroXML but is supported for backward compatibility) matches <i>language</i>. If <i>element</i> has no such attribute, the language of the nearest ancestor of <i>element</i> that has such an attribute is used. If there is no such attribute at all, then <span class="monospace">sxml-language?</span> returns <span class="monospace">#f</span>.</p>
+      <p>The attribute value matches <i>language</i> if, in a case-insensitive comparison, <i>language</i> exactly equals the attribute value, or if <i>language</i> exactly equals a prefix of the attribute value such that the first character following the prefix is &quot;-&quot;.</p>
+      <h2 id="Elementprocedures">Element procedures</h2>
+      <p><span class="monospace">(sxml-name </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns the name of <i>element</i> as a symbol.</p>
+      <p><span class="monospace">(sxml-set-name </span><i>element name</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(sxml-set-name! </span><i>element name</i><span class="monospace">)</span></p>
+      <p>Changes the name of <i>element</i> to the symbol <i>name</i>, purely or with mutation.</p>
+      <p><span class="monospace">(sxml-attr-list </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns the attribute list of <i>element</i> as a JSO.</p>
+      <p><span class="monospace">(sxml-set-attr-list </span><i>element jso</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(sxml-set-attr-list! </span><i>element jso</i><span class="monospace">)</span></p>
+      <p>Changes the attribute list of <i>element</i> to <i>jso</i>, purely or with mutation.</p>
+      <p><span class="monospace">(sxml-content</span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns the name of <i>element</i> as a list.</p>
+      <p><span class="monospace">(sxml-set-content </span><i>element list</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(sxml-set-content! </span><i>element list</i><span class="monospace">)</span></p>
+      <p>Changes the content of <i>element</i> to the <i>list</i>, purely or with mutation.</p>
+      <p><span class="monospace">(sxml-value </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns the results of concatenating all string content children in <i>element</i> and all its descendants in depth-first left-to-right preorder.</p>
+      <p><span class="monospace">(sxml-defaults </span><i>element attribute-defaults element-defaults inherited-attributes</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(sxml-defaults! </span><i>element attribute-defaults element-defaults inherited-attributes</i><span class="monospace">)</span></p>
+      <p>Returns <i>element</i> with default values expanded in itself and all its descendants (purely or with mutation) as follows:</p>
+      <ul>
+        <li><i>attribute-defaults</i> is a list of 3-element sublists.  Each sublist contains an element name (a symbol), an attribute name (a symbol), and a default value (a string).  All elements with those names are checked for the presence of the corresponding attribute.  If it is missing, the attribute is added with the specified default value.</li></ul>
+      <ul>
+        <li><i>element-defaults</i> is a list of 2-element sublists.  Each sublist contains an element name (a symbol) and a default value (a string).  All empty elements with any of those names have the default value installed as the only content child.</li></ul>
+      <ul>
+        <li><i>inherited-attributes</i> is a list of symbols.  All elements are checked for an attribute whose name is one of the list.  If absent, then the most recent ancestor of the element that has this attribute is found (note that no parent map is required), and the attribute is added to the element being processed with the same value as in the ancestor.</li></ul>
+      <p><span class="monospace">(sxml-element position </span><i>element parent-map</i><span class="monospace">)</span></p>
+      <p>Returns the position of <i>element</i> among the element children of the parent of <i>element</i> as an exact integer, with 1 meaning the first element child.  If there is no parent, return 0.</p>
+      <p><span class="monospace">(sxml-element-size </span><i>element</i><span class="monospace">)</span></p>
+      <p>Return the number of content children of <i>element</i> as an exact integer.</p>
+      <p><span class="monospace">(sxml-normalize-element! </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns a normalized version (using mutation) of an SXML element that does not necessarily conform to the definition.  In particular, at least the following repairs are made:</p>
+      <ul>
+        <li>If the name is a string, it is converted to a symbol with <span class="monospace">string-symbol</span>.</li>
+        <li>If the attribute-list is missing, an empty JSO is provided.</li>
+        <li>If the attribute-list does not begin with an <span class="monospace">@</span> element, one is provided.</li>
+        <li>If one of the content children or an attribute value is a number, it is converted to a string with <span class="monospace">number-&gt;string</span>.</li>
+        <li>If one of the content children or an attribute value is a boolean, it is converted to a string with <span class="monospace">boolean-&gt;string</span>.</li>
+        <li>If one of the content children or an attribute value is a symbol, it is converted to a string with <span class="monospace">symbol-&gt;string</span>.</li>
+        <li>If one of the content children is some other type of Scheme object, it is converted to a string by some implementation-defined means or else removed.</li>
+        <li>If an attribute value is some other type of Scheme object, it is converted to a string by some implementation-defined means or else that attribute is removed.</li>
+        <li>If after the above transformations are completed, two or more consecutive content children are strings, they are consolidated.</li>
+        <li>If any content children are elements, they are recursively normalized.</li></ul>
+      <p><span class="monospace">(sxml-trace </span><i>element traceproc</i><span class="monospace">)</span></p>
+      <p>Displays information on <span class="monospace">(current-error-port)</span> about <i>element</i>.  The precise nature of the information displayed is undefined, except that it should end with a newline.  <i>Element</i> is returned.</p>
+      <p><span class="monospace">(sxml-root </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns the root element of <i>element</i>.</p>
+      <p><span class="monospace">(sxml-parent </span><i>element</i><span class="monospace">)</span></p>
+      <p>Uses the <span class="monospace">$parent</span> pseudo-attribute to determine the parent of <i>element</i> and returns it, or <span class="monospace">#f</span> if there is none.</p>
+      <p><span class="monospace">(sxml-detach-parent! </span><i>element parent-mapping</i><span class="monospace">)</span></p>
+      <p>Removes the mapping from <i>element</i> to its parent from <i>parent-mapping</i>.  If <i>element</i> does not have a parent, nothing is done.  Returns an unspecified value.</p>
+      <p><span class="monospace">(sxml-make-id-mapping </span><i>document</i><span class="monospace">)</span></p>
+      <p>Creates an id mapping based on the SXML element <i>document</i>.  An id mapping is an opaque object that maps an id (a symbol) to an element.  The element and all its descendants are checked for the presence of an attribute named <span class="monospace">id</span> or <span class="monospace">xml:id</span> (the latter is not well-formed MicroXML but is allowed in SXML for backward compatibility).  If found, an entry is created in the id mapping that maps the corresponding attribute value <i>as a symbol</i> to the element.  Returns the id mapping.</p>
+      <p><span class="monospace">(sxml-id </span><i>id id-mapping</i><span class="monospace">)</span></p>
+      <p>Looks up the symbol <i>id</i> in <i>id-mapping</i> and returns the corresponding element, or <span class="monospace">#f</span> if there is none.</p>
+      <h2 id="Stringprocedures">String procedures</h2>
+      <p><span class="monospace">(uxml-escape-string </span><i>string attribute? apos? ascii?</i><span class="monospace">)</span></p>
+      <p>Converts <i>string</i> to contain the necessary entity references for MicroXML.  In all cases, the characters <span class="monospace">&lt; &amp; &gt;</span> are escaped with entity references.  If <i>attribute?</i> is true, then if <i>apos?</i> is true, <span class="monospace">'</span> is escaped, but if <i>apos?</i> is false, then <span class="monospace">&quot;</span> is escaped, in both cases with an entity reference.  Finally, if <i>ascii?</i> is true, non-ASCII characters are escaped with numeric character references.  All other characters are left unchanged.  The escaped result is returned.</p>
+      <p><span class="monospace">(uxml-unescape-string </span><i>string</i><span class="monospace">)</span></p>
+      <p>Converts <i>string</i> by translating all MicroXML escapes, both entity references and numeric character references, to single characters.  All other characters are left unchanged.  The result is returned.</p>
+      <p><span class="monospace">(uxml-normalize-space </span><i>string</i><span class="monospace">)</span></p>
+      <p>Returns a string that is equal to <i>string</i>, but with all leading and trailing whitespace removed, and all other consecutive whitespace characters replaced by a single space.</p>
+      <h2 id="Booleanconversions">Boolean conversions</h2>
+      <p>These use the conventions of XPath and XML Schema.</p>
+      <p><span class="monospace">(sxml-string-&gt;boolean </span><i>string</i><span class="monospace">)</span></p>
+      <p>Converts the strings <span class="monospace">&quot;1&quot;</span> and <span class="monospace">&quot;true&quot;</span> to <span class="monospace">#t</span>, and the strings <span class="monospace">&quot;0&quot;</span> and <span class="monospace">false</span> to <span class="monospace">#f</span>.  If any other string is passed, an error is signaled that satisfies <span class="monospace">uxml-error?</span>.</p>
+      <p><span class="monospace">(sxml-boolean-&gt;string </span><i>boolean</i><span class="monospace">)</span></p>
+      <p>Converts <span class="monospace">#t</span> to <span class="monospace">&quot;true&quot;</span> and <span class="monospace">#f</span> to <span class="monospace">&quot;false&quot;</span>.</p>
+      <p><span class="monospace">(sxml-number-&gt;boolean </span><i>number</i><span class="monospace">)</span></p>
+      <p>If <i>number</i> returns <span class="monospace">#t</span> when <span class="monospace">zero?</span> is applied to it, returns <span class="monospace">#f</span>; otherwise returns <span class="monospace">#t</span>;</p>
+      <p><span class="monospace">(sxml-boolean-&gt;number </span><i>boolean</i><span class="monospace">)</span></p>
+      <p>If <i>boolean</i> is true, returns 1, otherwise returns 0.</p>
+      <h2 id="Axisprocedures">Axis procedures</h2>
+      <p>The following procedures are generator operations:  they accept a generator (of SXML elements) and return a generator (also of SXML elements).  After the <span class="monospace">sxml-</span> prefix, they begin with <span class="monospace">g</span>, using the convention of <a href="http://srfi.schemers.org/srfi-121/srfi-121.html">SRFI 121</a> for generator operations.</p>
+      <p><span class="monospace">(sxml-gparent </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Returns a generator of SXML elements which invokes SXML elements from <i>gen</i> and returns their parent elements on successive invocations.</p>
+      <p><span class="monospace">(sxml-gancestor </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Returns a generator of SXML elements which invokes SXML elements from <i>gen</i> and returns their ancestor elements from parent to root on successive invocations.</p>
+      <p><span class="monospace">(sxml-gancestor-or-self </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Returns a generator of SXML elements which invokes SXML elements from <i>gen</i> and returns their element itself and then its ancestor elements from parent to root on successive invocations.</p>
+      <p><span class="monospace">(sxml-gchild </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Returns a generator of SXML elements which invokes SXML elements from <i>gen</i> and returns their descendant elements in depth-first order from left to right on successive invocations.</p>
+      <p><span class="monospace">(sxml-gdescendant </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Returns a generator of SXML elements which invokes SXML elements from <i>gen</i> and returns their child elements from left to right on successive invocations.</p>
+      <p><span class="monospace">(sxml-gdescendant-or-self </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Returns a generator of SXML elements which invokes SXML elements from <i>gen</i> and returns their element itself and then its child elements from left to right on successive invocations.</p>
+      <p><span class="monospace">(sxml-gfollowing </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Returns a generator of SXML elements which invokes SXML elements from <i>gen</i> and returns all of their following elements in document order on successive invocations.</p>
+      <p><span class="monospace">(sxml-gfollowing-or-self </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Returns a generator of SXML elements which invokes SXML elements from <i>gen</i> and returns the elements themselves and then all of their following elements in document order on successive invocations.</p>
+      <p><span class="monospace">(sxml-gpreceding </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Returns a generator of SXML elements which invokes SXML elements from <i>gen</i> and returns all of their preceding elements in reverse document order on successive invocations.</p>
+      <p><span class="monospace">(sxml-gpreceding-or-self </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Returns a generator of SXML elements which invokes SXML elements from <i>gen</i> and returns the elements themselves and then all of their preceding elements in reverse document order on successive invocations.</p>
+      <h2 id="Paths">Paths</h2>
+      <p>TBD</p>
+      <h2 id="Errorhandling">Error handling</h2>
+      <p>Errors are signaled using objects of a disjoint type.  They contain an <span class="monospace">$error</span> or <span class="monospace">$pi</span> event.</p>
+      <p><span class="monospace">(uxml-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> belongs to the error type, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(uxml-error-event </span><i>xml-error</i><span class="monospace">)</span></p>
+      <p>Returns an <span class="monospace">$error</span> or <span class="monospace">$pi</span> event (i.e. a list) encapsulated in an error object.</p></div></body></html>

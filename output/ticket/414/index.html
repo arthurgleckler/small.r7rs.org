@@ -1,0 +1,89 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>414: Formal Comment: Internal syntax definitions vs a body with definitions being a letrec*</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 414: <span class="summary">Formal Comment: Internal syntax definitions vs a body with definitions being a letrec*</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-06-28 10:59:45</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/414/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-06-28 10:33:54</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Submitter's Name: Jussi Piitulainen</p>
+        <p>Submitter's Email Address: jpiitula at ling dot helsinki dot fi</p>
+        <p>Draft Version of Report: 6th</p>
+        <p>Summary: Internal syntax definitions vs a body with definitions being a letrec*</p>
+        <p>Full Description:</p>
+        <p>I desire a clarification on how a body that begins with internal definitions can be equivalent to a <span class="monospace">letrec*</span> when syntax definitions are valid wherever definitions are.</p>
+        <p>The coverage of the related issues in the report has improved much since I last read it. I'm still not quite satisfied about this particular issue: the report seems to me to be silent, or at best much more implicit than I like, about how a body like the following is equivalent to a <span class="monospace">letrec*</span>. There is no room in a <span class="monospace">letrec*</span> for the syntax definition:</p><span class="monospace">(lambda () ;say
+   (define (f x) ...)   ;the body begins
+   (define-syntax ...)
+   (f ...))
+</span>
+        <p>If there is a sentence or two that would make the intent of the authors explicit, please add them to the report (in 5.2.2 where the crucial statement of the equivalence is made). Possibly it is something about an &quot;expanded body&quot; not containing the syntax-definitions any more, but I feel like I'm guessing here and looking for some statement that is not there in the report.</p>
+        <p>I'm concerned because I like the equivalence and wish it to be true.</p>
+        <p>Relevant sites in the report follow (and a couple of related lesser concerns that turn up when I was investigate this, but it is the issue above that I formally wish to be clarified).</p>
+        <ol class="number" start="4">
+          <li>2.3 Sequencing (p. 16)</li></ol>
+        <p><span class="monospace">(begin &lt;expression or definition&gt; ...)</span> may appear as part of a <span class="monospace">&lt;body&gt;</span>, [...] rationale: [macro output]</p>
+        <ol class="number" start="5">
+          <li>2 Definitions (p. 23 bottom right)</li></ol>
+        <p>... valid ... at the _beginning_ of a <span class="monospace">&lt;body&gt;</span>. [my emphasis]</p>
+        <ol class="number" start="5">
+          <li>2.2 Internal definitions (p. 24 right, mid-section)</li></ol>
+        <p>An expanded <span class="monospace">&lt;body&gt;</span> containing internal definitions can always be
+converted into a completely equivalent <span class="monospace">letrec*</span> expressions.</p>
+        <ol class="number" start="5">
+          <li>3 Syntax definitions (p. 25 top left)</li></ol>
+        <p>Syntax definitions are valid wherever definitions are.</p>
+        <ol class="number" start="7">
+          <li>1.3 Expressions (p. 58 right)</li></ol>
+        <p><span class="monospace">&lt;body&gt; --&gt; &lt;definition&gt;* &lt;sequence&gt;</span></p>
+        <ol class="number" start="7">
+          <li>1.6 Programs and definitions (p. 60 left)</li></ol>
+        <p><span class="monospace">&lt;definition&gt; --&gt; ... | &lt;syntax definition&gt; | ...</span></p>
+        <p>Finally, I still have a related concern about <span class="monospace">&lt;body&gt;</span>: the entry on lambda expressions does not tell the truth about <span class="monospace">&lt;body&gt;</span> allowing internal definitions, yet several binding constructs refer to it as being authoritative about <span class="monospace">&lt;body&gt;</span>:</p>
+        <ol class="number" start="4">
+          <li>1.4 Procedures (p. 12 bottom right)</li></ol>
+        <p>... <span class="monospace">&lt;body&gt;</span> should be a sequence of one or more expressions.  [this does not allow internal definitions]</p>
+        <ol class="number" start="4">
+          <li>2.4 Binding constructs (p. 15-16)</li></ol>
+        <p>... <span class="monospace">&lt;body&gt;</span> should be a sequence of zero or more expressions followed by a sequence of one or more expressions as described in section 4.1.4. ... [this appears in every binding construct and is fine]</p>
+        <p>Finally finally, &quot;body&quot; is not an index entry (p. 77) and it should be. Probably it should point to 4.1.4 but, as noted above, that site does not tell the truth about <span class="monospace">&lt;body&gt;</span>, or body, and maybe to 5.2.2, where I'm formally seeking clarification. Thank you for your attention.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-06-28 10:34:09</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-06-28 10:59:45</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Formal response sent.</p></div></div></div></div></div></body></html>

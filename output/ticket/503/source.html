@@ -1,0 +1,231 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #503</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #503</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Andy Wingo writes:
+
+  There are also a number of minor points about the WG1 draft that I feel were not dealt with in a satisfactory way.  A few things come to mind: [...] the insistence on &quot;an unspecified value&quot; rather than allowing 0 values.
+
+Alaric Snell-Pym, Emmanuel Medernach, and Aaron Hsu made similar remarks.
+
+R6RS provides this option, allowing setter-type procedures as well as `set!` itself to return an unspecified number of unspecified values.  The WG, however, was swayed by the argument of Alex Shinn that allowing zero values to be returned means that completely unknown procedures cannot be safely called except by wrapping each call in a `call-with-values`.
+
+In principle, this problem cannot be eliminated as long as returning multiple values is possible at all, but eliminating the theoretical possibility of standard setter procedures to return other than one value (something which no R6RS implementation actually does) makes it less likely to occur.</pre>
+    <h2>id</h2>
+    <pre>503</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Setters should be allowed to return zero values</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 00:24:57</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG decided by unanimous consent to take no action on this ticket.</pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>503</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>503</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>503</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-05-13 09:11:43</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1368411103150170</pre>
+    <h2>ticket</h2>
+    <pre>503</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 09:11:43</pre>
+    <h2>Change at time 2013-05-13 09:11:43</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>Andy Wingo writes:
+
+  There are also a number of minor points about the WG1 draft that I feel were not dealt with in a satisfactory way.  A few things come to mind: [...] the insistence on &quot;an unspecified value&quot; rather than allowing 0 values.
+
+Alaric Snell-Pym, Emmanuel Medernach, and Aaron Hsu made similar remarks.
+
+R6RS provides this option, allowing setter-type procedures as well as `set!` itself to return an unspecified number of unspecified values.  The WG, however, was swayed by the argument of Alex Shinn that allowing zero values to be returned means that completely unknown procedures cannot be safely called except by wrapping each call in a `call-with-values`.
+
+In principle, this problem cannot be eliminated as long as returning multiple values is possible at all, but eliminating the theoretical possibility of standard setter procedures to return other than one value (something which no R6RS implementation actually does) makes it less likely to occur.</pre>
+    <h2>oldvalue</h2>
+    <pre>Andy Wingo writes:
+
+  There are also a number of minor points about the WG1 draft that I feel were not dealt with in a satisfactory way.  A few things come to mind: [...] the insistence on &quot;an unspecified value&quot; rather than allowing 0 values.
+
+Alaric Snell-Pym and Emmanuel Medernach made similar remarks.
+
+R6RS provides this option, allowing setter-type procedures as well as `set!` itself to return an unspecified number of unspecified values.  The WG, however, was swayed by the argument of Alex Shinn that allowing zero values to be returned means that completely unknown procedures cannot be safely called except by wrapping each call in a `call-with-values`.
+
+In principle, this problem cannot be eliminated as long as returning multiple values is possible at all, but eliminating the theoretical possibility of standard setter procedures to return other than one value (something which no R6RS implementation actually does) makes it less likely to occur.</pre>
+    <h2>raw-time</h2>
+    <pre>1368411103150170</pre>
+    <h2>ticket</h2>
+    <pre>503</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 09:11:43</pre>
+    <h2>Change at time 2013-05-13 08:19:06</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1368407946250443</pre>
+    <h2>ticket</h2>
+    <pre>503</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 08:19:06</pre>
+    <h2>Change at time 2013-05-13 08:19:06</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>Andy Wingo writes:
+
+  There are also a number of minor points about the WG1 draft that I feel were not dealt with in a satisfactory way.  A few things come to mind: [...] the insistence on &quot;an unspecified value&quot; rather than allowing 0 values.
+
+Alaric Snell-Pym and Emmanuel Medernach made similar remarks.
+
+R6RS provides this option, allowing setter-type procedures as well as `set!` itself to return an unspecified number of unspecified values.  The WG, however, was swayed by the argument of Alex Shinn that allowing zero values to be returned means that completely unknown procedures cannot be safely called except by wrapping each call in a `call-with-values`.
+
+In principle, this problem cannot be eliminated as long as returning multiple values is possible at all, but eliminating the theoretical possibility of standard setter procedures to return other than one value (something which no R6RS implementation actually does) makes it less likely to occur.</pre>
+    <h2>oldvalue</h2>
+    <pre>Andy Wingo writes:
+
+  There are also a number of minor points about the WG1 draft that I feel were not dealt with in a satisfactory way.  A few things come to mind: [...] the insistence on &quot;an unspecified value&quot; rather than allowing 0 values.
+
+Alaric Snell-Pym made a similar remark.
+
+R6RS provides this facility, allowing setter-type procedures, as well as `set!` itself, to return an unspecified number of unspecified values.  The WG, however, was swayed by the argument of Alex Shinn that allowing zero values to be returned means that completely unknown procedures cannot be safely called except by wrapping each call in a `call-with-values`.  In principle, this problem cannot be eliminated as long as returning multiple values is possible at all, but eliminating the theoretical possibility of standard setter procedures to return other than one value (something which no R6RS implementation actually does) makes it less likely to occur.</pre>
+    <h2>raw-time</h2>
+    <pre>1368407946250443</pre>
+    <h2>ticket</h2>
+    <pre>503</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 08:19:06</pre>
+    <h2>Change at time 2013-05-13 01:20:39</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1368382839838993</pre>
+    <h2>ticket</h2>
+    <pre>503</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 01:20:39</pre>
+    <h2>Change at time 2013-05-13 01:20:39</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>Andy Wingo writes:
+
+  There are also a number of minor points about the WG1 draft that I feel were not dealt with in a satisfactory way.  A few things come to mind: [...] the insistence on &quot;an unspecified value&quot; rather than allowing 0 values.
+
+Alaric Snell-Pym made a similar remark.
+
+R6RS provides this facility, allowing setter-type procedures, as well as `set!` itself, to return an unspecified number of unspecified values.  The WG, however, was swayed by the argument of Alex Shinn that allowing zero values to be returned means that completely unknown procedures cannot be safely called except by wrapping each call in a `call-with-values`.  In principle, this problem cannot be eliminated as long as returning multiple values is possible at all, but eliminating the theoretical possibility of standard setter procedures to return other than one value (something which no R6RS implementation actually does) makes it less likely to occur.</pre>
+    <h2>oldvalue</h2>
+    <pre>Andy Wingo writes:
+
+  There are also a number of minor points about the WG1 draft that I feel were not dealt with in a satisfactory way.  A few things come to mind: [...] the insistence on &quot;an unspecified value&quot; rather than allowing 0 values.
+
+R6RS provides this facility, allowing setter-type procedures, as well as `set!` itself, to return an unspecified number of unspecified values.  The WG, however, was swayed by the argument of Alex Shinn that </pre>
+    <h2>raw-time</h2>
+    <pre>1368382839838993</pre>
+    <h2>ticket</h2>
+    <pre>503</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 01:20:39</pre></body></html>

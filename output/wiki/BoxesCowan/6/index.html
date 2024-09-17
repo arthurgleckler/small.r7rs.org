@@ -1,0 +1,73 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BoxesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BoxesCowan.md">BoxesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Boxes&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-03-12 02:44:15</div>
+      <div class="version">6<span class="comment"></span><a href="/wiki/BoxesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/BoxesCowan/6/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Boxes">Boxes</h2>
+      <p>This is a trivial module, providing objects with a single mutable state.  Several Schemes have something like it, sometimes called <i>cells</i>.  Boxes are a disjoint type.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <ul>
+        <li><span class="monospace">box</span>: constructor</li>
+        <li><span class="monospace">box?</span>: predicate</li>
+        <li><span class="monospace">unbox</span>: accessor</li>
+        <li><span class="monospace">set-box!</span>: mutator</li></ul>
+      <h2 id="Existingimplementations">Existing implementations</h2>
+      <table><tr><td class="default">
+            <p>Proposed</p></td><td class="default">
+            <p><a href="http://docs.racket-lang.org/reference/boxes.html">Racket</a></p></td><td class="default">
+            <p><a href="http://www.iro.umontreal.ca/~gambit/doc/gambit-c.html#index-boxes">Gambit</a></p></td><td class="default">
+            <p><a href="http://sisc-scheme.org/manual/html/ch03.html#Boxing">SISC</a></p></td><td class="default">
+            <p><a href="http://www.scheme.com/csug7/objects.html#g50">Chez</a></p></td><td class="default">
+            <p><a href="http://wiki.call-cc.org/eggref/4/box">Chicken</a></p></td><td class="default">
+            <p><a href="http://web.mit.edu/scheme_v9.0.1/doc/mit-scheme-ref/Cells.html">MIT</a></p></td><td class="default">
+            <p><a href="http://s48.org/1.1/manual/s48manual_42.html">Scheme48/scsh</a></p></td></tr><tr><td class="default">
+            <p>box</p></td><td class="default">
+            <p>box</p></td><td class="default">
+            <p>box</p></td><td class="default">
+            <p>box</p></td><td class="default">
+            <p>box</p></td><td class="default">
+            <p>make-box</p></td><td class="default">
+            <p>make-cell</p></td><td class="default">
+            <p>make-cell</p></td></tr><tr><td class="default">
+            <p>box?</p></td><td class="default">
+            <p>box?</p></td><td class="default">
+            <p>box?</p></td><td class="default">
+            <p>box?</p></td><td class="default">
+            <p>box?</p></td><td class="default">
+            <p>box-mutable?</p></td><td class="default">
+            <p>cell?</p></td><td class="default">
+            <p>cell?</p></td></tr><tr><td class="default">
+            <p>unbox</p></td><td class="default">
+            <p>unbox</p></td><td class="default">
+            <p>unbox</p></td><td class="default">
+            <p>unbox</p></td><td class="default">
+            <p>unbox</p></td><td class="default">
+            <p>box-ref</p></td><td class="default">
+            <p>cell-contents</p></td><td class="default">
+            <p>cell-ref</p></td></tr><tr><td class="default">
+            <p>set-box<span class="monospace">!</span></p></td><td class="default">
+            <p>set-box<span class="monospace">!</span></p></td><td class="default">
+            <p>set-box<span class="monospace">!</span></p></td><td class="default">
+            <p>set-box<span class="monospace">!</span></p></td><td class="default">
+            <p>set-box<span class="monospace">!</span></p></td><td class="default">
+            <p>box-set<span class="monospace">!</span></p></td><td class="default">
+            <p>set-cell-contents<span class="monospace">!</span></p></td><td class="default">
+            <p>cell-set<span class="monospace">!</span></p></td></tr></table>
+      <h2 id="Lexicalsyntax">Lexical syntax</h2>
+      <p>Racket, Gambit, SISC, Chez, and Chicken all support <span class="monospace">#&amp;</span> to create a box initialized with the object represented by the following datum.</p></div></body></html>

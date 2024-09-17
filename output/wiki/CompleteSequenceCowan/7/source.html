@@ -1,0 +1,51 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki CompleteSequenceCowan version 7</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki CompleteSequenceCowan version 7</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>CompleteSequenceCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>The WG1 charter says &quot;Self consistency is an important objective, which may require adding new features.&quot;  Scheme has three sequence types: lists, strings, and vectors, but the support for them is not consistent.  Lists have the most support, strings and vectors have much less, and inconsistently so.  I propose providing the following procedures, some of which are R5RS, some R6RS, some in various SRFIs, and some new:
+
+||Type of procedure||Lists||Strings||Vectors||
+||Basic constructor||`make-list` (SRFI 1)||`make-string`||`make-vector`||
+||Variadic constructor||`list`||`string`||`vector`||
+||Copy constructor||`list-copy` (SRFI 1)||`string-copy`||`vector-copy` (SRFI 43)||
+||Basic predicate||`list?`||`string?`||`vector?`||
+||Sequence length||`length`||`string-length`||`vector-length`||
+||Element access||`list-ref`||`string-ref`||`vector-ref`||
+||Element mutator||`list-set!` (proposed)||`string-set!`||`vector-set!`||
+||Map function||`map`||`string-map` (SRFI 13 extended)||`vector-map` (R6RS)||
+||Map side effects||`for-each`||`string-for-each` (proposed)||`vector-for-each` (R6RS)||
+||Convert to list||---||`string-&gt;list`||`vector-&gt;list`||
+||Convert to string||`list-&gt;string`||---||`vector-&gt;string` (proposed)||
+||Convert to vector||`list-&gt;vector`||`string-&gt;vector` (proposed)||---||
+
+
+In summary: 33 procedures, 23 in R5RS, 2 in R6RS, 2 in SRFI 1, 1 in SRFI 43, 1 in SRFI-13 but extended to take multiple strings, 4 novel but obvious.
+
+I further propose that the &quot;map function&quot; and &quot;map side effects&quot; groups should be specified to implicitly truncate all sequence arguments to the length of the shortest sequence.
+</pre>
+    <h2>time</h2>
+    <pre>2011-02-03 04:25:48</pre>
+    <h2>version</h2>
+    <pre>7</pre></body></html>

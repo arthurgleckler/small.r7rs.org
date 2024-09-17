@@ -1,0 +1,217 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki AggregatesMedernachExamples version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki AggregatesMedernachExamples version 1</h1>
+    <h2>author</h2>
+    <pre>medernac</pre>
+    <h2>comment</h2>
+    <pre>Examples</pre>
+    <h2>ipnr</h2>
+    <pre>88.177.167.25</pre>
+    <h2>name</h2>
+    <pre>AggregatesMedernachExamples</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Examples ==
+
+Could be used with test implementation at AggregatesMedernachImplementation and AggregatesMedernachInheritanceImplementation. 
+
+{{{
+
+(define-syntax multi-define
+   (syntax-rules ()   
+     ((multi-define (&lt;var&gt; ...) &lt;list&gt;)
+      (begin
+        (begin
+          (define &lt;var&gt; (car &lt;list&gt;))
+          (define &lt;list&gt; (cdr &lt;list&gt;)))
+        ...))))      
+     
+(define-syntax define-values-with
+   (syntax-rules () 
+     ((define-values-with (&lt;var&gt; ...) &lt;thunk&gt;)
+      (begin
+        (define var-list (call-with-values &lt;thunk&gt; list))
+        (multi-define (&lt;var&gt; ...) var-list)))))
+
+(define-datatype null-type null-type-info &quot;NULL&quot; ())
+
+(define-values-with (make-null null-switch null-mutators)
+  (create-aggregate-functions null-type))
+
+(define-datatype pair-type pair-info &quot;PAIR&quot; (first second))
+
+(define-values-with (make-pair pair-switch pair-mutators)
+  (create-aggregate-functions pair-type))
+
+;; With my-car, my-cdr for instance:
+
+(define (my-car obj)
+  ((pair-switch (lambda (first second) first) error)
+  obj))
+ 
+(define (my-cdr obj)
+  ((pair-switch (lambda (first second) second) error)
+   obj))
+
+(define mypair (make-pair 'one 'two))
+
+(and (eq? 'one (my-car mypair))
+     (eq? 'two (my-cdr mypair))
+     (display &quot;Ok&quot;)(newline)
+     (display (datatype-info-&gt;designation pair-info)) (newline)
+     (display (datatype-info-&gt;fields pair-info)) (newline))
+
+}}}
+
+{{{
+;; 3d point example
+
+(define-datatype point3d-type point3d-info
+  &quot;3d point&quot; ((mutable X) (mutable Y) (mutable Z)))
+
+(define-values-with (make-point3d point3d-switch point3d-mutators)
+  (create-aggregate-functions point3d-type))
+
+(define point3d-set-X! (cadr (assoc 'X point3d-mutators)))
+(define point3d-set-Y! (cadr (assoc 'Y point3d-mutators)))
+(define point3d-set-Z! (cadr (assoc 'Z point3d-mutators)))
+ 
+(define (point3d-length X Y Z)
+  (let ((x (vector-ref X 0))
+        (y (vector-ref Y 0))
+        (z (vector-ref Z 0)))
+    (sqrt (+ (* x x) (* y y) (* z z)))))
+
+(define (point3d-scale alpha)
+  (lambda (X Y Z)
+    (let ((x (vector-ref X 0))
+          (y (vector-ref Y 0))
+          (z (vector-ref Z 0)))
+      (make-point3d (* alpha x) (* alpha y) (* alpha z)))))
+
+(define p3d (make-point3d 3 4 5))
+
+((point3d-switch point3d-length error) p3d) ;; 7.07...
+((point3d-switch (point3d-scale -2) error) p3d) ;; [-6 -8 -10]
+
+(point3d-set-Y! p3d -1)
+
+(display ((point3d-switch list error) p3d)) ;; (3 -1 5)
+
+}}}
+
+{{{
+(define-syntax variant-case
+  (syntax-rules (else)
+    ((variant-case &lt;obj&gt;)
+     (error &quot;variant-case: all case exhausted &quot; &lt;obj&gt;))
+    
+    ((variant-case &lt;obj&gt;
+        (else &lt;body&gt; ...))
+     (begin &lt;body&gt; ...))
+    
+    ((variant-case &lt;obj&gt;
+        (&lt;aggregate-switch&gt; (&lt;var&gt; ...) &lt;body&gt; ...)
+        rest ...)
+     ((&lt;aggregate-switch&gt;
+       (lambda (&lt;var&gt; ...) &lt;body&gt; ...)
+       (lambda (&lt;obj&gt;) (variant-case &lt;obj&gt; rest ...)))
+      &lt;obj&gt;))))
+
+
+;; Binary tree example
+
+(define-datatype bin-leaf-type bin-leaf-info &quot;Binary tree leaf&quot; (Data))
+
+(define-values-with (make-bin-leaf bin-leaf-switch bin-leaf-mutators)
+  (create-aggregate-functions bin-leaf-type))
+
+(define-datatype bin-node-type bin-node-info &quot;Binary tree node&quot; (Data Left Right))
+  
+(define-values-with (make-bin-node bin-node-switch bin-node-mutators)
+  (create-aggregate-functions bin-node-type))
+
+; variant-case example
+
+(define (tree-&gt;list bin-tree)
+  (variant-case bin-tree
+    (bin-node-switch (data left right)
+      (list data (tree-&gt;list left) (tree-&gt;list right)))
+    (bin-leaf-switch (data)
+      data)
+    (else (error &quot;Not a bin-tree: &quot; bin-tree))))
+
+(define (map-tree fun bin-tree)
+  (variant-case bin-tree
+    (bin-node-switch (data left right)
+      (make-bin-node (fun data)
+                     (map-tree fun left)
+                     (map-tree fun right)))
+    (bin-leaf-switch (data)
+      (make-bin-leaf (fun data)))
+    (else (error &quot;Not a bin-tree: &quot; bin-tree))))
+
+(define mytree
+  (make-bin-node 'a
+                 (make-bin-node 'b
+                                (make-bin-leaf 'c)
+                                (make-bin-leaf 'd))
+                 (make-bin-node 'e
+                                (make-bin-leaf 'f)
+                                (make-bin-leaf 'g))))
+
+(display (tree-&gt;list (map-tree symbol-&gt;string mytree)))
+(newline)
+
+}}}
+
+{{{
+;; Unforgeable aggregate with built-in assertion checking.
+(define-syntax create-aggregate-with-assertion
+  (syntax-rules ()
+    ((create-aggregate-with-assertion &lt;datatype-designation&gt; (&lt;field&gt; ...) &lt;assertion&gt;)
+     (let ()
+       (define-datatype type type-info &lt;datatype-designation&gt; (&lt;field&gt; ...))
+       (call-with-values (create-aggregate-functions type)
+         (lambda (maker switch mutators)
+           (values (lambda (&lt;field&gt; ...)
+                     (if (&lt;assertion&gt; &lt;field&gt; ...)
+                         (maker &lt;field&gt; ...)
+                         (error &quot;Assertion failed: &quot;
+                                (list &lt;datatype-designation&gt; &lt;field&gt; ...))))
+                   switch)))))))
+
+(display &quot;Interval: &quot;)
+(display 
+ (call-with-values (lambda () (create-aggregate-with-assertion &quot;Interval&quot; (left right) &lt;))
+   (lambda (maker switch)
+     ((switch list error) (maker 2 4))))) ;; Ok
+(newline)
+
+(display &quot;Interval: &quot;)
+(display 
+ (call-with-values (lambda () (create-aggregate-with-assertion &quot;Interval&quot; (left right) &lt;))
+   (lambda (maker switch)
+     ((switch list error) (maker 4 2))))) ;; error
+    
+(newline)
+
+}}}
+</pre>
+    <h2>time</h2>
+    <pre>2011-01-15 16:44:34</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

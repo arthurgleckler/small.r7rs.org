@@ -1,0 +1,60 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki InexactEqvWeaver version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki InexactEqvWeaver version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>69.195.55.172</pre>
+    <h2>name</h2>
+    <pre>InexactEqvWeaver</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Proposed R7RS definition for `eqv?` on numbers ==
+
+[See #477 for detailed background and rationale]
+
+Objects ''obj,,1,,'' and ''obj,,2,,'' are ''substantially different'' if and only if one of the following holds:
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are both numbers, at least one is numerically equal to itself (see `=`), and they are not numerically equal (see `=`) to each other.
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are not both numbers, and they are different (in the sense of `eqv?`).
+
+Inexact numbers ''z,,1,,'' and ''z,,2,,'' are ''operationally equivalent'' if and only if for all procedures ''f'' that can be defined as a finite composition of the standard numerical operations specified in section 6.2.6, `(f z1)` and `(f z2)` either both raise exceptions or yield results that are not substantially different.
+
+The `eqv?` procedure returns `#t` if one of the following holds:
+
+[...]
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are both exact numbers and are numerically equal (see `=`).
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are both inexact numbers, at least one is numerically equal to itself (see `=`), and the implementation is able to prove that ''obj,,1,,'' and ''obj,,2,,'' are operationally equivalent.  Implementations must be able to prove that two inexact numbers with the same internal representation are operationally equivalent.
+
+The `eqv?` procedure returns `#f` if one of the following holds:
+
+[...]
+
+* One of ''obj,,1,,'' and ''obj,,2,,'' is an exact number but the other is an inexact number.
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are exact numbers for which the `=` procedure returns `#f`.
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are inexact numbers, at least one is numerically equal to itself (see `=`), and the implementation is unable to prove that ''obj,,1,,'' and ''obj,,2,,'' are operationally equivalent.
+</pre>
+    <h2>time</h2>
+    <pre>2012-11-25 10:03:00</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

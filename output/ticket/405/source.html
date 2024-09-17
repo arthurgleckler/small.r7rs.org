@@ -1,0 +1,378 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #405</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #405</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-07 04:36:15</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Currently there is no way to inspect an object to see if it's a promise.  This proposal makes promises first-class by adding a `promise?` predicate.  It also requires that if the argument to `make-promise` is a promise, it is returned without rewrapping it, and that if `force` is given a non-promise argument, it returns it unchanged.  (These things cannot be provided by the user without a `promise?` predicate, and are trivial to provide with it.)</pre>
+    <h2>id</h2>
+    <pre>405</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Make promises first-class</pre>
+    <h2>time</h2>
+    <pre>2012-06-12 04:08:03</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-07 04:36:15</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>9</pre>
+    <h2>raw-time</h2>
+    <pre>1349559375963396</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 04:36:15</pre>
+    <h2>Change at time 2012-10-07 04:36:15</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349559375963396</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 04:36:15</pre>
+    <h2>Change at time 2012-10-07 04:36:15</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349559375963396</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 04:36:15</pre>
+    <h2>Change at time 2012-10-03 00:25:48</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>8</pre>
+    <h2>raw-time</h2>
+    <pre>1349198748934066</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-10-03 00:25:48</pre>
+    <h2>Change at time 2012-10-03 00:25:48</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1349198748934066</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-10-03 00:25:48</pre>
+    <h2>Change at time 2012-10-03 00:25:42</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 decided to retract the above requirement.</pre>
+    <h2>oldvalue</h2>
+    <pre>7</pre>
+    <h2>raw-time</h2>
+    <pre>1349198742248539</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-10-03 00:25:42</pre>
+    <h2>Change at time 2012-10-03 00:25:42</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>reopened</pre>
+    <h2>raw-time</h2>
+    <pre>1349198742248539</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-10-03 00:25:42</pre>
+    <h2>Change at time 2012-09-19 10:52:13</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Reopening part of the ticket to retract this requirement: &quot;If force is given a non-promise argument, it returns it unchanged&quot;, because it conflicts with R6RS, which requires an error to be signalled.</pre>
+    <h2>oldvalue</h2>
+    <pre>6</pre>
+    <h2>raw-time</h2>
+    <pre>1348026733948684</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 10:52:13</pre>
+    <h2>Change at time 2012-09-19 10:52:13</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>fixed</pre>
+    <h2>raw-time</h2>
+    <pre>1348026733948684</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 10:52:13</pre>
+    <h2>Change at time 2012-09-19 10:52:13</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>reopened</pre>
+    <h2>oldvalue</h2>
+    <pre>closed</pre>
+    <h2>raw-time</h2>
+    <pre>1348026733948684</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 10:52:13</pre>
+    <h2>Change at time 2012-09-19 10:50:48</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>5</pre>
+    <h2>raw-time</h2>
+    <pre>1348026648829635</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 10:50:48</pre>
+    <h2>Change at time 2012-09-19 10:50:48</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1348026648829635</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 10:50:48</pre>
+    <h2>Change at time 2012-09-19 10:50:48</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1348026648829635</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 10:50:48</pre>
+    <h2>Change at time 2012-08-27 08:58:30</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1346032710094235</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 08:58:30</pre>
+    <h2>Change at time 2012-08-27 08:58:30</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1346032710094235</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 08:58:30</pre>
+    <h2>Change at time 2012-08-27 08:58:30</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1346032710094235</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 08:58:30</pre>
+    <h2>Change at time 2012-08-27 00:49:24</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 voted to add the `promise?` procedure without requiring promises to be disjoint.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1346003364557674</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 00:49:24</pre>
+    <h2>Change at time 2012-08-27 00:49:24</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1346003364557674</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 00:49:24</pre>
+    <h2>Change at time 2012-06-13 06:09:55</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Programmers can do the second two items themselves if the implementation provides
+`promise?`, but they are simple and worth having.  Combined with auto-forcing (with or without insta-forcing of constants), they provide what Per spoke of: laziness is explicit, eagerness is implicit, but the user has full control.
+
+On the other hand, since auto-forcing is not required, there is only trivial cost to implementations who don't wish to provide it, namely the cost of making sure promises are a disjoint type and not just a special case of procedures.
+
+I ran tests against the usual suite of Schemes:
+
+Promises are not thunks, `force` returns any non-promise unchanged : Racket, Gauche, Gambit, Chicken, Chibi, STklos, RScheme, XLisp, UMB, Oaklisp, SXM
+
+Promises are not thunks but can be invoked anyway, `force` returns any non-promise unchanged: !TinyScheme
+
+Promises are not thunks, `force` rejects anything but a promise: Guile, SCM, !SigScheme, Elk, VX, Spark
+
+Promises are thunks, `force` rejects anything else (presumably because it just invokes its argument): Scheme48/scsh, SISC, Chez, Vicare, Larceny, Ypsilon, Mosh, !IronScheme, Scheme 9, Dream, BDC, Schemik, Sizzle, Inlab
+
+No force/delay support: KSi, Shoe, Scheme 7, Rep, Llava, Femtolisp, Dfsch</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1339542595230229</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-06-13 06:09:55</pre>
+    <h2>Change at time 2012-06-13 05:22:00</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1339539720262837</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-06-13 05:22:00</pre>
+    <h2>Change at time 2012-06-13 05:22:00</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>Currently there is no way to inspect an object to see if it's a promise.  This proposal makes promises first-class by adding a `promise?` predicate.  It also requires that if the argument to `make-promise` is a promise, it is returned without rewrapping it, and that if `force` is given a non-promise argument, it returns it unchanged.  (These things cannot be provided by the user without a `promise?` predicate, and are trivial to provide with it.)</pre>
+    <h2>oldvalue</h2>
+    <pre>Currently there is no way to inspect an object to see if it's a promise.  This proposal makes promises first-class by adding a `promise?` predicate.  It also requires that if the argument to `make-promise` is a promise, it is returned without rewrapping it.</pre>
+    <h2>raw-time</h2>
+    <pre>1339539720262837</pre>
+    <h2>ticket</h2>
+    <pre>405</pre>
+    <h2>time</h2>
+    <pre>2012-06-13 05:22:00</pre></body></html>

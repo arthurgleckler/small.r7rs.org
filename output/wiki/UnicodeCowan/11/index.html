@@ -1,0 +1,61 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>UnicodeCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/UnicodeCowan.md">UnicodeCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Unicode&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-11-15 03:14:29</div>
+      <div class="version">11<span class="comment"></span><a href="/wiki/UnicodeCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/UnicodeCowan/11/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Principle 1: No small Scheme implementation is required to support any specific Unicode character or repertoire (collection of characters), with the obvious exception of the ASCII repertoire.</p>
+      <p>Principle 2: Unicode is the predominant character standard today, and a small Scheme implementation's treatment of characters must conform to it, insofar as this does not conflict with Principle 1.</p>
+      <p>From these principles I draw the following detailed conclusions (where &quot;Scheme&quot; means &quot;small Scheme, as proposed by me&quot;):</p>
+      <ol class="number">
+        <li>The <span class="monospace">char-&gt;integer</span> procedure must return an exact integer between <span class="monospace">0</span> and <span class="monospace">#xD7FF</span> or between <span class="monospace">#xE000</span> and <span class="monospace">#x10FFFF</span> when applied to a character supported by the implementation and belonging to the Unicode repertoire.  This integer must be the Unicode scalar value of the character.  Integers between <span class="monospace">#xD800</span> and <span class="monospace">#xDFFF</span> do not correspond to any Unicode character.</li></ol>
+      <p>This is independent of the implementation's internal representation.  For example, in order to support a repertoire of basic Latin and modern Greek characters only, a Scheme implementation might use the ISO 8859-7 encoding internally.  In that encoding, λ (lower-case lambda) is represented as <span class="monospace">#xEB</span>; nevertheless, <span class="monospace">char-&gt;integer</span> must still return <span class="monospace">#x03BB</span> on that character.</p>
+      <p>An ASCII-only Scheme satisfies this requirement automatically, provided it does not deliberately scramble the natural mapping.  (Schemes on EBCDIC systems already have ASCII conversion tables readily available.)</p>
+      <p>If the implementation supports non-Unicode characters, then <span class="monospace">char-&gt;integer</span> must return an exact integer greater than <span class="monospace">#x10FFFF</span> when applied to such characters.  For example, characters with &quot;bucky bits&quot; could be implemented in this way.</p>
+      <ol class="number" start="2">
+        <li>The <span class="monospace">integer-&gt;char</span> procedure, when applied to an exact integer that <span class="monospace">char-&gt;integer</span> returns when applied to some character <span class="monospace">c</span>, must return <span class="monospace">c</span>; that is, <span class="monospace">(integer-&gt;char (char-&gt;integer c)) ==&gt; c</span> for any character <span class="monospace">c</span>.</li></ol>
+      <p>An ASCII-only Scheme also satisfies this requirement automatically, with the same proviso.</p>
+      <ol class="number" start="3">
+        <li>The <span class="monospace">char&lt;?</span> procedure and its relatives behave consistently with <span class="monospace">char-&gt;integer</span>, as R5RS requires.</li></ol>
+      <ol class="number" start="4">
+        <li>The <span class="monospace">char-ci*</span> procedures behave as if <span class="monospace">char-foldcase</span> were applied to their arguments before calling the respective non-<span class="monospace">ci</span> procedures.</li></ol>
+      <ol class="number" start="5">
+        <li>The procedures <span class="monospace">char-{alphabetic,numeric,whitespace,upper-case, lower-case}?</span> return <span class="monospace">#t</span> if their arguments have the Unicode properties Alphabetic, Numeric, White_Space, Uppercase, or Lowercase respectively.  Note that many alphabetic characters (though no ASCII ones) are neither upper nor lower case.</li></ol>
+      <ol class="number" start="6">
+        <li>The <span class="monospace">char-downcase</span> procedure, given an argument that forms the uppercase part of a Unicode upper/lower-case pair, must return the lowercase member of the pair, provided that both characters are supported by the Scheme implementation.  (Turkic casing pairs are ignored.)  If the argument is not the uppercase part of such a pair, it is returned.</li></ol>
+      <ol class="number" start="7">
+        <li>The <span class="monospace">char-upcase</span> procedure works the same way, <i>mutatis mutandis</i>.  Note that many Unicode lowercase characters don't have uppercase equivalents.</li></ol>
+      <ol class="number" start="8">
+        <li>The <span class="monospace">char-foldcase</span> procedure (an extension to R5RS) applies the Unicode simple case-folding algorithm to its argument (ignoring the Turkic mappings).  Mappings that don't accept or don't produce single characters are ignored.</li></ol>
+      <p>In an ASCII-only Scheme, this is equivalent to the <span class="monospace">char-downcase</span> procedure.</p>
+      <ol class="number" start="9">
+        <li>An implementation may forbid some of the characters that it supports from appearing in strings, provided that the characters in the ASCII repertoire must not be forbidden.</li></ol>
+      <ol class="number" start="10">
+        <li>The <span class="monospace">string&lt;?</span> procedure and its relatives are not, <b>contrary to R5RS</b>, required to be a lexicographical extension of the corresponding procedures for characters.  That allows strings to be compared in the native representation without conversion to Unicode.  It also allows, at the other end of the spectrum, fully internationalized ISO 14651 multilingual sorting.  Of course, the usual rules for ordering predicates apply:  <span class="monospace">string=?</span> must be an equivalence relation, <span class="monospace">string&lt;?</span>, <span class="monospace">string=</span>, and <span class="monospace">string&gt;?</span> must be trichotomous, and so on.</li></ol>
+      <ol class="number" start="11">
+        <li>The procedures <span class="monospace">string-{up,down,fold}case</span> (from R6RS) apply the Unicode full uppercasing, lowercasing, and folding algorithms, respectively, to their arguments.  This may cause the result to differ in length from the argument.  What is more, a few characters have case-mappings that depend on the surrounding context.  For example, Σ (Greek capital sigma) normally downcases to σ (Greek small sigma), but at the end of a word it downcases to ς (Greek small final sigma) instead.</li></ol>
+      <p>For an ASCII-only Scheme, <span class="monospace">string-upcase</span> is a straightforward application of <span class="monospace">string-map</span> to <span class="monospace">char-upcase</span>, and <span class="monospace">string-{down,fold}case</span> are straightforward applications of <span class="monospace">string-map</span> to <span class="monospace">char-downcase</span>.</p>
+      <ol class="number" start="12">
+        <li>The <span class="monospace">string-ci*</span> procedures act as if they applied <span class="monospace">string-foldcase</span> to their arguments before calling the non-<span class="monospace">ci</span> versions.</li></ol>
+      <ol class="number" start="13">
+        <li>The <span class="monospace">string-ni*</span> procedures (an extension to R5RS based on the <span class="monospace">string-ci*</span> procedures) do comparisons on the normalized forms of their arguments.  The exact normalization in use is implementation-specified.  For an ASCII-only Scheme, normalization is the identity operation.</li></ol>
+      <ol class="number" start="14">
+        <li>In addition to the identifier characters of the ASCII repertoire specified by R5RS, Scheme implementations may permit any additional repertoire of Unicode characters to be employed in symbols (and therefore identifiers), provided that each such character has a Unicode general category of Lu, Ll, Lt, Lm, Lo, Mn, Mc, Me, Nd, Nl, No, Pd, Pc, Po, Sc, Sm, Sk, So, or Co, or is U+200C or U+200D (the zero-width non-joiner and joiner, respectively, which are needed for correct spelling in Persian, Hindi, and other languages).  No non-Unicode characters may be used explicitly (that is, other than by specifying an escape) in symbols or identifiers.</li></ol>
+      <ol class="number" start="15">
+        <li>All Scheme implementations shall permit the sequence <span class="monospace">\x&lt;hexdigits&gt;;</span> to appear in Scheme symbols (and therefore identifiers).  If the character with the given Unicode scalar value is supported by the implementation, symbols containing such a sequence are equivalent to symbols containing the corresponding character.  The <span class="monospace">symbol-&gt;string</span> procedure may return the actual character or the escape sequence at the implementation's option, but any leading zeros must be removed from the escape sequence.</li></ol>
+      <p>Note that what is said of ASCII also applies to ISO 8859-1 (Latin-1), but not to Windows code page 1252 or other encodings.</p></div></body></html>

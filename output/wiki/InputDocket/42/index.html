@@ -1,0 +1,59 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>InputDocket</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/InputDocket.md">InputDocket</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Input&shy;Docket</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-09-29 06:31:54</div>
+      <div class="version">42<span class="comment"></span><a href="/wiki/InputDocket/history">history</a></div>
+      <div class="source"><a href="/wiki/InputDocket/42/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="WG2InputDocket">WG2 Input Docket</h2>
+      <p>This docket contains work items that need to be voted on for possible inclusion into R7RS-large.  See <a href="/wiki/WG2Dockets">WG2Dockets</a> for other dockets.</p>
+      <p>Bidirectional hash maps:</p>
+      <p>Binary I/O helpers: procedures relevant to reading and writing low-level binary formats, such as</p>
+      <ul>
+        <li>8/16/32/64 bit signed/unsigned integers in little-endian/big-endian/network-endian order</li>
+        <li>null terminated ASCII strings</li>
+        <li>non-byte-aligned bit fields</li>
+        <li>seeking to arbitrary positions</li>
+        <li>reading/writing packed representations of Scheme records</li></ul>
+      <p>(see <a href="http://srfi.schemers.org/srfi-56/srfi-56.html">SRFI 56</a>)</p>
+      <p>Custom I/O ports: <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html">R6RS</a></p>
+      <p>Default exception handler controls:</p>
+      <p>Features, allowing libraries to add:</p>
+      <p>Generators: <a href="/wiki/GeneratorsGauche">GeneratorsGauche</a>, <a href="http://srfi.schemers.org/srfi-41/srfi-41.html">SRFI 41</a> [Red]</p>
+      <p>Greek lambda syntax: define syntax equivalent to &quot;lambda&quot; whose identifier is a single Unicode U+03BB character (http://www.fileformat.info/info/unicode/char/3bb/index.htm)</p>
+      <p>Identifier-syntax: <a href="http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-14.html#node_sec_11.19">R6RS</a></p>
+      <p>R6RS versions of <span class="monospace">real?</span>, <span class="monospace">rational?</span>, <span class="monospace">integer?</span>: these are false if the imaginary part is an inexact zero; the issue here is what to name them to avoid confusion</p>
+      <p>Interrupts, timers, signals:</p>
+      <p>Jiffy cleanup: <a href="http://arcanesentiment.blogspot.com/2012/07/current-jiffy-is-not-usable-portably.html">Arcane Sentiment blog post</a></p>
+      <p>Macro expander(s) available at run time:</p>
+      <p>Maximal and minimal elements of lists and vectors:</p>
+      <p><span class="monospace">number-&gt;string</span> variant with control for significant digits: <a href="http://lists.scheme-reports.org/pipermail/scheme-reports/2011-May/000709.html">Vincent Manis proposal</a>, R6RS</p>
+      <p><span class="monospace">number-&gt;string</span> and <span class="monospace">string-&gt;number</span> with non-ASCII decimal digits: <a href="/wiki/NumberStringUnicode">NumberStringUnicode</a></p>
+      <p>Observable objects: <a href="http://docs.oracle.com/javase/6/docs/api/java/util/Observable.html#clearChanged()">Java</a></p>
+      <p>Port type detector: see <a href="/ticket/177">#177</a></p>
+      <p>R6RS compatibility: whole libraries or cherry-picked procedures:</p>
+      <p>Record external representations: <a href="http://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a></p>
+      <p><span class="monospace">standard-*-port</span> routines:  <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html">R6RS</a></p>
+      <p>Shuffle vectors, sample their contents:</p>
+      <p>Tree library: at least <span class="monospace">tree=?</span> and <span class="monospace">tree-copy</span>, probably Common Lisp <a href="http://www.lispworks.com/documentation/lw50/CLHS/Body/f_sublis.htm">SUBLIS and NSUBLIS</a>, fold, unfold, map ...</p>
+      <p>Thread-local storage:</p>
+      <p>Unquote with multiple arguments:  see <a href="/ticket/123">#123</a></p>
+      <p>User-specified syntax-transformers:</p>
+      <p>Convenience package(s) for commonly desired sets of bindings:</p>
+      <ul>
+        <li>(scheme r7rs-small) - all bindings in the small language</li>
+        <li>(scheme r7rs-red) - the Red Edition's bindings</li></ul></div></body></html>

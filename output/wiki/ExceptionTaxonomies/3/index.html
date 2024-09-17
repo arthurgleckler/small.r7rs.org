@@ -1,0 +1,277 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ExceptionTaxonomies</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ExceptionTaxonomies.md">ExceptionTaxonomies</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Exception&shy;Taxonomies</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-08-30 16:03:01</div>
+      <div class="version">3<span class="comment">Added Chicken information</span><a href="/wiki/ExceptionTaxonomies/history">history</a></div>
+      <div class="source"><a href="/wiki/ExceptionTaxonomies/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Condition/ExceptionTaxonomies">Condition/Exception Taxonomies</h1>
+      <p>This page lists the condition/exception system taxonomies for several Scheme implementations and SRFIs and for R6RS.</p>
+      <h2 id="Bigloo">Bigloo</h2><span class="monospace">  &amp;exception
+    &amp;error
+      &amp;http-error
+        &amp;http-redirection-error
+        &amp;http-status-error
+      &amp;io-error
+        &amp;io-file-not-found-error
+        &amp;io-malformed-url-error
+        &amp;io-parse-error
+        &amp;io-port-error
+          &amp;io-closed-error
+          &amp;io-read-error
+          &amp;io-write-error
+        &amp;io-unknown-host-error
+      &amp;process-exception
+      &amp;type-error
+    &amp;http-redirection
+    &amp;warning
+      &amp;eval-warning
+</span>
+      <h2 id="ChezScheme">Chez Scheme</h2><span class="monospace">  &amp;condition
+    &amp;irritants
+    &amp;message
+    &amp;serious
+      &amp;violation
+        &amp;assertion
+        &amp;implementation-restriction
+          &amp;no-infinities
+          &amp;no-nans
+        &amp;lexical
+        &amp;non-continuable
+        &amp;syntax
+        &amp;undefined
+      &amp;error
+        &amp;i/o
+          &amp;i/o-port
+            &amp;i/o-decoding
+            &amp;i/o-encoding
+          &amp;i/o-read
+          &amp;i/o-write
+          &amp;i/o-invalid-position
+          &amp;i/o-filename
+            &amp;i/o-file-already-exists
+            &amp;i/o-file-does-not-exist
+            &amp;i/o-file-protection
+              &amp;i/o-file-is-read-only
+    &amp;warning
+    &amp;who
+</span>
+      <h2 id="Chicken">Chicken</h2>
+      <p>Chicken supports SRFI-12.</p><span class="monospace">  exn
+    arity
+    type
+    arithmetic
+    i/o)
+      file
+      net
+    bounds
+    runtime
+      limit
+    match
+    syntax
+</span>
+      <h2 id="Gambit">Gambit</h2>
+      <p>Gambit doesn't have a hierarchy, but it does have a set of standard
+  exceptions.</p><span class="monospace">  heap-overflow-exception
+  stack-overflow-exception
+
+  no-such-file-or-directory-exception
+  os-exception
+  unbound-os-environment-variable-exception
+
+  abandoned-mutex-exception
+  deadlock-exception
+  join-timeout-exception
+  scheduler-exception
+  started-thread-exception
+  terminated-thread-exception
+  uncaught-exception
+
+  cfun-conversion-exception
+  multiple-c-return-exception
+  sfun-conversion-exception
+
+  datum-parsing-exception
+
+  expression-parsing-exception
+  unbound-global-exception
+
+  divide-by-zero-exception
+  improper-length-list-exception
+  range-exception
+  type-exception
+
+  keyword-expected-exception
+  nonprocedure-operator-exception
+  number-of-arguments-limit-exception
+  unknown-keyword-argument-exception
+  wrong-number-of-arguments-exception
+
+  error-exception
+</span>
+      <h2 id="Gauche">Gauche</h2><span class="monospace">  &lt;condition&gt;
+    &lt;compound-condition&gt;
+    &lt;message-condition&gt;
+      &lt;error&gt;
+        &lt;io-error&gt;
+          &lt;port-error&gt;
+            &lt;io-closed-error&gt;
+            &lt;io-read-error&gt;
+            &lt;io-unit-error&gt;
+            &lt;io-write-error&gt;
+        &lt;read-error&gt;
+        &lt;system-error&gt;
+        &lt;unhandled-signal-error&gt;
+    &lt;serious-condition&gt;
+      &lt;serious-compound-condition&gt;
+</span>
+      <h2 id="Guile">Guile</h2>
+      <p>Guile implements SRFI 18, SRFI 34, and R6RS exceptions.</p>
+      <h2 id="Ikarus">Ikarus</h2>
+      <p>Ikarus implements R6RS exceptions.</p>
+      <h2 id="Kawa">Kawa</h2>
+      <p>Kawa gets its taxonomy of exceptions from Java.</p>
+      <h2 id="Larceny">Larceny</h2>
+      <p>Larceny implements R6RS exceptions.</p>
+      <h2 id="MIT/GNUScheme">MIT/GNU Scheme</h2><span class="monospace">  serious-condition
+    error
+      simple-error
+      illegal-datum
+        wrong-type-datum
+          wrong-type-argument
+          wrong-number-of-arguments
+        datum-out-of-range
+          bad-range-argument
+        inapplicable-object
+      file-error
+        file-operation-error
+        derived-file-error
+      port-error
+        derived-port-error
+      variable-error
+        unbound-variable
+        unassigned-variable
+      arithmetic-error
+        divide-by-zero
+        floating-point-overflow
+        floating-point-underflow
+      control-error
+        no-such-restart
+      not-loading
+      primitive-procedure-error
+        system-call-error
+    warning
+      simple-warning
+    simple-condition
+    breakpoint
+</span>
+      <h2 id="Racket">Racket</h2><span class="monospace">  exn
+    exn:break
+    exn:fail
+      exn:fail:contract
+        exn:fail:contract:arity
+        exn:fail:contract:divide-by-zero
+        exn:fail:contract:non-fixnum-result
+        exn:fail:contract:continuation
+        exn:fail:contract:variable
+      exn:fail:filesystem
+        exn:fail:filesystem:exists
+        exn:fail:filesystem:version
+      exn:fail:network
+      exn:fail:out-of-memory
+      exn:fail:read
+        exn:fail:read:eof
+        exn:fail:read:non-char
+      exn:fail:syntax
+      exn:fail:unsupported
+      exn:fail:user
+</span>
+      <h2 id="R6RS">R6RS</h2><span class="monospace">  &amp;condition
+    &amp;irritants
+    &amp;message
+    &amp;serious
+      &amp;error
+        &amp;i/o
+          &amp;i/o-filename
+            &amp;i/o-file-already-exists
+            &amp;i/o-file-does-not-exist
+            &amp;i/o-file-protection
+              &amp;i/o-file-is-read-only
+          &amp;i/o-invalid-position
+          &amp;i/o-port
+            &amp;i/o-decoding
+            &amp;i/o-encoding
+          &amp;i/o-read
+          &amp;i/o-write
+      &amp;violation
+         &amp;assertion
+         &amp;non-continuable
+         &amp;implementation-restriction
+         &amp;lexical
+         &amp;syntax
+         &amp;undefined
+    &amp;warning
+    &amp;who
+</span>
+      <h2 id="Scheme48">Scheme48</h2>
+      <p>Scheme48 implements SRFI 34, SRFI 35, and SRFI 36.</p>
+      <h2 id="SCM">SCM</h2>
+      <p>SCM doesn't have an exception system, although it does have a way of handling the following exceptions reported by C code:</p><span class="monospace">  alarm-interrupt
+  arithmetic-error
+  end-of-program
+  out-of-storage
+  profile-alarm-interrupt
+  thrashing
+  user-interrupt
+  virtual-alarm-interrupt
+</span>
+      <h2 id="Scsh">Scsh</h2>
+      <p>Scsh has no condition system.  It does include an exception system for handling errors reported by Unix system calls.</p>
+      <h2 id="SISC">SISC</h2>
+      <p>SISC gets its taxonomy of exceptions from Java.  It also implements SRFI 18, SRFI 34, and SRFI 35.</p>
+      <h2 id="SRFI12:ExceptionHandling">SRFI 12: Exception Handling</h2>
+      <p>Any object can be used to represent a condition in this system.  There is no standard taxonomy of conditions, but there are two types of condition for which special support is included:</p><span class="monospace">  composite condition
+  property condition
+</span>
+      <h2 id="SRFI18:Multithreadingsupport">SRFI 18: Multithreading support</h2><span class="monospace">  abandoned-mutex-exception
+  join-timeout-exception
+  terminated-thread-exception
+  uncaught-exception
+</span>
+      <h2 id="SRFI34:ExceptionHandlingforPrograms">SRFI 34: Exception Handling for Programs</h2>
+      <p>No condition taxonomy is defined.  However, it does refer to SRFI 35 and SRFI 36.</p>
+      <h2 id="SRFI35:Conditions">SRFI 35: Conditions</h2><span class="monospace">  &amp;condition
+    &amp;message
+    &amp;serious
+      &amp;error
+</span>
+      <h2 id="SRFI36:I/OConditions">SRFI 36: I/O Conditions</h2><span class="monospace">  &amp;error
+    &amp;i/o-error
+      &amp;i/o-filename-error
+        &amp;i/o-file-already-exists-error
+        &amp;i/o-file-protection-error
+          &amp;i/o-file-is-read-only-error
+        &amp;i/o-malformed-filename-error
+        &amp;i/o-no-such-file-error
+      &amp;i/o-port-error
+        &amp;i/o-closed-error
+        &amp;i/o-read-error
+        &amp;i/o-write-error
+  &amp;read-error
+</span>
+      <h2 id="STklos">STklos</h2>
+      <p>STklos supports SRFI 34, SRFI 35, and SRFI 36.</p></div></body></html>

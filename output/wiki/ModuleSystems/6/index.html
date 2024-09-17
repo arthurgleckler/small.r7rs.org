@@ -1,0 +1,91 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ModuleSystems</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ModuleSystems.md">ModuleSystems</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Module&shy;Systems</h1>
+    <div class="wiki metadata">
+      <div class="author">aag</div>
+      <div class="time">2010-06-21 02:06:02</div>
+      <div class="version">6<span class="comment">FIxed typo.</span><a href="/wiki/ModuleSystems/history">history</a></div>
+      <div class="source"><a href="/wiki/ModuleSystems/6/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Introduction">Introduction</h2>
+      <p>As the charter states, &quot;the purpose of this work is to facilitate
+sharing of Scheme code.&quot;  To this effect, a module system is
+explicitly given as a requirement in the charter.  We need to consider
+all the different types of module systems supported by R5RS and R6RS
+implementations and come up with a proposal that can gain widespread
+use.</p>
+      <p>Module systems serve the purpose of encapsulating code and managing
+namespaces.  Although <span class="monospace">lambda</span> lets us manage local identifiers,
+it doesn't allow us to encapsulate macros, and it wants for a
+friendlier interface for module-like uses.</p>
+      <p>There are a number of fundamentally different ways in which modules
+can be provided.  The major types of module systems include:</p>
+      <ul>
+        <li>FirstClassEnvironments</li></ul>
+      <p>First-class environments that can be passed as a second argument
+    to <span class="monospace">eval</span> (or the equivalent) can be used as a form of
+    encapsulation, where a module is the set of bindings defined in
+    the environment.  If macros are not first-class, the environments
+    would need some interface for passing back and forth macro
+    bindings between environments.  The disadvantages of this approach
+    are that many implementations do not support such first-class
+    environments, separate compilation and phasing becomes more
+    complicated, and static analysis is almost impossible.</p>
+      <ul>
+        <li>SyntacticModules</li></ul>
+      <p>Another natural approach to creating modules is to build them on
+    top of, and allow them to be composed with, macros, and allowing
+    import forms to be expanded from macros.  It is relatively easy to
+    implement this for non-syntactic bindings only, and one sample
+    portable implementation can be found in
+    <a href="http://mumble.net/~campbell/scheme/lexmod.tar.gz">lexmod</a>.
+    Allowing importing and exporting syntax requires non-portable
+    extensions.  Chez Scheme uses this approach.</p>
+      <ul>
+        <li><a href="/wiki/MetaModules">MetaModules</a></li></ul>
+      <p>An alternative approach to extending a module system is to provide
+    one or more extensible languages in which to compose the modules.
+    Generally, these languages are described within the module itself.
+    PLT takes this approach with multiple languages, which can also
+    modify the read syntax and other features such as the semantics of
+    function application.  Scheme48 takes this approach with a single
+    meta module called the <span class="monospace">config</span> module, which is globally extended
+    when you want to add new module syntax.  In either of these cases,
+    you obtain the flexibility to extend the module syntax with new
+    features, but at the same time provide a separation between the
+    module meta-info and the actual body of the module itself,
+    allowing a certain amount of static analysis without actually
+    expanding the module.</p>
+      <ul>
+        <li>StaticModules</li></ul>
+      <p>R6RS provides a simple static module syntax which provides just
+    the basics needed for importing and exporting (optionally renamed)
+    identifiers from other modules.  Neither the module itself nor the
+    import or export forms may be expanded from macros, so the only
+    way to extend the syntax is with future standardization efforts.
+    The primary reason a static module system is desirable is because
+    by specifying only the syntax it can be implemented by any of the
+    above module systems.  Implementations can then extend the syntax
+    as needed when not concerned with portability, but a common ground
+    exists when no advanced features are needed.</p>
+      <h2 id="AdditionalIssues">Additional Issues</h2>
+      <ul>
+        <li><a href="/wiki/ModuleSyntax">ModuleSyntax</a></li>
+        <li><a href="/wiki/ModuleAdvancedFeatures">ModuleAdvancedFeatures</a></li></ul>
+      <h2 id="ExistingProposals">Existing Proposals</h2>
+      <ul>
+        <li><a href="http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-10.html#node_chap_7">R6RS</a> (the default choice)</li>
+        <li><a href="/wiki/ModulesAndPackagesArcfide">ModulesAndPackagesArcfide</a></li>
+        <li><a href="/wiki/ModulesShinn">ModulesShinn</a></li></ul></div></body></html>

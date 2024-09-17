@@ -1,0 +1,124 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki StandardDocket version 86</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki StandardDocket version 86</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>StandardDocket</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== WG2 Standard Docket ==
+
+This is a list of work items that WG2 has voted to work on, and proposals for those work items.  If no more than one proposal gets written for an item, the item may migrate to the ConsentDocket.  See [wiki:WG2Dockets WG2Dockets] for other dockets.
+
+Applicable record instances: [http://www.r6rs.org/formal-comments/comment-6.txt R6RS formal comment]
+
+Assertions: [http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-14.html#node_idx_750 R6RS], R6RS with optional message and irritants.
+
+Binary heap: BinaryHeapsCowan
+
+Container conversion: See BytevectorsCowan, NumericVectorsCowan, and [http://trac.sacrideo.us/wg/wiki/WG1Ballot6Results#a433fullconversioncycleforcontainers WG1 ballot options]
+
+Continuation API:  [http://repository.readscheme.org/ftp/papers/sw2001/feeley.pdf Feeley's paper] (PDF)
+
+Date and time arithmetic: TimeAdvancedCowan plus TimePeriodsCowan, [http://srfi.schemers.org/srfi-19/srfi-19.html SRFI 19]
+
+Date-time parser: [https://code.google.com/p/hato/source/browse/hato-date.scm Hato date parser], [http://srfi.schemers.org/srfi-19/srfi-19.html SRFI 19]
+
+Evaluator arguments to procedures like `load`: see #277
+
+Extended exact numbers:  ExtendedRationalsCowan [Orange]
+
+File system directories (reading): [http://www.scsh.net/docu/html/man-Z-H-4.html#node_sec_3.3 SCSH directory stream interface], DirectoryPortsCowan, `directory-files` to return a list of all files in the dir (in WG1 vote order) [Yellow]
+
+File system directories (creation, removal): DirectoriesCowan
+
+Flonum arithmetic: FlonumsCowan [Orange]
+
+Futures:  [http://docs.racket-lang.org/reference/futures.html Racket API]
+
+`hex-digit-value`: same as `digit value`, but understands A-F and a-f too
+
+Homogeneous numeric arrays: [http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-3.html#node_chap_2, R6RS], [http://srfi.schemers.org/srfi-4/srfi-4.html SRFI 4], [http://srfi.schemers.org/srfi-63/srfi-63.html SRFI 63] (supersedes SRFI 25 and SRFI 47; lexical syntax in [http://srfi.schemers.org/srfi-58/srfi-58.html SRFI 58]), [http://srfi.schemers.org/srfi-66/srfi-66.html SRFI 66], [http://srfi.schemers.org/srfi-74/srfi-74.html SRFI 74], NumericVectorsCowan [Orange]
+
+`if` with arbitrarily many arguments: [http://dpk.io/r7rs/naryif-20130406 David Kendal's rationale]
+
+Library declarations: LibraryDeclarationsCowan
+
+Mailboxes, channels, synchronized queues: [http://www.s48.org/1.9/manual/manual-Z-H-8.html#node_sec_7.8 Scheme48 from Concurrent ML]
+
+`make-error-object`: constructs error object without raising it
+
+Memoization: [wiki:Memoize] (not a proposal yet), [http://planet.racket-lang.org/display.ss?package=memoize.plt&amp;owner=dherman Racket], [http://hackage.haskell.org/package/memoize-0.1/docs/Data-Function-Memoize.html Haskell]
+
+Message digests (CRC, MD5, SHA1, SHA2):
+
+Multiple values passed through =&gt; in `cond`: see #90 
+
+Mutable environments for `eval`:  MutableEnvironmentsCurtisCowan
+
+Mutexes, condition variables: [http://srfi.schemers.org/srfi-18/srfi-18.html SRFI 18]
+
+NaN dissector API (sign, quiet/signaling status, and integer tag): NanMedernach
+
+Natural number predicates (from WG1):  `exact-positive-integer?` and `exact-non-negative-integer?`.
+
+`number-&gt;string` and `string-&gt;number` with non-ASCII decimal digits: NumberStringUnicode
+
+Octet vectors, bytevectors, blobs: NumericVectorsCowan + StringBytevectorConversionCowan
+
+Optional arguments (other than by `case-lambda`): [http://mumble.net/~campbell/proposals/optional.text OptionalsRiastradh]
+
+Procedure arity inspection: [http://srfi.schemers.org/srfi-102/srfi-102.html SRFI 102], [http://srfi.schemers.org/srfi-102/mail-archive/msg00011.html Dybvig's proposal]
+
+Processes (system, popen, etc): SystemCommandCowan + ProcessPortsCowan
+
+Raw strings:  &lt;&lt;, &quot;&quot;&quot;...&quot;&quot;&quot;, [http://srfi.schemers.org/srfi-109/srfi-109.html SRFI 109]
+
+Record introspection: [http://srfi.schemers.org/srfi-99/srfi-99.html SRFI 99]
+
+`Record-let`: #45
+
+REPL facilities: ReplCowan
+
+Shift and reset: [https://github.com/tonyg/pgg/blob/master/shift-reset.scm Scheme48], [http://docs.racket-lang.org/reference/cont.html Racket]
+
+Symbol library:  SymbolsCowan
+
+`syntax-case` (voted down, but restored by popular demand): [http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-13.html R6RS]
+
+TCP protocol: NetworkPortsCowan
+
+Thread-local storage: [http://docs.oracle.com/javase/6/docs/api/java/lang/ThreadLocal.html Java]
+
+Threads:  ThreadsCowan, [http://srfi.schemers.org/srfi-18/srfi-18.html SRFI 18]
+
+UDP protocol:  DatagramChannelsCowan
+
+Undefined value API: see #49
+
+Unicode character database: UcdCowan
+
+Unicode normalization: [http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-2.html#node_idx_58 R6RS], `string-ni=?` and friends (from earlier R7RS-small drafts).
+</pre>
+    <h2>time</h2>
+    <pre>2017-08-28 07:58:47</pre>
+    <h2>version</h2>
+    <pre>86</pre></body></html>

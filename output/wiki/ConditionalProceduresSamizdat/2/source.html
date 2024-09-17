@@ -1,0 +1,70 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ConditionalProceduresSamizdat version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ConditionalProceduresSamizdat version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>ConditionalProceduresSamizdat</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>These are Scheme procedures that correspond to basic syntax.  They are derived from [https://github.com/danfuzz/samizdat/blob/master/doc/library-guide/If.md the If class of Samizdat].
+
+`(begin-procedure `''thunk'' ...`)`
+
+Invokes ''thunks'' in order, and returns what the last thunk returns, or an unspecified value if there are no thunks.
+
+`(if-procedure `''pred-thunk then-thunk'' [ ''else-thunk'' ]`)`
+
+Invokes ''pred-thunk''.  If it returns true, invokes ''then-thunk'' and returns what it returns.  Otherwise, invokes ''else-thunk'' and returns what it returns, or if ''else-thunk'' is not specified, returns an unspecified value.
+
+`(if-not-procedure `''pred-thunk else-thunk''`)`
+
+Invokes ''pred-thunk''.  If it returns true, returns an unspecified value.  Otherwise, invokes ''else-thunk'' and returns what it returns.
+
+`(value-procedure `''test-thunk then-proc else-thunk''`)`
+
+Invokes ''test-thunk''.  If it returns true, invokes ''then-proc'' on the returned value and returns what it returns.  Otherwise, invokes ''else-thunk'' and returns what it returns.
+
+`(case-procedure `''value-thunk thunk-alist'' [ ''else-thunk'' ]`)`
+
+Invokes ''value-thunk'', and searches ''thunk-alist'' as if by `assv` for the value it returns.  If there is no such entry in ''thunk-alist'', invokes ''else-thunk'' and returns what it returns, or returns an unspecified value if ''else-thunk'' is not provided.  If there is an entry in ''thunk-alist'', its cdr is invoked as a thunk, and `case-procedure` returns what the thunk returns.
+
+`(and-procedure `''thunk'' ...`)`
+
+Invokes each ''thunk'' in the order given, and returns `#f` immediately if any of them return `#f`.  Otherwise returns the value of the last thunk, or `#t` if there are none.
+
+`(or-procedure `''thunk'' ...`)`
+
+Invokes each ''thunk'' in the order given, and if any of them returns true, `or-procedure` returns that value immediately.  Otherwise returns `#f`.
+
+`(loop-procedure `''thunk''`)`
+
+Invokes ''thunk'' repeatedly.  Does not return.
+
+`(while-procedure `''thunk''`)`
+
+Invokes ''thunk'' repeatedly until it returns `#f`.  Returns an unspecified value.
+
+
+</pre>
+    <h2>time</h2>
+    <pre>2014-12-22 15:42:13</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

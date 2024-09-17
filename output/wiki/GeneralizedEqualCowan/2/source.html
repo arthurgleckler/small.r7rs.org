@@ -1,0 +1,47 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki GeneralizedEqualCowan version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki GeneralizedEqualCowan version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>74.68.121.27</pre>
+    <h2>name</h2>
+    <pre>GeneralizedEqualCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Generalized `equal?` predicate ==
+
+`(generalized-equal? `''obj1 obj2'' [ ''='' [ ''string=?'' [ ''char=?'' [ ''symbol=?'' [ ''recursive=?'' ] ] ] ] ] `)`
+
+Compares ''obj1'' and ''obj2'' for equality.  If both are pairs, vectors, or bytevectors, or belong to the same implementation-defined container types, returns `#t` if they are equal in length and the same call to `generalized-equal?` returns `#t` on all the components.  If both are numbers, they are compared with the procedure ''=''; if both are characters, they are compared with the procedure ''char=?''; if both are strings, they are compared with the procedure ''string=?''; if both are symbols, they are compared with the procedure ''symbol=?''.  The default values of these are `=`, `char=?`, `string=?`, and `symbol=?` respectively.
+
+In all other cases, the procedure ''recursive=?'' is invoked with three arguments:  ''obj1'', ''obj2'', and a two-argument procedure which returns what `generalized-equal?` returns given the seven arguments passed to or defaulted on it in this call.  This allows ''recursive=?'' to return whatever it likes on atomic types it knows about, and to invoke its third argument on the components of composite types it knows how to descend into.  It is recommended that when ''recursive=?'' receives arguments it does not know how to handle, that it invokes `eqv?` on them.  The default value of ''recursive=?'' always applies `eqv?` to its first two arguments.
+
+== Objections ==
+
+It does not permit implementation-defined container types to be different in aspects which either are not &quot;components&quot; (if that is narrowly defined) or which should be compared by means other than `generalized-equal?`. Furthermore, it requires implementation-defined container types to have a notion of length instead of shape.
+
+The four default arguments for builtin types strikes me as a wart, in that it is not extensible to a future version which has additional builtin types.
+
+The language for the argument to ''recursive=?'' is a little unclear.
+
+It is not possible to interpose on specific types of containers without building a full wrapper around `generalized-equal?`, because the built-in-containers case comes before ''recursive=?''. This means that it is a breaking change for an implementation to *add support for* a given container type to `generalized-equal?`, because an application might have been specially handling it.</pre>
+    <h2>time</h2>
+    <pre>2012-11-29 14:05:15</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

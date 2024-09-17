@@ -1,0 +1,256 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImmutableDataStructuresWortman</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImmutableDataStructuresWortman.md">ImmutableDataStructuresWortman</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Immutable&shy;Data&shy;Structures&shy;Wortman</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-06-19 10:34:39</div>
+      <div class="version">13<span class="comment">Moved draft 2 of imap-update into place</span><a href="/wiki/ImmutableDataStructuresWortman/history">history</a></div>
+      <div class="source"><a href="/wiki/ImmutableDataStructuresWortman/13/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Introduction">Introduction</h1>
+      <p>This proposal defines <i>immutable</i> data structures for queues, sets, and maps. A structure is immutable when all its operations leave the structure unchanged. Note that none of the procedures specified here ends with a !.</p>
+      <p>Immutable structures are sometimes called <i>persistent</i> and are closely related to <i>pure-functional</i> (a.k.a. <i>pure</i>) structures. The availability of immutable data structures facilitates writing efficient programs in the pure-functional style.</p>
+      <h1 id="Efficiencybounds">Efficiency bounds</h1>
+      <p>We specify required time efficiency upper bounds using big-O notation. We note when, in some cases, there is &quot;slack&quot; between the required bound and the theoretically optimal bound for an operation. Implementations may use data structures with amortized time bounds, but should document which bounds hold in only an amortized sense. The use of randomized data structures with expected time bounds is discouraged.</p>
+      <h1 id="Deque">Deque</h1>
+      <p>A deque (conventionally pronounced &quot;deck&quot;) is a queue data structure that supports efficient manipulation of either of its ends. It may be used in place of a (LIFO) stack or (FIFO) queue.</p>
+      <p>The <i>unlabeled finger tree</i> data structure can meet all these requirements rather conveniently.</p>
+      <h3 id="Construction">Construction</h3><span class="monospace">(ideque [element...])
+</span>
+      <p>Create a new deque containing <span class="monospace">element...</span>. The leftmost element (if any) will be at the front of the deque and the rightmost element (if any) will be at the back. Takes O(n) time, where n is the number of elements.</p>
+      <h3 id="Queries">Queries</h3><span class="monospace">(ideque? x)
+(ideque-empty? deque)
+(ideque-length deque)
+</span>
+      <p><span class="monospace">ideque?}}} and {{{ideque-empty?}}} take O(1) time; {{{ideque-length</span> may take O(n) time, though O(1) is optimal.</p>
+      <h3 id="Queueoperations">Queue operations</h3><span class="monospace">(ideque-front deque)
+(ideque-back deque)
+</span>
+      <p>Return the front/back element. It is an error for <span class="monospace">deque</span> to be empty. Each takes O(1) time.</p><span class="monospace">(ideque-pop-front deque)
+(ideque-pop-back deque)
+</span>
+      <p>Return a new deque with the front/back element removed. It is an error for <span class="monospace">deque</span> to be empty. Each takes O(1) time.</p><span class="monospace">(ideque-push-front deque x)
+(ideque-push-back deque x)
+</span>
+      <p>Return a new deque with <span class="monospace">x}}} pushed to the front/back of {{{deque</span>. Each takes O(1) time.</p>
+      <h3 id="Miscellaneous">Miscellaneous</h3><span class="monospace">(ideque-append deque...)
+</span>
+      <p>Return a new deque with the contents of the first argument deque followed by the others. Takes O(kn) time, where k is the number of deques and n is the number of elements involved, though O(k log n) is possible.</p>
+      <h3 id="Conversion">Conversion</h3><span class="monospace">(list-&gt;ideque list)
+(ideque-&gt;list deque)
+</span>
+      <p>Conversion between deque and list structures. FIFO order is preserved, so the front of a list corresponds to the front of a deque. Each operation takes O(n) time.</p>
+      <h1 id="Set">Set</h1>
+      <p>A sorted set data structure stores a finite collection of unique orderable (a.k.a. comparable or sortable) elements.</p>
+      <p>These requirements can be satisfied by many flavors of <i>self-balancing binary trees.</i> Red-black trees, 1-2 brother trees, and labeled 2-3 finger trees are particularly convenient in an immutable context.</p>
+      <h3 id="Orderpredicates">Order predicates</h3>
+      <p>An <i>order predicate</i> for a universe of orderable elements is a procedure <span class="monospace">precedes?}}} such that, for set elements of the universe {{{x}}} and {{{y</span>,</p><span class="monospace">(precedes? x y)
+</span>
+      <p>returns non-<span class="monospace">#false}}} iff {{{x}}} precedes {{{y}}} in the set's ordering. It returns {{{#false}}} when {{{x}}} succeeds (comes after) {{{y</span> or when the elements are tied for the same position.</p>
+      <p>It is essential that order predicates return <span class="monospace">#false</span> in the case of equal elements, as implementations may test for element equality with expressions of the form</p><span class="monospace">(and (not (precedes? x y))
+     (not (precedes? y x)))
+</span>
+      <p>Note that <span class="monospace">&lt;}}}, {{{char&lt;?}}}, and {{{string&lt;?</span> are valid order predicates for sets of numbers, characters, and strings, respectively.</p>
+      <p>The time bounds stated below are all based on the assumption that evaluating an order predicate takes O(1) time.</p>
+      <h3 id="Deduplicationpolicy">Deduplication policy</h3>
+      <p>All elements of a set must be unique, which complicates operations that produce sets from collections that may contain duplicates. The procedures described consintely follow a <i>least recently used</i> removal policy. That means that, when an operation encounters two elements that are equal according to the order predicate, the one that was encountered earlier is removed from the set and replaced with the element that was encountered later.</p>
+      <h3 id="Construction">Construction</h3><span class="monospace">(iset precedes? [element...])
+</span>
+      <p>Return a new set using the order predicate <span class="monospace">precedes?}}} and containing elements {{{element...}}}. If any elements are equal according to {{{precedes?</span>, only the rightmost of them is retained. O(n log n) time.</p>
+      <h3 id="Set-widequeries">Set-wide queries</h3><span class="monospace">(iset? x)
+(iset-empty? set)
+(iset-size set)
+(iset-order-predicate set)
+</span>
+      <p><span class="monospace">iset-size</span> may take O(n) time, though O(1) is optimal. The other procedures take O(1) time.</p>
+      <h3 id="Set-theoreticoperations">Set-theoretic operations</h3><span class="monospace">(iset-union set...)
+(iset-intersection set...)
+(iset-difference left set...)
+(iset-xor set1 set2)
+</span>
+      <p>Return a new set containing the union/intersection/difference/symmetric difference of the arguments. All the arguments must be sets sharing an equivalent order predicate. The set operator is applied in a left-associative order. When an element is a member of multiple arguments to <span class="monospace">set-union</span>, the object from the rightmost argument is retained. May take O(kn log n) time, where k is the number of sets and n is the number of elements involved, though O(kn) time is optimal.</p>
+      <h3 id="Elementqueries">Element queries</h3><span class="monospace">(iset-member? set x)
+</span>
+      <p>Returns non-<span class="monospace">#false}}} iff {{{x}}} is an element of {{{set}}}, or {{{#false</span> otherwise. Takes O(log n) time.</p><span class="monospace">(iset-min set)
+(iset-max set)
+</span>
+      <p>Returns the least/greatest element of <span class="monospace">set}}}. It is an error for {{{set</span> to be empty. Takes O(log n) time; O(1) is optimal.</p>
+      <h3 id="Elementoperations">Element operations</h3><span class="monospace">(iset-update set x present-proc absent-proc)
+</span>
+      <p>A continuation-based universal update procedure. Attempts to find an element <span class="monospace">match}}} equal to {{{x}}} in {{{set}}} according to the order predicate. When such a {{{match</span> is found, calls</p><span class="monospace">(present-proc match update remove)
+</span>
+      <p>which must either tail-call</p><span class="monospace">(update new-element ret)
+</span>
+      <p>to replace <span class="monospace">match}}} with {{{new-element</span>, or tail-call</p><span class="monospace">(remove ret)
+</span>
+      <p>to remove <span class="monospace">match}}} from {{{set}}}. In either case {{{ret}}} will be one of the values returned from the enclosing {{{iset-update</span> call.</p>
+      <p>When no such <span class="monospace">match}}} is found, {{{iset-update</span> calls</p><span class="monospace">(absent-proc insert ignore)
+</span>
+      <p>which should either tail-call</p><span class="monospace">(insert ret)
+</span>
+      <p>to insert <span class="monospace">x}}} into {{{set</span>, or else tail-call</p><span class="monospace">(ignore ret)
+</span>
+      <p>to leave <span class="monospace">set}}} unchanged. Again, {{{ret}}} will be returned from the enclosing {{{iset-update</span> call.</p>
+      <p>In any case, <span class="monospace">iset-update</span> returns</p><span class="monospace">(values new-set ret)
+</span>
+      <p>where <span class="monospace">new-set}}} is a set reflecting the indicated modification, if any; and {{{ret</span> is the return value produced by one of the continuations. It runs in O(log n) time.</p>
+      <p>(This procedure is based on an analogous procedure for hash tables suggested by Alexey Radul and attributed to Taylor Campbell.)</p><span class="monospace">(iset-find set x [absent-thunk])
+</span>
+      <p>Returns the element <span class="monospace">match}}} equal to {{{x}}} in {{{set}}}, or the result of evaluating {{{(absent-thunk)}}} if no such element exists. If {{{absent-thunk}}} is unspecified then a default procedure that always returns {{{#false</span> is used. Takes O(log n) time.</p><span class="monospace">(iset-include set x)
+(iset-exclude set x)
+</span>
+      <p>Return a new set that certainly does/doesn't include <span class="monospace">x}}}. {{{iset-include}}} may replace an object equal to {{{x}}} already in {{{set</span>, if any. Each operation takes O(log n) time.</p><span class="monospace">(iset-predecessor set x [absent-thunk])
+(iset-successor set x [absent-thunk])
+</span>
+      <p>Returns the element that immediately precedes/succeeds <span class="monospace">x}}} in {{{set}}}'s ordering. If no such element exists because {{{x}}} is the minimum/maximum element, or because {{{set}}} is empty, returns the result of evaluating {{{(absent-thunk)}}}. If {{{absent-thunk}}} is unspecified then a default procedure that always returns {{{#false</span> is used. Takes O(log n) time.</p>
+      <h3 id="Rangequeries">Range queries</h3><span class="monospace">(iset-between set least include-least most include-most)
+</span>
+      <p>Returns a new set containing the elements of <span class="monospace">set}}} in the interval between {{{least}}} and {{{most}}}. If {{{include-least}}}/{{{include-most}}} is non-{{{#false}}} then the result includes an element equal to {{{least}}}/{{{most</span> respectively; otherwise those elements are not included. Takes O(k log k + log n) time, where n is the number of elements in the set and k is the number of elements returned; O(k + log n) is optimal.</p><span class="monospace">(iset-range&lt; set x)
+(iset-range&lt;= set x)
+(iset-range= set x)
+(iset-range&gt;= set x)
+(iset-range&gt; set x)
+</span>
+      <p>Returns a new set containing only the elements of <span class="monospace">set}}} that are less/less-or-equal/equal/greater-or-equal/greater than {{{x</span>. Takes O(k log k + log n) time, where n is the number of elements in the set and k is the number of elements returned; O(k + log n) is optimal.</p>
+      <p>Note that since set elements are unique, <span class="monospace">iset-range=</span> returns a set of at most one element.</p>
+      <h3 id="Filter,fold,map">Filter, fold, map</h3><span class="monospace">(iset-filter predicate? set)
+</span>
+      <p>Returns a new set containing only those elements <span class="monospace">x}}} for which {{{(predicate? x)}}} returns non-{{{#false</span>. Takes O(n log n) time; O(n) is optimal.</p><span class="monospace">(iset-fold proc base set)
+</span>
+      <p>The fundamental set iterator. Equivalent to, but may be more efficient than,</p><span class="monospace">(fold proc base (iset-&gt;ordered-list set))
+</span>
+      <p>Takes O(n) time.</p><span class="monospace">(iset-map/monotone proc set [precedes?])
+</span>
+      <p>Returns a new set containing the elements <span class="monospace">(proc x)}}} for every {{{x}}} in {{{set}}}. {{{proc}}} must be a ''monotone'' unary procedure that preserves the order of set elements. Observe that mapping a set of unique elements with a monotone function yields a new set of unique elements, so element uniqueness follows from the monotonicity assumption. If {{{precedes?}}} is given, it is the order predicate of the new set; otherwise the new set uses the same order predicate as {{{set</span>. Takes O(n) time.</p><span class="monospace">(iset-map proc set [precedes?])
+</span>
+      <p>As <span class="monospace">iset-map/monotone}}}, except the {{{proc</span> is not required to be monotone. When multiple elements are mapped to the same value, only the value originating from the greatest unmapped element is retained. O(n log n) time.</p>
+      <h3 id="Conversion">Conversion</h3><span class="monospace">(iset-&gt;ordered-list set)
+</span>
+      <p>Returns a list containing the elements of <span class="monospace">set</span> in increasing order. O(n) time.</p><span class="monospace">(ordered-list-&gt;iset precedes? list)
+</span>
+      <p>Returns a set containing the elements of <span class="monospace">list}}} and using order predicate {{{precedes?}}}. It is an error for {{{list</span> to be anything other than a proper list of elements in increasing order. O(n log n) time; O(n) is optimal.</p><span class="monospace">(list-&gt;iset precedes? list)
+</span>
+      <p>Returns a set containing the elements of <span class="monospace">list}}} and using order predicate {{{precedes?}}}. {{{list}}} must be a proper list, but may contain duplicates and need not be in order. When a subset of input elements are equal according to {{{precedes?</span>, only the last occurrence is retained. O(n log n) time.</p>
+      <h3 id="Elementcomparison">Element comparison</h3><span class="monospace">(iset-element&lt;? set x y)
+(iset-element=? set x y)
+(iset-element&gt;? set x y)
+</span>
+      <p>These procedures compare <span class="monospace">x}}} to {{{y}}} according to {{{set}}}'s order predicate and the conventional meaning of {{{&lt;}}}, {{{=}}}, and {{{&gt;</span>.</p>
+      <h1 id="Maps">Maps</h1>
+      <p>A map data structure stores key-value associations from a set of keys with an order predicate to arbitrary value objects. It is an alternative to an association list or hash table, which also store key-value associations, but with different key constraints and efficiency guarantees.</p>
+      <p>In the same way that a list of key-value dotted pairs can implement an association list, a set of key-value dotted pairs can implement a map. Implementations may use this approach, or may implement a distinct data structure specific to maps.</p>
+      <h3 id="Construction">Construction</h3>
+      <h3 id="Map-widequeries">Map-wide queries</h3><span class="monospace">(imap? x)
+(imap-empty? map)
+(imap-size map)
+(imap-order-predicate map)
+</span>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h3 id="Set-theoreticoperations">Set-theoretic operations</h3><span class="monospace">(imap-union map...)
+(imap-intersection map...)
+(imap-difference map...)
+(imap-xor map1 map2)
+</span>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h3 id="Elementqueries">Element queries</h3><span class="monospace">(imap-member? map key)
+(imap-min-key map)
+(imap-max-key map)
+</span>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p><span class="monospace">(imap-min-value map)
+(imap-max-value map)
+</span>
+      <p>Returns the value associated with <span class="monospace">(imap-min-key map)}}} and {{{(imap-max-key map)</span> respectively. O(log n) time; O(1) is optimal.</p>
+      <h3 id="Elementoperations">Element operations</h3><span class="monospace">(imap-update map key absent-proc present-proc)
+</span>
+      <p>A continuation-based universal update procedure. Attempts to find a key <span class="monospace">key-match}}} equal to {{{key}}} in {{{map}}}, and its associated {{{value}}}. When such no such {{{key-match</span> is found, returns the result of calling</p><span class="monospace">(absent-proc insert)
+</span>
+      <p>. <span class="monospace">insert</span> is a procedure such that</p><span class="monospace">(insert new-value)
+</span>
+      <p>returns a version of <span class="monospace">map}}} in which {{{key}}} is associated with {{{new-value</span>.</p>
+      <p>When <span class="monospace">key-match</span> exists, returns the result of calling</p><span class="monospace">(present-proc key-match value replace remove)
+</span>
+      <p>. <span class="monospace">replace</span> is a procedure such that</p><span class="monospace">(replace new-value)
+</span>
+      <p>returns a new version of <span class="monospace">map}}} in which the {{{key}}} maps to {{{new-value}}} instead of {{{value</span>.</p>
+      <p><span class="monospace">remove</span> is a thunk such that</p><span class="monospace">(remove)
+</span>
+      <p>returns a new version of <span class="monospace">map}}} with no association for {{{key</span>.</p>
+      <p>The <span class="monospace">imap-update}}}, {{{insert}}}, {{{replace}}}, and {{{remove}}} procedures may take O(log n) time each. Thus if {{{absent-proc}}} and {{{present-proc</span> take constant (or even O(log n)) time and call their passed-in continuations at most once (or even any constant number of times), the entire update process takes O(log n) time.</p><span class="monospace">(imap-find map key [absent-thunk])
+</span>
+      <p>Returns the value associated with <span class="monospace">key}}} in {{{map}}}, or the result of evaluating {{{(absent-thunk)}}} if no such value exists. If {{{absent-thunk}}} is unspecified then a default procedure that always returns {{{#false</span> is used. O(log n) time.</p><span class="monospace">(imap-include map key value)
+(imap-exclude map key)
+</span>
+      <p>Return a new set that certainly does/doesn't include an association from <span class="monospace">key}}}. {{{imap-include}}} will replace any prior association from {{{key}}} that might exist in {{{map</span>. O(log n) time.</p><span class="monospace">(imap-key-predecessor map key [absent-thunk])
+(imap-key-successor map key [absent-thunk])
+</span>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h3 id="Rangequeries">Range queries</h3><span class="monospace">(imap-between map least include-least most include-most)
+</span>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures. (Least and most are keys.)</p><span class="monospace">(imap-range&lt; map key)
+(imap-range&lt;= map key)
+(imap-range= map key)
+(imap-range&gt;= map key)
+(imap-range&gt; map key)
+</span>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h3 id="Filter,fold,map">Filter, fold, map</h3><span class="monospace">(imap-filter proc set)
+</span>
+      <p>Returns a new set containing only those associations for which <span class="monospace">(proc key value)}}} returns non-{{{#false</span>. O(n log n) time; O(n) is optimal.</p><span class="monospace">(imap-fold proc base map)
+</span>
+      <p>The fundamental map iterator. Calls</p><span class="monospace">(proc key value accum)
+</span>
+      <p>successively to accumulate a value initialized to <span class="monospace">base</span>. O(n) time.</p><span class="monospace">(imap-map-values proc map)
+</span>
+      <p>Returns a new map where each <span class="monospace">value</span> is replaced with the result of evaluating</p><span class="monospace">(proc key value)
+</span>
+      <p>for that value's key. Takes O(n) time.</p><span class="monospace">(imap-map/monotone proc map [precedes?])
+</span>
+      <p>Returns a new map containing the association values returned by calls to</p><span class="monospace">(proc key value)
+</span>
+      <p>for each key-value association in <span class="monospace">map}}}. {{{proc}}} must return {{{(values new-key new-value)}}}. The key mapping must be a ''monotone,'' preserving the order and uniqueness of keys. The value mapping need not be monotone. If {{{precedes?}}} is given, it is the key order predicate of the new map; otherwise the new map uses the same order predicate as {{{map</span>. Takes O(n) time.</p><span class="monospace">(imap-map proc map [precedes?])
+</span>
+      <p>As <span class="monospace">imap-map/monotone}}}, except the {{{proc}}} is not required to be monotone. When multiple keys are mapped to the same {{{new-key</span>, only the association originating from the greatest pre-mapped key is retained. O(n log n) time.</p>
+      <h3 id="Conversion">Conversion</h3><span class="monospace">(imap-&gt;ordered-alist map)
+</span>
+      <p>Returns an association list containing the associations of <span class="monospace">map</span> in increasing order by key. O(n) time.</p><span class="monospace">(imap-keys map)
+</span>
+      <p>Returns a set containing the keys of <span class="monospace">map</span>. O(n log n) time; O(n) is optimal.</p><span class="monospace">(imap-values map)
+</span>
+      <p>Returns a list containing the values of <span class="monospace">map</span> in increasing order by key. O(n) time.</p><span class="monospace">(ordered-alist-&gt;imap precedes? alist)
+</span>
+      <p>Returns a map containing the associations of <span class="monospace">alist}}} and using order predicate {{{precedes?}}}. It is an error for {{{list</span> to be anything other than a proper association list in increasing order by key. O(n log n) time; O(n) is optimal.</p><span class="monospace">(alist-&gt;imap precedes? alist)
+</span>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h3 id="Keycomparison">Key comparison</h3><span class="monospace">(imap-key&lt;? map x y)
+(imap-key=? map x y)
+(imap-key&gt;? map x y)
+</span>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h1 id="Openquestions">Open questions</h1>
+      <ul>
+        <li>Should there be an explicitly-immutable pair and list?</li>
+        <li>&quot;imap&quot; is a name clash with the IMAP email protocol. Is this a dealbreaker?</li></ul>
+      <h1 id="JohnCowan'scomments">John Cowan's comments</h1>
+      <p>To start with, I basically think this proposal is an excellent start, providing facilities that Scheme programmers should have easily available to them.</p>
+      <p>I think it is <i>very</i> important that these proposals all be fleshed out to something the size of <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> and <a href="http://srfi.schemers.org/srfi-113/srfi-113.html">SRFI 113</a>.  Users should not wind up choosing between one data structure and another by which one has a more convenient API.  If the API is as consistent as possible in all proposals, it's a big win for usability.  I do not mean that absolutely every SRFI 1 feature is needed (in particular, I don't see a need for association deque support), but that these APIs seem much too small to fit with the evolving style of the large language; in the words of the charter, to be &quot;large enough to address the practical needs of mainstream software development&quot;.  Keeping it uniform also helps with human-memory issues.  See <a href="/wiki/ContainerSrfiComparison">ContainerSrfiComparison</a> for something close to what I have in mind.</p>
+      <h2 id="Commentsonideques">Comments on ideques</h2>
+      <p>I will be putting together a proposal for mutable deques (aka tconc lists) at some point, no doubt closely based on this proposal and SRFI 1.</p>
+      <h2 id="Commentsonisetsandimaps">Comments on isets and imaps</h2>
+      <p>It's premature to do so yet, but I think this proposal should be prepared to incorporate <a href="/wiki/ComparatorsCowan">ComparatorsCowan</a> when it becomes a draft SRFI.  This would mean accepting comparators wherever a precedence (&lt;) function is expected.  I plan to convert SRFI 113, <a href="/wiki/HashTablesCowan">HashTablesCowan</a>, and whatever we use for a sort package (which I hope will be a revitalized <a href="http://srfi.schemers.org/srfi-32/srfi-32.html">SRFI 32</a>) to this style.</p>
+      <p>I'm not opposed to the LRU convention, but I'd like to see it justified.  If I'm convinced, I'll adopt it for SRFI 113 too -- again, uniformity is a win.  Currently the spec says nothing and the implementation uses first-addition-wins.  Terminologically, I think it should be &quot;least recently <i>added</i>&quot; rather than &quot;used&quot;, or better yet speak of a &quot;most recently added retention policy&quot; rather than a removal policy.</p>
+      <p>Take a look at the explicit merger procedures of SRFI 113 for union and intersection.</p>
+      <h2 id="Commentsonopenissues">Comments on open issues</h2>
+      <p>I think immutable pairs/lists should be a separate proposal.</p>
+      <p>I don't think the imap/IMAP naming conflict is important at all.</p></div></body></html>

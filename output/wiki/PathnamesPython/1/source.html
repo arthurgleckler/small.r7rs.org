@@ -1,0 +1,106 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki PathnamesPython version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki PathnamesPython version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>PathnamesPython</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Path objects ==
+
+Path objects represent filesystem paths with semantics appropriate for different operating systems.  This proposal is essentially a straight transliteration of the pure portion of the Python [http://docs.python.org/3/library/pathlib.html `pathlib`] library into Scheme.  As a result, it does not provide any support for accessing the file system.  See also [http://legacy.python.org/dev/peps/pep-0428 PEP 428].
+
+Path objects are immutable objects of a disjoint type.  They are divided into two subtypes, Posix paths and Windows paths.  Most procedures in this proposal operate correctly on both subtypes.
+
+Every path object has a ''drive'', a ''root'', and a possibly empty sequence of ''components'', all of which are strings.  The drive of a Posix path object is always the empty string; on Windows it can be a drive letter or device name followed by a colon, or a string of the form `//host/share` when the path object was created from an UNC pathname.  The root is the empty string for a relative path, `&quot;/&quot;` for an absolute path, or exceptionally `&quot;//&quot;` in path objects representing Posix pathnames beginning with `//` (whose meaning is system-dependent).
+
+
+== Constructors ==
+
+`(make-posix-path `''string''`)`
+
+`(make-windows-path `''string''`)`
+
+`(make-path `''string''`)`
+
+Invokes `make-posix-path` on non-Windows systems and `make-windows-path` on Windows systems.
+
+== Predicates ==
+
+`(path? `''obj''`)`
+
+`(posix-path? `''obj''`)`
+
+`(windows-path? `''obj''`)`
+
+`(path-absolute? `''path''`)`
+
+`(path-reserved? `''path''`)`
+
+== Accessors ==
+
+`(path-drive `''path''`)`
+
+`(path-root `''path''`)`
+
+`(path-anchor `''path''`)`
+
+`(path-parent `''path''`)`
+
+`(path-filename `''path''`)`
+
+`(path-suffix `''path''`)`
+
+`(path-suffixes `''path''`)`
+
+`(path-stem `''path''`)`
+
+`(path-base `''path''`)`
+
+== Conversion ==
+
+`(path-&gt;string `''path''`)`
+
+`(path-&gt;slashed-string `''path''`)`
+
+`(path-&gt;file-uri `''path''`)`
+
+`(path-&gt;file-iri `''path''`)`
+
+== Path operations ==
+
+`(path-join `''string-or-path,,1,, string-or-path,,2,,'' ...`)`
+
+`(path-match `''path glob-string''`)`
+
+`(path-relative-to `''path,,1,, path,,2,,''`)`
+
+`(path-with-name `''path name''`)`
+
+`(path-with-suffix `''path suffix''`)`
+
+
+
+</pre>
+    <h2>time</h2>
+    <pre>2014-11-06 00:23:14</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

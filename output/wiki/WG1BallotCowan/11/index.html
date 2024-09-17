@@ -1,0 +1,743 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1BallotCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1BallotCowan.md">WG1BallotCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Ballot&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2011-01-05 18:23:01</div>
+      <div class="version">11<span class="comment"></span><a href="/wiki/WG1BallotCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1BallotCowan/11/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Instructions">Instructions</h1>
+      <ul>
+        <li>You may list as many of the options as you want in order of preference.</li>
+        <li>Options are comma-delimited (ignoring space) and case-insensitive.</li>
+        <li>You can pipe-delimit (|) options you want to give equal weight to.</li>
+        <li>You may write in your own option if you announce it to the list first.</li>
+        <li>You may specify a variant with option/variant, for example <span class="monospace">srfi-1/module</span> to vote for <span class="monospace">srfi-1</span> but clarify it should be in a separate module. Please also include the <span class="monospace">srfi-1</span> option in this case.</li>
+        <li>You can write a free-form rationale after the &quot;preferences&quot; line,</li>
+        <li><span class="monospace">module</span> means &quot;yes, but I want it in a separate module&quot;,</li>
+        <li><span class="monospace">wg2</span> means &quot;no, but I think it should go in WG2&quot;.</li>
+        <li><span class="monospace">undecided</span> means I want to discuss this issue further.</li>
+        <li>Abstain on any item by leaving the preferences blank.</li></ul>
+      <h1 id="WG1BallotItemsToFinalizeByJan.9">WG1 Ballot Items To Finalize By Jan. 9</h1>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="#32user-definedtypes"><a href="/ticket/32">#32</a> user-defined types</h3>
+      <p>Do we support any means of creating disjoint user-defined types, such
+as in SRFI-9, SRFI-99 or the R6RS record system?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>hsu:</b> <a href="/wiki/RecordsArcfide">RecordsArcfide</a></li>
+            <li><b>medernach:</b> <a href="/wiki/AggregatesMedernach">AggregatesMedernach</a></li>
+            <li><b>rush:</b> <a href="/wiki/UserAggregatesRush">UserAggregatesRush</a></li>
+            <li><b>snellpym:</b> <a href="/wiki/UniqueTypesSnellPym">UniqueTypesSnellPym</a></li></ul></li>
+        <li><b>Options:</b> hsu, medernach, rush, snellpym, srfi-9, srfi-57, srfi-99, r6rs, none, wg2, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> srfi-9, cowan, hsu, snellpym+mutable</li></ul>
+      <p>I had a lot of trouble with this one.  Srfi-9 has lots of existing use and is the nearest thing to a standard we have.  On the other hand, my idea is small and can be more efficient than plain vectors, because it doesn't need a bounds check <i>and</i> a type check, just a type check.</p>
+      <h3 id="#50byte-vectors"><a href="/ticket/50">#50</a> byte-vectors</h3>
+      <p>Several SRFIs, R6RS, and most Scheme implementations support some sort
+of uniform packed integer vectors.  In particular, these are necessary
+for efficient binary I/O, and for memory mapping, so WG2 will
+certainly want them.</p>
+      <p>Do we provide a syntax and basic API for these in WG1?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r6rs:</b> <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-3.html#node_chap_2">R6RS byte-vectors</a></li>
+            <li><b>cowan:</b> <a href="/wiki/BlobAPI">BlobAPI</a></li>
+            <li><b>snellpym:</b> <a href="/wiki/BlobsAndSRFI4SnellPym">BlobsAndSRFI4SnellPym</a></li></ul></li>
+        <li><b>Options:</b> r6rs, cowan, snellpym, wg2, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> cowan, snellpym, r6rs</li></ul>
+      <h3 id="#55Lazyevaluation"><a href="/ticket/55">#55</a> Lazy evaluation</h3>
+      <p>R5RS provides a simple mechanism for easy cases of lazy evaluation.
+It does not support generalized lazy evaluation, because all built-in
+procedures are eager whether they 'need' to be or not.  The relevant
+identifiers are <span class="monospace">delay</span> and <span class="monospace">force</span>; they are not present in IEEE
+Scheme.  SRFI 45 argues that this pair is insufficient for expressing
+common lazy algorithms in a way that preserves tail recursion, and
+adds <span class="monospace">lazy</span> (equivalent to <span class="monospace">(delay (force ...))</span>, but acting
+atomically) and <span class="monospace">eager</span>.  The semantics of <span class="monospace">delay</span> and <span class="monospace">force</span> remain
+downward compatible.</p>
+      <p>Vote <span class="monospace">srfi-45</span> to add just the bindings <span class="monospace">lazy</span> and <span class="monospace">eager</span> in addition
+to <span class="monospace">delay</span> and <span class="monospace">force</span>, not all of the <span class="monospace">srfi-45</span> utilities.  Vote
+<span class="monospace">none</span> to remove <span class="monospace">delay</span> and <span class="monospace">force</span> from the standard.</p>
+      <ul>
+        <li><b>Options:</b> r5rs, srfi-45, none, wg2, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> srfi-45, r5rs</li></ul>
+      <p>I find the arguments found in SRFI 45 itself compelling: with <span class="monospace">lazy</span>, it becomes possible to mechanically change ordinary eager expressions into lazy ones mechanically.  Using <span class="monospace">delay</span> causes a failure of tail recursion.</p>
+      <h3 id="#57RandomnNumbers"><a href="/ticket/57">#57</a> Randomn Numbers</h3>
+      <p>Random numbers are useful for a wide variety of applications,
+including cryptography, statistics, games, simulations and genetic
+programming.  Do we want to provide an interface to random number
+generation in WG1 Scheme?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>srfi-27:</b> <a href="http://srfi.schemers.org/srfi-27/srfi-27.html">SRFI-27</a></li>
+            <li><b>cl:</b> <a href="/wiki/RandomnessCommonLisp">RandomnessCommonLisp</a></li>
+            <li><b>cowan:</b> <a href="/wiki/RandomCowan">RandomCowan</a></li>
+            <li><b>hsu:</b> <a href="/wiki/RandomnessArcfide">RandomnessArcfide</a></li></ul></li>
+        <li><b>Options:</b> srfi-27, cl, cowan, hsu, none, wg2, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> cl, cowan, srfi-27, hsu</li></ul>
+      <p>The CL system has been around for quite a while, and seems to suit.  The implementation gets to pick an appropriate algorithm for its situation.  Srfi-27, with its fixed implementation, makes more sense as a library.  I voted against my own idea here.</p>
+      <h3 id="#62EnvironmentVariables"><a href="/ticket/62">#62</a> Environment Variables</h3>
+      <p>Currently, there is no standard way to communicate with the context
+from which a Scheme program was started.  This has become pretty
+standardized over time: a list of strings (&quot;command-line arguments&quot;)
+and a map from strings to strings (&quot;environment variables&quot;) on input,
+and a small integer or string on output (&quot;exit value&quot;).  Scheme should
+recognize these realities.</p>
+      <p>We have <span class="monospace">command-line</span> and <span class="monospace">exit</span> from <a href="/wiki/ModulesShinn">ModulesShinn</a>, so the question
+remains if we should add SRFI-98 environment accessors.</p>
+      <ul>
+        <li><b>Options:</b> srfi-98, none, wg2, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> srfi-98/module, srfi-98</li></ul>
+      <p>Most programming environments can supply these, and programs should have easy access to them.  Putting them in a module makes them optional for small Scheme implementations that can't support them.  <span class="monospace">Command-line</span> and <span class="monospace">exit</span> should go in the same module.</p>
+      <h3 id="#68&quot;Undefinedvalue&quot;vs.&quot;undefinedvalues&quot;"><a href="/ticket/68">#68</a> &quot;Undefined value&quot; vs. &quot;undefined values&quot;</h3>
+      <p>In R5RS, many procedures and syntax forms return an &quot;undefined value&quot;.
+In R6RS, the corresponding convention is to return &quot;undefined values&quot;,
+meaning an undefined number (including zero) of undefined values.  How
+shall R7RS go?</p>
+      <p>Vote <span class="monospace">r5rs</span> for a single undefined value, <span class="monospace">r6rs</span> for zero or more
+undefined values, or <span class="monospace">zero</span> for exactly zero values.  Anything other
+than <span class="monospace">r5rs</span> would break R5RS (and IEEE) compatibility.</p>
+      <ul>
+        <li><b>Options:</b> r5rs, r6rs, zero, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> r5rs'</li></ul>
+      <p>R5RS, reluctantly.  I really don't think it would in practice break compatibility, because in practice Scheme implementations are okay with handling multiple values in <span class="monospace">begin</span> forms and the equivalent.</p>
+      <h3 id="#49UndefinedvalueAPI"><a href="/ticket/49">#49</a> Undefined value API</h3>
+      <p>Assuming a single &quot;undefined&quot; value (dependent on the result of <a href="/ticket/68">#68</a>),
+users sometimes want to test for this value.  If we enforce a unique
+undefined value, one approach is to generate this value explicitly to
+test against, such as <span class="monospace">(void)</span> provided by some implementations.
+Alternately we could provide a test such as <span class="monospace">undefined?</span>.  Either
+approach breaks compatibility with existing extensions, and may be
+prohibitively difficult to implement for compilers lacking a separate
+undefined value type.  Some programmers also consider testing for this
+value sign of a broken design.</p>
+      <p>Vote <span class="monospace">generate</span> for a <span class="monospace">(void)</span> procedure, <span class="monospace">test</span> for <span class="monospace">undefined?</span>, and
+<span class="monospace">both</span> for both.</p>
+      <ul>
+        <li><b>Options:</b> generate, test, both, none, wg2, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> none, both, generate, test</li></ul>
+      <p>I really don't like this; it encourages people to have such a defined-undefined value, which is semantically bogus.</p>
+      <h3 id="#51supportforcyclicstructuresinprimitives"><a href="/ticket/51">#51</a> support for cyclic structures in primitives</h3>
+      <p>list?, length, equal? and other fundamental primitives may diverge
+when given cyclic data.  In the former two cases, avoiding this is
+simple and not inefficient, and the equivalents are already provided
+in SRFI-1.  In the latter case a
+<a href="http://www.r6rs.org/r6rs-editors/2006-February/000969.html">proposal</a>
+was made and rejected on the R6RS list.  In the former case, R6RS
+seems to require <span class="monospace">list?</span> return <span class="monospace">#f</span> and <span class="monospace">length</span> raise an error.</p>
+      <p>Do we want to specify the behavior when these primitives encounter
+cyclic data?</p>
+      <p>Options are <span class="monospace">equal?</span> to specify <span class="monospace">equal?</span> must terminate on cyclic
+input, <span class="monospace">r6rs</span> to specify R6RS behavior for <span class="monospace">list?</span> and <span class="monospace">length</span>,
+<span class="monospace">srfi-1</span> to specify the SRFI-1 semantics (where <span class="monospace">length</span> returns <span class="monospace">#f</span>)
+and <span class="monospace">equal?+r6rs</span> or <span class="monospace">equal?+srfi-1</span> are options for both.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>equal?:</b> <span class="monospace">equal?</span> is required to do proper checks for cyclic structure to not diverge</li>
+            <li><b>r6rs:</b> <span class="monospace">list?</span> should return <span class="monospace">#f</span> and <span class="monospace">length</span> raise an error for cyclic lists</li>
+            <li><b>srfi-1:</b> <span class="monospace">length</span> is equivalent to <span class="monospace">length+</span> and returns <span class="monospace">#f</span> for a cyclic list</li></ul></li>
+        <li><b>Options:</b> equal?,r6rs,srfi-1,equal?+r6rs,equal?+srfi-1,no,module,wg2,undecided</li>
+        <li><b>Preferences:</b> equal?+srfi-1,equal?+r6rs,equal?|srfi-1|r6rs</li></ul>
+      <h3 id="#69DynamicParameters"><a href="/ticket/69">#69</a> Dynamic <a href="/wiki/Parameters">Parameters</a></h3>
+      <p>Old-fashioned Lisps used dynamic extent of variables.  Although Scheme
+has switched to lexical scope, the concept of a dynamic environment
+can be useful in special cases.</p>
+      <p>Instead of special variables, SRFI-39 provides first-class &quot;parameter&quot;
+objects with dynamic bindings.  Do we want to provide something
+similar?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>srfi-39:</b> <a href="http://srfi.schemers.org/srfi-39/srfi-39.html">SRFI-39</a></li>
+            <li><b>cowan:</b> <a href="/wiki/ImmutableParametersCowan">ImmutableParametersCowan</a></li>
+            <li><b>snellpym:</b> <a href="/wiki/ParametersSnellPym">ParametersSnellPym</a></li></ul></li>
+        <li><b>Options:</b> cowan, snellpym, srfi-39, none, wg2, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> cowan, srfi-39, snellpym, none</li></ul>
+      <h3 id="#70accessingthesystemtime"><a href="/ticket/70">#70</a> accessing the system time</h3>
+      <p>Short of a full time and date library, a single procedure</p>
+      <p>(current-seconds)</p>
+      <p>returning the epoch time in seconds, possibly as a real number, would
+be useful and is sufficient to implement a full library (though access
+to the host system's timezone would be desirable in that case).</p>
+      <p>Since some systems may not have access to a clock, we could make this
+an optional procedure.  Alternately, it could be defined as a simple
+counter in such cases, providing an accurate notion of time ordering
+but no sense of duration. Finally, it could return <span class="monospace">#f</span> in the absense
+of a clock.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/TimeCowan">TimeCowan</a></li>
+            <li><b>required:</b> <span class="monospace">(current-seconds)</span> must return seconds since epoch</li>
+            <li><b>optional:</b> <span class="monospace">(current-seconds)</span> is an optional procedure</li>
+            <li><b>counter:</b> <span class="monospace">(current-seconds)</span> may just be a counter, returning 0, 1, 2, ...</li>
+            <li><b>return-false:</b> <span class="monospace">(current-seconds)</span> may return <span class="monospace">#f</span> if unsupported</li></ul></li>
+        <li><b>Options:</b> cowan, required, optional, counter, return-false, none, wg2, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> cowan, return-false</li></ul>
+      <h3 id="#109elapsedtime"><a href="/ticket/109">#109</a> elapsed time</h3>
+      <p>Should we have functions allowing a program to compute elapsed time,
+as distinct from calendar time?</p>
+      <p><a href="/wiki/TimeCowan">TimeCowan</a> contains a proposal.</p>
+      <ul>
+        <li><b>Options:</b> cowan, yes, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> cowan, yes</li></ul>
+      <h3 id="#78Shouldwehavecase-lambda?"><a href="/ticket/78">#78</a> Should we have case-lambda?</h3>
+      <p>Should we provide case-lambda as in SRFI 16 and R6RS?  It provides
+simple overloading of procedures based on the number of their
+arguments, and does not require that optional arguments appear only
+after mandatory ones.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, module, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>Overloading by argument count makes the most sense for a dynamically typed language, and it's just a syntax-rules macro.</p>
+      <h3 id="#82missingport?procedure"><a href="/ticket/82">#82</a> missing port? procedure</h3>
+      <p>It's not clear whether R5RS requires a PORT? procedure or not.  It's
+listed in Section 3.3.2 under Disjointness of Types, but not under
+section 6.6.1 under Ports.  R6RS requires it.  Racket, Gauche, MIT
+Scheme, Gambit, Chicken, Guile, SISC support it; Scheme48/scsh, Kawa,
+and Chibi currently do not.</p>
+      <p>Shall we require it?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, module, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>Yes, do it; what the hell.</p>
+      <h3 id="#107portstatusdetection"><a href="/ticket/107">#107</a> port status detection</h3>
+      <p>Currently there's no way to determine whether a port is open or
+closed, short of trying to read/write to it and catching an error.
+Do we want to add an interface to this?</p>
+      <ul>
+        <li><b>Options:</b> port-open?, port-closed?, both, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> port-open?, both, port-closed?</li></ul>
+      <p><span class="monospace">Port-open?</span> is positive, and most of our predicates are in the positive:  <span class="monospace">zero?</span>, for example, not <span class="monospace">non-zero?</span>.</p>
+      <h3 id="#87Allowmultipleproducersin`call-with-values`"><a href="/ticket/87">#87</a> Allow multiple producers in <span class="monospace">call-with-values</span></h3>
+      <p>In R5RS and R6RS, <span class="monospace">call-with-values</span> takes two arguments, both
+procedures.  The first is a <i>producer</i> of multiple values; the
+second is a <i>consumer</i>, to which the multiple values returned by
+<i>producer</i> are passed as arguments.</p>
+      <p>A possible extension is to allow multiple <i>producer</i> arguments,
+flattening all the produced values together, analogous to Common
+Lisp's <span class="monospace">multiple-value-call</span>.</p>
+      <p>Do we add this extension?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>My proposal.</p>
+      <h3 id="#88SRFI87:=&gt;inCASE"><a href="/ticket/88">#88</a> SRFI 87: =&gt; in CASE</h3>
+      <p>SRFI-87 extends <span class="monospace">case</span> with a <span class="monospace">=&gt;</span> clauses, analogous to the use of
+<span class="monospace">=&gt;</span> in <span class="monospace">cond</span> clauses, which allows you to pass the item actually
+matched to a procedure.</p>
+      <p>Do we add this extension?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>Makes a lot of sense to me when you want to make the default do something outside
+the realm of <span class="monospace">case</span>, like handle lists or vectors.</p>
+      <h3 id="#89SRFI61:COND=&gt;withgeneratorandguard"><a href="/ticket/89">#89</a> SRFI 61: COND =&gt; with generator and guard</h3>
+      <p>SRFI-61 extends <span class="monospace">=&gt;</span> clauses in <span class="monospace">cond</span> with an optional <i>guard</i>
+form, such that after the value is generated and found to be true,
+it's further checked against the guard.  If the guard returns <span class="monospace">#f</span> the
+clause fails and processing proceeds to the next clause, otherwise the
+clause is accepted as normal.</p>
+      <p>Do we add this extension?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>This one also makes a lot of sense to me.</p>
+      <h3 id="#90MultiplevaluesinCOND=&gt;clauses"><a href="/ticket/90">#90</a> Multiple values in COND =&gt; clauses</h3>
+      <p>Currently, <span class="monospace">=&gt;</span> clauses in <span class="monospace">cond</span> accept a single value from the
+<i>generator</i> (right-hand side) and pass it to the <i>receiver</i>
+(left-hand side).  Shall we allow the generator to return multiple
+values and pass them to the receiver?  If both this ticket and <a href="/ticket/89">#89</a>
+pass, multiple values would also be allowed for generator/guard <span class="monospace">cond</span>
+clauses.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>I said &quot;Sure, why not?&quot; but Alex convinced me not to, though I don't find all of his rationale convincing.</p>
+      <h3 id="#91INCLUDEattheREPL"><a href="/ticket/91">#91</a> INCLUDE at the REPL</h3>
+      <p>Should we allow <span class="monospace">(include &quot;''filename''&quot;)</span> at the REPL?  This is
+distinct from <span class="monospace">import</span> in that it just loads code without altering the
+module structure.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>Absolutely yes.  This is a way of bringing chameleon code into the current context without having to mess with the module system.  Modules are good; <i>required</i> modules are not so good.</p>
+      <h3 id="#92Case-foldingflags"><a href="/ticket/92">#92</a> Case-folding flags</h3>
+      <p>The default reader in R7RS will default to case-sensitive, but users
+may wish to override this in some situations.  R6RS allows at the
+top-level #!case-fold and #!no-case-fold read syntax to control the
+case-sensitivity of the current file.  Many existing R5RS
+implementations, on the other hand, use #ci and #cs, with the
+difference that they refer to the next datum only.</p>
+      <p>Note <a href="/wiki/PortsCowan">PortsCowan</a> provides a separate means of controlling
+case-sensitivity per-port.</p>
+      <p>Vote <span class="monospace">per-datum</span> for the next-datum-only #ci/#cs syntax.</p>
+      <ul>
+        <li><b>Options:</b> r6rs, per-datum, none, wg2, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> r6rs</li></ul>
+      <p>Next-datum-only is annoying.  However, <span class="monospace">include-ci</span> would subsume this.</p>
+      <h3 id="#116SourceFileCharacterEncoding"><a href="/ticket/116">#116</a> Source File Character Encoding</h3>
+      <p>The standard currently says nothing about the character encoding
+system of source files.  Do we require this to be a fixed encoding
+such as UTF-8, use an out-of-band specification like the Emacs (and
+Python) <span class="monospace">-*- coding: foo -*-</span> convention, or just leave it
+unspecified?</p>
+      <ul>
+        <li><b>Options:</b> utf-8, emacs, unspecified, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> unspecified, utf-8</li></ul>
+      <h3 id="#93Removingstringmutability"><a href="/ticket/93">#93</a> Removing string mutability</h3>
+      <p>R6RS relegated <span class="monospace">string-set!</span> to a module, and many modern languages
+tend towards making strings immutable.  Removing entirely, however,
+breaks IEEE Scheme compatibility and should only be considered if you
+believe mutable strings are fundamentally broken.</p>
+      <p>Do we remove <span class="monospace">string-set!</span>?  Vote <span class="monospace">yes</span> to remove, <span class="monospace">module</span> to
+relegate to a module as in R6RS, or <span class="monospace">no</span> to keep as is.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, module, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>See <a href="https://docs.google.com/View?id=dc46qrdf_21cxkmft28">Removing `string-set!` from R7RS small Scheme</a> for my arguments.</p>
+      <h3 id="#83AuxiliaryKeywords"><a href="/ticket/83">#83</a> Auxiliary <a href="/wiki/Keywords">Keywords</a></h3>
+      <p>In R6RS auxiliary keywords (such as <span class="monospace">else</span> in <span class="monospace">cond</span> and <span class="monospace">case</span> forms)
+are explicitly exported from the <span class="monospace">(rnrs base (6))</span> library.  Do we
+want to bind and export these from the core library?</p>
+      <p>If <span class="monospace">else</span> is bound in the default module, then it must be imported at
+the call site whenever using it in <span class="monospace">cond</span> or it won't match
+hygienically.</p>
+      <p>If <span class="monospace">else</span> is <b>not</b> bound in the default module, then it must not
+be bound or imported at the call site whenever using it in <span class="monospace">cond</span> or
+it won't match hygienically.</p>
+      <p>Another option is to specify for <span class="monospace">cond</span> and <span class="monospace">case</span> that they match the
+<span class="monospace">else</span> identifier literally, ignoring any hygiene.  This breaks
+compatibility with R5RS and R6RS.</p>
+      <ul>
+        <li><b>Options:</b> bound, unbound, unhygienic, undecided</li>
+        <li><b>Preferences:</b> bound, unbound</li></ul>
+      <p>Binding them is more in line with what people expect.</p>
+      <h3 id="#101exactnessand`eqv?`/`equal?`"><a href="/ticket/101">#101</a> exactness and <span class="monospace">eqv?</span>/<span class="monospace">equal?</span></h3>
+      <p>In R5RS <span class="monospace">eqv?</span>/<span class="monospace">equal?</span> are in some sense the broadest tests for
+equality, comparing structural equality, but also tests for the same
+exactness, so that</p>
+      <p><span class="monospace">(equal? 0 0.0) =&gt; #f</span></p>
+      <p>whereas</p>
+      <p><span class="monospace">(= 0 0.0) =&gt; #t</span></p>
+      <p>Some users consider this confusing, others sometimes want an <span class="monospace">equal?</span>
+that behaves like <span class="monospace">=</span> for numbers.</p>
+      <p>Do we want to change <span class="monospace">equal?</span> and <span class="monospace">eqv?</span> in this way, or add a
+separate exactness-agnostic procedure?  Vote <span class="monospace">yes</span> to change,
+<span class="monospace">equal=?</span> or <span class="monospace">inexact-equal?</span> for separate procedures of those names
+(plus the analogous <span class="monospace">eqv=?</span> or <span class="monospace">inexact-eqv?</span>), or <span class="monospace">no</span> to leave as
+is.  Alternately, write in a separate name.</p>
+      <ul>
+        <li><b>Options:</b> yes, equal=?, inexact-equal?, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> equal=?, no, yes</li></ul>
+      <p>What I really want is to leave <span class="monospace">equal?</span> alone and add <span class="monospace">equal=?</span>, which should do what <span class="monospace">equal?</span> does except for comparing numbers with <span class="monospace">=</span>.</p>
+      <h3 id="#102modulesyntaxname"><a href="/ticket/102">#102</a> module syntax name</h3>
+      <p>A bikeshed color issue, we need to choose the
+actual names for the module syntax for the winner
+of <a href="/ticket/2">#2</a>.</p>
+      <p><span class="monospace">import</span>, <span class="monospace">export</span> and <span class="monospace">include</span> are fairly universal
+and no alternate is suggested unless someone wants
+to write in a proposal.</p>
+      <p>The enclosing syntax can be called either
+<span class="monospace">library</span> as in R6RS, <span class="monospace">module</span> or some other proposal.</p>
+      <ul>
+        <li><b>Options:</b> library, module, undecided</li>
+        <li><b>Default:</b> library</li>
+        <li><b>Preferences:</b> library, module</li></ul>
+      <p>I keep vacillating between &quot;We should use <span class="monospace">library</span> for R6RS compatibility&quot; and &quot;Our modules aren't really R6RS-compatible, using <span class="monospace">library</span> is false advertising.&quot;  Reluctantly I think familiarity wins.</p>
+      <h3 id="#103modulebodysyntaxname"><a href="/ticket/103">#103</a> module body syntax name</h3>
+      <p>Similar to <a href="/ticket/102">#102</a>, we need to choose a name
+for the form to include Scheme code directly
+in a module form.  This can be <span class="monospace">body</span> as in
+the proposal, <span class="monospace">begin</span> or some other name.</p>
+      <ul>
+        <li><b>Options:</b> body, begin, scheme, code, undecided</li>
+        <li><b>Default:</b> body</li>
+        <li><b>Preferences:</b> begin, body</li></ul>
+      <p>I prefer <span class="monospace">begin</span> because it's a begin-block anyway.</p>
+      <h3 id="#105case-insensitivemoduleincludes"><a href="/ticket/105">#105</a> case-insensitive module includes</h3>
+      <p>The <span class="monospace">include</span> module form includes files literally
+with the default case-sensitivity.  An <span class="monospace">include-ci</span>
+form could include files case-insensitively
+without resorting to the reader hacks proposed in
+<a href="/ticket/92">#92</a>, allowing existing R5RS libraries to be used
+without modification.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>The best idea yet for mixing case-folding and case-sensitive code.</p>
+      <h3 id="#106conditionalcodeselection"><a href="/ticket/106">#106</a> conditional code selection</h3>
+      <p>Users invariably want some way to conditionally select code depending
+on the implementation and/or feature set available. <a href="/wiki/CondExpandCowan">CondExpandCowan</a>
+allows conditional expansion in the style of SRFI-0 within the module language.
+<a href="http://srfi.schemers.org/srfi-0/srfi-0.html">SRFI-0</a> provides
+<span class="monospace">cond-expand</span>, <a href="http://srfi.schemers.org/srfi-103/srfi-103.html">SRFI-103</a>
+provides a library naming extension, and numerous other personal hacks exist.</p>
+      <p>Do we want to include something along these lines in WG1 Scheme?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/CondExpandCowan">CondExpandCowan</a></li>
+            <li><b>srfi-0:</b> <span class="monospace">cond-expand</span> only defined as a top-level module form</li>
+            <li><b>srfi-103:</b> the search path extension used by R6RS implementations</li></ul></li>
+        <li><b>Options:</b> cowan, srfi-0, srfi-103, none, wg2, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> cowan, srfi-103</li></ul>
+      <h3 id="#108immutabledatainterface"><a href="/ticket/108">#108</a> immutable data interface</h3>
+      <p>R5RS specifies literal data in source code as immutable, but otherwise
+provides no way to generate or introspect immutable data.</p>
+      <p>One proposal is given in <a href="/wiki/ImmutableData">ImmutableData</a>, providing <span class="monospace">mutable?</span>,
+<span class="monospace">make-immutable</span> and <span class="monospace">immutable-&gt;mutable</span>.</p>
+      <p>Racket, for which all pairs are immutable in the default language,
+needs some way to generate shared and cyclic data structures at
+runtime, and provides the <span class="monospace">shared</span> syntax for this.  It also has an
+<span class="monospace">immutable?</span> utility as the complement to <span class="monospace">mutable?</span> above.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>medernach:</b> <a href="/wiki/ImmutableData">ImmutableData</a></li>
+            <li><b>racket:</b> <span class="monospace">shared</span>, <span class="monospace">immutable?</span> (<a href="http://docs.racket-lang.org/reference/shared.html">http://docs.racket-lang.org/reference/shared.html</a>)</li></ul></li>
+        <li><b>Options:</b> medernach, racket, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <p>Too much too soon.</p>
+      <h3 id="#111require`equal?`toreturn`#t`if`eqv?`does"><a href="/ticket/111">#111</a> require <span class="monospace">equal?</span> to return <span class="monospace">#t</span> if <span class="monospace">eqv?</span> does</h3>
+      <p>Currently <span class="monospace">equal?</span> is strictly broader than <span class="monospace">eqv?</span> except in the
+pathological case of comparing the same circular list with itself, for
+which <span class="monospace">eqv?</span> returns true and <span class="monospace">equal?</span> may loop infinitely.  We could
+explicitly require <span class="monospace">equal?</span> to check and return <span class="monospace">#t</span> in this case,
+which most implementations do as a performance hack anyway.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>This was my idea.</p>
+      <h2 id="WG1-Exceptions">WG1 - Exceptions</h2>
+      <h3 id="#18exceptionsystem"><a href="/ticket/18">#18</a> exception system</h3>
+      <p>R6RS provided a detailed exception system with support for raising and
+catching exceptions, using a hierarchy of exception types.</p>
+      <p>Do we use this, or parts of it, or a new exception system?  The <span class="monospace">r6rs</span>
+option is just for the core exception handling.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r6rs:</b> <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-8.html#node_sec_7.1">R6RS Exceptions</a> - <span class="monospace">with-exception-handler</span>, <span class="monospace">guard</span>, <span class="monospace">raise</span>, <span class="monospace">raise-continuable</span></li>
+            <li><b>cowan:</b> <a href="/wiki/ExceptionHandlingCowan">ExceptionHandlingCowan</a></li></ul></li>
+        <li><b>Options:</b> cowan, r6rs, wg2, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> r6rs, cowan</li></ul>
+      <p>I now think that r6rs is better than cowan, now that I understand R6RS better, so I'm voting against my own proposal here.</p>
+      <h3 id="#19whentothrowanerror"><a href="/ticket/19">#19</a> when to throw an error</h3>
+      <p>R5RS defines many things as &quot;is an error&quot; without any specification of
+what happens in that situation.  R6RS goes to the opposite extreme and
+specifies as much as possible what exceptions are raised when.</p>
+      <p>Taking into account the system provided by ticket <a href="/ticket/18">#18</a>, we need to come
+up with guidelines for when exceptions should be raised, and clarify
+which R5RS &quot;error&quot; situations should raise an exception or be left
+unspecified.</p>
+      <p>R5RS specifies only 3 situations where an error is required to be
+signalled, leaving most situations unspecified as described in
+<a href="/wiki/ErrorSituations">ErrorSituations</a>.</p>
+      <ul>
+        <li><b>Options:</b> r5rs, r6rs, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> undecided</li></ul>
+      <h2 id="WG1-I/O">WG1 - I/O</h2>
+      <h3 id="#28binaryI/Oports"><a href="/ticket/28">#28</a> binary I/O ports</h3>
+      <p>Do we provide any binary input or output ports, and if so how do we
+construct them and operate on them?  Can binary and textual operations
+be mixed on the different port types?</p>
+      <p><a href="/wiki/PortsCowan">PortsCowan</a> provides binary port operations along with other
+extensions.</p>
+      <p>R6RS provides an entirely new I/O system, as well as a separate
+R5RS-compatible I/O system.</p>
+      <p>The withdrawn SRFI-91 provides yet another I/O system supporting
+binary ports.</p>
+      <p>Note this item as well as <a href="/ticket/29">#29</a> and <a href="/ticket/31">#31</a> specify semi-orthogonal aspects
+of I/O systems which are typically specified together by individual
+proposals.  If the same proposal doesn't win for all three, the
+aspects will be merged as needed.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r6rs:</b> <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html#node_sec_8.2">R6RS Port I/O</a></li>
+            <li><b>r6rs-simple:</b> <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html#node_sec_8.3">R6RS Simple I/O</a></li>
+            <li><b>srfi-91:</b> <a href="http://srfi.schemers.org/srfi-91/srfi-91.html">SRFI-91</a></li>
+            <li><b>cowan:</b> <a href="/wiki/PortsCowan">PortsCowan</a> (subset relevant to binary I/O)</li></ul></li>
+        <li><b>Options:</b> r6rs, r6rs-simple, srfi-91, cowan, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> cowan, srfi-91, r6rs-simple, r6rs</li></ul>
+      <h3 id="#29portencodings"><a href="/ticket/29">#29</a> port encodings</h3>
+      <p>Do we support encoding and decoding text from ports with different
+character encoding systems?  Different end-of-line conventions?
+Different normalizations?  How are encoding errors handled?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r6rs:</b> <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html#node_sec_8.2">R6RS Port I/O</a></li>
+            <li><b>srfi-91:</b> <a href="http://srfi.schemers.org/srfi-91/srfi-91.html">SRFI-91</a></li>
+            <li><b>cowan:</b> <a href="/wiki/PortsCowan">PortsCowan</a> (subset relevant to port encodings)</li></ul></li>
+        <li><b>Options:</b> r6rs, srfi-91, cowan, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> cowan, srfi-91, r6rs</li></ul>
+      <p>I've modified cowan here to allow rather than require these facilities.</p>
+      <h3 id="#31customports"><a href="/ticket/31">#31</a> custom ports</h3>
+      <p>Do we provide a mechanism for custom ports, on which for instance
+string ports could be created?</p>
+      <p>R6RS as well as a number of Scheme implementations provide custom
+ports with various APIs.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r6rs:</b> <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html#node_sec_8.2">R6RS Port I/O</a></li></ul></li>
+        <li><b>Options:</b> r6rs, none</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> none</li></ul>
+      <p>Too messy.  A custom port is basically a record of procedures, but there's no principled way to decide what the fields should be.</p>
+      <h2 id="WG1-Libraries">WG1 - Libraries</h2>
+      <h3 id="#36hash-tables"><a href="/ticket/36">#36</a> hash-tables</h3>
+      <p>R6RS and SRFI-69 both provide hash-table interfaces.  Do we provide
+either of these, or try to provide some primitives on which efficient
+hash-tables can be implemented?</p>
+      <ul>
+        <li><b>Options:</b> r6rs, srfi-69, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> wg2, no, srfi-69, r6rs</li></ul>
+      <p>Reluctantly I think we need to push this off on WG2.  This sucks, because I think all languages should have a map datatype.</p>
+      <h3 id="#113directorycontents"><a href="/ticket/113">#113</a> directory contents</h3>
+      <p>We've decided to add file-exists? and delete-file,
+essential for a large class of scripts, but still
+have no way to get a list of files in a directory.
+Do we want to provide an interface to this?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/DirectoryPortsCowan">DirectoryPortsCowan</a></li>
+            <li><b>directory-files:</b> return a list of all files in the dir</li>
+            <li><b>directory-streams:</b> <a href="http://www.scsh.net/docu/html/man-Z-H-4.html#node_sec_3.3">SCSH directory stream interface</a></li></ul></li>
+        <li><b>Options:</b> directory-files, directory-streams, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> directory-streams, cowan, directory-files</li></ul>
+      <p>I agree with Gleckler that cowan is too complicated, but directory-files is too simple in a world of very lengthy directories, so I go with directory-streams (just <span class="monospace">open-d-s</span>, <span class="monospace">read-d-s</span>, and <span class="monospace">close-d-s</span>).</p>
+      <h2 id="WG1-Macros">WG1 - Macros</h2>
+      <h3 id="#48let-syntax"><a href="/ticket/48">#48</a> let-syntax</h3>
+      <p><span class="monospace">let-syntax</span> and <span class="monospace">letrec-syntax</span> has known ambiguities in their
+behavior. We have the option of altering the semantics to correct this
+behavior, defining which behavior we intend, or removing <span class="monospace">let-syntax</span>
+entirely.  We could also leave this ambiguity unspecified.</p>
+      <p>The question of whether or not to introduce a new lexical scope
+(i.e. whether internal <span class="monospace">define</span>s are visible outside the <span class="monospace">let-syntax</span>)
+is straightforward.</p>
+      <p>If we don't introduce a new lexical scope, the question arises whether
+or not internal <span class="monospace">define-syntax</span> forms are allowed and whether they
+apply to the body of the <span class="monospace">let-syntax</span>, forms following the
+<span class="monospace">let-syntax</span>, or both.</p>
+      <p>If internal <span class="monospace">define-syntax</span> applies to the body, we may also wish to
+specify what happens when said <span class="monospace">define-syntax</span> redefines an identifier
+bound by the enclosing <span class="monospace">let-syntax</span>.  This varies by implementation
+and may be difficult for macro expanders to change, so is left
+unspecified in the proposals below.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>remove:</b> remove both of these forms from the standard</li>
+            <li><b>lexical:</b> introduces a new lexical contour</li>
+            <li><b>define:</b> allows splicing <span class="monospace">define</span>/<span class="monospace">begin</span></li>
+            <li><b>syntax:</b> allows <span class="monospace">define-syntax</span></li>
+            <li><b>syntax-body:</b> allows <span class="monospace">define-syntax</span> only applying to the body</li>
+            <li><b>syntax-follows:</b>  allows <span class="monospace">define-syntax</span> only applying to following forms</li></ul></li>
+        <li><b>Options:</b> remove, lexical, define, syntax, syntax-body, syntax-follows, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b> lexical, syntax-body</li></ul>
+      <p>R5RS was lexical under the plain meaning of the text, and I think changing that in R6RS was a mistake.</p>
+      <h3 id="#97syntax-rulesspecialliterals"><a href="/ticket/97">#97</a> syntax-rules special literals</h3>
+      <p><span class="monospace">...</span> and with the result of <a href="/ticket/6">#6</a> also <span class="monospace">_</span> have special meaning in
+syntax-rules patterns, so they are not treated as pattern variables by
+default.</p>
+      <p>However their behavior when used in the literals list of
+syntax-rules is ambiguous, and simply breaks in most implementations.</p>
+      <p>Rather than breaking, it makes sense to go ahead and treat
+them as normal literals, overriding their special meanings.</p>
+      <p>In particular, there are many existing R5RS macros which
+make use of <span class="monospace">_</span> in the literals and are thus broken outright
+by <a href="/ticket/6">#6</a>. Allowing them as literals fixes these macros.</p>
+      <ul>
+        <li><b>Options:</b> literal, error, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b> literal</li></ul>
+      <p>Makes sense to me.</p>
+      <h2 id="WG1-Modules">WG1 - Modules</h2>
+      <h3 id="#3modulenamingconvention"><a href="/ticket/3">#3</a> module naming convention</h3>
+      <p>We need a naming convention for the core modules and standard
+libraries of the new module system.</p>
+      <p>In R5RS everything is effectively in a single module.  R6RS provides a
+much more fine-grained breakdown of modules which could be
+retro-fitted to the bindings we include in our standard.</p>
+      <p>John Cowan has proposed a number of module factorings in items <a href="/ticket/71">#71</a>,
+<a href="/ticket/72">#72</a>, <a href="/ticket/73">#73</a>, <a href="/ticket/74">#74</a>, <a href="/ticket/75">#75</a>, <a href="/ticket/76">#76</a>, <a href="/ticket/77">#77</a>, as well as an I/O module breakdown in
+<a href="/wiki/PortsCowan">PortsCowan</a>.</p>
+      <p>Since the naming and breakdown must be internally consistent I'm
+grouping these into a single ballot item.  Members desiring to put
+forth a new proposal should specify where all bindings belong, or
+specify a subset of the bindings and default the rest to some other
+proposal.</p>
+      <p>Note some ballots specify explicitly whether or not the bindings in
+question are intended to be in a module or the core language.  In
+these cases we still need to decide to which module they belong.
+Where specific votes contradict general factoring proposals, the
+specific vote wins.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r5rs:</b> one single module</li>
+            <li><b>r6rs:</b></li>
+            <li><b>cowan:</b> <a href="/ticket/71">#71</a>, <a href="/ticket/72">#72</a>, <a href="/ticket/73">#73</a>, <a href="/ticket/74">#74</a>, <a href="/ticket/75">#75</a>, <a href="/ticket/76">#76</a>, <a href="/ticket/77">#77</a></li></ul></li>
+        <li><b>Options:</b> r5rs, r6rs, cowan, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> cowan, r6rs, r5rs</li></ul>
+      <h2 id="WG1-Numerics">WG1 - Numerics</h2>
+      <h3 id="#79rational-expt"><a href="/ticket/79">#79</a> rational-expt</h3>
+      <p>Often a rational-only exponentiation function is useful; that is, a
+rational number raised to an integer power.  Should we add this
+procedure to the core so that exponentiation is available even if
+inexact rationals are not provided or not imported?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, module, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>My idea.</p>
+      <h3 id="#81Whatnumerictowervariantsshouldbesupported?"><a href="/ticket/81">#81</a> What numeric tower variants should be supported?</h3>
+      <p><a href="/wiki/NumericTower">NumericTower</a> lists a plausible set of ten from fixnums only to the
+full monty.  Which ones should we allow an implementation to provide?
+R5RS requires only fixnums large enough to handle string and vector
+indexes, while R6RS requires the full numeric tower.</p>
+      <p>Vote on <b>the minimum level of support</b> you want to <b>require</b>
+(implementations may of course still provide more than this).  I've
+included only the most likely options below, write in other options if
+needed.</p>
+      <p>Note quaternions are a fairly rare numeric type, known to be provided
+only by extensions to <a href="http://www.ccs.neu.edu/home/dorai/squat/squat.html">scm</a>
+and <a href="http://wiki.call-cc.org/eggref/4/quaternions">chicken</a>, and thus
+may be difficult for other implementations to support if required.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r5rs:</b> fixnum (<span class="monospace">inexact?</span> may always be false)</li>
+            <li><b>inexact-only:</b> inexact (<span class="monospace">exact?</span> may be the same as <span class="monospace">integer?</span>)</li>
+            <li><b>inexact:</b> fixnum, inexact</li>
+            <li><b>rational:</b> fixnum, inexact, rational</li>
+            <li><b>complex:</b> fixnum, inexact, complex</li>
+            <li><b>r6rs:</b> fixnum, inexact, rational, complex</li>
+            <li><b>quaternion:</b> fixnum, inexact, rational, complex, quaternion</li></ul></li>
+        <li><b>Options:</b> r5rs, inexact-only, inexact, rational, complex, r6rs, quaternion, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> undecided</li></ul>
+      <p>None of these satisfy me at all.  I wish this had been given as &quot;Which <a href="/wiki/NumericTower">NumericTower</a> feature switches should be forced to true, forced to false, or undetermined by the standard?&quot;</p>
+      <h3 id="#100integraldivision"><a href="/ticket/100">#100</a> integral division</h3>
+      <p>R5RS provides quotient, modulo and remainder for integral
+division. R6RS extended this with div/mod and div0/mod0. A thorough
+analysis of possible division operations is provided in
+<a href="/wiki/DivisionRiastradh">DivisionRiastradh</a>, which includes a proposal for five separate
+division operator pairs.  We need to choose which API we'll provide.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>riastradh:</b> <a href="/wiki/DivisionRiastradh">DivisionRiastradh</a></li></ul></li>
+        <li><b>Options:</b> r5rs, r6rs, riastradh, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> riastradh, r6rs, r5rs</li></ul>
+      <p>Riastradh convinces me.</p>
+      <h2 id="WG1-ReaderSyntax">WG1 - Reader Syntax</h2>
+      <h3 id="#12symbolliteralextensions"><a href="/ticket/12">#12</a> symbol literal extensions</h3>
+      <p>In R5RS, symbols parsed as any sequence of valid symbol characters
+that does not begin with a character that can begin a number.  The
+three exceptions <span class="monospace">+</span>, <span class="monospace">-</span> and <span class="monospace">...</span> are also provided.  This allows
+parsing with only constant lookahead to determine type.</p>
+      <p>R6RS added additional exceptions for symbols beginning with <span class="monospace">-&gt;</span>, a
+common idiom, still allowing parsers to determine type with a constant
+lookahead.</p>
+      <p>John Cowan proposes allowing anything that cannot be parsed as a
+number to be a valid symbol.  This removes the special case
+exceptions, but may require arbitrary lookahead.</p>
+      <p>Alex Shinn proposes symbols are any sequence of valid symbol
+characters that does not have a prefix which is a valid number.  This
+removes the special case exceptions, allows constant lookahead, and
+allows extensions to number syntax.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r5rs:</b> symbols may not begin with <span class="monospace">-</span>, except for <span class="monospace">-</span> itself</li>
+            <li><b>r6rs:</b> symbols may not begin with <span class="monospace">-[^&gt;]</span></li>
+            <li><b>cowan:</b> symbols are anything that doesn't parse as a number</li>
+            <li><b>shinn:</b> symbols may not begin with a number prefix</li></ul></li>
+        <li><b>Options:</b> r5rs, r6rs, cowan, shinn, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> shinn, r6rs, r5rs, cowan</li></ul>
+      <p>I've been convinced by Alex's rationale here: we need a little kick room for extending number syntax in the standard later on.</p>
+      <h3 id="#84Needtodecideonalistofnamedcharacterescapes"><a href="/ticket/84">#84</a> Need to decide on a list of named character escapes</h3>
+      <p>The WG has voted to have a list of character names.</p>
+      <p>The list in R5RS and the longer list in R6RS are only informative.  I
+suggest adopting the R6RS list and making it normative.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r5rs:</b> space, newline</li>
+            <li><b>r6rs:</b> <a href="http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-7.html#node_sec_4.2.6">R6RS Characters</a></li>
+            <li><b>shinn:</b> space, tab, newline, return, escape, null, alarm, backspace</li></ul></li>
+        <li><b>Options:</b> r5rs, r6rs, shinn</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> r6rs, shinn, r5rs</li></ul>
+      <p>My idea.</p>
+      <h3 id="#104listofmnemonicstringescapes"><a href="/ticket/104">#104</a> list of mnemonic string escapes</h3>
+      <p>Similar to <a href="/ticket/84">#84</a>, we need to choose a specific list of mnemonic escapes
+like \n and \t to be recognized in strings.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r5rs:</b> <span class="monospace">\\</span>, <span class="monospace">\&quot;</span></li>
+            <li><b>r6rs:</b> <a href="http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-7.html#node_sec_4.2.7">R6RS Strings</a></li>
+            <li><b>shinn:</b> <span class="monospace">\\</span>, <span class="monospace">\&quot;</span>, <span class="monospace">\t</span>, <span class="monospace">\n</span>, <span class="monospace">\r</span>, <span class="monospace">\e</span>, <span class="monospace">\a</span>, <span class="monospace">\b</span></li></ul></li>
+        <li><b>Options:</b> r5rs, r6rs, shinn</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> r6rs, shinn, r5rs</li></ul>
+      <p>My idea.</p></div></body></html>

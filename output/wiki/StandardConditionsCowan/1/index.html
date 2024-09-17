@@ -1,0 +1,92 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StandardConditionsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StandardConditionsCowan.md">StandardConditionsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Standard&shy;Conditions&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-07-12 11:59:22</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/StandardConditionsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/StandardConditionsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Introduction">Introduction</h2>
+      <p>The procedures in this package allow programs to analyze condition objects representing exceptions reported by a Scheme implementation.  Although they have the same names as their R6RS equivalents, they are meant to be implementable on top of arbitrary Scheme objects, not just records.  Each predicate returns <span class="monospace">#t</span> if the argument is an object representing the situation described for that predicate, and <span class="monospace">#f</span> on all other objects.  This package does not provide constructors for these conditions, nor any way to subclass them.</p>
+      <p>&quot;Implies&quot; means that if this predicate returns <span class="monospace">#t</span>, the specified predicate also returns <span class="monospace">#t</span>.  This relationship is transitive.  &quot;Implied by&quot; means that if the specified predicate returns <span class="monospace">#t</span>, this predicate also returns <span class="monospace">#t</span>.</p>
+      <p>It is an error to call an accessor procedure associated with a predicate on an object on which the predicate returns <span class="monospace">#f</span>.</p>
+      <h2 id="Generalconditions">General conditions</h2>
+      <p><span class="monospace">(warning? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> represents a condition that does not, in principle, prohibit immediate continued execution of the program, but may interfere with the program’s execution later.</p>
+      <p><span class="monospace">(serious-condition? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> represents a condition serious enough that it cannot safely be ignored.</p>
+      <p><span class="monospace">(error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">serious-condition?</span>.  Implied by <span class="monospace">error-object?</span> in the small language.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an error, typically caused by something that has gone wrong in the interaction of the program with the external world or the user.</p>
+      <p><span class="monospace">(violation? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">serious-condition?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an violation of the language standard or a library standard, typically caused by a programming error.</p>
+      <p><span class="monospace">(assertion-violation? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">violation?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an invalid call to a procedure, either passing an invalid number of arguments, or passing an argument of the wrong type.</p>
+      <p><span class="monospace">(non-continuable-violation? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">violation?</span>.  This type indicates that an exception handler invoked via raise has returned.</p>
+      <p><span class="monospace">(implementation-restriction-violation? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">violation?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents a violation of an implementation restriction allowed by the specification, such as being out of memory or the absence of representations for NaNs and infinities.</p>
+      <p><span class="monospace">(lexical-violation? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">violation?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents a syntax violation at the level of the datum syntax.</p>
+      <p><span class="monospace">(syntax-violation? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(syntax-violation-form condition)</span></p>
+      <p><span class="monospace">(syntax-violation-subform condition)</span></p>
+      <p>Implies <span class="monospace">violation?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents a syntax violation.  <span class="monospace">Syntax-violation-form</span> returns an erroneous syntax object or a datum representing the code of the erroneous form. <span class="monospace">Syntax-violation-subform</span> returns an optional syntax object or datum within the erroneous form that more precisely locates the violation. Either accessor procedure can return <span class="monospace">#f</span> to indicate the absence of more precise information.</p>
+      <p><span class="monospace">(undefined-violation? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">violation?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an unbound identifier in the program.</p>
+      <h2 id="Conditioncontent">Condition content</h2>
+      <p><span class="monospace">(message-condition? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(condition-message condition)</span></p>
+      <p>Implied by <span class="monospace">error-object?</span> in the small language.  Returns <span class="monospace">#t</span> if <i>obj</i> contains a string message further describing the nature of the condition to humans.  <span class="monospace">Condition-message</span> returns the string.</p>
+      <p><span class="monospace">(irritants-condition? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(condition-irritants condition)</span></p>
+      <p>Implied by <span class="monospace">error-object?</span> in the small language.  Returns <span class="monospace">#t</span> if <i>obj</i> contains a list of objects called &quot;irritants&quot;, typically the argument list of a procedure that detected an exception.  <span class="monospace">Condition-irritants</span> returns the list of objects.</p>
+      <p><span class="monospace">(who-condition? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(condition-who condition)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> contains a symbol or string identifying the entity reporting the exception, or <span class="monospace">#f</span> if the entity is not known.  <span class="monospace">Condition-who</span> returns the value.</p>
+      <h2 id="I/Oconditions">I/O conditions</h2>
+      <p><span class="monospace">(i/o-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an I/O error.</p>
+      <p><span class="monospace">(i/o-read-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">i/o-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents a read error that occurred during an I/O operation.</p>
+      <p><span class="monospace">(i/o-write-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">i/o-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents a write error that occurred during an I/O operation.</p>
+      <p><span class="monospace">(i/o-invalid-position-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(i/o-error-position condition)</span></p>
+      <p>Implies <span class="monospace">i/o-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an attempt to set the file position to an invalid position. <span class="monospace">I/o-error-position</span> returns the file position that the program intended to set.</p>
+      <p><span class="monospace">(i/o-filename-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(i/o-error-filename condition)</span></p>
+      <p>Implies <span class="monospace">i/o-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an I/O error that occurred during an operation on a named file. <span class="monospace">I/o-error-filename</span> returns the name of the file.</p>
+      <p><span class="monospace">(i/o-file-protection-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">i/o-filename-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an operation that tried to operate on a named file with insufficient access rights.</p>
+      <p><span class="monospace">(i/o-file-is-read-only-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">i/o-file-protection-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an operation tried to operate on a named read-only file under the assumption that it is writeable.</p>
+      <p><span class="monospace">(i/o-file-already-exists-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">i/o-filename-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents that an operation tried to operate on an existing named file under the assumption that it did not exist.</p>
+      <p><span class="monospace">(i/o-file-does-not-exist-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">i/o-filename-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an operation that tried to operate on an non-existent named file under the assumption that it existed.</p>
+      <p><span class="monospace">(i/o-port-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(i/o-error-port condition)</span></p>
+      <p>Implies <span class="monospace">i/o-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> contains a port with which an I/O error is associated. <span class="monospace">I/o-error-port</span> returns the port.</p>
+      <p><span class="monospace">(i/o-decoding-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">i/o-port-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an operation for textual input from a port that encounters a sequence of bytes that cannot be translated into a character or string by the input direction of the port’s transcoder.</p>
+      <p><span class="monospace">(i/o-encoding-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(i/o-encoding-error-char condition)</span></p>
+      <p>Implies <span class="monospace">i/o-port-error?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an operation for textual output to a port encounters a character that cannot be translated into bytes by the output direction of the port's transcoder. <span class="monospace">I/o-encoding-error-char</span> returns the character that could not be encoded.</p>
+      <h2 id="Numericconditions">Numeric conditions</h2>
+      <p><span class="monospace">(no-infinities-violation? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">implementation-restriction-violation?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an arithmetic operation that is specified to return an infinity on a Scheme implementation that is not able to represent the infinity.</p>
+      <p><span class="monospace">(no-nans-violation? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Implies <span class="monospace">implementation-restriction-violation?</span>.  Returns <span class="monospace">#t</span> if <i>obj</i> represents an arithmetic operation that is specified to return a NaN on a Scheme implementation that is not able to represent the NaN.</p></div></body></html>

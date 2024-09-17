@@ -1,0 +1,72 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PlebisciteObjections</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PlebisciteObjections.md">PlebisciteObjections</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Plebiscite&shy;Objections</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-05-11 07:43:06</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/PlebisciteObjections/history">history</a></div>
+      <div class="source"><a href="/wiki/PlebisciteObjections/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>The following formal and informal objections to draft 9 of R7RS-small have been extracted from votes cast in the R7RS-small plebiscite.  I have in some cases provided suggested resolutions as well.</p>
+      <ul>
+        <li>The draft semantics of <span class="monospace">eq?</span> and <span class="monospace">eqv?</span> as applied to procedures should return to the IEEE/R5RS rules.</li>
+        <li>The draft is gratuitously incompatible with R6RS.</li>
+        <li>The proposed module system is pointlessly inflexible.</li>
+        <li>The proposed module system requires additional boilerplate past the requirements of R6RS and implementation-specific module systems.</li>
+        <li>The semantics of the top level are unspecified in the draft.</li>
+        <li>The draft avoids making hard decisions, making it a mere description of the current state of Scheme.</li>
+        <li>Many decisions were based on a tacit requirement to ignore R6RS.</li>
+        <li>The draft is a step backwards from R6RS.</li>
+        <li>The draft fails to make substantive improvements in the Scheme language over R6RS.</li>
+        <li>The draft fails to stay true to the history and spirit of Scheme.</li>
+        <li>The draft's failure to treat compatibility with R6RS as important is a move away from unity.</li>
+        <li>For aficionados of Scheme's crystalline beauty, the draft has little to offer beyond R5RS.</li>
+        <li>The draft has little to offer the working programmer over R6RS.</li>
+        <li>The draft fails to provide library versioning, a pedagogically important topic.</li>
+        <li>The draft excludes assertions.</li>
+        <li>Programs that depend on full Unicode support are not portable to all R7RS implementations.</li>
+        <li>The syntaxes <span class="monospace">include</span> and <span class="monospace">include-ci</span>, and the <span class="monospace">load</span> procedure, don't belong in Scheme.</li>
+        <li>The draft does not provide the important higher-order procedures in the R6RS <span class="monospace">(rnrs lists)</span> library.</li>
+        <li>The draft does not require the Scheme language to be safely implemented in conforming implementations.</li>
+        <li>The draft defines a less expressive language than the R6RS base language.</li>
+        <li>The &quot;stack-winding dance&quot; of <span class="monospace">guard</span> clauses is not dealt with in a satisfactory way.</li>
+        <li>Mutable strings are still present in the draft despite their undesirability.</li>
+        <li>The draft insists that certain procedures return a single unspecified value rather than an unspecified number of unspecified values.</li>
+        <li>Adding Unicode support is too large a change from R5RS.</li>
+        <li>Exceptions integrate badly with the rest of the language.</li>
+        <li>The syntaxes <span class="monospace">#true</span> and <span class="monospace">#false</span> are totally gratuitous.</li>
+        <li>The lexical syntax <span class="monospace">#| ... |#</span> is unsightly.</li>
+        <li>The lexical syntax <span class="monospace">#!(no-)fold-case</span> is a bit ugly.</li>
+        <li>The <span class="monospace">read-line</span> procedure can cause a denial of service because it does not provide for a limit on the amount of input read.</li>
+        <li>The syntax of <span class="monospace">define-record-type</span> is unscalable and not open to extension.</li>
+        <li>The systematic use of parameters would be better than proliferating separate procedures, specifically in the <span class="monospace">write</span>, <span class="monospace">write-simple</span>, and <span class="monospace">write-shared</span> procedures and the <span class="monospace">include</span> and <span class="monospace">include-ci</span> syntaxes.</li>
+        <li>The <span class="monospace">error</span> procedure is gratuitously different from the R6RS version.</li>
+        <li>The <span class="monospace">include</span>, <span class="monospace">include-ci</span>, and <span class="monospace">include-library-declarations</span> syntaxes are ugly and unnecessary consequences of the artificial limitations on modules.</li>
+        <li>The <span class="monospace">cond-expand</span> syntax does not scale well, and we have done little to fix the issues that make it un-useful.</li>
+        <li>The lack of a fully-featured macro system requires the use of sub-par constructs.</li>
+        <li>The draft's version of Scheme has no conception of user extensibility in the library system or conditional expansion.</li>
+        <li>The draft follows the style and wording of R5RS rather than the better, more precise, and clearer R6RS language.</li>
+        <li>The draft should reflect the intersection of high-quality industrial-strength implementations, not the intersection of every toy Scheme ever written.</li>
+        <li>The <span class="monospace">call/cc</span> abstraction is intractable and not useful and should have been excluded.</li>
+        <li>The draft was forbidden by its charter to remove restrictions that make additional features seem necessary.</li>
+        <li>The large language should have been developed before the small language.</li>
+        <li>The text-handling routines are redundant or inelegant in a Unicode world, but could not be removed or fundamentally altered due to charter restrictions.</li>
+        <li>The interaction between exceptions, <span class="monospace">dynamic-wind</span>, and continuations is missing something orthogonal.</li>
+        <li><a href="/wiki/Parameters">Parameters</a> don't belong in the base language.</li>
+        <li>The draft made many matters settled by R6RS undefined again.</li>
+        <li>The order of arguments in the draft's <span class="monospace">bytevector-copy</span> is fundamentally incompatible with R6RS in an undetectable way, though it is R6RS that is wrong here.</li>
+        <li>The draft should have included delimited continuation support.</li>
+        <li>The draft does not provide procedures that operate on mixed types of sequences (e.g. a map function that accepts a list and a vector and applies a two-argument function element-wise on them)</li>
+        <li>The draft is too conservative in its changes to R5RS.</li></ul></div></body></html>

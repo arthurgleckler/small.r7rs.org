@@ -1,0 +1,623 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki GeneratorsGauche version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki GeneratorsGauche version 4</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>GeneratorsGauche</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>{{{
+#!html
+&lt;h2 class=&quot;section&quot;&gt;Generators&lt;/h2&gt;
+
+&lt;p&gt;A generator is merely a procedure with no arguments that works
+as a source of a series of values.  Every time it is called,
+it yields a value.  Returning an end-of-file object indicates the generator is exhausted.
+For example, &lt;code&gt;read-char&lt;/code&gt; can be seen as a generator that
+generates characters from the current input port.
+&lt;/p&gt;
+&lt;p&gt;It is common practice to abstract the sources of values in such a way,
+so it is useful to define utility procedures that work on 
+generators.  This module provides them.
+&lt;/p&gt;
+
+&lt;p&gt;A generator is very lightweight, and useful for implementing simple
+on-demand calculations.  However, keep in mind that it is
+side-effecting construct; you can't safely backtrack, for example..
+&lt;/p&gt;
+
+&lt;h3 class=&quot;subsection&quot;&gt;Generator constructors&lt;/h3&gt;
+
+&lt;p&gt;A generator isn't a special datatype but just an ordinary procedure,
+so you can make a generator with lambdas.  This module provides
+some common generator constructors for convenience.
+&lt;/p&gt;
+&lt;p&gt;If you want to use your procedure as a generator, note that a
+generator can be invoked many times even after it returns an end-of-file object once.
+You have to code it so that once it returns an end-of-file object, it keeps returning
+an end-of-file object for all subsequent calls.
+&lt;/p&gt;
+&lt;p&gt;The result of generator constructors is merely a procedure,
+and printing it doesn't show much.  In the examples in this section
+we use &lt;code&gt;generator-&amp;gt;list&lt;/code&gt; to convert the generator to the list.
+&lt;/p&gt;
+&lt;p&gt;These procedures have names beginning with &lt;code&gt;make-&lt;/code&gt;
+and ending with &lt;code&gt;-generator&lt;/code&gt;.
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-null_002dgenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-generator&lt;/code&gt;&lt;i&gt; arg &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;The simplest generator.  Returns the given arguments followed by an end-of-file object when called.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-circular_002dgenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-circular-generator&lt;/code&gt;&lt;i&gt; arg &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns an infinite generator that repeats the given arguments forever.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (circular-generator 1 2 3) 10)
+  &amp;rArr; (1 2 3 1 2 3 1 2 3 1)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Note that the above example limits the length of
+the converted list by 10; otherwise
+&lt;code&gt;generator-&amp;gt;list&lt;/code&gt; won't return.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-giota&quot;&gt;&lt;/a&gt;&lt;code&gt;make-iota-generator&lt;/code&gt;&lt;i&gt; [ count [ start [ step ] ] ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator
+of a series of &lt;var&gt;count&lt;/var&gt; numbers (by default, an infinite number), starting from &lt;var&gt;start&lt;/var&gt; (0 by default)
+and increased by &lt;var&gt;step&lt;/var&gt; (1 by default).
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (make-iota-generator 10 3 2))
+  &amp;rArr; (3 5 7 9 11 13 15 17 19 21)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;If both &lt;var&gt;start&lt;/var&gt; and &lt;var&gt;step&lt;/var&gt; are exact, the generator
+yields exact numbers; otherwise it yields inexact numbers.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (giota +inf.0 1/2 1/3) 6)
+  &amp;rArr; (1/2 5/6 7/6 3/2 11/6 13/6)
+(generator-&amp;gt;list (giota +inf.0 1.0 2.0) 5)
+  &amp;rArr; (1.0 3.0 5.0 7.0 9.0)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-grange&quot;&gt;&lt;/a&gt;&lt;code&gt;make-range-generator&lt;/code&gt;&lt;i&gt; start end  [ step ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator of a series of
+numbers.  The series begins with &lt;var&gt;start&lt;/var&gt;, increases by &lt;var&gt;step&lt;/var&gt; (default 1),
+and continues while the number is below &lt;var&gt;end&lt;/var&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (make-range-generator 3 8))
+  &amp;rArr; (3 4 5 6 7)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gtabulate&quot;&gt;&lt;/a&gt;&lt;code&gt;make-tabulation-generator&lt;/code&gt;&lt;i&gt; [k] proc &lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator
+of a series of &lt;var&gt;k&lt;/var&gt; numbers (by default, an infinite number), namely
+&lt;code&gt;(proc 0)&lt;/code&gt;, &lt;code&gt;(proc 1)&lt;/code&gt;, &lt;code&gt;(proc 2)&lt;/code&gt;, ....
+&lt;/p&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-generate&quot;&gt;&lt;/a&gt;&lt;code&gt;make-coroutine-generator&lt;/code&gt;&lt;i&gt; proc&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator from a coroutine.
+&lt;/p&gt;
+&lt;p&gt;The &lt;var&gt;proc&lt;/var&gt; argument is a procedure that takes one argument,
+&lt;var&gt;yield&lt;/var&gt;.   When called, &lt;code&gt;generate&lt;/code&gt; immediately returns
+a generator &lt;var&gt;g&lt;/var&gt;.  When &lt;var&gt;g&lt;/var&gt; is called, &lt;var&gt;proc&lt;/var&gt; runs
+until it calls &lt;var&gt;yield&lt;/var&gt;.  Calling &lt;var&gt;yield&lt;/var&gt; causes
+the execution of &lt;var&gt;proc&lt;/var&gt; to be suspended, and &lt;var&gt;g&lt;/var&gt; returns the value passed
+to &lt;var&gt;yield&lt;/var&gt;.
+&lt;/p&gt;
+&lt;p&gt;Once &lt;var&gt;proc&lt;/var&gt; returns, it is the end of the series &amp;mdash; &lt;var&gt;g&lt;/var&gt; returns an
+end-of-file object from then on.  The return value of &lt;var&gt;proc&lt;/var&gt; is ignored.
+&lt;/p&gt;
+&lt;p&gt;The following code creates a generator that produces a series
+0, 1, and 2 (effectively the same as &lt;code&gt;(make-iota-generator 3)&lt;/code&gt; and binds
+it to &lt;code&gt;g&lt;/code&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(define g
+  (generate
+   (lambda (yield) (let loop ((i 0))
+               (when (&amp;lt; i 3) (yield i) (loop (+ i 1)))))))
+
+(generator-&amp;gt;list g) &amp;rArr; (0 1 2)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-list_002d_003egenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-list-generator&lt;/code&gt;&lt;i&gt; lis [ start [ end ] ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-vector_002d_003egenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-vector-generator&lt;/code&gt;&lt;i&gt; vec [ start [ end ] ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-reverse_002dvector_002d_003egenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-reverse-vector-generator&lt;/code&gt;&lt;i&gt; vec [ start [ end ] ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-string_002d_003egenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-string-generator&lt;/code&gt;&lt;i&gt; str [ start [ end ] ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;These procedures return generators that yields each item in the given argument.
+A generator returned from &lt;code&gt;make-vector-reverse-generator&lt;/code&gt; procedures runs in
+reverse order.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(make-generator-list (list-&amp;gt;generator '(1 2 3 4 5)))
+  &amp;rArr; (1 2 3 4 5)
+(generator-&amp;gt;list (make-vector-generator '#(1 2 3 4 5)))
+  &amp;rArr; (1 2 3 4 5)
+(generator-&amp;gt;list (make-reverse-vector-generator '#(1 2 3 4 5)))
+  &amp;rArr; (5 4 3 2 1)
+(generator-&amp;gt;list (make-string-generator &amp;quot;abcde&amp;quot;))
+  &amp;rArr; (#\a #\b #\c #\d #\e)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;By default the generator is exhausted once all items are retrieved;
+the optional &lt;var&gt;start&lt;/var&gt; and &lt;var&gt;end&lt;/var&gt; arguments can limit the range
+the generator walks across.
+&lt;/p&gt;
+&lt;p&gt;For forward generators, the first value the generator yields
+is &lt;var&gt;start&lt;/var&gt;-th element, and it ends right before &lt;var&gt;end&lt;/var&gt;-th element.
+For reverse generators, the first value is the item right before
+to the &lt;var&gt;end&lt;/var&gt;-th element, and the last value is the &lt;var&gt;start&lt;/var&gt;-th
+element.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (vector-&amp;gt;generator '#(a b c d e) 2))
+  &amp;rArr; (c d e)
+(generator-&amp;gt;list (make-vector-generator '#(a b c d e) 2 4))
+  &amp;rArr; (c d)
+(generator-&amp;gt;list (make-reverse-vector-generator '#(a b c d e) 2))
+  &amp;rArr; (e d c b)
+(generator-&amp;gt;list (make-reverse-vector-generator '#(a b c d e) 2 4))
+  &amp;rArr; (d c)
+(generator-&amp;gt;list (make-reverse-vector-generator '#(a b c d e) #f 2))
+  &amp;rArr; (b a)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-bits_002d_003egenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-bits-generator&lt;/code&gt;&lt;i&gt; n&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;This procedure takes an exact integer and treats it as a sequence of
+boolean values (0 for false and 1 for true), taking bits from
+the least significant bit.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (bits-&amp;gt;generator #b10110))
+ &amp;rArr; (#f #t #t #f #t)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-port_002d_003esexp_002dgenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-port-sexp-generator&lt;/code&gt;&lt;i&gt; input-port&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-port_002d_003eline_002dgenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-port-line-generator&lt;/code&gt;&lt;i&gt; input-port&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-port_002d_003echar_002dgenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-port-char-generator&lt;/code&gt;&lt;i&gt; input-port&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-port_002d_003ebyte_002dgenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-port-byte-generator&lt;/code&gt;&lt;i&gt; input-port&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns generators that read characters or bytes from the given
+port, respectively.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-x_002d_003egenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;make-for-each-generator&lt;/code&gt;&lt;i&gt; obj for-each&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;A generic version to convert any collection &lt;var&gt;obj&lt;/var&gt; to a generator
+that walks across the &lt;var&gt;obj&lt;/var&gt; using the &lt;var&gt;for-each&lt;/var&gt; procedure
+appropriate for &lt;var&gt;obj&lt;/var&gt;.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dt&gt;&lt;a name=&quot;index-gunfold&quot;&gt;&lt;/a&gt;&lt;code&gt;make-gunfold-generator&lt;/code&gt;&lt;i&gt; p f g seed&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;A generator constructor similar to &lt;var&gt;unfold&lt;/var&gt;.
+&lt;/p&gt;
+&lt;p&gt;&lt;var&gt;P&lt;/var&gt; is a predicate that takes a seed value and determines
+where to stop.  &lt;var&gt;F&lt;/var&gt; is a procedure that calculates a value
+from a seed value.  &lt;var&gt;G&lt;/var&gt; is a procedure that calculates the
+next seed value from the current seed value.
+&lt;/p&gt;
+&lt;p&gt;For each call of the resulting generator, &lt;var&gt;p&lt;/var&gt; is called with
+the current seed value.  If it returns true, then we see we've
+done, and we return an end-of-file object.  Otherwise,
+we apply &lt;var&gt;f&lt;/var&gt; on the current seed value to get the value to
+return, and use &lt;var&gt;g&lt;/var&gt; to update the seed value.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (gunfold (^s (&amp;gt; s 5)) (^s (* s 2)) (^s (+ s 1)) 0))
+  &amp;rArr; '(0 2 4 6 8 10)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;h3 class=&quot;subsection&quot;&gt;Generator operations&lt;/h3&gt;
+
+&lt;p&gt;The following procedures take generators (noted as &lt;var&gt;gen&lt;/var&gt; and
+&lt;var&gt;gen2&lt;/var&gt;) and return a generator.  For the convenience, they
+also accept any collection to &lt;var&gt;gen&lt;/var&gt; and &lt;var&gt;gen2&lt;/var&gt; parameters;
+if a collection is passed where a generator is expected,
+it is implicitly coerced into a generator.
+&lt;/p&gt;
+&lt;p&gt;The names of these procedures begin with &lt;code&gt;g&lt;/code&gt;.
+&lt;/p&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gcons_002a&quot;&gt;&lt;/a&gt;&lt;code&gt;gcons*&lt;/code&gt;&lt;i&gt; item &amp;hellip; gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that adds &lt;var&gt;item&lt;/var&gt;s in front of &lt;var&gt;gen&lt;/var&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (gcons* 'a 'b (giota 2)))
+ &amp;rArr; (a b 0 1)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gappend&quot;&gt;&lt;/a&gt;&lt;code&gt;gappend&lt;/code&gt;&lt;i&gt; gen &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yields the items from the first given
+generator, and once it is exhausted, use the second generator, and so on.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (gappend (giota 3) (giota 2)))
+ &amp;rArr; (0 1 2 0 1)
+
+(generator-&amp;gt;list (gappend))
+ &amp;rArr; ()
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gconcatenate&quot;&gt;&lt;/a&gt;&lt;code&gt;gconcatenate&lt;/code&gt;&lt;i&gt; gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;The &lt;var&gt;gen&lt;/var&gt; argument should generate generators and/or sequences.
+Returns a generator that yields elements from the first generator/sequence,
+then the second one, then the third, etc.
+&lt;/p&gt;
+&lt;p&gt;It is similar to &lt;code&gt;(apply gappend (generator-&amp;gt;list gen))&lt;/code&gt;, except
+that &lt;code&gt;gconcatenate&lt;/code&gt; can work even &lt;var&gt;gen&lt;/var&gt; generates infinite
+number of generators.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;($ generator-&amp;gt;list $ gconcatenate
+   $ list-&amp;gt;generator `(,(giota 3) ,(giota 2)))
+ &amp;rArr; (0 1 2 0 1)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gmerge&quot;&gt;&lt;/a&gt;&lt;code&gt;gmerge&lt;/code&gt;&lt;i&gt; comparator gen gen2 &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gunion&quot;&gt;&lt;/a&gt;&lt;code&gt;gunion&lt;/code&gt;&lt;i&gt; comparator gen gen2 &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gintersection&quot;&gt;&lt;/a&gt;&lt;code&gt;gintersection&lt;/code&gt;&lt;i&gt; comparator gen gen2 &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator that yields elements out of input generators,
+with the order determined by a SRFI 114 comparator.
+&lt;code&gt;Gmerge&lt;/code&gt; returns all the elements;
+&lt;code&gt;gunion&lt;/code&gt; returns all the elements that are distinct in the sense of the comparator;
+&lt;code&gt;gintersection&lt;/code&gt; returns all the elements that appear in all the generators.
+&lt;/p&gt;
+&lt;p&gt;Each input generator must yield appropriately ordered elements by itself;
+otherwise the result won't be ordered.
+&lt;/p&gt;
+&lt;p&gt;If only one generator is given, it is just returned.
+In that case, &lt;var&gt;constructor&lt;/var&gt; is ignored.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (gmerge &amp;lt; '(1 3 8) '(5) '(2 4)))
+  &amp;rArr; '(1 2 3 4 5 8)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gmap&quot;&gt;&lt;/a&gt;&lt;code&gt;gmap&lt;/code&gt;&lt;i&gt; proc gen gen2 &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yields a value returned by &lt;var&gt;proc&lt;/var&gt;
+applied on the values from given generators.  The returned generator
+terminates when any of the given generator is exhausted.
+&lt;/p&gt;
+&lt;p&gt;Note: This differs from &lt;code&gt;generator-collect&lt;/code&gt;,
+which consumes all
+values at once and returns the results as a list, while &lt;code&gt;gmap&lt;/code&gt;
+returns a generator immediately without consuming input.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gmap_002daccum&quot;&gt;&lt;/a&gt;&lt;code&gt;gmap-accum&lt;/code&gt;&lt;i&gt; proc seed gen gen2 &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;A generator version of &lt;code&gt;map-accum&lt;/code&gt;,
+mapping with states.
+&lt;/p&gt;
+&lt;p&gt;The &lt;var&gt;proc&lt;/var&gt; argument is a procedure that takes as many arguments
+as the input generators plus one.  It is called as
+&lt;code&gt;(proc v v2 &amp;hellip; seed)&lt;/code&gt; where &lt;code&gt;v&lt;/code&gt;, &lt;code&gt;v2&lt;/code&gt;, &amp;hellip; are
+the values yielded from the input generators, and &lt;var&gt;seed&lt;/var&gt; is the
+current seed value.  It must return two values, the yielding value
+and the next seed.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gfilter&quot;&gt;&lt;/a&gt;&lt;code&gt;gfilter&lt;/code&gt;&lt;i&gt; pred gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gremove&quot;&gt;&lt;/a&gt;&lt;code&gt;gfilter&lt;/code&gt;&lt;i&gt; pred gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yield the items from the source generator,
+except those on which &lt;var&gt;pred&lt;/var&gt; answers false or true respectively.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gfilter_002dmap&quot;&gt;&lt;/a&gt;&lt;code&gt;gfilter-map&lt;/code&gt;&lt;i&gt; proc gen gen2 &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Works the same as &lt;code&gt;(gfilter values (gmap proc gen gen2 &amp;hellip;))&lt;/code&gt;,
+only slightly more efficiently.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gstate_002dfilter&quot;&gt;&lt;/a&gt;&lt;code&gt;gstate-filter&lt;/code&gt;&lt;i&gt; proc seed gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;This allows stateful filtering of a series.  The &lt;var&gt;proc&lt;/var&gt; argument
+must be a procedure that takes a value &lt;var&gt;V&lt;/var&gt; from the source generator and
+a seed value.  It should return two values, a boolean flag and the next
+seed value.  If it returns true for the boolean flag, the generator
+yields &lt;var&gt;V&lt;/var&gt;.  Otherwise, the generator keeps calling &lt;var&gt;proc&lt;/var&gt;,
+with updating the seed value, until it sees the true flag value
+or the source generator is exhausted.
+&lt;/p&gt;
+&lt;p&gt;The following example takes a generator of oscillating values
+and yields only values that are greater than their previous value.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list
+ (gstate-filter (^[v s] (values (&amp;lt; s v) v)) 0
+                (list-&amp;gt;generator '(1 2 3 2 1 0 1 2 3 2 1 0 1 2 3))))
+ &amp;rArr; (1 2 3 1 2 3 1 2 3)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gbuffer_002dfilter&quot;&gt;&lt;/a&gt;&lt;code&gt;gbuffer-filter&lt;/code&gt;&lt;i&gt; proc seed gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;This procedure allows n-to-m mapping between elements in input and output &amp;mdash; 
+that is, you can take a look at serveral input elements to generate
+one or more output elements.
+&lt;/p&gt;
+&lt;p&gt;The procedure &lt;var&gt;proc&lt;/var&gt; receives the next input element and accumulated
+seed value.  It returns two values: A list of output values, and the next
+seed value.  If you need to look at more input to generate
+output, you can return an empty list as the first value.
+&lt;/p&gt;
+&lt;p&gt;If the input reaches the end, the output ends when the output of the last call to &lt;var&gt;proc&lt;/var&gt;
+is exhausted (the last seed value is discarded).
+&lt;/p&gt;
+&lt;p&gt;Suppose you have a text file.  Each line contains a command,
+but if the line ends with backslash, next line is treated as a
+continuation of the current line.  The following code creates
+a generator that returns &lt;em&gt;logical&lt;/em&gt; lines, that is,
+the lines after such line continuations are taken care of.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(gbuffer-filter (^[v s]
+                  (if-let1 m (#/\\$/ v)
+                    (values '() (cons (m 'before) s))
+                    (values `(,(string-concatenate-reverse (cons v s))) '())))
+                '()
+                (file-&amp;gt;line-generator &amp;quot;input-file.txt&amp;quot;)
+                (^[s] `(,(string-concatenate-reverse s))))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gtake&quot;&gt;&lt;/a&gt;&lt;code&gt;gtake&lt;/code&gt;&lt;i&gt; gen k [ padding ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gdrop&quot;&gt;&lt;/a&gt;&lt;code&gt;gdrop&lt;/code&gt;&lt;i&gt; gen k&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;The generator version of
+&lt;code&gt;take&lt;/code&gt; and &lt;code&gt;drop&lt;/code&gt;.
+&lt;code&gt;Gtake&lt;/code&gt; returns a generator that yields (at most) the first &lt;var&gt;k&lt;/var&gt; items
+of the source generator, while &lt;code&gt;gdrop&lt;/code&gt; returns a generator
+that skips the first &lt;var&gt;k&lt;/var&gt; items of the source generator.
+&lt;/p&gt;
+&lt;p&gt;These won't complain if the source generator is exhausted before generating
+&lt;var&gt;k&lt;/var&gt; items.  By default, the generator returned by &lt;code&gt;gtake&lt;/code&gt;
+terminates as the source ends, but if you provide the &lt;var&gt;padding&lt;/var&gt; argument,
+then the returned generator will yield &lt;var&gt;k&lt;/var&gt; items, using the
+&lt;var&gt;padding&lt;/var&gt; value to fill the rest.
+&lt;/p&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gtake_002dwhile&quot;&gt;&lt;/a&gt;&lt;code&gt;gtake-while&lt;/code&gt;&lt;i&gt; pred gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gdrop_002dwhile&quot;&gt;&lt;/a&gt;&lt;code&gt;gdrop-while&lt;/code&gt;&lt;i&gt; pred gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;The generator version of &lt;code&gt;take-while&lt;/code&gt; and &lt;code&gt;drop-while&lt;/code&gt;.  The generator returned
+from &lt;code&gt;gtake-while&lt;/code&gt; yields items from the source generator
+as long as &lt;var&gt;pred&lt;/var&gt; returns true for each.  The generator returned
+from &lt;code&gt;gdrop-while&lt;/code&gt; first reads items from the source generator
+while &lt;var&gt;pred&lt;/var&gt; returns true for them, then starts yielding items.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-gslices&quot;&gt;&lt;/a&gt;&lt;code&gt;gslices&lt;/code&gt;&lt;i&gt; gen k [ padding ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;
+This returns a generator, that yields a list of &lt;var&gt;k&lt;/var&gt; items from
+the input generator &lt;var&gt;gen&lt;/var&gt; at a time.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (gslices (giota 7) 3))
+  &amp;rArr; ((0 1 2) (3 4 5) (6))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;The &lt;var&gt;padding&lt;/var&gt; argument controls how the end
+of input is handled, just like &lt;code&gt;gtake&lt;/code&gt;.  When &lt;var&gt;padding&lt;/var&gt; is
+not provided, the last item from the output generator may not
+have &lt;var&gt;k&lt;/var&gt; items if the input is too short to fill them, as shown
+in the above example.  If &lt;var&gt;padding&lt;/var&gt; is present and the input is
+too short to complete &lt;var&gt;k&lt;/var&gt; items, &lt;var&gt;padding&lt;/var&gt; is used
+to fill the rest.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (gslices (giota 6) 3 #t 'x))
+  &amp;rArr; ((0 1 2) (3 4 5))
+(generator-&amp;gt;list (gslices (giota 7) 3 #t 'x))
+  &amp;rArr; ((0 1 2) (3 4 5) (6 x x))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-pairs_002dof&quot;&gt;&lt;/a&gt;&lt;code&gt;gpairs&lt;/code&gt;&lt;i&gt; car-gen cdr-gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yields pairs,
+whose car is generated from &lt;var&gt;car-gen&lt;/var&gt;
+and whose cdr is generated from &lt;var&gt;cdr-gen&lt;/var&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;
+(define g
+  (gpairs (make-generator 113 101 12 68 -55)
+          (make-generator #t #f #t #f #f))
+
+(generator-&amp;gt;list g 10)
+ &amp;rArr; ((113 . #t) (101 . #f) (12 . #t) (68 . #f) (-55 . #f))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-tuples_002dof&quot;&gt;&lt;/a&gt;&lt;code&gt;gtuple&lt;/code&gt;&lt;i&gt; gen &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yields lists 
+whose i-th element is generated from the i-th argument.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;
+(define g
+  (gtuples (make-generator -43 53 -114)
+           (make-generator #f #f #f)
+           (make-generator #\8 #\1 #\i))
+
+(generator-&amp;gt;list g 3)
+ &amp;rArr; ((-43 #f #\8) (53 #f #\1) (-114 #f #\i))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-lists_002dof-1&quot;&gt;&lt;/a&gt;&lt;code&gt;lists-of&lt;/code&gt;&lt;i&gt; sizer item-gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-vectors_002dof-1&quot;&gt;&lt;/a&gt;&lt;code&gt;vectors-of&lt;/code&gt;&lt;i&gt; sizer item-gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-strings_002dof-2&quot;&gt;&lt;/a&gt;&lt;code&gt;strings-of&lt;/code&gt;&lt;i&gt; sizer item-gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator that generates lists, vectors or strings of values from &lt;var&gt;item-gen&lt;/var&gt;, respectively.  The size of each datum is determined by
+&lt;var&gt;sizer&lt;/var&gt;which can
+be either a nonnegative integer or a generator of nonnegative integers.
+The value of the sizer determines the length of the result data.
+&lt;/p&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;TODO: &lt;code&gt;gdelete, gdelete-duplicates&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 class=&quot;subsection&quot;&gt;Folding generated values&lt;/h3&gt;
+
+&lt;p&gt;These procedures consume all the values of the generator passed to them.  They
+have names beginning with &lt;code&gt;generator-&lt;/code&gt;.
+&lt;/p&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-generator_002d_003elist&quot;&gt;&lt;/a&gt;&lt;code&gt;generator-&amp;gt;list&lt;/code&gt;&lt;i&gt; generator [ k ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Reads items from &lt;var&gt;generator&lt;/var&gt; and returns a list of them.
+By default, this reads until the generator is exhausted.  If
+an optional argument &lt;var&gt;k&lt;/var&gt; is given, it must be a nonnegative
+integer, and the list ends either &lt;var&gt;k&lt;/var&gt; items are read,
+or the generator is exhausted.
+&lt;/p&gt;
+&lt;p&gt;Be careful not to pass an infinite generator to this without
+specifying &lt;var&gt;k&lt;/var&gt;, or this procedure will not return.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-generator_002dfold&quot;&gt;&lt;/a&gt;&lt;code&gt;generator-fold&lt;/code&gt;&lt;i&gt; proc seed gen gen2 &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Works like &lt;code&gt;fold&lt;/code&gt; on the generated values by generator
+procedures &lt;var&gt;gen&lt;/var&gt; &lt;var&gt;gen2&lt;/var&gt; &amp;hellip;.
+&lt;/p&gt;
+&lt;p&gt;When one generator is given, for each value &lt;var&gt;v&lt;/var&gt; generated by &lt;var&gt;gen&lt;/var&gt;,
+&lt;var&gt;proc&lt;/var&gt; is called as &lt;code&gt;(&lt;var&gt;proc&lt;/var&gt; &lt;var&gt;v&lt;/var&gt; &lt;var&gt;r&lt;/var&gt;)&lt;/code&gt;, where
+&lt;var&gt;r&lt;/var&gt; is the current accumulated result; the initial value of the
+accumulated result is &lt;var&gt;seed&lt;/var&gt;,
+and the return value from &lt;var&gt;proc&lt;/var&gt; becomes the next accumulated result.
+When &lt;var&gt;gen&lt;/var&gt; returns an end-of-file object, the accumulated result at that time is returned
+from &lt;code&gt;generator-fold&lt;/code&gt;.
+&lt;/p&gt;
+&lt;p&gt;When more than one generator is given, &lt;var&gt;proc&lt;/var&gt; is
+called as &lt;code&gt;(&lt;var&gt;proc&lt;/var&gt; &lt;var&gt;v1&lt;/var&gt; &lt;var&gt;v2&lt;/var&gt; &amp;hellip; &lt;var&gt;r&lt;/var&gt;)&lt;/code&gt;,
+where &lt;var&gt;v1&lt;/var&gt;, &lt;var&gt;v2&lt;/var&gt; &amp;hellip; are the values yielded from
+&lt;var&gt;gen&lt;/var&gt;, &lt;var&gt;gen2&lt;/var&gt;, &amp;hellip;, respectively, and &lt;var&gt;r&lt;/var&gt; is
+the current accumulated result.  The iteration terminates when
+any one of the generators returns an end-of-file object.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(with-input-from-string &amp;quot;a b c d e&amp;quot;
+  (cut generator-fold cons 'z read))
+  &amp;rArr; (e d c b a . z)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-generator_002dfor_002deach&quot;&gt;&lt;/a&gt;&lt;code&gt;generator-for-each&lt;/code&gt;&lt;i&gt; proc gen gen2 &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;A generator version of &lt;code&gt;for-each&lt;/code&gt;.  Repeatedly applies &lt;var&gt;proc&lt;/var&gt; on
+the values yielded by &lt;var&gt;gen&lt;/var&gt;, &lt;var&gt;gen2&lt;/var&gt; &amp;hellip; until any one of
+the generators yields an end-of-file object.  The values returned from &lt;var&gt;proc&lt;/var&gt; are discarded.
+&lt;/p&gt;
+&lt;p&gt;This procedure consumes generated values using side effects.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-generator_002dmap&quot;&gt;&lt;/a&gt;&lt;code&gt;generator-collect&lt;/code&gt;&lt;i&gt; proc gen gen2 &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;A generator analogue of &lt;code&gt;map&lt;/code&gt;.  Repeatedly applies &lt;var&gt;proc&lt;/var&gt; on
+the values yielded by &lt;var&gt;gen&lt;/var&gt;, &lt;var&gt;gen2&lt;/var&gt; &amp;hellip; until any one of
+the generators yields an end-of-file object.   The values returned from &lt;var&gt;proc&lt;/var&gt;
+are collected into a list and returned.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(with-input-from-string &amp;quot;a b c d e&amp;quot;
+  (cut generator-map symbol-&amp;gt;string read))
+  &amp;rArr; (&amp;quot;a&amp;quot; &amp;quot;b&amp;quot; &amp;quot;c&amp;quot; &amp;quot;d&amp;quot; &amp;quot;e&amp;quot;)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;The same effects can be achieved by combining &lt;code&gt;generator-&amp;gt;list&lt;/code&gt;
+and &lt;code&gt;gmap&lt;/code&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (gmap proc gen gen2 &amp;hellip;))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-generator_002dfind&quot;&gt;&lt;/a&gt;&lt;code&gt;generator-find&lt;/code&gt;&lt;i&gt; pred gen&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns the first item from the generator &lt;var&gt;gen&lt;/var&gt; that satisfies
+the predicate &lt;var&gt;pred&lt;/var&gt;.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;p&gt;TODO: &lt;code&gt;generator-length, generator-last, generator-reverse, generator-count, generator-any, generator-every&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 class=&quot;subsection&quot;&gt;Syntax&lt;/h3&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-glet_002a&quot;&gt;&lt;/a&gt;&lt;code&gt;glet*&lt;/code&gt;&lt;i&gt; (binding &amp;hellip;) body body2 &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;This captures a monadic pattern frequently appears in the generator
+code.  It is in a similar spirit of &lt;code&gt;and-let*&lt;/code&gt;, but returns
+as soon as the evaluating expression returns an end-of-file object, instead of &lt;code&gt;#f&lt;/code&gt;
+as &lt;code&gt;and-let*&lt;/code&gt; does.
+&lt;/p&gt;
+&lt;p&gt;The &lt;var&gt;binding&lt;/var&gt; part can be either &lt;code&gt;(var expr)&lt;/code&gt; or &lt;code&gt;( expr )&lt;/code&gt;.
+The actual definition will explain this syntax clearly.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(define-syntax glet*
+  (syntax-rules ()
+    [(_ () body body2 ...) (begin body body2 ...)]
+    [(_ ([var gen-expr] more-bindings ...) . body)
+     (let1 var gen-expr
+       (if (eof-object? var)
+         var
+         (glet* (more-bindings ...) . body)))]
+    [(_ ([ gen-expr ] more-bindings ...) . body)
+     (let1 var gen-expr
+       (if (eof-object? var)
+         var
+         (glet* (more-bindings ...) . body)))]))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-do_002dgenerator&quot;&gt;&lt;/a&gt;&lt;code&gt;do-generator&lt;/code&gt;&lt;i&gt; (var gexpr) body &amp;hellip;&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;&lt;var&gt;Gexpr&lt;/var&gt; is an expression that yields a generator.  It is
+evaluated once.  The resulting generator is called repeatedly
+until it returns an end-of-file object.  Every time the generator is called,
+&lt;var&gt;body&lt;/var&gt; &amp;hellip; are evaluated in the scope
+where &lt;var&gt;var&lt;/var&gt; is bound to the value yielded from the generator.
+&lt;/p&gt;
+&lt;p&gt;Like &lt;code&gt;dolist&lt;/code&gt; and &lt;code&gt;dotimes&lt;/code&gt;, this macro exists for
+side-effects.  You can write the same thing with &lt;code&gt;for-each&lt;/code&gt; families,
+but sometimes this macro makes the imperative code more readable:
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(do-generator [line (file-&amp;gt;line-generator &amp;quot;filename&amp;quot;)]
+  ;; do some side-effecting stuff with line
+  )
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+}}}</pre>
+    <h2>time</h2>
+    <pre>2014-09-25 12:15:49</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

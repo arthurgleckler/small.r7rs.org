@@ -1,0 +1,178 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ConditionsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ConditionsCowan.md">ConditionsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Conditions&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-01-03 08:50:14</div>
+      <div class="version">8<span class="comment"></span><a href="/wiki/ConditionsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ConditionsCowan/8/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Conditions">Conditions</h2>
+      <p>This is a WG2 proposal for condition objects.  A condition object encapsulates information about an
+exceptional situation.  Typically the rest of the system is notified about a condition using the <span class="monospace">raise</span> and <span class="monospace">raise-continuable</span> procedures and their relatives.  Conditions are logically independent of the exception system, however:  conditions may be used for any purpose, and any object may be passed to the exception system.</p>
+      <p>The design of this condition system attempts to assume as little as possible about any existing implementation-specific condition system.  In particular, there is no specified relationship between conditions and records, as there is in R6RS, nor is there any notion of subtyping required by the system.  There are condition types for convenience in dispatching, but they are just symbols and in general entail nothing about what information is encapsulated, as different implementations will provide different kinds of information when creating an implementation-specified condition.</p>
+      <p>Within the above constraints, I have attempted to make the names as compatible as possible with <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-8.html#node_sec_7.2">the R6RS condition system</a> and its predecessors <a href="http://srfi.schemers.org/srfi-35/srfi-35.html">SRFI 35</a> and <a href="http://srfi.schemers.org/srfi-36/srfi-36.html">SRFI 36</a>, and with <a href="http://srfi.schemers.org/srfi-12/srfi-12.html">SRFI 12</a>.</p>
+      <p>A condition is said to be &quot;belong to type <i>sym</i>&quot; if (a) it was created by a call to <span class="monospace">make-condition</span> that was passed the symbol <span class="monospace">sym</span> as one of its condition types, or (b) it belongs to an implementation-defined set (possibly empty) of conditions of type <i>sym</i>.  This allows implementation-dependent condition objects to participate in this condition system.</p>
+      <h2 id="Constructor">Constructor</h2>
+      <p><span class="monospace">(make-condition </span><i>symlist</i> ( <i>sym</i> <i>obj</i> ) ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated condition which belongs to the types whose names are given in <span class="monospace">symlist</span>.  The remainder of the arguments are alternating property names (which are symbols) and values (which can be any object) that specify the information encapsulated by this condition.  It is an error if the value associated with the property name <span class="monospace">message</span> is not a string; it is also an error if the value associated with the property name <span class="monospace">irritants</span> is not a list.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(condition? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a condition of any type, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(condition-of-type? </span><i>obj</i> <i>sym</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a condition belonging to type <i>sym</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(&lt;type&gt;-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a condition belonging to type <span class="monospace">&lt;type&gt;</span> from the list below, and <span class="monospace">#f</span> otherwise.</p>
+      <h2 id="Accessors">Accessors</h2>
+      <p><span class="monospace">(condition-types </span><i>condition</i><span class="monospace">)</span></p>
+      <p>Returns the list of types to which <i>condition</i> belongs.  It is an error to attempt to mutate this list.</p>
+      <p><span class="monospace">(condition-properties </span><i>condition</i><span class="monospace">)</span></p>
+      <p>Returns the list of property names associated with this condition.  It is an error to attempt to mutate this list.</p>
+      <p><span class="monospace">(condition-ref </span><i>condition sym</i> [ <i>default</i> ] <span class="monospace">)</span></p>
+      <p>Returns the property value associated with the property named <i>sym</i> of <i>condition</i>.  If it has no such property, returns <i>default</i>.  If <i>default</i> is not specified, returns <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(condition-predicate </span><i>sym</i><span class="monospace">)</span></p>
+      <p>Returns a predicate which will return <span class="monospace">#t</span> if applied to a condition belonging to type <i>sym</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(condition-accessor </span><i>condition</i> <i>sym</i> [ <i>default</i> ] <span class="monospace">)</span></p>
+      <p>Returns an accessor which will return the value of <i>sym</i> if applied to a condition object and <i>default</i> otherwise.  If <i>default</i> is not specified, the accessor will return <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(condition-&lt;property-name&gt; </span><i>condition</i><span class="monospace">)</span></p>
+      <p>Returns the value of the property named <span class="monospace">&lt;property-name&gt;</span> (from the standard list of property names below) of <i>condition</i>, or <span class="monospace">#f</span> if it has no such property.</p>
+      <h2 id="Specificpredicates">Specific predicates</h2>
+      <p><span class="monospace">(error-object? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a condition belonging to type <span class="monospace">simple</span>, and <span class="monospace">#f</span> otherwise.  Such conditions are normally created only by user code.  <i>Part of the small language, but shown here for completeness.</i></p>
+      <p><span class="monospace">(file-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a condition belonging to type <span class="monospace">file</span>, and <span class="monospace">#f</span> otherwise.  Such conditions may be created by the implementation if there is an error related to file operations; in particular, the inability to open a file for input.  <i>Part of the small language, but shown here for completeness.</i></p>
+      <p><span class="monospace">(read-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a condition belonging to type <span class="monospace">read</span>, and <span class="monospace">#f</span> otherwise.  Such conditions may be created by the implementation if there is an error related to <span class="monospace">read</span>, such as a lexical syntax error in the input.  <i>Part of the small language, but shown here for completeness.</i></p>
+      <p><span class="monospace">(syntax-error? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a condition belonging to type <span class="monospace">syntax</span>, and <span class="monospace">#f</span> otherwise.  Such conditions may be created by the implementation if program code is syntactically ill-formed.  When such a condition is raised, it may or may not be possible for the exception system to catch it.  <i>Part of the small language, but shown here for completeness.</i></p>
+      <p><span class="monospace">(implementation-restriction? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a condition belonging to type <span class="monospace">syntax</span>, and <span class="monospace">#f</span> otherwise.  Such conditions may be created by the implementation if one of its restrictions is exceeded, such as consuming too much memory or trying to compute an exact number too large to represent.</p>
+      <h2 id="Standardconditiontypes">Standard condition types</h2>
+      <p>The following condition types are standardized.  Conditions of each type may be created by the implementation in the specified situations as well as any analogous situations.  The list is intended to be comprehensive but not complete: it draws on R6RS, Java, and other sources.</p>
+      <table><tr><td class="default">
+            <p><span class="monospace">simple</span></p></td><td class="default">
+            <p>error created by <span class="monospace">error</span></p></td></tr><tr><td class="default">
+            <p><span class="monospace">assert</span></p></td><td class="default">
+            <p>error created by <span class="monospace">assert</span></p></td></tr><tr><td class="default">
+            <p><span class="monospace">file</span></p></td><td class="default">
+            <p>file-related error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">filename</span></p></td><td class="default">
+            <p>mangled filename</p></td></tr><tr><td class="default">
+            <p><span class="monospace">protection</span></p></td><td class="default">
+            <p>file protection error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">input</span></p></td><td class="default">
+            <p>input error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">output</span></p></td><td class="default">
+            <p>output error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">network</span></p></td><td class="default">
+            <p>socket or network error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">closed</span></p></td><td class="default">
+            <p>I/O operation on closed port</p></td></tr><tr><td class="default">
+            <p><span class="monospace">already-exists</span></p></td><td class="default">
+            <p>file already exists</p></td></tr><tr><td class="default">
+            <p><span class="monospace">not-found</span></p></td><td class="default">
+            <p>file not found</p></td></tr><tr><td class="default">
+            <p><span class="monospace">read</span></p></td><td class="default">
+            <p>textual error during reading</p></td></tr><tr><td class="default">
+            <p><span class="monospace">lexical</span></p></td><td class="default">
+            <p>lexical syntax error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">eof</span></p></td><td class="default">
+            <p>EOF inside a lexical construct</p></td></tr><tr><td class="default">
+            <p><span class="monospace">syntax</span></p></td><td class="default">
+            <p>Scheme syntax error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">domain</span></p></td><td class="default">
+            <p>argument has wrong type or value</p></td></tr><tr><td class="default">
+            <p><span class="monospace">type</span></p></td><td class="default">
+            <p>wrong type</p></td></tr><tr><td class="default">
+            <p><span class="monospace">value</span></p></td><td class="default">
+            <p>wrong value</p></td></tr><tr><td class="default">
+            <p><span class="monospace">state</span></p></td><td class="default">
+            <p>invalid state event</p></td></tr><tr><td class="default">
+            <p><span class="monospace">arithmetic</span></p></td><td class="default">
+            <p>arithmetic error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">divide</span></p></td><td class="default">
+            <p>division by exact zero</p></td></tr><tr><td class="default">
+            <p><span class="monospace">fixnum</span></p></td><td class="default">
+            <p>sufficiently small exact integer expected</p></td></tr><tr><td class="default">
+            <p><span class="monospace">conversion</span></p></td><td class="default">
+            <p>attempted impossible conversion</p></td></tr><tr><td class="default">
+            <p><span class="monospace">improper-list</span></p></td><td class="default">
+            <p>improper lists not supported</p></td></tr><tr><td class="default">
+            <p><span class="monospace">circular-list</span></p></td><td class="default">
+            <p>circular lists not supported</p></td></tr><tr><td class="default">
+            <p><span class="monospace">arity</span></p></td><td class="default">
+            <p>too many or too few arguments</p></td></tr><tr><td class="default">
+            <p><span class="monospace">immutability</span></p></td><td class="default">
+            <p>modifying immutable data</p></td></tr><tr><td class="default">
+            <p><span class="monospace">undefined</span></p></td><td class="default">
+            <p>getting the value of a variable that has not been defined</p></td></tr><tr><td class="default">
+            <p><span class="monospace">non-continuable</span></p></td><td class="default">
+            <p>continuing from an exception raised by <span class="monospace">raise</span></p></td></tr><tr><td class="default">
+            <p><span class="monospace">match</span></p></td><td class="default">
+            <p>unsatisfied pattern match</p></td></tr><tr><td class="default">
+            <p><span class="monospace">uncaught</span></p></td><td class="default">
+            <p>uncaught exception</p></td></tr><tr><td class="default">
+            <p><span class="monospace">nonexistent</span></p></td><td class="default">
+            <p>reference to something that does not exist</p></td></tr><tr><td class="default">
+            <p><span class="monospace">range</span></p></td><td class="default">
+            <p>violation of start-end conditions</p></td></tr><tr><td class="default">
+            <p><span class="monospace">scheduler</span></p></td><td class="default">
+            <p>task scheduler error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">deadlock</span></p></td><td class="default">
+            <p>scheduler deadlock</p></td></tr><tr><td class="default">
+            <p><span class="monospace">timeout</span></p></td><td class="default">
+            <p>operation timed out</p></td></tr><tr><td class="default">
+            <p><span class="monospace">termination</span></p></td><td class="default">
+            <p>thread termination</p></td></tr><tr><td class="default">
+            <p><span class="monospace">concurrency</span></p></td><td class="default">
+            <p>invalid concurrent modification</p></td></tr><tr><td class="default">
+            <p><span class="monospace">invalid-position</span></p></td><td class="default">
+            <p>invalid file position</p></td></tr><tr><td class="default">
+            <p><span class="monospace">encoding</span></p></td><td class="default">
+            <p>encoding or decoding error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">os</span></p></td><td class="default">
+            <p>operating system reported error</p></td></tr><tr><td class="default">
+            <p><span class="monospace">implementation-restriction</span></p></td><td class="default">
+            <p>implementation restriction</p></td></tr><tr><td class="default">
+            <p><span class="monospace">memory</span></p></td><td class="default">
+            <p>out of memory</p></td></tr><tr><td class="default">
+            <p><span class="monospace">unsupported</span></p></td><td class="default">
+            <p>unsupported operation</p></td></tr><tr><td class="default">
+            <p><span class="monospace">no-infinities</span></p></td><td class="default">
+            <p>implementation does not support infinities</p></td></tr><tr><td class="default">
+            <p><span class="monospace">no-nans</span></p></td><td class="default">
+            <p>implementation does not support NaNs</p></td></tr><tr><td class="default">
+            <p><span class="monospace">continuation</span></p></td><td class="default">
+            <p>escape procedure invoked when not supported</p></td></tr><tr><td class="default">
+            <p><span class="monospace">bignum</span></p></td><td class="default">
+            <p>exact number too large to represent</p></td></tr><tr><td class="default">
+            <p><span class="monospace">version-skew</span></p></td><td class="default">
+            <p>mismatched versions of code</p></td></tr><tr><td class="default">
+            <p><span class="monospace">security</span></p></td><td class="default">
+            <p>security violation</p></td></tr><tr><td class="default">
+            <p><span class="monospace">implementation-error</span></p></td><td class="default">
+            <p>low-level failure</p></td></tr></table>
+      <h2 id="Standardpropertynames">Standard property names</h2>
+      <table><tr><td class="default">
+            <p><span class="monospace">message</span></p></td><td class="default">
+            <p>human-readable description string</p></td></tr><tr><td class="default">
+            <p><span class="monospace">irritants</span></p></td><td class="default">
+            <p>list of problematic arguments</p></td></tr><tr><td class="default">
+            <p><span class="monospace">who</span></p></td><td class="default">
+            <p>an object reporting a problem with another object</p></td></tr><tr><td class="default">
+            <p><span class="monospace">what</span></p></td><td class="default">
+            <p>an object which has a problem</p></td></tr><tr><td class="default">
+            <p><span class="monospace">position</span></p></td><td class="default">
+            <p>the position in <span class="monospace">what</span> at which the problem occurred</p></td></tr></table></div></body></html>

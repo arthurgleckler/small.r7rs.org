@@ -1,0 +1,54 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>496: Catastrophic failure should not be acceptable</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 496: <span class="summary">Catastrophic failure should not be acceptable</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:20:44</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/496/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-12 23:44:12</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Göran Weinholt writes:</p>
+        <p>These paragraphs are from R6RS:</p>
+        <p>The standard libraries whose exports are described by this document are said to be safe libraries. Libraries and top-level programs that import only from safe libraries are also said to be safe.</p>
+        <p>As defined by this document, the Scheme programming language is safe in the following sense: The execution of a safe top-level program cannot go so badly wrong as to crash or to continue to execute while behaving in ways that are inconsistent with the semantics described in this document, unless an exception is raised.</p>
+        <p>Contrast that with this paragraph from R7RS-small draft 9:</p>
+        <p>For example, it is an error for a procedure to be passed an argument of a type that the procedure is not explicitly specified to handle, even though such domain errors are seldom mentioned in this report.  Implementations may signal an error, extend a procedure's domain of definition to include such arguments, or fail catastrophically.</p>
+        <p>Formalising catastrophic failure as an acceptable evaluation strategy is not a good idea.  I also believe it conflicts with this requirement from the WG1 charter: &quot;Semantics compatible with interactive read/eval/print loops should be provided.&quot;</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-12 23:47:27</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>There is no reason to allow safety to trump all other concerns at all times, any more than there is reason to allow performance to do so.  Not mandating safety allows implementations to trade off safety for performance for the sake of users and programs who need that performance.  This can be done either by a safety setting in a single implementation, or by allowing pervasively unsafe, yet conformant, implementations to be created.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:20:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG decided by unanimous consent to take no action on this ticket.</p></div></div></div></div></div></body></html>

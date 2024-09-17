@@ -1,0 +1,227 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki CyclesMedernach version 14</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki CyclesMedernach version 14</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>CyclesMedernach</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Cycle type ==
+
+Cycles are an immutable ordered, but unindexed, container type similar to circular lists.  Unlike lists, however, cycles are fully bidirectional.
+
+=== Constructors and type conversion === 
+
+`(make-cycle `''list''`)`
+
+Returns a cycle whose elements are the elements of ''list''.  Order is preserved.
+
+`(make-cycle-reversed `''list''`)`
+
+Returns a cycle whose elements are the elements of ''list''.  Order is reversed.
+
+`(cycle `''element'' ...`)`
+
+Returns a cycle containing ''elements''.  Order is preserved.
+
+`(cycle-&gt;list `''cycle''`)`
+
+Returns a list whose elements are those of ''cycle''.  Order is preserved.
+
+`(reversed-cycle-&gt;list `''cycle''`)`
+
+Returns a list whose elements are those of ''cycle''.  Order is reversed.
+
+`(cycle-unfold `''continue? successor mapper seed''`)`
+
+Start with an empty list.  If the result of applying the predicate ''continue?'' to ''seed'' is `#f`, apply `make-cycle` to the reversed list and return the result.  (The list need not actually be created.)  Otherwise, apply the procedure ''mapper'' to ''seed''.  The value of ''mapper'' is prepended onto the list.  Then get a new seed by applying the procedure ''successor'' to ''seed'', and repeat this algorithm.
+
+=== Predicates ===
+
+`(cycle? `''obj''`)`
+
+Returns `#t` if ''obj'' is a cycle, and otherwise returns `#f`.
+
+`(empty-cycle? `''obj''`)`
+
+Returns `#t` if ''obj'' is an empty cycle, and otherwise returns `#f`.  Empty cycles, like empty strings and vectors, may or may not be `eqv?`.
+
+`(cycle=? `''equivalence cycle,,1,, cycle,,2,,''`)`
+
+Return `#t` if ''cycle,,1,,'' and ''cycle,,2,,'' contain the same values (in the sense of the ''equivalence'' predicate) in the same order; otherwise return `#f`.
+
+`(cycle=?/rotation `''equivalence cycle,,1,, cycle,,2,,''`)`
+
+Return `#t` if ''cycle,,1,,'' and ''cycle,,2,,'' contain the same values (in the sense of the ''equivalence'' predicate) in the same order, independent of their rotations; otherwise return `#f`.
+
+Example:  `(cycle=? eqv? (cycle 1 2 3) (3 1 2)) =&gt; t`
+
+=== Accessors ===
+
+`(cycle-front `''cycle''`)`
+
+Returns the element in front of ''cycle''.
+
+`(cycle-take `''cycle k''`)`
+
+Returns a list containing the first ''k'' elements of ''cycle''.
+
+`(cycle-reverse-take `''cycle k''`)`
+
+Returns a list containing the last ''k'' elements of ''cycle'' in reverse order.
+
+`(cycle-drop `''cycle k''`)`
+
+Returns a list containing all but the first ''k'' elements of ''cycle''.
+
+`(cycle-reverse-drop `''cycle k''`)`
+
+Returns a list containing all but the last ''k'' elements of ''cycle'' in reverse order.
+
+=== Rotation ===
+
+`(cycle-rotate `''cycle''` `''k''`)`
+
+Returns a cycle obtained from ''cycle'' by a rotation of ''k'' steps forward, where ''k'' is an exact non-negative integer.
+
+`(cycle-reverse-rotate `''cycle''` `''k''`)`
+
+Returns a cycle obtained from ''cycle'' by a rotation of ''k'' steps backward, where ''k'' is an exact non-negative integer.
+
+`(cycle-rotate-while `''cycle predicate''`)`
+
+Returns a cycle obtained from ''cycle'' by a forward rotation of as many steps as possible while the value of `cycle-front` satisfies `predicate`.  Returns the number of steps.
+
+`(cycle-reversed-rotate-while `''cycle predicate''`)`
+
+Returns a cycle obtained from ''cycle'' by a backward rotation of as many steps as possible while the value of `(cycle-front ` ''cycle''`)` satisfies `predicate`.  Returns the number of steps.
+
+`(cycle-rotate-until `''cycle predicate''`)`
+
+Returns a cycle obtained from ''cycle'' by a forward rotation of as few steps as possible until the value of `cycle-front` satisfies `predicate`.  Returns the number of steps.
+
+`(cycle-reversed-rotate-until `''cycle predicate''`)`
+
+Returns a cycle obtained from ''cycle'' by a backward rotation of as few steps as possible until the value of `(cycle-front ` ''cycle''`)` satisfies `predicate`.  Returns the number of steps.
+
+=== Functional update ===
+
+`(cycle-insert-first `''cycle''` `''obj''`)`
+
+Returns a cycle obtained from ''cycle'', but where ''obj'' is added as the first element.
+
+`(cycle-insert-last `''cycle''` `''obj''`)`
+
+Returns a cycle obtained from ''cycle'', but where ''obj'' is added as the last element.
+
+`(cycle-delete-first `''cycle''`)`
+
+Returns a cycle obtained from ''cycle'', but lacking the first element.
+
+`(cycle-delete-last `''cycle''`)`
+
+Returns a cycle obtained from ''cycle'', but lacking the last element.
+
+=== Mapping and folding on elements ===
+
+`(cycle-map `''proc''` `''cycle'' ...`)`
+
+It is an error unless all cycles have the same length, and ''proc'' is a procedure taking as many arguments as there are ''cycles'' and returning a single value. `cycle-map` applies ''proc'' to the elements of the cycle(s) in forward order and returns a cycle of the corresponding results.
+
+`(cycle-reverse-map `''proc''` `''cycle'' ...`)`
+
+It is an error unless all cycles have the same length, and ''proc'' is a procedure taking as many arguments as there are ''cycles'' and returning a single value. `cycle-map` applies ''proc'' to the elements of the cycle(s) in backward order and returns a cycle of the corresponding results.
+
+`(cycle-for-each `''proc''` `''cycle'' ...`)`
+
+It is an error unless all cycles have the same length, and ''proc'' is a procedure taking as many arguments as there are ''cycles''. `cycle-for-each` applies ''proc'' to the elements of the cycle(s) in forward order and discards any results.  Returns an unspecified value.
+
+`(cycle-reverse-for-each `''proc''` `''cycle'' ...`)`
+
+It is an error unless all cycles have the same length, and ''proc'' is a procedure taking as many arguments as there are ''cycles''. `cycle-for-each` applies ''proc'' to the elements of the cycle(s)  in backward orderand discards any results.  Returns an unspecified value.
+
+`(cycle-fold `''proc''` `''nil''` `''cycle'' ...`)`
+
+It is an error unless all cycles have the same length, and ''proc'' is a procedure taking as many arguments as there are ''cycles'', plus one additional argument, and returning a single value. `cycle-fold` applies ''proc'' to the elements of the cycle(s) and the value previously returned by ''proc''.  On the first call to ''proc'', the additional argument is ''nil''.  Returns the result of the final call to ''proc''.
+
+=== Mapping and folding on rotations ===
+
+`(cycle-map-steps `''proc''` `''cycle'' ...`)`
+
+It is an error unless all cycles have the same length, and ''proc'' is a procedure taking as many arguments as there are ''cycles'' and returning a single value. `cycle-map-steps` applies ''proc'' to all the rotations of the cycle(s) in forward order and returns a cycle of the corresponding results.
+
+`(cycle-reverse-map-steps `''proc''` `''cycle'' ...`)`
+
+It is an error unless all cycles have the same length, and ''proc'' is a procedure taking as many arguments as there are ''cycles'' and returning a single value. `cycle-reverse-map-steps` applies ''proc'' to all the rotations of the cycle(s) in backward order and returns a cycle of the corresponding results.
+
+`(cycle-for-each-step `''proc''` `''cycle'' ...`)`
+
+It is an error unless all cycles have the same length, and ''proc'' is a procedure taking as many arguments as there are ''cycles''. `cycle-for-each` applies ''proc'' to all the rotations of the cycle(s) in forward order and discards any results.  Returns an unspecified value.
+
+`(cycle-reverse-for-each-step `''proc''` `''cycle'' ...`)`
+
+It is an error unless all cycles have the same length, and ''proc'' is a procedure taking as many arguments as there are ''cycles''. `cycle-for-each` applies ''proc'' to all the rotations of the cycle(s)  in backward order and discards any results.  Returns an unspecified value.
+
+`(cycle-fold-step `''proc''` `''nil''` `''cycle'' ...`)`
+
+It is an error unless all cycles have the same length, and ''proc'' is a procedure taking as many arguments as there are ''cycles'', plus one additional argument, and returning a single value. `cycle-fold` applies ''proc'' to all the rotations of the cycle(s) and the value previously returned by ''proc''.  On the first call to ''proc'', the additional argument is ''nil''.  Returns the result of the final call to ''proc''.
+
+=== The whole cycle ===
+
+`(cycle-length `''cycle''`)`
+
+Returns the number of elements in ''cycle''.
+
+`(cycle-reverse `''cycle''`)`
+
+Return a cycle containing the same elements as this cycle but in reverse order.  Navigating a reversed cycle forward is the same as navigating the original cycle backward.
+
+`(cycle-count `''cycle predicate''`)`
+
+Returns the number of elements of ''cycle'' which satisfy ''predicate''.
+
+`(cycle-any `''cycle predicate''`)`
+
+Returns `#t` if any element of ''cycle'' satisfies ''predicate'', and `#f` otherwise.
+
+`(cycle-every `''cycle predicate''`)`
+
+Returns `#t` if every element of ''cycle'' satisfies ''predicate'', and `#f` otherwise.
+
+`(cycle-filter `''cycle predicate''`)`
+
+Returns a cycle containing those elements which satisfy ''predicate''.  Order is preserved.
+
+`(cycle-remove `''cycle predicate''`)`
+
+Returns a cycle containing those elements which do not satisfy ''predicate''.  Order is preserved.
+
+`(cycle-partition `''cycle predicate''`)`
+
+Returns two values, a cycle containing those elements which satisfy ''predicate'', and another cycle containing those elements which do not.  Order is preserved.
+
+== Additions from SRFI-1 ==
+
+`cycle-zip cycle-find cycle-take-while cycle-drop-while cycle-span cycle-break`</pre>
+    <h2>time</h2>
+    <pre>2014-09-12 23:11:20</pre>
+    <h2>version</h2>
+    <pre>14</pre></body></html>

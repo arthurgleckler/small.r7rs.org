@@ -1,0 +1,354 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>MatchingWise</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/MatchingWise.md">MatchingWise</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Matching&shy;Wise</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-12-17 06:52:03</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/MatchingWise/history">history</a></div>
+      <div class="source"><a href="/wiki/MatchingWise/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote>
+                  <blockquote>
+                    <blockquote>
+                      <blockquote>
+                        <blockquote>
+                          <blockquote>
+                            <blockquote>
+                              <blockquote>
+                                <blockquote>
+                                  <blockquote>
+                                    <blockquote>
+                                      <blockquote>
+                                        <blockquote>
+                                          <blockquote>
+                                            <blockquote>
+                                              <blockquote>
+                                                <blockquote>
+                                                  <blockquote>
+                                                    <blockquote>
+                                                      <blockquote>
+                                                        <blockquote>
+                                                          <blockquote>
+                                                            <blockquote>
+                                                              <blockquote>
+                                                                <blockquote>
+                                                                  <blockquote>
+                                                                    <blockquote>
+                                                                      <blockquote>
+                                                                        <blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote></blockquote>
+        <p>The motivation of
+Many of these implementations have been influenced by a widely used
+A more recent library by Alex Shinn [Shinn 2010] provides similar
+A limited pattern functionality is provided in Common Lisp
+If such a match
+Match failure generally</p></blockquote>
+      <p>triggers attempted matching against another pattern specified in the same
+form, and a <i>match error</i> is generated if none of the provided patterns
+match the given value.</p>
+      <h3 id="SimplePatterns">Simple Patterns</h3>
+      <p>A pattern can be</p>
+      <ul>
+        <li>a boolean, number, string, character, or byte-vector literal, or the
+    empty list</li></ul>
+      <p>examples:</p><span class="monospace">	#\A
+	42
+	()
+</span>
+      <p>in this case, the value MUST match in the sense of <span class="monospace">equal?</span>, and no
+    variable is bound by this match.</p>
+      <ul>
+        <li>a quoted datum</li></ul>
+      <p>examples:</p><span class="monospace">	'b
+	(quote (a b (c d)))
+</span>
+      <p>in this case, the value MUST match in the sense of <span class="monospace">equal?</span>, and no
+    variable is bound by this match</p>
+      <ul>
+        <li>the special symbol <span class="monospace">_</span></li></ul>
+      <p>in this case, any value will match, and no variable is bound by this
+    match.</p>
+      <ul>
+        <li>any other symbol</li></ul>
+      <p>examples:</p><span class="monospace">	a
+	matched-val
+</span>
+      <p>in this case, any value will match, and that symbol is bound to the
+    matched value for the scope of the body expression or expressions of the
+    pattern matching form used.</p>
+      <h3 id="AggregatePatterns">Aggregate Patterns</h3>
+      <p>Patterns can be aggregated into more complex patterns in a couple of ways.
+When this is done, multiple constituent patterns (&quot;subpatterns&quot;) can be
+required to match, and all symbols bound to a value by any matching
+subpattern are bound for the scope of the body expression or expressions of
+the pattern matching form used.</p>
+      <p>It is a syntax violation for the same symbol to appear more than once in a
+pattern.</p>
+      <p>An aggregate pattern can be</p>
+      <ul>
+        <li>a proper list of N subpatterns</li></ul>
+      <p>examples:</p><span class="monospace">	(a b c)
+	(a '= b)
+	(_ middle _)
+	(a (b c) d)
+</span>
+      <p>in this case, any list value of the same length where each subpattern in
+    the pattern list matches the corresponding element in the value list
+    will match, and the bindings corresponding to each subpattern will be
+    carried out.</p>
+      <ul>
+        <li>an improper list of N subpatterns</li></ul>
+      <p>examples:</p><span class="monospace">	(a b . c)
+	(a (b c) . d)
+</span>
+      <p>in this case, every subpattern but the last MUST match the corresponding
+    element of the value list, and the last subpattern of the improper
+    pattern list MUST match the corresponding element of the value list if
+    the value list is improper and has the same length as the pattern list,
+    or the (possibly empty) remainder of the value list otherwise, and the
+    bindings corresponding to each subpattern will be carried out.</p>
+      <ul>
+        <li>a proper or improper list of N subpatterns with the literal <span class="monospace">...</span> symbol
+    occurring once or more in any position except either the first position
+    of any list, or the last position of an improper list.</li></ul>
+      <p>examples:</p><span class="monospace">	(a ... b c)
+	(a (b c) ... d)
+	(a b ... . d)
+</span>
+      <p>in this case, the pattern list is matched as in the above proper or
+    improper list cases, except that the subpattern before the <span class="monospace">...</span> symbol
+    can match zero or more instances of the pattern preceding the <span class="monospace">...</span>
+    symbol.  Variables bound by a subpattern preceding a <span class="monospace">...</span> are bound to
+    a (possibly empty) list of all values matched by the pattern as if by a
+    <span class="monospace">map</span> of the <span class="monospace">match</span> operator for that subpattern over each individual
+    value matched.</p>
+      <ul>
+        <li>a vector of N subpatterns with the literal <span class="monospace">...</span> symbol in any position
+    except the first</li></ul>
+      <p>examples:</p><span class="monospace">	#(a b ... c)
+	#(1 ... b)
+	#((a b) ... (c d))
+</span>
+      <p>in this case, the pattern list is matched as in the above vector case,
+    except that the subpattern before the <span class="monospace">...</span> symbol can match zero or
+    more instances of the pattern preceding the <span class="monospace">...</span> symbol.  Variables
+    bound by a pattern preceding a <span class="monospace">...</span> are bound to a (possibly empty)
+    list of all values matched by the pattern as if by a <span class="monospace">map</span> of the
+    <span class="monospace">match</span> operator over each individual value matched.</p>
+      <h2 id="Exceptions">Exceptions</h2>
+      <p>In all of the matching forms, if the input value cannot be matched against any
+of the supplied patterns, an error MUST be signaled.</p>
+      <h2 id="BasicForms">Basic Forms</h2>
+      <p>The <span class="monospace">(rnrs match)</span> library exports the form</p>
+      <p><span class="monospace">(match ....)</span>	   	 	syntax</p>
+      <p><span class="monospace">match</span> has the syntax</p><span class="monospace">	(match &lt;val&gt;
+          (&lt;pat&gt; &lt;body&gt; &lt;body&gt; ...)
+          (&lt;pat&gt; &lt;body&gt; &lt;body&gt; ...)
+            ...)
+</span>
+      <p>and attempts to match the input value <i>&lt;val&gt;</i> against each specified
+pattern <i>&lt;pat&gt;</i> in order.  For the first pattern which successfully
+matches the input value, <span class="monospace">match</span> MUST evaluate the corresponding expressions
+<i>&lt;body&gt;</i> in the scope of the bindings created by the successful match, and
+MUST return the value of the last corresponding <i>&lt;body&gt;</i> expression,
+which MUST be evaluated in tail context.</p>
+      <p>If no pattern <i>&lt;pat&gt;</i> successfully matches the input value <i>&lt;val&gt;</i>, an error MUST be signaled.</p>
+      <h2 id="DerivedForms">Derived Forms</h2>
+      <p>For convenience, the following derived forms are also exported by the
+<span class="monospace">(rnrs match)</span> library</p>
+      <p><span class="monospace">(match-lambda ....)</span>	   	 	syntax</p>
+      <p><span class="monospace">(match-lambda* ....)</span>	   	 	syntax</p>
+      <p><span class="monospace">(match-let ....)</span>	 		syntax</p>
+      <p><span class="monospace">(match-let* ....)</span>	   	 	syntax</p>
+      <p><span class="monospace">(match-letrec ....)</span>	   	 	syntax</p>
+      <p><span class="monospace">match-lambda</span>, which is useful for creating a function of one argument
+which matches that argument against one or more patterns, has the
+syntax</p><span class="monospace">	(match-lambda
+	  (&lt;pat&gt; &lt;body&gt; &lt;body&gt; ...)
+	  (&lt;pat&gt; &lt;body&gt; &lt;body&gt; ...)
+	  ...)
+</span>
+      <p>and is equivalent to</p><span class="monospace">	(lambda (id)
+	  (match
+	    (&lt;pat&gt; &lt;body&gt; &lt;body&gt; ...)
+	    (&lt;pat&gt; &lt;body&gt; &lt;body&gt; ...)
+	    ...))
+</span>
+      <p><span class="monospace">match-lambda*</span>, which is useful for creating a function of zero or more
+arguments which matches its arguments taken as a list against one or more
+patterns, has the syntax</p><span class="monospace">	(match-lambda
+	  (&lt;pat&gt; &lt;body&gt; &lt;body&gt; ...)
+	  (&lt;pat&gt; &lt;body&gt; &lt;body&gt; ...)
+	  ...)
+</span>
+      <p>and is equivalent to</p><span class="monospace">	(lambda id
+	  (match
+	    (&lt;pat&gt; &lt;body&gt; &lt;body&gt; ...)
+	    (&lt;pat&gt; &lt;body&gt; &lt;body&gt; ...)
+	    ...))
+</span>
+      <p>Note that it is not required that each pattern <i>&lt;pat&gt;</i> be a list, but the
+meaning of a non-list pattern ought to be considered carefully.  In
+particular, a pattern consisting of a single symbol will always match, and
+bind the entire list of arguments to that symbol (this can be used in a
+manner similar to the <span class="monospace">else</span> clause in a <span class="monospace">cond</span> form).</p>
+      <p><span class="monospace">match-let</span>, analogous to <span class="monospace">let</span>, has the syntax</p><span class="monospace">	(match-let ((&lt;pat&gt; &lt;expr&gt;) ...)
+	  &lt;body&gt;
+	  &lt;body&gt;
+	  ...)
+</span>
+      <p>Each <i>&lt;expr&gt;</i> MUST be evaluated and then pattern matched against the
+corresponding pattern <i>&lt;pat&gt;</i> in the current environment (in some
+unspecified order). The expressions <i>&lt;body&gt;</i> MUST then be evaluated in an
+environment containing all of the bindings resulting from each pattern
+match, and the value of the last <i>&lt;body&gt;</i> expression, which MUST be
+evaluated in tail context, MUST be returned.</p>
+      <p>If any of the patterns <i>&lt;pat&gt;</i> fail to match the value of the
+corresponding expression &lt;expr&gt;, the expressions in <i>&lt;body&gt;</i> MUST NOT be
+evaluated, and an error MUST be signaled.  It is not
+specified which of the expressions '&lt;expr&gt;' will have already been
+evaluated when this exception is raised.</p>
+      <p><span class="monospace">match-let*</span>, analogous to <span class="monospace">let*</span>, has the syntax</p><span class="monospace">	(match-let* ((&lt;pat&gt; &lt;expr&gt;) ...)
+	  &lt;body&gt;
+	  &lt;body&gt;
+	  ...)
+</span>
+      <p><span class="monospace">match-let* </span>is similar to <span class="monospace">match-let</span>, except that each <span class="monospace">(&lt;pat&gt; &lt;expr&gt;)</span>
+clause MUST be evaluated and then pattern matched sequentially, in
+left-to-right order, and identifiers bound by matching each pattern
+<i>&lt;pat&gt;</i> match MUST be available in the environment in which each
+subsequent expression <i>&lt;expr&gt;</i> is evaluated.</p>
+      <p>If any of the patterns <i>&lt;pat&gt;</i> fail to match the value of the
+corresponding expression &lt;expr&gt;, none of the subsequent expressions
+<i>&lt;expr&gt;</i> and none of the expressions <i>&lt;body&gt;</i> MUST be
+evaluated, and an error MUST be signaled.</p>
+      <p><span class="monospace">match-letrec</span>, analogous to <span class="monospace">letrec</span>, has the syntax</p><span class="monospace">	(match-letrec ((&lt;pat&gt; &lt;expr&gt;) ...)
+	  &lt;body&gt;
+	  &lt;body&gt;
+	  ...)
+</span>
+      <p><span class="monospace">match-letrec </span>is similar to <span class="monospace">match-let</span>, except that each expression
+<i>&lt;expr&gt;</i> clause MUST be evaluated in an environment containing all
+bindings from all patterns <i>&lt;pat&gt;</i>.  As with the core <span class="monospace">letrec</span> form, each
+variable to be bound by a pattern <i>&lt;pat&gt;</i> of the <span class="monospace">match-letrec</span> form is
+bound (in a new environment) to a fresh location prior to the evaluation of
+any expression <i>&lt;expr&gt;</i>, the expressions <i>&lt;body&gt;</i> are then evaluated (in
+some unspecified order) in this environment.</p>
+      <p>As with <span class="monospace">match-let</span>, if any of the patterns <i>&lt;pat&gt;</i> fail to match the
+value of the corresponding expression &lt;expr&gt;, none of the expressions
+<i>&lt;body&gt;</i> MUST be evaluated, and an error MUST be signaled.  It is not specified which of the expressions '&lt;expr&gt;' have
+already been evaluated when this exception is raised.</p>
+      <h2 id="PatternVersionsofCoreRNRSforms">Pattern Versions of Core RNRS forms</h2>
+      <p>The <span class="monospace">(rnrs match core)</span> library module contains no forms of its own, but
+imports and re-exports several forms from the <span class="monospace">(rnrs match)</span> module under
+new names:</p>
+      <p>|| <span class="monospace">(rnrs match)</span> form	|| core form
+	|  match-lambda*    	|  lambda
+	|  match-let    	|  let
+	|  match-let*    	|  let*
+	|  match-letrec    	|  letrec</p>
+      <p>This library module is intended to allow a style of programming where
+<span class="monospace">matching</span> is a core feature of the language, and to allow experimenting
+with wider support of the pattern-matching syntax defined here in a future
+RNRS revision.  Note that the RNRS library <i>import spec</i>
+syntax can be used to select which of these forms to import.</p>
+      <p>The <span class="monospace">(rnrs match core)</span> library is in no way needed for use of the `(rnrs
+match)` library.</p>
+      <h2 id="Notes">Notes</h2>
+      <p>The following questions are not dealt with in this draft, but merit
+consideration as part of the RNRS standardization process, or in future RNRS
+revisions:</p>
+      <ul>
+        <li>Quasipattern forms, defined with quasiquotation syntax, as supported by
+    several existing implementations.  These are most powerful when used
+    with the splicing operator <span class="monospace">,@</span> to extend <span class="monospace">...</span> notation to a repeating
+    sequence of more than one subpattern occuring directly within a list.</li></ul>
+      <ul>
+        <li>boolean patterns defined with <span class="monospace">and</span>, <span class="monospace">or</span>, or <span class="monospace">not</span>, allowing more
+    complex combinations of subpatterns in an aggregate pattern.  The <span class="monospace">or</span>
+    form carries with it the possibility of binding a matching value to a
+    given variable in some matches of the same pattern, but not others,
+    while the <span class="monospace">not</span> form does not perform variable binding itself (but is
+    often used within an <span class="monospace">and</span> form).</li></ul>
+      <ul>
+        <li>Extending the provided pattern grammar to include constructors of RNRS
+    syntactic or procedural record types, or enumeration types, either
+    automatically at record or enumeration type definition time, or by
+    manually specifying records to be eligible for such matching through
+    some additional syntax.</li></ul>
+      <p>Such support might allow, given an enumeration constructor <span class="monospace">e</span> and a
+    record constructor <span class="monospace">make-r</span>, pattern matches on the form</p><span class="monospace">	((make-r w x y) (e z))
+</span>
+      <p>against a value of</p><span class="monospace">	(a b)
+</span>
+      <p>where <span class="monospace">a</span> is a record of the type constructed by <span class="monospace">r</span>, and <span class="monospace">b</span> is an
+    enumeration of the type constructed by <span class="monospace">e</span>, resulting in the variables
+    <span class="monospace">w</span>, <span class="monospace">x</span>, <span class="monospace">y</span>, and <span class="monospace">z</span> being bound for the scope of the match operator
+    used.  Exceptions, as a special case of record types, could be similarly
+    matched, and pattern-matching variants of <span class="monospace">with-exception-handler</span> and
+    <span class="monospace">guard</span> might be provided.</p>
+      <p>Such matching is not specified in this proposal, as it would require
+    changes to the <span class="monospace">(rnrs records ...)</span> and <span class="monospace">(rnrs enums)</span> libraries.</p>
+      <p>Typically, such interaction would extend to definining appropriate
+    pattern-matching scaffolding when a new record or enumeration
+    constructor is defined.   Such an interaction ought to be considered
+    if this form of pattern matching is later aded to the core language.</p>
+      <ul>
+        <li>Allowing the specification of guard expressions in <span class="monospace">match</span> clauses which
+    must evaluate to true for that clause to match.  This has proved a very
+    useful feature in languages of the ML family [Ruegg 2009], but adds some
+    complexity to the matching implementation.  If this is examined in
+    future versions, a variant of the <i>fender</i> syntax of the RNRS
+    <span class="monospace">syntax-case</span> library form or the <span class="monospace">=&gt;</span> failure continuation support of
+    the Wright [Wright 1994] pattern matching library merit particular
+    consideration.</li></ul>
+      <ul>
+        <li>Laying the groundwork for replacing the core version of <span class="monospace">lambda</span>, <span class="monospace">let</span>,
+    <span class="monospace">let*</span>, and <span class="monospace">letrec</span> with the versions provided by the `(rnrs match
+    core)` library in a future revision in the RNRS series</li></ul>
+      <ul>
+        <li>Unifying the syntax used here with that of the core syntax-case form,
+    which uses a very similar pattern matching language</li></ul>
+      <h2 id="Sources">Sources</h2>
+      <p>[Chicken Team 2009] Chicken Team, &quot;Pattern Matching&quot; from the Chicken Scheme
+Wiki, revision 14108, 2009, available at
+http://wiki.call-cc.org/man/3/Pattern%20matching</p>
+      <p>[Harper 2008] Harper Robert, <i>Programming in Standard ML</i>, 2008, Carnegie Melon,
+ch. 5, available at http://www.cs.cmu.edu/~rwh/smlbook/</p>
+      <p>[Flatt 2010] Flatt, Matthew and PLT, <i>Reference: Racket</i>, Version 5.0,
+2010, available at
+http://download.racket-lang.org/docs/5.0/pdf/reference.pdf</p>
+      <p>[Ruegg 2009] Ruegg, Michael &quot;Pattern Matching in Scala&quot;, University of
+Applied Sciences, Rapperswil, 2009, available at
+http://wiki.ifs.hsr.ch/SemProgAnTr/files/PatternMatchingInScala.pdf
+which provides an overview of pattern matching in Haskell, Erlang,
+F#, XSLT, and Prolog as well as in Scala</p>
+      <p>[Serrano 2010] Serrano, Manuel <i>Bigloo: A practical Scheme compiler,
+User manual for version 3.4b</i>, 2010, Bigloo Project, ch. 7, available at
+http://www-sop.inria.fr/mimosa/fp/Bigloo/doc/bigloo.html</p>
+      <p>[Shinn 2010] Shinn, Alex <i>match.scm</i>, 2010, available at
+http:<i>synthcode.com/scheme/match.scm
+a USENET post describing the initial release of this library is
+available at
+https:</i>groups.google.com/forum/?pli=1#msg/comp.lang.scheme/Rc2gH1YJpDA/_S8R500jQQkJ</p>
+      <p>[Wright 1996] Wright, Andrew K. &quot;Pattern Matching for
+Scheme&quot;, 1996, Rice University, available at
+http://download.plt-scheme.org/doc/103p1/pdf/match.pdf</p>
+      <h2 id="Source">Source</h2>
+      <p>This proposal was put together by Jim Wise from postings on the discuss@r6rs.org mailing list, and lightly edited for MUSTard by John Cowan.</p></div></body></html>

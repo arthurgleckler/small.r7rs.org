@@ -1,0 +1,79 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NumericTower</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NumericTower.md">NumericTower</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Numeric&shy;Tower</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-04-29 23:54:30</div>
+      <div class="version">30<span class="comment"></span><a href="/wiki/NumericTower/history">history</a></div>
+      <div class="source"><a href="/wiki/NumericTower/30/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Thenumerictower">The numeric tower</h2>
+      <p>This is an analysis of the R5RS provision that the full numeric tower may be subsetted.  In this analysis, four boolean feature settings characterize different kinds of numeric towers: <span class="monospace">exactness-preserving</span>, <span class="monospace">ratios</span>, <span class="monospace">inexact</span>, and <span class="monospace">complex</span>.  These refer respectively to the closure of exact numbers under rational operations (except <span class="monospace">/</span>), exact non-integer values, inexact rationals, and non-real numbers.</p>
+      <p>There are therefore 16 possible numeric towers.  9 of them are known to have implementations, as shown below.  I write <span class="monospace">+</span> if a feature is present and <span class="monospace">-</span> if it is absent, and give a general description of the resulting tower and some Scheme implementations that provide it.</p>
+      <p>||<span class="monospace">exactness-preserving</span>||<span class="monospace">ratios</span>||<span class="monospace">inexact</span>||<span class="monospace">complex</span>||Description||Implementations</p>
+      <table><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>Bounded exact integers only</p></td><td class="default">
+            <p>SigScheme*</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>Fixnums and flonums</p></td><td class="default">
+            <p>Plain Chicken, Shoe*, TinyScheme*, RScheme, JScheme*, BDC*, XLisp*, Schemik*, VX, SXM*, Inlab, Llava, Sixx, Sizzle, Dfsch*, Stalin (also Elisp*, C*)</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>Limited-range exact and inexact numbers</p></td><td class="default">
+            <p>S7, Wraith</p></td></tr><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>Exact integers and inexact real numbers</p></td><td class="default">
+            <p>Bigloo, Scheme 9, Elk (also ISLisp)</p></td></tr><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>Exact integers, inexact real numbers, and complex numbers</p></td><td class="default">
+            <p>SCM</p></td></tr></table>
+      <p>||+||+||-||-||Exact rational numbers only||Dream, Oaklisp
+||+||+||-||+||Exact numbers only||Owl Lisp</p>
+      <table><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>Real numbers only</p></td><td class="default">
+            <p>Psyche, Ikarus, Rep, Dfsch (also Clojure)</p></td></tr><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>Full numeric tower</p></td><td class="default">
+            <p>Racket, Gauche, MIT, Gambit, Chicken with the <span class="monospace">numbers</span> egg, Scheme48/scsh, Kawa, SISC, Chibi, Guile, Chez, Vicare, Larceny, Ypsilon, Mosh, IronScheme, STklos, KSi, UMB, Spark (also R6RS, Common Lisp, Pure)</p></td></tr></table>
+      <p>*These systems are technically exactness-preserving, but silently return the wrong answers when their arithmetic operations overflow.  This makes them non-conformant.</p>
+      <p>NexJ's numeric tower is undocumented and behaves inconsistently in any case:  applying <span class="monospace">expt</span> to two fixnums, for example, returns a bignum, but adding them returns a potentially incorrect fixnum.  Basically it does what Java does.</p>
+      <h2 id="Opinions">Opinions</h2>
+      <p>In my opinion, the reasonable general-purpose towers are --+- (fixnums and flonums), +-+- (fixnums, bignums, and flonums), +++- (fixnums, bignums, ratnums, and flonums) and ++++ (full).  The --+- tower's operations have the advantage of running in constant time on modern hardware.  The ++-- tower (ratnums but not flonums) may be reasonable for some purposes, but numerical code will often run very slowly without inexact support due to fractions which grow larger and larger. The ---- (fixnum-only) tower might possibly be appropriate where only a tiny amount of space is available and essentially no numerical work will be done.</p>
+      <p>See <a href="/wiki/NumericTowerManisComments">NumericTowerManisComments</a> for Vincent Manis's comments on an earlier version of this page.</p>
+      <h2 id="Seealso">See also</h2>
+      <p>See also <a href="/wiki/ComplexRepresentations">ComplexRepresentations</a> for information on which Schemes support exact, inexact, and mixed-exactness complex numbers.</p>
+      <p>See also <a href="/wiki/FloatPrecision">FloatPrecision</a> for information on the different precisions of inexact numbers that some Schemes support.</p></div></body></html>

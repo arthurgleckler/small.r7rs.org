@@ -1,0 +1,95 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>MicroXmlCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/MicroXmlCowan.md">MicroXmlCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Micro&shy;Xml&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-08-09 10:21:15</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/MicroXmlCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/MicroXmlCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Events">Events</h2>
+      <p>A MicroXML event is a list representing a parsing event, in one of the following formats.  `<span class="monospace">Stack</span>` is a list of element names currently being processed; the first element of the list is the current element.</p>
+      <p><span class="monospace">($start </span><i>stack attr-list</i><span class="monospace">)</span></p>
+      <p>Represents a start-tag.  <i>Attr-list</i> is a JSO representing the attributes.</p>
+      <p><span class="monospace">($end </span><i>stack</i><span class="monospace">)</span></p>
+      <p>Represents an end-tag.</p>
+      <p><span class="monospace">($text </span><i>text</i><span class="monospace">)</span></p>
+      <p>Represents character content.  <i>Text</i> is the character content as a string.</p>
+      <p><span class="monospace">($error </span><i>stack error-code . other</i><span class="monospace">)</span></p>
+      <p>Represents a parsing error.  <i>Error-code</i> is a symbol.  <i>Other</i> is implementation-dependent.</p>
+      <p><span class="monospace">($pi </span><i>stack target content</i><span class="monospace">)</span></p>
+      <p>Represents a processing instruction (which is not part of MicroXML).  <i>Target</i> is a symbol; <i>content</i> is a string.</p>
+      <p><span class="monospace">($end)</span></p>
+      <p>Represents the end of the document.</p>
+      <h2 id="SXML">SXML</h2>
+      <p>MicroXML uses a simplified version of SXML as the internal representation of documents.  Each SXML element is a list whose first member is a symbol representing the element name, whose second member is a JSO mapping the attribute names (as symbols) to their values (as strings), and whose remaining members (if any) are either SXML elements or strings.</p>
+      <h2 id="Input-output">Input-output</h2>
+      <p><i>Options</i> is a list of symbols that control how MicroXML is written.  All implementations recognize <span class="monospace">apos</span> to wrap attribute values in apostrophes, <span class="monospace">empty</span> to write empty tags for empty elements, and <span class="monospace">ascii</span> to escape all characters outside the ASCII range.  Other symbols are also allowed.</p>
+      <p><span class="monospace">(uxml-&gt;sxml </span><i>port</i> [ <i>handler</i> ]<span class="monospace">)</span></p>
+      <p>Reads a MicroXML document from <i>port</i> and returns the SXML equivalent.  The procedure <i>handler</i> is invoked when a <span class="monospace">$error</span> or <span class="monospace">$pi</span> event is produced.  The default handler signals an error that satisfies <span class="monospace">uxml-error?</span>.  If the handler is <span class="monospace">#f</span>, errors and processing instructions are ignored.</p>
+      <p><span class="monospace">(sxml-&gt;uxml </span><i>element port options</i><span class="monospace">)</span></p>
+      <p>Writes the SXML <i>element</i> in MicroXML format to <i>port</i>, using the symbols in <i>options</i>.</p>
+      <p><span class="monospace">(make-uxml-generator </span><i>port</i>`)</p>
+      <p>Returns a generator of event objects representing a MicroXML document read from <i>port</i>.</p>
+      <p><span class="monospace">(make-sxml-generator </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns a generator of event objects representing the SXML <i>element</i>.</p>
+      <p><span class="monospace">(event-generator-&gt;uxml </span><i>gen port options</i><span class="monospace">)</span></p>
+      <p>Invokes the generator <i>gen</i> to obtain event objects and writes the corresponding MicroXML document to <i>port</i>, using the symbols in <i>options</i>.  If the resulting document would not be well-formed MicroXML, an error is signaled that satisfies <span class="monospace">uxml-error?</span>.</p>
+      <p><span class="monospace">(event-generator-&gt;sxml </span><i>gen</i><span class="monospace">)</span></p>
+      <p>Invokes the generator <i>gen</i> to obtain event objects, constructs the corresponding SXML element, and returns it.  If the resulting object would not be well-formed SXML, an error is signaled that satisfies <span class="monospace">uxml-error?</span>.</p>
+      <p><span class="monospace">(write-xml </span><i>port options</i><span class="monospace">)</span></p>
+      <p>Returns a procedure that accepts an event object.  When invoked repeatedly, it writes the corresponding MicroXML representation to <i>port</i> using the symbols in <i>options</i>.    If the resulting document would not be well-formed MicroXML, an error is signaled that satisfies <span class="monospace">uxml-error?</span>.</p>
+      <p><span class="monospace">(build-sxml)</span></p>
+      <p>Returns a procedure that accepts an event object.  When invoked repeatedly, it builds the corresponding SXML representation.  If the document has been fully built, the procedure returns the SXML element; if not, it returns <span class="monospace">#f</span>.  If the resulting document would not be well-formed MicroXML, an error is signaled that satisfies <span class="monospace">uxml-error?</span>.</p>
+      <h2 id="SXMLpredicates">SXML predicates</h2>
+      <p><span class="monospace">(sxml-element? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an SXML element and <span class="monospace">#f</span> otherwise.  The procedure checks that the first element is a symbol and the second element is a JSO; child elements are not checked.</p>
+      <p><span class="monospace">(sxml-empty? </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>element</i> is an empty SXML element and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(sxml-wf-name? </span><i>string attribute</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>string</i> matches the MicroXML name production if <i>attribute?</i> is false, or the MicroXML attribute name production if <i>attribute?</i> is true; returns <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(sxml-wf-string? </span><i>string</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if all the characters in <i>string</i> are allowed in MicroXML character content and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(sxml-attribute? </span><i>element attr-name</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>attr-name</i> (a symbol) is an attribute of <i>element</i> and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(id-valid? </span><i>element id-mapping idref-list</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if all idref attributes contain valid ids.  An id is valid if it appears as a key in <i>id-mapping</i> (see <span class="monospace">make-id-mapping</span>).  <i>Idref-list</i> is a list of 2-element sublists, where the first element of each sublist is an element name and the second element is an attribute name.</p>
+      <p><span class="monospace">(sxml-normalized-element </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns a normalized version of an SXML element that does not necessarily conform to the definition.  In particular:</p>
+      <ul>
+        <li>If the attribute-list is missing, an empty attribute-list is provided.</li>
+        <li>If the attribute-list does not begin with an <span class="monospace">@</span> element, one is provided.</li>
+        <li>If the attribute-list considered as a JSO has a prototype, it is removed.</li>
+        <li>If one of the content children or an attribute value is a number, it is converted to a string with `number-&gt;string'.</li>
+        <li>If one of the content children or an attribute value is a boolean, it is converted to a string with `boolean-&gt;string'.</li>
+        <li>If one of the content children is some other type of Scheme object or else removed.</li>
+        <li>If an attribute value is some other type of Scheme object, it is converted to a string by some implementation-defined means or else that attribute is removed.</li>
+        <li>If after the above transformations are completed, two or more consecutive content children are strings, they are consolidated.</li></ul>
+      <p><span class="monospace">(sxml-language? FIXME)</span></p>
+      <h2 id="Elementprocedures">Element procedures</h2>
+      <p><span class="monospace">(sxml-normalize-space </span><i>string</i><span class="monospace">)</span></p>
+      <p>Returns a string that is equal to <i>string</i>, but with all leading and trailing whitespace removed, and all other consecutive whitespace characters replaced by a single space.</p><span class="monospace">escape-string value defaults make-parent-mapping parent detach make-id-mapping id
+normalize-space normalize-string normalize-attr-list
+name set-name(!) attr-list set-attr-list(!) content set-content(!)
+position last trace
+
+string-&gt;boolean boolean-&gt;string number-&gt;boolean boolean-&gt;number
+
+parent-axis ancestor-axis aos-axis child-axis descendant-axis dos-axis
+following-axis preceding-axis following-sibling-axis preceding-sibling-axis
+</span>
+      <h2 id="Magicatoms">Magic atoms</h2><span class="monospace">/ // .// $trace $parent $ancestor $aos $child $descendant $dos
+         $following $preceding $following-sibling $preceding-sibling
+</span></div></body></html>

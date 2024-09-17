@@ -1,0 +1,166 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1vsR6RSDiff</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1vsR6RSDiff.md">WG1vsR6RSDiff</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1vs&shy;R6RSDiff</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2011-09-23 20:49:50</div>
+      <div class="version">8<span class="comment"></span><a href="/wiki/WG1vsR6RSDiff/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1vsR6RSDiff/8/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="R5RSIncompatibilities">R5RS Incompatibilities</h2>
+      <p>The one instance where we deliberately broke compatibility with R5RS
+in favor of R6RS is by defaulting the reader to case-sensitivity.
+We also use the R6RS <span class="monospace">#!fold-case</span> and <span class="monospace">#!no-fold-case</span> reader extensions
+for changing the case-sensitivity, and have structured the module
+system to allow using existing case-insensitive R5RS source
+unmodified.</p>
+      <h2 id="R6RSBaseIncompatibilities">R6RS Base Incompatibilities</h2>
+      <p>The module system does not support phase distinctions, which are
+unnecessary in the absense of low-level macros (see below), nor
+versioning, which we feel is an important feature but deserves more
+experimentation before standardizing.</p>
+      <p>In addition, the syntax of the module system was deliberately chosen
+to be syntactically different from R6RS, using <span class="monospace">define-library</span> instead of
+<span class="monospace">library</span> and putting an extra level of indirection around the body,
+for the following reasons:</p>
+      <ul>
+        <li>Allows easy disambiguation between R6RS and R7RS modules.</li></ul>
+      <ul>
+        <li>Makes it easier to <span class="monospace">include</span> separate files, optionally with the
+    <span class="monospace">include-ci</span> form to case-insensitive files.</li></ul>
+      <ul>
+        <li>Provides the <span class="monospace">cond-expand</span> form from SRFI 0, allowing for a more
+    deterministic alternative to the R6RS &quot;.impl.sls&quot; file naming
+    convention.</li></ul>
+      <ul>
+        <li>Allows room for extensibility.  The R6RS syntax provides two
+    positional forms which must be present and must have the correct
+    keywords, <span class="monospace">export</span> and <span class="monospace">import</span>, which does not allow for
+    unambiguous extensions.  We think extensibility is important
+    (we've already added three forms in the points above), and so
+    chose a syntax which provides a clear separation between the
+    module declarations and the Scheme code which makes up the body.</li></ul>
+      <p>Since the system is simple, it is expected that R6RS implementations
+will be able to support the <span class="monospace">module</span> syntax in addition to their
+<span class="monospace">library</span> syntax.</p>
+      <p>The modularization of standardized identifiers is different from
+the R6RS system.  In particular, procedures which are optional either
+expressly or by implication in R5RS have been removed from the base
+module.</p>
+      <p>Identifier syntax is not provided.  We feel this is a useful feature
+in some situations, but the existence of such macros means that
+neither programmers nor
+other macros can look at an identifier in an evaluated position and
+know it is a reference -- this in a sense makes all macros slightly
+weaker.  We'd like to see individual implementations continue
+experimenting with this and other extensions before standardizing.</p>
+      <p>Internal syntax definitions are allowed, but all references to syntax
+must follow the definition -- the even/odd example given is R6RS is not
+allowed.</p>
+      <p>The R6RS exception system was incorporated as-is, but the condition types
+have been left unspecified.  Specific errors that were required to be
+signalled in R6RS remain &quot;an error&quot; in R7RS, allowing implementations
+to provide their own extensions.  The condition system and stricter
+semantics may reappear in the large language or a later SRFI or
+standard.  There is no discussion of &quot;safety.&quot;</p>
+      <p>We do not require full Unicode support, but requiring implementations
+to be consistent with Unicode in the characters that they do support.
+Case conversions are described in terms of the Unicode
+locale-independent mappings, and instead of explicit normalization
+forms we provide <span class="monospace">string-ni=?</span> etc. for an implementation-defined
+normalization form (which may be the identity transformation).
+Character comparisons are defined by Unicode, but string comparisons
+are implementation-dependent, and therefore need not be the lexicographic
+mapping of the corresponding character comparisons (an incompatibility
+with R5RS).  Non-Unicode characters are permitted.</p>
+      <p>The full numeric tower is optional as in R5RS, but support for IEEE
+infinities, NaN, and -0.0 were adopted from R6RS.  Most clarifications on
+numeric results were also adopted, but the new procedures
+<span class="monospace">real-valued?</span>, <span class="monospace">rational-valued?</span>, and <span class="monospace">integer-valued?</span> were not.
+The R5RS names <span class="monospace">inexact-&gt;exact</span> for <span class="monospace">exact</span> and <span class="monospace">exact-&gt;inexact</span> for
+<span class="monospace">inexact</span> were retained, with a note indicating that their names are
+historical.</p>
+      <p>The division operators <span class="monospace">div</span>, <span class="monospace">mod</span>, <span class="monospace">div-and-mod</span>, <span class="monospace">div0</span>, <span class="monospace">mod0</span> and
+<span class="monospace">div-and-mod0</span> have been replaced with a full set of 18 operators
+describing 6 rounding semantics.</p>
+      <p>When a result is unspecified, it is still required to be a
+single value, in the interests of R5RS compatibility.  However,
+non-final expressions in a body may return any number of values.</p>
+      <p>In the interest of the widespread SRFI 1 support and extensive code
+using it, the semantics of <span class="monospace">map</span> and <span class="monospace">for-each</span> have been changed to
+use the SRFI 1 early termination behavior instead of an error.
+Likewise <span class="monospace">assoc</span> and <span class="monospace">member</span> take an optional <span class="monospace">equal?</span> argument as in
+SRFI 1, instead of the separate <span class="monospace">assp</span> and <span class="monospace">memp</span> procedures from
+R6RS.</p>
+      <p>We adopted the R6RS <span class="monospace">quasiquote</span> clarifications, but have not seen
+convincing enough examples to allow multiple-argument <span class="monospace">unquote</span> and
+<span class="monospace">unquote-splicing</span>.</p>
+      <p>The <span class="monospace">case</span> macro has been extended with a <span class="monospace">=&gt;</span> syntax analogous to
+that in <span class="monospace">cond</span>.</p>
+      <p>We've kept R5RS <span class="monospace">#</span> inexact &quot;placeholder&quot; digits in the
+interest of backwards compatibility, but not adopted the R6RS
+mantissa widths.</p>
+      <h2 id="R6RSLibraryIncompatibilities">R6RS Library Incompatibilities</h2>
+      <p>The low-level macro system and syntax-case were not adopted.  There
+are two general families of macro systems in widespread use -- the
+syntax-case family and the syntactic-closures family -- and they have
+neither been shown to be equivalent nor capable of implementing each
+other.  Given this situation we feel we cannot choose one over the
+other, and so leave low-level macros to the large language.</p>
+      <p>The new I/O system from R6RS was not adopted.  We feel a completely
+new system deserves a period of usage before being standardized, and
+were unhappy with the backwards-compatibility &quot;simple I/O&quot; which
+introduced a redundant API and relegated R5RS code to being a
+second-class citizen.  Instead we added support for binary ports as
+disjoint from character ports, but in the same style as existing ports
+which is what most R5RS implementations currently do.</p>
+      <p>Our string ports are compatible with SRFI 6 rather than R6RS;
+analogous bytevector ports are also provided.</p>
+      <p>We felt the R6RS records system was overly complex, and the two layers
+poorly integrated.  We spent a lot of time debating this, but in the
+end decided to simply use a generative version of SRFI 9, which has
+near-universal support among implementations.  We hope to provide a
+more powerful records system in the large language.</p>
+      <p>We have not included enumerations in the small language.</p>
+      <p>We add R6RS bytevectors, providing only the &quot;u8&quot; procedures in the
+small language, but keeping the SRFI 4 #u8(...) syntax, acknowledging
+that with a module system it's easier to change names than reader
+syntax.</p>
+      <p>We provide an interface to the current system time in terms of TAI.</p>
+      <p>The utility macros <span class="monospace">when</span> and <span class="monospace">unless</span> are provided, but since it
+would be meaningless to try to use their result we leave the result
+unspecified.</p>
+      <p>We could not agree on many issues with hash tables and have left them
+for the large language.  We've also left sorting and bitwise
+arithmetic to WG2.</p>
+      <p>We did not relegate pair and string mutators to separate modules.</p>
+      <h2 id="CertainAdditions(TechnicalIncompatibilities)toR6RS">Certain Additions (Technical Incompatibilities) to R6RS</h2>
+      <p>We've added support for CL-style #&lt;n&gt;=(... #&lt;n&gt;# ...) reader labels.
+<span class="monospace">write</span> is required to detect cycles and use these labels in this
+case.  The new <span class="monospace">write-simple</span> (name pending) is added for when the
+programmer does not want to output reader labels.</p>
+      <p>We extend <span class="monospace">syntax-rules</span> with <span class="monospace">_</span> as a general wildcard as in R6RS,
+but make explicit that both <span class="monospace">_</span> and <span class="monospace">...</span> can be used in the literals
+list in which case their usual behavior is overridden.  We allow the
+same pattern language extensions, as well as the SRFI 46 ellipsis
+specifier syntax.</p>
+      <p>We provide a new <span class="monospace">syntax-error</span> form for signalling friendly
+compile-time errors from syntax-rules macros.</p>
+      <p>We added parameters compatible with R6RS (and SRFI 39), but in the
+interest of thread-safety and conflicting behavior among existing
+implementations left the semantics of mutating a parameter (passing it
+an argument) unspecified.  <a href="/wiki/Parameters">Parameters</a> in the small language can be
+altered only with the <span class="monospace">parameterize</span> form.</p>
+      <p><span class="monospace">equal?</span> is required to always terminate, and to be true if <span class="monospace">eqv?</span> is true.</p></div></body></html>

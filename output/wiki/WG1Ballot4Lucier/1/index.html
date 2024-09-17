@@ -1,0 +1,707 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1Ballot4Lucier</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1Ballot4Lucier.md">WG1Ballot4Lucier</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Ballot4Lucier</h1>
+    <div class="wiki metadata">
+      <div class="author">alexshinn</div>
+      <div class="time">2012-04-03 05:11:25</div>
+      <div class="version">1<span class="comment">archiving fourth ballot</span><a href="/wiki/WG1Ballot4Lucier/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1Ballot4Lucier/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Instructions">Instructions</h1>
+      <ul>
+        <li>You may list as many of the options as you want in order of preference.</li>
+        <li>Options are comma-delimited (ignoring space) and case-insensitive.</li>
+        <li>You can pipe-delimit (|) options you want to give equal weight to.</li>
+        <li>You may write in your own option if you announce it to the list first.</li>
+        <li>You may specify a variant with option/variant, for example srfi-1/module to vote for srfi-1 but clarify it should be in a separate module. Please also include the srfi-1 option in this case.</li>
+        <li>You can write a free-form rationale after the &quot;preferences&quot; line,</li>
+        <li>module means &quot;yes, but I want it in a separate module&quot;,</li>
+        <li>wg2 means &quot;no, but I think it should go in WG2&quot;.</li>
+        <li>undecided means I want to discuss this issue further.</li>
+        <li>Abstain on any item by leaving the preferences blank.</li></ul>
+      <h1 id="WG1BallotItemsToFinalizeBySep.9">WG1 Ballot Items To Finalize By Sep. 9</h1>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="#102modulesyntaxname"><a href="/ticket/102">#102</a> module syntax name</h3>
+      <p>We decided on <span class="monospace">module</span> earlier, and the current draft reflects that,
+but some comments from the community suggest we revisit this issue.</p>
+      <p>Emails from Aaron Hsu and Denis Washington:</p><span class="monospace">[AH] I do not buy the argument that we are making things better by
+using `module` instead of `library` in this case. The module term is
+much more common throughout, including systems in Chez, PLT, Scheme48
+(I believe), among others.
+
+[...]
+
+[DW] (Bigloo and Chicken are two others which use `module` for
+existing forms.) I feel that clashing with all of these
+implementations substantially increases the burden for these systems'
+implementors to adopt to R7RS.
+
+[...]
+
+[DW] What about `define-library`? It might be slightly confusing as it
+sounds a bit procedural for a purely syntactic construct, but it does
+not seem to clash with any existing implementation (as far as a quick
+Google search reveals, at least [as well as direct testing --JC]) and
+preserves the &quot;library&quot; term, which is common, well-known, clear and
+in line with previous Scheme specs (R6RS and, in a way, R5RS' usage of
+the term &quot;library procedure&quot;).
+</span>
+      <p>If we choose a unique name such as <span class="monospace">define-library</span> then there is no
+chance of conflicts, but the name itself may not be aesthetically
+pleasing.</p>
+      <p>If we choose an existing name, implementations may have difficulty
+distinguishing between their native form and the R7RS module syntax,
+possibly requiring a command-line flag for &quot;R7RS mode&quot; or some such.</p>
+      <p>TODO: Create a list of existing names used, and ways implementations
+may detect the difference in the event of a conflict.</p>
+      <ul>
+        <li><b>Options:</b> module, library, define-module</li>
+        <li><b>Default:</b> module</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#145RFC2119compliance"><a href="/ticket/145">#145</a> RFC 2119 compliance</h3>
+      <p>R6RS introduces a description of requirement levels following
+<a href="http://tools.ietf.org/html/rfc2119">RFC 2119</a> use of the modal verbs
+&quot;may&quot;, &quot;should&quot;, &quot;must&quot;, &quot;shall&quot;, &quot;should not&quot;, &quot;must not&quot;, &quot;shall
+not.&quot;</p>
+      <p>Do we want to incorporate this?  If so, we'll also need to revise
+existing uses of those phrases, and possibly introduce them where
+needed.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <h3 id="#185Addsixth&quot;centered&quot;divisionoperator"><a href="/ticket/185">#185</a> Add sixth &quot;centered&quot; division operator</h3>
+      <p>We are re-opening the sixth &quot;centered&quot; division operator:</p>
+      <ul>
+        <li><span class="monospace">(centered/ x y)</span></li>
+        <li><span class="monospace">(centered-quotient x y)</span></li>
+        <li><span class="monospace">(centered-remainder x y)</span></li></ul>
+      <p>These correspond to the R6RS operators <span class="monospace">div0</span>, <span class="monospace">mod0</span> and
+<span class="monospace">div0-and-mod0</span> defined as in the Guile manual:</p><span class="monospace">These procedures accept two real numbers x and y, where the divisor y
+must be non-zero. centered-quotient returns the integer q and
+centered-remainder returns the real number r such that x = q*y + r and
+-|y/2| &lt;= r &lt; |y/2|. centered/ returns both q and r, and is more
+efficient than computing each separately.
+
+Note that centered-quotient returns x/y rounded to the nearest
+integer. When x/y lies exactly half-way between two integers, the tie
+is broken according to the sign of y. If y &gt; 0, ties are rounded
+toward positive infinity, otherwise they are rounded toward negative
+infinity. This is a consequence of the requirement that -|y/2| &lt;= r &lt;
+|y/2|.
+</span>
+      <p>Vote <span class="monospace">centered</span> to add the sixth operator, <span class="monospace">no</span> to stick with the five
+operators, and <span class="monospace">remove</span> to drop the full five sets of operators from
+the small language.</p>
+      <ul>
+        <li><b>Options:</b> centered, no, remove, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> remove,no</li></ul>
+      <p>(1) I don't see the &quot;centered-*&quot; operators as somehow a &quot;completion&quot;
+of the other division operators.  (2) In the small language I'd
+recommend only the &quot;truncate-*&quot; and &quot;floor-*&quot; operators for two
+reasons: they are the only division operators that have an established
+history of use in computer programming and mathematics, and they form
+a minimal extension of R5RS.  (I'm not saying that the other division
+operators have never been used in mathematics or programming (see CL),
+but small Scheme is not supposed to be a kitchen-sink language.)</p>
+      <h3 id="#193valuesandprocedurearguments"><a href="/ticket/193">#193</a> values and procedure arguments</h3>
+      <p>A suggestion was made to specify that arguments in a procedure call
+and &quot;init bindings&quot; (presumably in <span class="monospace">let</span> and friends) should evaluate
+to exactly one value.  Currently it is &quot;an error&quot; to pass a non-single
+value to any continuation not created with call-with-values, which
+means implementations are free to add their own handling of this
+(e.g. raising an error or taking just the first value as in CL).</p>
+      <p>Do we want to require implementations to signal an error in these
+cases?  Not currently many implementations of MV would not be able to
+detect these cases efficiently.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h3 id="#202Semi-Editorial:ShouldweremovethespecificsyntaxesfromtheBNFinsection7?"><a href="/ticket/202">#202</a> Semi-Editorial: Should we remove the specific syntaxes from the BNF in section 7?</h3>
+      <p>These date back to R4RS, when Scheme had a fixed syntax and it made
+sense to enumerate it here.  Are they still doing useful work, now
+that syntax forms can be changed at will?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h3 id="#212LetLOADtakeanoptionalenvironmentargument"><a href="/ticket/212">#212</a> Let LOAD take an optional environment argument</h3>
+      <p>Change <span class="monospace">load</span> to take a second argument which is the environment to
+load into.  The default is <span class="monospace">(interaction-environment)</span>.</p>
+      <p>See also <a href="/ticket/161">#161</a>.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#220NewDIGIT-VALUEprocedure"><a href="/ticket/220">#220</a> New DIGIT-VALUE procedure</h3>
+      <p>This accepts a character which is a numeric digit and returns its
+value as a digit, or <span class="monospace">#f</span> if it's not a digit:</p><span class="monospace">(digit-value #\3) =&gt; 3
+(digit-value #\x0664) =&gt; 4
+(digit-value #\x0EA6) =&gt; 0
+</span>
+      <p>You need the following list of zero-value characters to implement this
+for all of Unicode (currently); implementations that support only a
+subset of Unicode need only a subset of the list, of course:</p><span class="monospace">(define zeros '(
+  #\x0030 ;DIGIT ZERO
+  #\x0660 ;ARABIC-INDIC DIGIT ZERO
+  #\x06F0 ;EXTENDED ARABIC-INDIC DIGIT ZERO
+  #\x07C0 ;NKO DIGIT ZERO
+  #\x0966 ;DEVANAGARI DIGIT ZERO
+  #\x09E6 ;BENGALI DIGIT ZERO
+  #\x0A66 ;GURMUKHI DIGIT ZERO
+  #\x0AE6 ;GUJARATI DIGIT ZERO
+  #\x0B66 ;ORIYA DIGIT ZERO
+  #\x0BE6 ;TAMIL DIGIT ZERO
+  #\x0C66 ;TELUGU DIGIT ZERO
+  #\x0CE6 ;KANNADA DIGIT ZERO
+  #\x0D66 ;MALAYALAM DIGIT ZERO
+  #\x0E50 ;THAI DIGIT ZERO
+  #\x0ED0 ;LAO DIGIT ZERO
+  #\x0F20 ;TIBETAN DIGIT ZERO
+  #\x1040 ;MYANMAR DIGIT ZERO
+  #\x1090 ;MYANMAR SHAN DIGIT ZERO
+  #\x17E0 ;KHMER DIGIT ZERO
+  #\x1810 ;MONGOLIAN DIGIT ZERO
+  #\x1946 ;LIMBU DIGIT ZERO
+  #\x19D0 ;NEW TAI LUE DIGIT ZERO
+  #\x1A80 ;TAI THAM HORA DIGIT ZERO
+  #\x1A90 ;TAI THAM THAM DIGIT ZERO
+  #\x1B50 ;BALINESE DIGIT ZERO
+  #\x1BB0 ;SUNDANESE DIGIT ZERO
+  #\x1C40 ;LEPCHA DIGIT ZERO
+  #\x1C50 ;OL CHIKI DIGIT ZERO
+  #\xA620 ;VAI DIGIT ZERO
+  #\xA8D0 ;SAURASHTRA DIGIT ZERO
+  #\xA900 ;KAYAH LI DIGIT ZERO
+  #\xA9D0 ;JAVANESE DIGIT ZERO
+  #\xAA50 ;CHAM DIGIT ZERO
+  #\xABF0 ;MEETEI MAYEK DIGIT ZERO
+  #\xFF10 ;FULLWIDTH DIGIT ZERO
+  #\x104A0 ;OSMANYA DIGIT ZERO
+  #\x11066 ;BRAHMI DIGIT ZERO
+  #\x1D7CE ;MATHEMATICAL BOLD DIGIT ZERO
+  #\x1D7D8 ;MATHEMATICAL DOUBLE-STRUCK DIGIT ZERO
+  #\x1D7E2 ;MATHEMATICAL SANS-SERIF DIGIT ZERO
+  #\x1D7EC ;MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO
+  #\x1D7F6 ;MATHEMATICAL MONOSPACE DIGIT ZERO
+))
+
+(define (digit-value ch) (digit-value* ch zeros))
+
+(define (digit-value* ch zeros)
+  (if
+    (null? zeros)
+    #f
+    (let*
+      ((val (char-&gt;integer ch))
+       (val0 (char-&gt;integer (car zeros)))
+       (val9 (+ val0 9)))
+        (if
+          (and (&lt;= val0 val) (&lt;= val val9))
+          (- val val0)
+          (digit-value* ch (cdr zeros))))))
+
+</span>
+      <p>CL provides this as <span class="monospace">digit-char-p</span>, which is its substitute for
+<span class="monospace">char-numeric?</span>.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h3 id="#221Editorial:Consolidateandclarifyformal-parameterconventions"><a href="/ticket/221">#221</a> Editorial: Consolidate and clarify formal-parameter conventions</h3>
+      <p>Page 4 shows a naming convention for procedure
+parameters:</p>
+      <ul>
+        <li>obj - any object</li>
+        <li>list - list</li>
+        <li>z - complex</li></ul>
+      <p>and so on.</p>
+      <p>There is no notation convention for characters and strings.
+It feels a bit funny that the document uses this notation and
+then x, x_1, x_2 are used for reals, but then uses &quot;char_1&quot;
+and &quot;char_2&quot; for characters.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>abbrev:</b> abbreviate <span class="monospace">char</span> =&gt; <span class="monospace">ch</span> and <span class="monospace">string</span> =&gt; <span class="monospace">str</span></li>
+            <li><b>list:</b> just add <span class="monospace">char</span> and <span class="monospace">string</span> to the list of conventions</li></ul></li>
+        <li><b>Options:</b> abbrev, list, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> list,none</li></ul>
+      <h3 id="#222Renamecharacterportstotextualports"><a href="/ticket/222">#222</a> Rename character ports to textual ports</h3>
+      <p>The term &quot;textual port&quot; is R6RS compatible.</p>
+      <ul>
+        <li><b>Options:</b> textual, character, undecided</li>
+        <li><b>Default:</b> character</li>
+        <li><b>Preferences:</b> character</li></ul>
+      <h3 id="#223Convertingcurrent-{input,output}-portstobinary"><a href="/ticket/223">#223</a> Converting current-{input,output}-ports to binary</h3>
+      <p>The standard input and output ports which <span class="monospace">current-input-port</span> and
+<span class="monospace">current-output-port</span> are initially bound to are not opened
+explicitly.  They default to character ports.  Should they be
+replaceable with equivalent binary ports using the following
+procedures?</p>
+      <ul>
+        <li>(standard-input-is-binary!)</li>
+        <li>(standard-output-is-binary!)</li></ul>
+      <p>It is an error to call either of these if the corresponding
+<span class="monospace">current-{input,output}-port</span> is not the original value, or if any I/O
+has been performed on them, or if they cannot reasonably be treated as
+binary.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#224AdditionalblobI/O"><a href="/ticket/224">#224</a> Additional blob I/O</h3>
+      <p>See <a href="/wiki/BlobIoShinn">BlobIoShinn</a>, which provides the ability to read and write blobs,
+and simple conversions between blobs (interpreted as UTF-8) and
+strings.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h3 id="#226Removeproperty-listfilespecsfromWG1"><a href="/ticket/226">#226</a> Remove property-list file specs from WG1</h3>
+      <p>Getting rid of file-specs was the motivation for the new binary I/O
+API we agreed on, but it was not made explicit in the proposal.
+Consequently, although all references to <span class="monospace">file-spec</span> have been removed
+from the current draft, we should vote on this for completeness.</p>
+      <ul>
+        <li><b>Options:</b> remove, keep, undecided</li>
+        <li><b>Default:</b> remove</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#229EQV?andNaN"><a href="/ticket/229">#229</a> EQV? and NaN</h3>
+      <p>For good reasons, <span class="monospace">+nan.0</span> is not <span class="monospace">=</span> to any other number, including
+itself.  However, <span class="monospace">eqv?</span> is about &quot;sameness&quot; rather than &quot;equality&quot;.</p>
+      <p>The <span class="monospace">same</span> proposal is that we add two clauses to the definition of
+<span class="monospace">eqv?</span>, one saying that if both arguments are <span class="monospace">+nan.0</span>, <span class="monospace">eqv?</span> must
+return <span class="monospace">#t</span>, and if one argument is <span class="monospace">+nan.0</span> and the other is not,
+<span class="monospace">eqv?</span> must return <span class="monospace">#f</span>.  This is what R6RS specifies.</p>
+      <p>The <span class="monospace">different</span> proposal is that we add a single clause requiring
+<span class="monospace">(eqv? +nan.0 x)</span> to return <span class="monospace">#f</span> for any <span class="monospace">x</span>.  This is the behavior
+that results for any R5RS implementation that adds support for +nan.0
+as an IEEE float without any special handling for it in <span class="monospace">eqv?</span>.</p>
+      <p>Note the second clause in the <span class="monospace">same</span> proposal is universally supported
+by all implementations with <span class="monospace">+nan.0</span> except for SISC, which appears to
+have a bug (see below), so the only thing to decide is the first
+clause.</p>
+      <p>The following 7 implementations return <span class="monospace">#t</span>: chez, gambit, guile,
+ikarus, kawa, racket, stklos.</p>
+      <p>The following 7 implementations return <span class="monospace">#f</span>: bigloo, chibi, chicken,
+gauche, larceny, mit-scheme, scheme48.</p>
+      <p>SigScheme and Scheme 9 don't have +nan.0.  SISC currently has a bug
+where <span class="monospace">(= nan.0 x)</span> is true for any <span class="monospace">x</span>.</p>
+      <p>Since implementations currently disagree on these semantics, it may
+make the most sense to leave this <span class="monospace">unspecified</span>.</p>
+      <ul>
+        <li><b>Options:</b> same, different, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b> same*</li></ul>
+      <p>*There are possibly many NaNs generated by IEEE-conforming arithmetics;
+for example Apple used to (and may still) use different NaNs in its
+arithmetic libraries to indicate which routine generated the initial
+NaN (which is passed along unchanged in later operations).  So
++nan.0 may be the textual representation of floating point numbers
+with different bit patterns.  So I would recommend that</p>
+      <p>(let ((x (/ 0. 0.))) (eqv? x x)) =&gt; #t</p>
+      <p>but allow</p>
+      <p>(if (and (real? x) (nan? x) (real? y) (nan? y)) (eqv? x y) #t)</p>
+      <p>to return #f.  In other words, two NaNs with the same bit patterns
+are eqv?, and we still have (eq? x y) implies (eqv? x y).</p>
+      <p>This is such a small thing that I think implementors can do it
+without much trouble and it's time to get it right.</p>
+      <h3 id="#230Reservemodulenamesforcurrentandfuturestandards"><a href="/ticket/230">#230</a> Reserve module names for current and future standards</h3>
+      <p>Do we want to add a clause stating that all module names under the
+<span class="monospace">(scheme ...)</span> name are reserved for current and future standards?
+Do we want to reserve the <span class="monospace">(srfi ...)</span> names?</p>
+      <p>Note the name <span class="monospace">scheme</span> may be changed pending the result of <a href="/ticket/237">#237</a>.</p>
+      <ul>
+        <li><b>Options:</b> scheme, srfi, both, neither, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#232define-values"><a href="/ticket/232">#232</a> define-values</h3>
+      <p>Several implementations provide a <span class="monospace">define-values</span> macro.  This allows
+cleanly writing multiple definitions with a shared state for example.</p>
+      <p>Should we have it on WG1 or not?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <h3 id="#234AddEAGERfromSRFI45"><a href="/ticket/234">#234</a> Add EAGER from SRFI 45</h3>
+      <p><span class="monospace">eager</span>, like <span class="monospace">delay</span>, returns a promise object that can be forced by
+<span class="monospace">force</span>, but it evaluates its argument up front (it is a procedure,
+not syntax) and stashes it in the promise in such a way that <span class="monospace">force</span>
+can access it.</p>
+      <p>Semantically, writing <span class="monospace">(eager expression)</span> is equivalent to writing
+<span class="monospace">(let ((value expression)) (delay value))</span>.</p>
+      <p>Some debate was given as to how useful <span class="monospace">eager</span> is - generally, if
+something is known in advance to be eager you don't want to make it a
+promise to begin with.  Use cases should be provided if we want to
+include this.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h3 id="#235Shouldbytevectorconstantsbeself-quoting?"><a href="/ticket/235">#235</a> Should bytevector constants be self-quoting?</h3>
+      <p>They are in R6RS, apparently because they are considered more closely
+related to strings rather than vectors.</p>
+      <p>Note currently vectors are not self-quoting.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h3 id="#237Change&quot;scheme&quot;inmodulenamesto&quot;rsn&quot;or&quot;rs11&quot;orsomethingelse"><a href="/ticket/237">#237</a> Change &quot;scheme&quot; in module names to &quot;rsn&quot; or &quot;rs11&quot; or something else</h3>
+      <p>The term &quot;scheme&quot; is already in use in module names on some Scheme
+implementations.  We need to pick something that nobody is using.</p>
+      <p>The term &quot;rnrs&quot; was used by R6RS, but this was integrated with the
+library versioning mechanism.  It therefore may not be suitable, and
+either way would cause conflicts with existing R6RS modules.</p>
+      <p>Feel free to write in a name.</p>
+      <ul>
+        <li><b>Options:</b> scheme, r7rs, scheme2011, undecided</li>
+        <li><b>Default:</b> scheme</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#238Reserve#!forreaddirectives"><a href="/ticket/238">#238</a> Reserve #! for read directives</h3>
+      <p>From Denis Washington:</p><span class="monospace">Reading chapter 2 of the third draft, I was thinking: now that we have
+`#!fold-case` and `#!no-fold-case` and other directives might follow
+in WG2, wouldn't it be appropriate for section 2.3 (Other notations)
+to define `#!` as generally introducing a &quot;read directive&quot;? That would
+encourage implementations to use the same syntax for their own
+directives, which helps portability (an implementation could just
+ignore unknown directives which might just be used by another for
+optimization purposes).
+</span>
+      <p>Note that since the only use we have alters the reader, the <span class="monospace">!</span> is
+consistent with the existing convention for <span class="monospace">!</span>.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <h3 id="#240Renamecurrent-secondtocurrent-tai"><a href="/ticket/240">#240</a> Rename current-second to current-tai</h3>
+      <p>The procedure, as currently spec'd, may return a fraction of a second,
+and there should be a mention of TAI in it.  <span class="monospace">Current-tai-time</span> is
+redundant, since the T in TAI stands for Time (or <i>Temps</i>).</p>
+      <ul>
+        <li><b>Options:</b> current-second, current-tai-time, current-tai, undecided</li>
+        <li><b>Default:</b> current-second</li>
+        <li><b>Preferences:</b> current-second</li></ul>
+      <h3 id="#243Addoptionalsupportfor-0.0"><a href="/ticket/243">#243</a> Add optional support for -0.0</h3>
+      <p>Implementations should be permitted to distinguish 0.0 from -0.0 in
+accordance with IEEE 754.  <span class="monospace">0.0</span> and <span class="monospace">-0.0</span> should be the same to <span class="monospace">=</span>
+and friends, but should be distinguishable by <span class="monospace">eqv?</span>.</p>
+      <p>Mathematically, negative inexact zero represents a number greater than
+the largest representable negative inexact number and less than or
+equal to 0.  This is different from positive inexact zero, which
+represents a number greater than or equal to 0 and less than the
+smallest representable positive inexact number.</p>
+      <p>Vote <span class="monospace">yes</span> to adapt the description of -0.0 from R6RS and include
+examples where appropriate.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> undecided</li></ul>
+      <p>I can't find what is meant in this issue by &quot;the description of -0.0
+from R6RS&quot; after searching for all instances of &quot;-0.0&quot; in r6rs.pdf
+and r6rs-lib.pdf.  There are many helpful examples and statements in
+R6RS about -0.0, but I don't know what is meant here.</p>
+      <p>The description given in the second paragraph above is descriptive,
+but it is certainly not proscriptive; in other words, if epsilon is
+the smallest positive inexact number then</p>
+      <p>(and (&lt;= 0 +0.) (&lt; +0. epsilon)) =&gt; #t</p>
+      <p>but also</p>
+      <p>(and (&lt;= 0 -0.) (&lt; -0. epsilon)) =&gt; #t</p>
+      <p>So I don't know what this ticket means.</p>
+      <h3 id="#244Extended&quot;OverviewofScheme&quot;chapter"><a href="/ticket/244">#244</a> Extended &quot;Overview of Scheme&quot; chapter</h3>
+      <p>Denis Washington said (&lt;http://lists.scheme-reports.org/pipermail/scheme-reports/2011-August/001255.html&gt;):</p><span class="monospace">I would love to see a ticket added about possibly including (some of)
+the detailed &quot;Overview of Scheme&quot; chapter from R6RS into the report;
+it helps very much to understand the rest of the report and is
+invaluable for e.g. students. Would someone from the working group do
+this (provided that anyone actually agrees with me)? It would be sad
+if this consideration were forgotten.
+</span>
+      <p>The &quot;Overview of Scheme&quot; in R6RS contains a similar introduction as in
+the section of the same name in R5RS, followed by a rough tutorial
+describing the basic syntax and data types.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <h3 id="#245Editorial:Case-foldingshouldrefertoUAX"><a href="/ticket/245">#245</a> Editorial: Case-folding should refer to UAX</h3>
+      <p>In the string case conversion, it mentions the context sensitivity of
+Greek sigma: A small final sigma needs to be used when it is at the
+end of the word.  However, there's no definition of &quot;word&quot;, which can
+lead inconsistent behavior among implementations.  We can refer to UAX
+<a href="/ticket/29">#29</a>, as R6RS does.</p>
+      <p>Vote <span class="monospace">uax-29</span> for the reference, or <span class="monospace">unspecified</span> to leave this up to
+the implementation.</p>
+      <ul>
+        <li><b>Options:</b> uax-29, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b> unspecified</li></ul>
+      <h3 id="#248fill-stringandfill-vector:optionalstart/endarguments?"><a href="/ticket/248">#248</a> fill-string and fill-vector: optional start/end arguments?</h3>
+      <p>Should we provide the obvious way to fill part of a string or vector?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <h3 id="#254Behaviorofopen-output-fileonexistingfiles"><a href="/ticket/254">#254</a> Behavior of open-output-file on existing files</h3>
+      <p>Currently this is unspecified, and different implementations behave
+differently.  WG2 will likely provide explicit control for this, but
+we may want to specify the default behavior in WG1.</p>
+      <p>Vote <span class="monospace">overwrite</span> to truncate and overwrite the existing file, or
+<span class="monospace">error</span> to require an error be signalled.</p>
+      <ul>
+        <li><b>Options:</b> overwrite, error, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#262modulefactoring(schemeio)"><a href="/ticket/262">#262</a> module factoring (scheme io)</h3>
+      <p>This is one of several issues raised by <a href="/wiki/ModuleFactoringSummary">ModuleFactoringSummary</a>.</p>
+      <p>This and the following items ask you to decide whether a current set
+of procedures under discussion belongs in the core or a separate
+module.  The default is <span class="monospace">core</span> reflecting the fact that R5RS had no
+separate modules at all.</p>
+      <p>Should the basic I/O procedures (not involving file I/O or reading or
+writing) be in the core or a separate module?</p>
+      <ul>
+        <li><b>Options:</b> core, separate</li>
+        <li><b>Default:</b> core</li>
+        <li><b>Preferences:</b> core</li></ul>
+      <h3 id="#263modulefactoring(schemerepl)"><a href="/ticket/263">#263</a> module factoring (scheme repl)</h3>
+      <p>This is one of several issues raised by <a href="/wiki/ModuleFactoringSummary">ModuleFactoringSummary</a> (see <a href="/ticket/262">#262</a>).</p>
+      <p>Should <span class="monospace">interaction-environment</span> be in the core, the REPL module, or
+the <span class="monospace">eval</span> module?</p>
+      <ul>
+        <li><b>Options:</b> core, eval, repl</li>
+        <li><b>Default:</b> core</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#264modulefactoring(schemecase-lambda)"><a href="/ticket/264">#264</a> module factoring (scheme case-lambda)</h3>
+      <p>This is one of several issues raised by <a href="/wiki/ModuleFactoringSummary">ModuleFactoringSummary</a>.</p>
+      <p>Should <span class="monospace">case-lambda</span> be in the core or a separate module?</p>
+      <ul>
+        <li><b>Options:</b> core, separate</li>
+        <li><b>Default:</b> core</li>
+        <li><b>Preferences:</b> separate</li></ul>
+      <h3 id="#265modulefactoring(schememultiple-values)"><a href="/ticket/265">#265</a> module factoring (scheme multiple-values)</h3>
+      <p>This is one of several issues raised by <a href="/wiki/ModuleFactoringSummary">ModuleFactoringSummary</a>.</p>
+      <p>Should <span class="monospace">values</span> and <span class="monospace">call-with-values</span> be in the core or a separate
+module?</p>
+      <ul>
+        <li><b>Options:</b> core, separate</li>
+        <li><b>Default:</b> core</li>
+        <li><b>Preferences:</b> core</li></ul>
+      <h3 id="#266modulefactoring(schemecharnormalization)"><a href="/ticket/266">#266</a> module factoring (scheme char normalization)</h3>
+      <p>This is one of several issues raised by <a href="/wiki/ModuleFactoringSummary">ModuleFactoringSummary</a>.</p>
+      <p>Should the Unicode normalization procedures be in the core, the <span class="monospace">char</span>
+module, or their own separate module?</p>
+      <ul>
+        <li><b>Options:</b> core, char, separate</li>
+        <li><b>Default:</b> core</li>
+        <li><b>Preferences:</b> separate</li></ul>
+      <h3 id="#267modulefactoringallI/O"><a href="/ticket/267">#267</a> module factoring all I/O</h3>
+      <p>This is one of several issues raised by <a href="/wiki/ModuleFactoringSummary">ModuleFactoringSummary</a>.</p>
+      <p>Should we provide an aggregate module for the three (or four) proposed
+I/O modules, where <span class="monospace">(scheme io)</span> provides all of:</p>
+      <ul>
+        <li><span class="monospace">(scheme io base)</span>   (if not in the core)</li>
+        <li><span class="monospace">(scheme file)</span></li>
+        <li><span class="monospace">(scheme read)</span></li>
+        <li><span class="monospace">(scheme write)</span></li></ul>
+      <ul>
+        <li><b>Options:</b> yes, no</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <h3 id="#268modulefactoring(schemeparameter)"><a href="/ticket/268">#268</a> module factoring (scheme parameter)</h3>
+      <p>This is one of several issues raised by <a href="/wiki/ModuleFactoringSummary">ModuleFactoringSummary</a>.</p>
+      <p>Should <span class="monospace">make-parameter</span> and <span class="monospace">parameterize</span> be in the core or their own
+separate module?</p>
+      <p>Note <span class="monospace">current-in/output/error-port</span> are parameters, though they do not
+require the parameter API to be useful as is.</p>
+      <ul>
+        <li><b>Options:</b> core, separate</li>
+        <li><b>Default:</b> core</li>
+        <li><b>Preferences:</b> core</li></ul>
+      <h3 id="#269modulefactoring(schemerecord)"><a href="/ticket/269">#269</a> module factoring (scheme record)</h3>
+      <p>This is one of several issues raised by <a href="/wiki/ModuleFactoringSummary">ModuleFactoringSummary</a>.</p>
+      <p>Should <span class="monospace">define-record-type</span> be in the core or in its own separate module?</p>
+      <ul>
+        <li><b>Options:</b> core, separate</li>
+        <li><b>Default:</b> core</li>
+        <li><b>Preferences:</b> core</li></ul>
+      <h3 id="#270modulefactoring(schemechar)"><a href="/ticket/270">#270</a> module factoring (scheme char)</h3>
+      <p>This is one of several issues raised by <a href="/wiki/ModuleFactoringSummary">ModuleFactoringSummary</a>.</p>
+      <p>Should the Unicode character case and property utilities be in the
+core or their own separate module?</p>
+      <ul>
+        <li><b>Options:</b> core, separate</li>
+        <li><b>Default:</b> core</li>
+        <li><b>Preferences:</b> separate</li></ul>
+      <h3 id="#231WG1/WG2Schemenamingproposal"><a href="/ticket/231">#231</a> WG1/WG2 Scheme naming proposal</h3>
+      <p>Denis Washington made the following proposal for the names of the
+variants of Scheme defined by WG1 and WG2:</p>
+      <ul>
+        <li>WG1: &quot;Report on the Algorithmic Language Scheme, Revised 2011&quot; (abbr.: RS11)</li></ul>
+      <ul>
+        <li>WG2: &quot;Report on Standard Extensions to the Algorithmic Language Scheme, Revised 2011&quot; (abbr.: RSES11; alternatively, &quot;[...] Commobn Extensions [...]&quot;, abbr. RCES11; should probably be &quot;Published 2011&quot; as there is no original document to revise.)</li></ul>
+      <p>The current draft is written in the same style and layout as all the
+drafts through R5RS, and by default has kept the same naming
+convention.  Do we want to change the name?</p>
+      <p>Note the name for WG2 is beyond the scope of this ballot.</p>
+      <ul>
+        <li><b>References:</b>
+          <ul>
+            <li>http://lists.scheme-reports.org/pipermail/scheme-reports/2011-July/001170.html</li></ul></li>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r7rs:</b> &quot;R7RS&quot; as in the current draft</li>
+            <li><b>2011 :</b> &quot;Scheme 2011&quot; as in the proposal above</li></ul></li>
+        <li><b>Options:</b> r7rs, 2011, undecided</li>
+        <li><b>Default:</b> r7rs</li>
+        <li><b>Preferences:</b> 2011,undecided</li></ul>
+      <h3 id="#189ListchangesfromR6RS"><a href="/ticket/189">#189</a> List changes from R6RS</h3>
+      <p>An incomplete list of the differences between this language and the
+R6RS is available.  Do we want to include this directly into the
+document?  Alternately it can go into a separate document, or be
+included in the WG2 document.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b> separate</li></ul>
+      <h3 id="#227quasiquoteandcycles"><a href="/ticket/227">#227</a> quasiquote and cycles</h3>
+      <p>Some doubts were raised as to whether reader label cycles were allowed
+in <span class="monospace">quasiquote</span>.  Since cycles in code are &quot;an error&quot;, and
+<span class="monospace">quasiquote</span> is just a macro expanding into code, then this case is
+also an error (and thus implementation dependent).</p>
+      <p>Do we want to explicitly state that the result is an error for
+<span class="monospace">quasiquote</span>?  Or make a special exception and try to require handling
+of some cases for <span class="monospace">quasiquote</span>?  Or make no special note of this since
+it's already covered?</p>
+      <p>Vote <span class="monospace">note</span> to add a note.</p>
+      <ul>
+        <li><b>References:</b>
+          <ul>
+            <li>http://lists.scheme-reports.org/pipermail/scheme-reports/2011-July/001142.html</li></ul></li>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>note:</b> make a note</li></ul></li>
+        <li><b>Options:</b> note, nothing, undecided</li>
+        <li><b>Default:</b> nothing</li>
+        <li><b>Preferences:</b> note</li></ul>
+      <h2 id="WG1-ReaderSyntax">WG1 - Reader Syntax</h2>
+      <h3 id="#214string/symbolescapesequenceconfusing"><a href="/ticket/214">#214</a> string/symbol escape sequence confusing</h3>
+      <p>From Felix Winkelmann:</p><span class="monospace">Using &quot;\xX...;&quot; as escape sequence is suboptimal, as it confuses
+syntax highlighters. I also have no knowledge of any precedent
+of this syntax. Also: how is this sequence handled inside &quot;|...|&quot;?
+</span>
+      <p>Prior to R6RS no implementations to my knowledge used this syntax, and
+&quot;\xXX&quot; with a fixed two characters and no trailing semi-colon, as well
+as &quot;\x{X...}&quot; were used.  The semi-colon specifically conflicts with
+the existing uses of &quot;\xXX&quot;, although this can't represent all
+characters.  Braces would at least allow for backwards compatibility
+with existing code.</p>
+      <p>Note the escapes for symbols will be the same unless someone proposed
+otherwise.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>semi-colon:</b> the current draft and R6RS option</li>
+            <li><b>brace:</b> &quot;\x{X...}&quot; where the braces are required</li>
+            <li><b>brace-or-semi-colon:</b> either of the two above</li>
+            <li><b>fixed-two:</b> &quot;\xXX&quot; with two fixed hex-digits (can't support all chars)</li>
+            <li><b>optional-semi-colon:</b> use semi-colon as a terminator if present, otherwise only read the first two hex-digits</li></ul></li>
+        <li><b>Options:</b> semi-colon, brace, brace-or-semi-colon, fixed-two, optional-semi-colon, undecided</li>
+        <li><b>Default:</b> semi-colon</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#218infinity/nansyntax"><a href="/ticket/218">#218</a> infinity/nan syntax</h3>
+      <p>The current BNF for symbol syntax is rather cumbersome, having to
+account for the fact that +inf.0, -inf.0 and +nan.0 are numbers even
+though they do not begin with a numeric prefix.</p>
+      <p>A simple solution would be to use an alternative such as 0/1, 0/-1 and
+0/0, respectively.  These are shorter, more self explanatory, and do
+not conflict with the definition of symbol syntax.</p>
+      <p>Alternately we can just require a numeric prefix on the existing
+names.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r6rs:</b> +inf.0, -inf.0, +nan.0</li>
+            <li><b>short:</b> 0/1, 0/-1, 0/0</li>
+            <li><b>dotted:</b> 0/1.0, 0/-1.0, 0/0.0</li>
+            <li><b>prefix:</b> 0+inf, 0-inf, 0+nan</li>
+            <li><b>prefix-dotted:</b> 0+inf.0, 0-inf.0, 0+nan.0</li></ul></li>
+        <li><b>Options:</b> r6rs, short, dotted, prefix, prefix-dotted, undecided</li>
+        <li><b>Default:</b> r6rs</li>
+        <li><b>Preferences:</b> r6rs,r6rs,r6rs,...</li></ul>
+      <p>I presume that the short and dotted notation was meant to be</p>
+      <ul>
+        <li><b>short:</b> 1/0, -1/0, 0/0</li>
+        <li><b>dotted:</b> 1.0/0, -1.0/0, 0.0/0</li></ul>
+      <p>I strongly feel that any notation that incorporates unadorned &quot;0&quot;
+(not &quot;+0.&quot; or &quot;-0.&quot;) is incredibly misleading, as</p>
+      <p>(/ 1 0) =&gt; Error
+(/ 1.0 0) =&gt; Error</p>
+      <p>etc.  The R6RS notation is sub-optimal in my opinion, as it does
+not indicate the bit patterns in a NaN either on input or output,
+but it seems better than the alternatives.</p>
+      <h3 id="#219bringbackreadablebooleanliterals"><a href="/ticket/219">#219</a> bring back readable boolean literals</h3>
+      <p>Scheme used to use <span class="monospace">#!true</span> and <span class="monospace">#!false</span> before abbreviating to the
+unfortunate <span class="monospace">#t</span> and <span class="monospace">#f</span> syntax, which look far too much alike.</p>
+      <p>We could add these back in as aliases, optionally without the &quot;!&quot; now
+that tokens are required to be delimited so there would be no
+ambiguity.</p>
+      <p>Note - this proposal is to add alternate names.  <span class="monospace">#t</span> and <span class="monospace">#f</span> will be
+kept however we vote.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>long:</b> <span class="monospace">#true</span> and <span class="monospace">#false</span></li>
+            <li><b>bang-long:</b> <span class="monospace">#!true</span> and <span class="monospace">#!false</span></li></ul></li>
+        <li><b>Options:</b> long, bang-long, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b> none</li></ul>
+      <h3 id="#22mantissawidthsandplaceholders"><a href="/ticket/22">#22</a> mantissa widths and placeholders</h3>
+      <p>Previously we voted to keep the R5RS <span class="monospace">#</span> placeholders for &quot;unknown&quot;
+digits, and leave out the new R6RS mantissa widths.</p>
+      <p>Feedback suggests that this feature is never used in R5RS programs.
+It was a leftover from R3RS procedures for formatting numbers when
+more digits of precision were asked for than were available, and also
+commonly used in papers on the subject of formatting numbers.  These
+formatters are no longer in the language, and human-written code
+rarely if ever takes advantage of the feature, so we may want to
+reconsider removing it from the language.</p>
+      <p>Vote <span class="monospace">no</span> to remove the <span class="monospace">#</span> placeholders.</p>
+      <ul>
+        <li><b>Options:</b> r5rs, no, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> no</li></ul>
+      <h3 id="#68&quot;Undefinedvalue&quot;vs.&quot;undefinedvalues&quot;"><a href="/ticket/68">#68</a> &quot;Undefined value&quot; vs. &quot;undefined values&quot;</h3>
+      <p>Previously we voted to keep the R5RS semantics of returning a single,
+unspecified value for the results of side-effecting expressions.</p>
+      <p>Some implementors have raised concerns about this.  The R6RS semantics
+allow implementations to return an unspecified number of unspecified
+values, which allows for the R5RS semantics, as well as for returning
+zero values.</p>
+      <p>The argument is that a non-trivial amount of existing R5RS code
+explicitly depends on these expressions returning a single value.</p>
+      <p>The counter-argument is that using an unspecified value at all is bad
+style, and there is likely a large overlap between the programmers who
+do so and the implementations which will continue to return a single
+value.  The hope is that code using &quot;good style&quot; would be portable,
+whereas &quot;bad style&quot; would continue to work on existing implementations
+but not be portable to others.</p>
+      <p>We should reconsider this item.</p>
+      <ul>
+        <li><b>Options:</b> r5rs, r6rs, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b> r5rs</li></ul></div></body></html>

@@ -1,0 +1,64 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>167: Add constructor for error objects</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 167: <span class="summary">Add constructor for error objects</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-11-29 02:13:36</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/167/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-05-01 02:51:46</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>(Email from Vincent Manis)</p>
+        <p>Problem: Raising arbitrary objects as exceptions has been found to be nasty in some other languages (Python and C++ in particular).</p>
+        <p>This one is a tad speculative, but I'm reluctant to encourage people to write things like <span class="monospace">(raise 4)</span>, because of course it doesn't respect any module boundaries. I think the intent with the descriptions of <span class="monospace">raise</span> and <span class="monospace">raise-continuable</span> was to allow exception hierarchies to be added in WG2 without constraining them here. I would suggest adding a new procedure:</p>
+        <p><span class="monospace">(make-error-object </span><i>message</i><span class="monospace"> </span><i>obj</i> ...<span class="monospace">)</span></p>
+        <p>to creates the implementation-defined object <span class="monospace">error</span> is supposed to create, and adding a sentence to the <span class="monospace">raise</span> and <span class="monospace">raise-continuable</span> entries that says &quot;The effect of applying this procedure to an object not created via <span class="monospace">make-error-object</span> is implementation-defined.&quot; This allows WG2 to do what it wants regarding exception objects, and to limit the types of exception objects allowed, without breaking anything in WG1. <span class="monospace">Error</span> can be defined as:</p><span class="monospace"> (define (error message . objs)
+   (apply make-error-object message objs))
+</span></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 18:19:54</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted no.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-11-29 02:13:30</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-11-29 02:13:36</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

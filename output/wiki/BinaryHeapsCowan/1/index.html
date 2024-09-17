@@ -1,0 +1,54 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BinaryHeapsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BinaryHeapsCowan.md">BinaryHeapsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Binary&shy;Heaps&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-10-18 13:16:07</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/BinaryHeapsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/BinaryHeapsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Binaryheaps">Binary heaps</h2>
+      <p>Binary heaps are mutable collections that can contain any Scheme object provided there exists a total ordering on the objects.  They are intended to be a thin veneer over arrays.  Binary heaps are disjoint from other types of Scheme objects.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(make-heap </span><i>&lt;</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new empty heap.  <i>Proc</i> is the less-than procedure for the heap.</p>
+      <p><span class="monospace">(heap </span><i>&lt;</i><span class="monospace"> </span><i>element</i><span class="monospace"> ...)</span></p>
+      <p>Constructs and returns a new heap using <i>&lt;</i> as the less-than procedure, and containing the <i>elements</i>.</p>
+      <p><span class="monospace">(copy-heap</span><i>heap</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new heap containing the elements of <i>heap</i>.</p>
+      <p><span class="monospace">(heap? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a heap, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(heap-length? </span><i>set</i><span class="monospace">)</span></p>
+      <p>Returns the number of elements in <i>heap</i>.</p>
+      <p><span class="monospace">(heap-member? </span><i>heap</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>element</i> is a member of <i>heap</i> and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(heap-add! </span><i>heap</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Adds <i>element</i> to <i>heap</i>.  Returns unspecified values.</p>
+      <p><span class="monospace">(heap-remove! </span><i>heap</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Removes <i>element</i> from <i>heap</i> unless it is not a member.  Returns unspecified values.</p>
+      <p><span class="monospace">(heap-map </span><i>proc</i><span class="monospace"> </span><i>set</i><span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to each element of <i>heap</i> in increasing order and constructs and returns a new set containing the values of the applications.</p>
+      <p><span class="monospace">(heap-for-each </span><i>proc</i><span class="monospace"> </span><i>set</i><span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to <i>heap</i> in increasing order, discarding the returned values.  Returns unspecified results.</p>
+      <p><span class="monospace">(heap-fold </span><i>proc</i><span class="monospace"> </span><i>nil</i><span class="monospace"> </span><i>heap</i><span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> on each member of <i>set</i> in increasing order, passing the result of the previous invocation as a second argument.  For the first invocation, <i>nil</i> is used as the second argument.  Returns the result of the last invocation.</p>
+      <p><span class="monospace">(heap-&gt;list </span><i>heap</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new list containing the members of <i>set</i> in increasing order.</p>
+      <p><span class="monospace">(list-&gt;heap </span><i>&lt;</i><span class="monospace"> </span><i>list</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new set containing the elements of <i>list</i>.  The elements need not be in increasing order.</p>
+      <p><span class="monospace">(heap-&gt;vector </span><i>heap</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new vector containing the elements of <i>set</i> in increasing order.</p>
+      <p><span class="monospace">(vector-&gt;heap </span><i>&lt;</i><span class="monospace"> </span><i>vector</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new heap containing the elements of <i>vector</i>.  The elements need not be in increasing order.</p></div></body></html>

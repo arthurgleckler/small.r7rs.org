@@ -1,0 +1,60 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>257: Editorial: Consider further consolidating delay/lazy/force and parameterize/make-parameter</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 257: <span class="summary">Editorial: Consider further consolidating delay/lazy/force and parameterize/make-parameter</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-07 12:44:19</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/257/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-08-08 02:02:02</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>As the description of &quot;force&quot; discusses &quot;delay&quot; / &quot;lazy&quot; / &quot;force&quot; in detail, it seems strange that it doesn't introduce the term &quot;promise&quot; but refers to section 4.2.5 for that which, in turn, points to this section for a detailed explanation. This should all be at one spot; I propose to move everything there is to know about &quot;delay&quot; / &quot;lazy&quot; / &quot;force&quot; to move to this section, and reduce the descriptions in 4.2.5 to be not much more than forward references.</p>
+        <p>Ideally, the description in one chapter (preferrably chapter 4) is minimal -- not much more than a reference -- and everything else described in the other. Currently, they are important parts of the description in both chapters which, regardless of where you start, requires you to jump to the other chapter to get the full picture.</p>
+        <p>--Denis Washington</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-23 05:15:25</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-10-08 02:09:39</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Everything has been moved to chapter 4, except for a minimal note at the beginning of chapter 6 pointing to the appropriate sections of chapter 4 for <span class="monospace">force</span>, <span class="monospace">eager</span>, and <span class="monospace">make-parameter</span>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-07 12:44:19</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

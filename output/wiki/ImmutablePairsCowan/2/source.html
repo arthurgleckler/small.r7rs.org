@@ -1,0 +1,92 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ImmutablePairsCowan version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ImmutablePairsCowan version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.10.177.1</pre>
+    <h2>name</h2>
+    <pre>ImmutablePairsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Rationale ==
+
+This library provides immutable pairs.  Note that they are simply immutable and make no special provisions for functional update: there are no analogues of `set-car!` and `set-cdr!`.  They are also unrelated to ordinary Scheme pairs.
+
+From immutable pairs plus the empty list we can build immutable lists.  Note that the empty list can be safely used in both mutable and immutable lists, because it itself is immutable.
+
+== Issues ==
+
+ 1. Should there be a lexical syntax for `iquote`, analogous to `'` for `quote`?  One possibility would be `#i`, which means &quot;inexact&quot; when used before a number, but nothing special when it precedes a literal list.
+
+ 2. In SRFI 1, `length` is R5RS `length` and `length+` is R6RS/R7RS-small `length`.  Both have their uses, and whatever is done for R7RS-large should be done here too.
+
+== Syntax ==
+
+`(iquote `&lt;list&gt;`)`
+
+Returns an immutable version of &lt;list&gt;.  If &lt;list&gt; is not a pair, it is returned.
+
+
+== Procedures ==
+
+The following procedures are renamed from those in [http://srfi.schemers.org/srfi-1/srfi-1.html SRFI 1].  They are a superset of those in R5RS and R7RS-small.  The intention is to make immutable lists as close to a drop-in replacement for ordinary lists as possible.  Each one does exactly what you'd expect from reading SRFI 1.
+
+Constructors:
+
+`icons ilist ixcons icons* make-ilist ilist-tabulate ilist-copy circular-ilist ilist-iota`
+
+Predicates:
+
+`ipair? ilist? proper-ilist? circular-ilist? dotted-ilist? null-ilist? ilist=`
+
+Selectors:
+
+`icar icdr` ... `icddadr icddddr ilist-ref icar+icdr ilist-take ilist-drop` (also known as `ilist-tail`) `ilist-take-right ilist-drop-right split-at ilist-last ilist-last-pair`
+
+Miscellaneous:
+
+`ilist-length ilist-append ilist-concatenate ilist-reverse ilist-append-reverse ilist-zip ilist-unzip1 ilist-unzip2 ilist-unzip3 ilist-unzip4 ilist-unzip5 ilist-count`
+
+Fold, unfold &amp; map:
+
+`ilist-map ilist-for-each ilist-fold ilist-unfold ilist-pair-fold ilist-reduce ilist-fold-right ilist-unfold-right ipair-fold-right ilist-reduce-right ilist-append-map ilist-pair-for-each ilist-filter-map ilist-map-in-order`
+
+Filtering &amp; partitioning:
+
+`ilist-filter ilist-partition ilist-remove`
+
+Searching:
+
+`ilist-member ilist-memq ilist-memv ilist-find ilist-find-tail ilist-any ilist-every ilist-index ilist-take-while ilist-drop-while ilist-span ilist-break`
+
+Deleting:
+
+`ilist-delete ilist-delete-duplicates`
+
+Immutable association lists:
+
+`ilist-assoc ilist-assq ilist-assv ialist-cons ialist-copy ialist-delete`
+
+Set operations on immutable lists:
+
+`ilist-set&lt;= ilist-set= ilist-set-adjoin ilist-set-union ilist-set-intersection ilist-set-difference ilist-set-xor ilist-set-diff+intersection`</pre>
+    <h2>time</h2>
+    <pre>2013-06-16 09:51:34</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

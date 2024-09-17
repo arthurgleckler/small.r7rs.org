@@ -1,0 +1,97 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki LazySequencesCowan version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki LazySequencesCowan version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>LazySequencesCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Lazy sequences ==
+
+Preliminary list of procedures for lazy sequences.  Lazy sequences are based on GeneratorsGauche, so there are only a few constructors.
+
+{{{
+Constructors
+
+list-&gt;lseq            list-&gt;vector          list-&gt;string          list-&gt;generator
+lseq                  lseq*                 lseq-unfold           lseq-unfold-right
+
+Predicates
+
+lseq?                 null-lseq?            lseq=?
+
+Selectors
+
+lseq-first ... tenth  lseq-rest             lseq-last
+lseq-ref
+lseq-drop             lseq-drop-right       lseq-take             lseq-take-right
+lseq-split-at
+
+The whole lazy sequence
+
+lseq-length           lseq-reverse
+lseq-append           lseq-concatenate
+lseq-zip              lseq-unzip            lseq-unzip2           lseq-unzip3
+lseq-unzip4           lseq-unzip5
+lseq-count
+
+Mapping and folding
+
+lseq-map              lseq-for-each         lseq-for-each-subseq  lseq-filter-map
+lseq-fold             lseq-fold-right       lseq-fold-subseq      lseq-fold-subseq-right
+lseq-reduce           lseq-reduce-right
+
+Filtering
+
+lseq-filter           lseq-remove           lseq-partition
+
+Searching
+
+lseq-find             lseq-find-rest        lseq-drop-while       lseq-take-while
+lseq-any              lseq-every
+lseq-index 
+lseq-member           lseq-memq             lseq-memv
+
+Deleting
+
+lseq-delete           lseq-delete-neighbor-dups
+
+Lazy alists
+
+lseq-assoc            lseq-assq             lseq-assv
+lseq-alist-cons       lseq-alist-delete
+
+Conversion
+
+lseq-&gt;list            lseq-&gt;vector          lseq-&gt;string          lseq-&gt;generator
+
+Realization
+
+lseq-realize!         lseq-realize-once!    lseq-realize-steps!   lseq-realize-while!      
+}}}
+
+== Implementation notes ==
+
+An lseq is a QueuesCowan queue plus a generator.  Queues can be shared between lseqs, which means that you are not allowed to remove anything from them, and the only addition operation is `lseq-realize-once!`, which realizes one value and adds it to the back of the queue.</pre>
+    <h2>time</h2>
+    <pre>2014-11-05 00:34:49</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

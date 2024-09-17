@@ -1,0 +1,120 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #496</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #496</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Göran Weinholt writes:
+
+  These paragraphs are from R6RS:
+
+    The standard libraries whose exports are described by this document are said to be safe libraries. Libraries and top-level programs that import only from safe libraries are also said to be safe.
+
+    As defined by this document, the Scheme programming language is safe in the following sense: The execution of a safe top-level program cannot go so badly wrong as to crash or to continue to execute while behaving in ways that are inconsistent with the semantics described in this document, unless an exception is raised.
+
+  Contrast that with this paragraph from R7RS-small draft 9:
+
+    For example, it is an error for a procedure to be passed an argument of a type that the procedure is not explicitly specified to handle, even though such domain errors are seldom mentioned in this report.  Implementations may signal an error, extend a procedure's domain of definition to include such arguments, or fail catastrophically.
+
+  Formalising catastrophic failure as an acceptable evaluation strategy is not a good idea.  I also believe it conflicts with this requirement from the WG1 charter: &quot;Semantics compatible with interactive read/eval/print loops should be provided.&quot;</pre>
+    <h2>id</h2>
+    <pre>496</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Catastrophic failure should not be acceptable</pre>
+    <h2>time</h2>
+    <pre>2013-05-12 23:44:12</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG decided by unanimous consent to take no action on this ticket.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>496</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>496</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>496</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-05-12 23:47:27</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>There is no reason to allow safety to trump all other concerns at all times, any more than there is reason to allow performance to do so.  Not mandating safety allows implementations to trade off safety for performance for the sake of users and programs who need that performance.  This can be done either by a safety setting in a single implementation, or by allowing pervasively unsafe, yet conformant, implementations to be created.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1368377247791939</pre>
+    <h2>ticket</h2>
+    <pre>496</pre>
+    <h2>time</h2>
+    <pre>2013-05-12 23:47:27</pre></body></html>

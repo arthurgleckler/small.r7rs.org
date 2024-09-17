@@ -1,0 +1,32 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>DefineSyntaxDefines</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/DefineSyntaxDefines.md">DefineSyntaxDefines</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Define&shy;Syntax&shy;Defines</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-05-29 13:00:49</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/DefineSyntaxDefines/history">history</a></div>
+      <div class="source"><a href="/wiki/DefineSyntaxDefines/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>I tried out</p><span class="monospace">(define-syntax foo
+    (syntax-rules ()
+      ((foo) (define x 32))))
+(foo) =&gt; ???
+x =&gt; ???
+</span>
+      <p>to see whether I got 32 as the value of x or blew up on an error such
+as invalid syntax (in the define-syntax) or undefined variable.</p>
+      <p>Racket, MIT, Gambit, scsh/Scheme48, SISC, Chez, Ikarus/Vicare, Ypsilon, Mosh IronScheme, NexJ, KSi, SigScheme, Shoe, TinyScheme, Dream, RScheme, Scheme 7, XLisp, Rep, Schemik, ELK, UMB, VX, Oaklisp, Llava, Sizzle, Spark, Femtolisp, Dfsch, Inlab, Owl Lisp blew up (some of them because they don't support syntax-rules).</p>
+      <p>Gauche, Chicken, Bigloo, Guile, Kawa, Chibi, SCM, Larceny (in R5RS mode), Scheme 9,
+STklos, SigScheme, BDC, SXM, VSCM were fine with it and returned 32.</p></div></body></html>

@@ -1,0 +1,25 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>MinimalSyntaxCaseCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/MinimalSyntaxCaseCowan.md">MinimalSyntaxCaseCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Minimal&shy;Syntax&shy;Case&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-06-09 04:05:36</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/MinimalSyntaxCaseCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/MinimalSyntaxCaseCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>From <a href="http://tmp.barzilay.org/foof.txt">Eli Barzilay's posting</a>, lightly edited for continuity:</p>
+      <p>The &quot;minimal API&quot; of a <i>syntax-case</i> system is made of <span class="monospace">syntax-case</span>, <span class="monospace">syntax</span>, <span class="monospace">syntax-&gt;datum</span>, and <span class="monospace">datum-&gt;syntax</span>.</p>
+      <p>With <span class="monospace">syntax-case</span> it is extremely straightforward to create something like <span class="monospace">syntax-e</span> if it's not built in -- and <span class="monospace">syntax-case</span> itself is then <i>no longer necessary</i>; <span class="monospace">syntax-&gt;datum</span> can be done in exactly the same way (applied recursively), so it's just a convenience.  This leaves you with two things: <span class="monospace">syntax</span> as a core lexical-scope-preserving quotation notation, and <span class="monospace">datum-&gt;syntax</span> as a way to construct new identifiers unhygienically.  <span class="monospace">Datum-&gt;syntax</span> is therefore the only real &quot;complex API&quot; here, and it's complexity is (very unsurprisingly) very similar to explicit renaming or syntactic closures, since in all three cases you take a symbol and choose a lexical scope to put it in.</p>
+      <p>[Is this really sufficient?]</p></div></body></html>

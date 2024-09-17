@@ -1,0 +1,60 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>TimePeriodsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/TimePeriodsCowan.md">TimePeriodsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Time&shy;Periods&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-11-29 12:48:18</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/TimePeriodsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/TimePeriodsCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Timedurationsandintervals">Time durations and intervals</h2>
+      <p>A <i>duration</i> is an immutable object belonging to a distinct type and representing a period of time according a particular chronology.  In the ISO, Gregorian, and Julian chronologies, it is the sum of
+some number of years, months, weeks, days, hours, minutes, and seconds.</p>
+      <p>A <i>time interval</i> is an immutable object belonging to a distinct type and representing the elapsed time between two instants of time.  See <a href="/wiki/TimeCowan">TimeCowan</a> for the definition of instants; see <a href="/wiki/TimeAdvancedCowan">TimeAdvancedCowan</a> for the definition of date objects.</p>
+      <h2 id="Durationprocedures">Duration procedures</h2>
+      <p><span class="monospace">(make-duration </span><i>chronology</i><span class="monospace"> </span><i>alist</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a duration based on <i>chronology</i>.  <i>Alist</i> is an alist mapping duration field names understood by that chronology to their values.  In the ISO, Gregorian, and Julian calendars, the field names are
+<span class="monospace">years</span>, <span class="monospace">months</span>, <span class="monospace">weeks</span>, <span class="monospace">days</span>, <span class="monospace">hours</span>,
+<span class="monospace">minutes</span>, and <span class="monospace">seconds</span>.
+The values of each field must be exact integers,
+except that the smallest unit present may be any rational number.</p>
+      <p><span class="monospace">(duration? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a duration, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(duration-&gt;alist </span><i>duration</i><span class="monospace">)</span></p>
+      <p>Constructs and returns an alist mapping field names existing in <i>duration</i> into their values.  Fields mapped to <span class="monospace">#f</span> don't appear in the alist.</p>
+      <p><span class="monospace">(duration-field </span><i>fieldname</i><span class="monospace"> </span><i>duration</i><span class="monospace">)</span></p>
+      <p>Returns the value associated with <i>fieldname</i>.  For example, <span class="monospace">(duration-field 'weeks d)</span> returns the number of weeks in duration <i>d</i>.  If the duration was not constructed with a
+particular unit, <span class="monospace">#f</span> is returned instead.  No conversion is done: a 7-day interval is not considered equivalent to a 1-week interval, for example.</p>
+      <h2 id="Timeintervalprocedures">Time interval procedures</h2>
+      <p>An interval represents the time between two or more instants.  Intervals belong to an immutable disjoint type.</p>
+      <p><span class="monospace">(make-interval </span><i>date-or-duration-1</i><span class="monospace"> </span><i>date-or-duration-2</i><span class="monospace">)</span></p>
+      <p>Constructs and returns an interval which:</p>
+      <ul>
+        <li>if both arguments are dates, extends from the first argument to the second;</li></ul>
+      <ul>
+        <li>if <i>date-or-duration-1</i> is a date and <i>date-or-duration-2</i> is a duration, extends from the first argument for the duration specified by the second argument;</li></ul>
+      <ul>
+        <li>if <i>date-or-duration-1</i> is a duration and <i>date-or-duration-2</i> is a date, extends for the duration of the first argument until the date specified by the second argument.</li></ul>
+      <p>An error is signaled if both arguments are durations, or if the arguments do not share the same chronology, or the dates do not have enough fields to specify an instant.</p>
+      <p><span class="monospace">(interval? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an interval and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(interval-start </span><i>interval</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(interval-stop </span><i>interval</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(interval-duration </span><i>interval</i><span class="monospace">)</span></p>
+      <p>Returns the start date, stop date, and duration of <i>interval</i>.  Depending on how the interval was constructed, at least one of these will have to be calculated.</p>
+      <p><span class="monospace">(make-repeating-interval </span><i>interval</i><span class="monospace"> </span>[ <i>repetition</i> ]<span class="monospace">)</span></p>
+      <p>Constructs and returns a interval from <i>interval</i> that repeats <i>repetition</i> times, where <i>repetition</i> is an exact positive integer.  An error is signaled if <i>interval</i> is already a repeated interval.  If <i>repetition</i> is omitted, the new interval is repeated indefinitely often.</p>
+      <p><span class="monospace">(interval-repetition </span><i>interval</i><span class="monospace">)</span></p>
+      <p>Returns the repetition count of <i>interval</i>.  If <i>interval</i> is not a repeated interval, returns 1.</p></div></body></html>

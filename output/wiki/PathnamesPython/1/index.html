@@ -1,0 +1,57 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PathnamesPython</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PathnamesPython.md">PathnamesPython</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Pathnames&shy;Python</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-11-06 00:23:14</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/PathnamesPython/history">history</a></div>
+      <div class="source"><a href="/wiki/PathnamesPython/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Pathobjects">Path objects</h2>
+      <p>Path objects represent filesystem paths with semantics appropriate for different operating systems.  This proposal is essentially a straight transliteration of the pure portion of the Python <a href="http://docs.python.org/3/library/pathlib.html">`pathlib`</a> library into Scheme.  As a result, it does not provide any support for accessing the file system.  See also <a href="http://legacy.python.org/dev/peps/pep-0428">PEP 428</a>.</p>
+      <p>Path objects are immutable objects of a disjoint type.  They are divided into two subtypes, Posix paths and Windows paths.  Most procedures in this proposal operate correctly on both subtypes.</p>
+      <p>Every path object has a <i>drive</i>, a <i>root</i>, and a possibly empty sequence of <i>components</i>, all of which are strings.  The drive of a Posix path object is always the empty string; on Windows it can be a drive letter or device name followed by a colon, or a string of the form <span class="monospace">//host/share</span> when the path object was created from an UNC pathname.  The root is the empty string for a relative path, <span class="monospace">&quot;/&quot;</span> for an absolute path, or exceptionally <span class="monospace">&quot;//&quot;</span> in path objects representing Posix pathnames beginning with <span class="monospace">//</span> (whose meaning is system-dependent).</p>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(make-posix-path </span><i>string</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(make-windows-path </span><i>string</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(make-path </span><i>string</i><span class="monospace">)</span></p>
+      <p>Invokes <span class="monospace">make-posix-path</span> on non-Windows systems and <span class="monospace">make-windows-path</span> on Windows systems.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(path? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(posix-path? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(windows-path? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-absolute? </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-reserved? </span><i>path</i><span class="monospace">)</span></p>
+      <h2 id="Accessors">Accessors</h2>
+      <p><span class="monospace">(path-drive </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-root </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-anchor </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-parent </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-filename </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-suffix </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-suffixes </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-stem </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-base </span><i>path</i><span class="monospace">)</span></p>
+      <h2 id="Conversion">Conversion</h2>
+      <p><span class="monospace">(path-&gt;string </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-&gt;slashed-string </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-&gt;file-uri </span><i>path</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-&gt;file-iri </span><i>path</i><span class="monospace">)</span></p>
+      <h2 id="Pathoperations">Path operations</h2>
+      <p><span class="monospace">(path-join </span><i>string-or-path<sub>1</sub> string-or-path<sub>2</sub></i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(path-match </span><i>path glob-string</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-relative-to </span><i>path<sub>1</sub> path<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-with-name </span><i>path name</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(path-with-suffix </span><i>path suffix</i><span class="monospace">)</span></p></div></body></html>

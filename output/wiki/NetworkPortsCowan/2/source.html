@@ -1,0 +1,69 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki NetworkPortsCowan version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki NetworkPortsCowan version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>98.14.172.204</pre>
+    <h2>name</h2>
+    <pre>NetworkPortsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Network Ports ==
+
+Network ports are a mild abstraction of TCP sockets. They are a disjoint type.
+
+This module depends on the acceptance of PortsCowan or something like it, as it uses the framework of that proposal.
+
+== Client Procedures ==
+
+The procedures in this section take a specification for a TCP socket and return a binary input/output port (remember, binary ports can do character I/O as well) connected to the socket.
+
+`(open-network-client `''filename''`)`
+
+`(call-with-network-client `''filename''` `''proc''`)`
+
+`(with-input/output-from-network-client `''filename''` `''thunk''`)`
+
+All of these are equivalent to the corresponding R5RS functions on file ports.  If ''filename'' is a string, it consists of `host` and `port` values (see below) separated by a colon.  If ''filename'' is a list, it is a settings list as described in PortsCowan.  Implementations MUST support the keys described in PortsCowan, except for `path`, plus the following additional keys:
+
+ `host`::
+
+ An IPv4 dotted-decimal address, an IPv6 colon-hexadecimal address if supported by the operating system, or a host name.  There is no default value.
+
+ `port`::
+
+ A port number (an exact integer) or service name.
+
+== Server Procedures ==
+
+`(make-network-listener `[''interface'']` `''port''`)`
+
+Returns an opaque ''listener'' object (which may be of any type) that will accept connections to the specified ''port'' and ''interface''.  If ''interface'' is omitted, the listener will accept connections that are made to ''port'' on any local interface.
+
+`(open-network-server `''listener''`)`
+
+`(call-with-network-server `''listener''` `''proc''`)`
+
+`(with-input/output-from-network-server `''listener''` `''thunk''`)`
+
+All of these are equivalent to the corresponding R5RS functions on file ports.  ''Listener'' is a listener returned by a call to `make-network-listener`.</pre>
+    <h2>time</h2>
+    <pre>2010-10-22 10:35:53</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

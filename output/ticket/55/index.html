@@ -1,0 +1,68 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>55: Lazy evaluation</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 55: <span class="summary">Lazy evaluation</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-01-24 06:38:39</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/55/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-05-02 23:46:34</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>R5RS provides a simple mechanism for easy cases of lazy evaluation.  It does not support generalized lazy evaluation, because all built-in procedures are eager whether they 'need' to be or not.  The relevant identifiers are <span class="monospace">delay</span> and <span class="monospace">force</span>; they are not present in IEEE Scheme.  SRFI 45 argues that this pair is insufficient for expressing common lazy algorithms in a way that preserves tail recursion, and adds <span class="monospace">lazy</span> (equivalent to <span class="monospace">(delay (force ...))</span>, but acting atomically) and <span class="monospace">eager</span>.   The semantics of <span class="monospace">delay</span> and <span class="monospace">force</span> remain downward compatible.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-05-02 23:48:57</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I favor the SRFI 45 argument; see the SRFI itself for details.</p>
+              <p>I think the four identifiers should be in an optional module.</p>
+              <p>Editorial note: the sample implementation given in R4RS and R5RS does not conform to the specification (it doesn't memoize) and should be removed or replaced.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-10-18 11:27:04</div></div>
+          <div class="changes">
+            <div><span class="field">component</span><span class="old-value">WG2 - Base Library</span><span class="new-value">WG1 - Core</span></div>
+            <div><span class="field">owner</span><span class="old-value">cowan</span><span class="new-value">alexshinn</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2010-11-15 09:59:39</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Regarding the sample implementation from R5RS, it does
+memoize via <span class="monospace">make-promise</span> so there's no need to change it.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 06:38:39</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to reject SRFI 55.</p></div></div></div></div></div></body></html>

@@ -1,0 +1,63 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>513: Error should have been R6RS-compatible</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 513: <span class="summary">Error should have been R6RS-compatible</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:20:44</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/513/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-13 08:32:19</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Aaron Hsu writes:</p>
+        <p>There are places in the standard where we have fundamentally introduced gratuitous incompatibility with the R6RS standard “just because it’s R6RS.” An example is the <span class="monospace">error</span> procedure. Here, there was no reason not to diverge from R6RS’ behavior, especially given that the R6RS behavior is a more expressive, useful form.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-13 08:32:32</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">Aaron Hsu writes:
+
+  There are places in the standard where we have fundamentally introduced gratuitous incompatibility with the R6RS standard “just because it’s R6RS.” An example is the error procedure. Here, there was no reason not to diverge from R6RS’ behavior, especially given that the R6RS behavior is a more expressive, useful form. 
+</span><span class="new-value">Aaron Hsu writes:
+
+  There are places in the standard where we have fundamentally introduced gratuitous incompatibility with the R6RS standard “just because it’s R6RS.” An example is the `error` procedure. Here, there was no reason not to diverge from R6RS’ behavior, especially given that the R6RS behavior is a more expressive, useful form. 
+</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-13 08:33:39</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>R6RS in turn was gratuitously incompatible with SRFI 23, another extremely common SRFI (it is almost always presumed by reference implementations of other SRFIs, even those that predated it).  The choice was R6RS, SRFI 23, or both (under different names), and any of these choices would have been justifiable.  The WG went with SRFI 23.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:20:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG decided by unanimous consent to take no action on this ticket.</p></div></div></div></div></div></body></html>

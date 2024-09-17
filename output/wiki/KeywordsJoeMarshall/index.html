@@ -1,0 +1,147 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>KeywordsJoeMarshall</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/KeywordsJoeMarshall.md">KeywordsJoeMarshall</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Keywords&shy;Joe&shy;Marshall</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-03-22 01:53:53</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/KeywordsJoeMarshall/history">history</a></div>
+      <div class="source"><a href="/wiki/KeywordsJoeMarshall/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>[Joe Marshall sent this to me in private mail, and I am posting it here with his consent.]</p>
+      <p>My personal preference is the leading colon. There are several sound
+(but minor) technical arguments for this.</p>
+      <p>The first (and best) argument is that nearly every token in Scheme can be
+discriminated by the leftmost character or character pair. Even aggregate
+objects like lists and vectors can be discriminated by looking looking at the
+leftmost character.  The syntax of the language was modified to fit a left
+to right parsing scheme:  Scheme traditionally used the &quot;if it's not a number
+it's a symbol&quot; rule, but in R3RS (I think), they changed it to the more common
+`begins with a letter' rule and added exceptions for &quot;-1+&quot; and &quot;1+&quot;.  This
+change was to allow for deterministic left-to-right parsing.  If you've written
+a few parsers, you begin to realize how wonderful it is to be able to select
+the right parsing rule without having to consider various magic characters
+strewn all over the input stream (especially the characters you haven't
+received yet!)  (Come to think of it, Unicode has this problem because
+there is no end-of-char marker.  You cannot determine if you have read an
+entire character [base + diacritics] until you at least see the beginning of the next.)  Putting
+a discrimination marker at the trailing end of a token just throws this entire
+property out the window.</p>
+      <p>I believe this to be a sound, compelling argument.  However, I think it is a
+<i>minor</i> one.  It will complicate parsing, but not by an awful lot.  I could see
+arguments in favor of trailing colons trumping this, but I can see no
+<i>technical</i>
+one, just an aesthetic one.</p>
+      <p>The second <i>technical</i> argument is that as a long-time programmer, I find it
+easier to scan and read code if I can easily determine the syntactic class of
+the token.  (Well, let's face it, your brain is parsing the code and
+unidirectional
+parsing is easier whether it is your brain or your computer.)  Again,
+minor point.</p>
+      <p>In the examples given for trailing colon, they look cool:</p><span class="monospace">(tcltk-frame relief: 'ridge
+                borderwidth: 4
+                height: &quot;50px&quot;
+                width: &quot;100px&quot;)
+</span>
+      <p>But let's take a real world example (from some code I have written in
+Common Lisp)
+first with trailing colons:</p><span class="monospace">(call-with-repository-transaction
+   repository: repository
+   transaction-type:  (vm-transaction-type-&gt;core-transaction-type transaction-type)
+   user-id-specifier: user-id-specifier
+   reason: reason
+   meta-cid-set-specifier: metaversion-cid-set-specifier
+   cid-set-specifier: (lambda ()
+                        (compute-cid-set-specifier repository
+                                                   metaversion-cid-set-specifier
+                                                   version-specifier
+                                                   vpb-cid-dids-to-add
+                                                   vpb-cid-dids-to-remove))
+
+   aux-meta-cid-set-specifier: aux-metaversion-cid-set-specifier
+   aux-cid-set-specifier: (lambda ()
+                            (and aux-metaversion
+                                 (compute-cid-set-specifier repository
+                                                            aux-metaversion-cid-set-specifier
+                                                            aux-version-specifier
+                                                            aux-vpb-cid-dids-to-add
+                                                            aux-vpb-cid-dids-to-remove)))
+   receiver: (lambda (core-txn)
+               (let ((vm-txn (make-instance 'vm-transaction
+                                            underlying-transaction: core-txn)))
+                 (case transaction-type
+                   ((read-write: read-cons:) (call-creating-change-set vm-txn
+change-set-type receiver))
+                   (t (funcall receiver vm-txn))))))
+</span>
+      <p>and again with leading colons:</p><span class="monospace">(call-with-repository-transaction
+   :repository repository
+   :transaction-type  (vm-transaction-type-&gt;core-transaction-type transaction-type)
+   :user-id-specifier user-id-specifier
+   :reason reason
+   :meta-cid-set-specifier metaversion-cid-set-specifier
+   :cid-set-specifier (lambda ()
+                        (compute-cid-set-specifier repository
+                                                   metaversion-cid-set-specifier
+                                                   version-specifier
+                                                   vpb-cid-dids-to-add
+                                                   vpb-cid-dids-to-remove))
+
+   :aux-meta-cid-set-specifier aux-metaversion-cid-set-specifier
+   :aux-cid-set-specifier (lambda ()
+                            (and aux-metaversion
+                                 (compute-cid-set-specifier repository
+                                                            aux-metaversion-cid-set-specifier
+                                                            aux-version-specifier
+                                                            aux-vpb-cid-dids-to-add
+                                                            aux-vpb-cid-dids-to-remove)))
+   :receiver (lambda (core-txn)
+               (let ((vm-txn (make-instance 'vm-transaction
+                                            :underlying-transaction core-txn)))
+                 (case transaction-type
+                   ((:read-write :read-cons) (call-creating-change-set vm-txn change-set-type receiver))
+                   (t (funcall receiver vm-txn))))))
+</span>
+      <p>The keyword/value pairs are important as a unit.  In the first
+example, the colon
+indicating the keyword object is embedded somewhere in the middle of
+the pair.  In the second, it is the <i>very first</i> non-whitespace on the
+line.  So as a human reader
+of the code I see <i>right away</i> that I have a column of keywords on the
+left.  As I'm parsing this in my mind, the leading colon is doing
+double duty.  It marks that the next token is a keyword, but it <i>also</i>
+marks that we are at the beginning of a keyword/value pair.  That neat
+little vertical dotted line that is made up of the
+colons tells me that we're going to call something with a complex API.</p>
+      <p>This is similar in effect to `bulleted' or numbered lists.  Compare this:</p><span class="monospace">   Professor Fassbinder and his daughter have been kidnapped. - 1
+   Someone has kidnapped them. - 2
+   My hand is on fire. - 3
+</span>
+      <p>To this:</p>
+      <ol class="number">
+        <li>Lather</li>
+        <li>Rinse</li>
+        <li>Repeat</li></ol>
+      <p>To sum it all up, the argument for trailing colons is simply that is jarring, at
+first glance, to see the colon at the front end because we've been used
+to seeing it at the other end.  In light of the fact that we're using lisp, that
+is not a very persuasive argument.  The technical arguments are quite minor,
+admittedly, but I prefer them to the &quot;inconvenience&quot; of weird-looking keywords.
+(and you can get used to the looks, it <i>never</i> gets easier to parse over time).</p>
+      <p>In any case, <i>having</i> keywords is far more important than what they
+look like.  It would be odd to have a standard that says &quot;you should support
+keywords, but whether you support leading or trailing colons is implementation
+dependent&quot;.  But that might actually be worth doing.  All major implementations
+support keywords, so they ought to be mentioned as a &quot;standard&quot; semantic
+object, it is just the syntax that differs.  At least standardize the semantics.</p></div></body></html>

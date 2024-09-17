@@ -1,0 +1,48 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NumericVectorsAdvancedCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NumericVectorsAdvancedCowan.md">NumericVectorsAdvancedCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Numeric&shy;Vectors&shy;Advanced&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-23 01:01:36</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/NumericVectorsAdvancedCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/NumericVectorsAdvancedCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This page is an extension of <a href="/wiki/NumericVectorsCowan">NumericVectorsCowan</a> that adds numeric vector versions of the following <a href="http://srfi.schemers.org/srfi-43/srfi-43.html">SRFI 43</a> procedures:</p>
+      <h2 id="Foldsandunfolds">Folds and unfolds</h2>
+      <p>(&lt;type&gt;vector-fold kons knil bytevector1 bytevector2 ···) -&gt; value</p>
+      <p>(&lt;type&gt;vector-fold kons knil bytevector1 bytevector2 ...) -&gt; value</p>
+      <p>(&lt;type&gt;vector-unfold f length initial-seed ...) -&gt; bytevector</p>
+      <p>(&lt;type&gt;vector-unfold-right f length initial-seed ...) -&gt; bytevector</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p>(&lt;type&gt;vector= = bytevector1 bytevector2 ...) -&gt; boolean</p>
+      <h2 id="Iteration">Iteration</h2>
+      <p>(&lt;type&gt;vector-map! proc bytevector1 bytevector2 ...) -&gt; unspecified</p>
+      <p>Similar to <span class="monospace">&lt;type&gt;vector-map</span>, but rather than mapping the new elements into a new vector, the new mapped elements are destructively inserted into `<span class="monospace">bytevector1</span>`.  Returns an unspecified result.</p>
+      <p>(&lt;type&gt;vector-count predicate bytevector1 bytevector2 ...) -&gt; exact nonnegative integer</p>
+      <p>Counts the number of parallel elements in the vectors that satisfy predicate, which is applied, for each index i in the range [0, length), where length is the length of the smallest vector argument, to i and each parallel element in the vectors at that index, in order.</p>
+      <h2 id="Searching">Searching</h2>
+      <p>(&lt;type&gt;vector-index pred? bytevector1 bytevector2 ···) -&gt; exact nonnegative integer or #f</p>
+      <p>(&lt;type&gt;vector-index-right pred? bytevector1 bytevector2 ···) -&gt; exact nonnegative integer or #f</p>
+      <p>(&lt;type&gt;vector-skip pred? bytevector1 bytevector2 ...) -&gt; exact nonnegative integer or #f</p>
+      <p>(&lt;type&gt;vector-skip-right pred? bytevector1 bytevector2 ...) -&gt; exact nonnegative integer or #f</p>
+      <p>(&lt;type&gt;vector-binary-search bytevector value cmp) -&gt; exact nonnegative integer or #f</p>
+      <p>(&lt;type&gt;vector-any pred? bytevector1 bytevector2 ···) -&gt; value or #f</p>
+      <p>(&lt;type&gt;vector-every pred? bytevector1 bytevector2 ···) -&gt; value or #f</p>
+      <h2 id="Swap">Swap</h2>
+      <p>(&lt;type&gt;vector-swap! bytevector i j) -&gt; unspecified</p>
+      <p>Exchanges the values of the locations in <i>bytevector</i>, when viewed as a &lt;type&gt;vector, at indices <i>i</i> and <i>j</i>.</p>
+      <h2 id="Reverseoperations">Reverse operations</h2>
+      <p>(&lt;type&gt;vector-reverse! bytevector [start [end]]) -&gt; unspecified</p>
+      <p>The <span class="monospace">&lt;type&gt;vector-reverse-copy</span>, <span class="monospace">&lt;type&gt;reverse-vector-&gt;vector</span>, <span class="monospace">&lt;type&gt;reverse-vector-&gt;list</span>, <span class="monospace">&lt;type&gt;reverse-list-&gt;vector</span>, and <span class="monospace">&lt;type&gt;reverse-list-&gt;list</span> procedures are identical to their regular counterparts, but process the bytevector argument, when viewed as a &lt;type&gt;vector, in reverse order.</p></div></body></html>

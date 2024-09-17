@@ -1,0 +1,47 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki CaseInsensitivity version 7</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki CaseInsensitivity version 7</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>CaseInsensitivity</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Symbol case-sensitivity ==
+
+Racket, Gauche, Gambit, Chicken, Bigloo, scsh, Guile, Kawa, Chibi, Chez, Vicare, Larceny, Ypsilon, Mosh, !IronScheme, NexJ, KSi, !SigScheme, Shoe, RScheme, Scheme 7, BDC, Rep, Schemik, Llava, Sizzle, Spark, Femtolisp, Dfsch, Owl Lisp return `#f` to `(eq? 't 'T)`.
+
+MIT, Scheme48, SISC, SCM, STklos, !TinyScheme, Scheme 9, Dream, XLisp, Elk, UMB, VX, Oaklisp, SXM, Inlab return `#t`.
+
+== Preferred case is upper case ==
+
+I also decided to check the case-insensitive implementations using `(string=? (symbol-&gt;string 't) &quot;T&quot;)` to see which ones converted symbols to upper case internally.  Only XLisp (which is not really Scheme-compliant) and Oaklisp (which is somewhat R3RS-compliant) did so.
+
+== Character name case-sensitivity ==
+
+Is `#\Space` a valid constant?
+
+Racket, Gauche, MIT, Bigloo, Scheme48, Guile, Kawa, Chibi, Chez, NexJ, STklos, KSi, !SigScheme, !TinyScheme, Scheme 9, Dream, RScheme, Rep, Elk, Oaklisp, Llava, SXM, Spark, Dfsch, Inlab accept `#\Space`.
+
+Gambit, Chicken, scsh, Vicare, Ypsilon, Mosh, !IronScheme, Shoe, Scheme 7, Schemik, UMB, Sizzle, !FemtoLisp, Owl Lisp reject `#\Space`.</pre>
+    <h2>time</h2>
+    <pre>2012-07-12 02:36:45</pre>
+    <h2>version</h2>
+    <pre>7</pre></body></html>

@@ -1,0 +1,51 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki Memoize version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki Memoize version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>Memoize</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This isn't a proposal, just some ideas and discussion points.
+
+The basic interface to memoizing is a variant of `lambda`, perhaps called `lambda/memo` as in Racket, or perhaps something else.  It returns a procedure that ''memoizes'' the results of calls on it in a ''store'', and then pulls the results out of the store on later calls with the same arguments.  (Obviously, you don't want to do this if the procedure is impure.)
+
+It's easy to see how `define/memo` would work as a more convenient version of this.
+
+There are a bunch of issues, though:
+
+ * The most fundamental question is &quot;What counts as the 'same arguments'?&quot;  In Racket, `lambda/memo` uses `eq?` and `lambda/memo*` uses `equal`.  That doesn't seem very flexible.
+
+ * What is the type of the store?  In Racket, hash tables based on `eq?` and `equal?` are available.  But in R7RS-large, there is no guarantee that an implementation that wants to support memoizing will also provide hash tables, so either we closely couple the two packages, or we provide a hook for constructing a store.  If the function accepts only a single argument which belongs to a small range of exact integers, a vector would be a ''much'' better store.
+
+ * If arbitrary stores like a-lists are allowed, how are multiple arguments packaged up as a key for the store?
+
+ * How do we specify the getter and setter for an arbitrary store?
+
+ * How can we provide all this flexibility without compromising convenience for elementary uses?
+
+Adding extra arguments to `lambda/memo` beyond the lambda-list and the body doesn't seem like a win to me (how do you know if the extra arguments are arguments, or part of the body?).  Are dynamic parameters the Right Thing here?  I don't think so, because all these factors should be bound to the static definition of the memoized functions.  Is this a place where we need keyword arguments (which can be implemented directly in R5RS with no new data structures or lambda magic)?
+
+I think we need a record type `memoization-store` that provides a store constructor, comparator, getter, and setter.  But we still have the issue of associating an instance of `memoization-store` with a particular lambda.</pre>
+    <h2>time</h2>
+    <pre>2012-04-13 02:41:39</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

@@ -1,0 +1,90 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>57: Simple randomness</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 57: <span class="summary">Simple randomness</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-01-24 06:39:16</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/57/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-05-03 00:02:02</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Student programs often want a small amount of randomness, not necessarily of very high quality.  Shall we provide a simple interface to a random variable in WG1 Scheme?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-05-03 00:12:38</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I suggest we provide two procedures:</p>
+              <dl>
+                <dt> <span class="monospace">(random-integer ''n''</span>)`</dt>
+                <dd>Accepts a non-negative integer argument <span class="monospace">n</span> as the exclusive upper bound of the result.  The inclusive lower bound is 0.</dd>
+                <dt> <span class="monospace">(random-real)</span></dt>
+                <dd>Provides a real number with exclusive upper bound 1.0 and exclusive lower bound 0.0.</dd></dl>
+              <p>In both cases, the results appear to be independent and uniformly distributed.  This is the smallest conceivable subset of SRFI 27.  See the design rationale for &quot;why&quot; explanations.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-10-18 02:37:52</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to accept <a href="/wiki/RandomCowan">RandomCowan</a>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-10-19 00:02:42</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>To be revoted because there was no simple majority.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-12-17 16:32:13</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted not to add random numbers to WG1 Scheme.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-12-17 16:34:28</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>However, this will be revoted.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 06:39:16</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted not to add randomness of any sort.</p></div></div></div></div></div></body></html>

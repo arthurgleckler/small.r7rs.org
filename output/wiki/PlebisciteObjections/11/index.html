@@ -1,0 +1,72 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PlebisciteObjections</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PlebisciteObjections.md">PlebisciteObjections</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Plebiscite&shy;Objections</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-05-13 16:56:38</div>
+      <div class="version">11<span class="comment"></span><a href="/wiki/PlebisciteObjections/history">history</a></div>
+      <div class="source"><a href="/wiki/PlebisciteObjections/11/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p><b>Work in progress, please ignore for now</b></p>
+      <ul>
+        <li>Adding Unicode support is too large a change from R5RS.
+          <ul>
+            <li>It is still possible for a Scheme to provide ASCII-only support; the only constraint is that it must be done in a way that extends smoothly to the rest of the Unicode repertoire.</li></ul></li>
+        <li>Exceptions integrate badly with the rest of the language.
+          <ul>
+            <li>Perhaps that is because they are pure R6RS.  We can't do it all.</li></ul></li>
+        <li>The syntaxes <span class="monospace">#true</span> and <span class="monospace">#false</span> are totally gratuitous.
+          <ul>
+            <li>They add a little extra readability, but are optional.  Early versions of the Scheme standard provided them in the forms <span class="monospace">#!true</span> and <span class="monospace">#!false</span>.</li></ul></li>
+        <li>The lexical syntax <span class="monospace">#| ... |#</span> is unsightly.
+          <ul>
+            <li>A matter of taste.  Many Schemes provide it already, including R6RS.</li></ul></li>
+        <li>The lexical syntax <span class="monospace">#!(no-)fold-case</span> is a bit ugly.
+          <ul>
+            <li>It is R6RS-compatible and fairly clear.  The alternatives <span class="monospace">#cs</span> (case sensitive) and <span class="monospace">#ci</span> are less widely standardized and less intuitively clear.</li></ul></li>
+        <li>The <span class="monospace">read-line</span> procedure can cause a denial of service because it does not provide for a limit on the amount of input read.
+          <ul>
+            <li>True.  However, <span class="monospace">read</span> has the same problem.  It's easy for an implementation that worries about this sort of thing to provide an optional second argument setting a limit.</li></ul></li>
+        <li>The <span class="monospace">call/cc</span> abstraction is intractable and not useful and should have been excluded.
+          <ul>
+            <li>The WG did not believe that the very high bar for removing an IEEE Scheme feature was met.</li></ul></li>
+        <li>The draft was forbidden by its charter to remove restrictions that make additional features seem necessary.
+          <ul>
+            <li>If the restrictions in question were hard-coded into R5RS, and removing them would break backward compatibility, then yes.  Restrictions that could be removed without breaking backward compatibility could be and sometimes were removed; for example, the restriction that <span class="monospace">load</span> loads into the interaction environment only.</li></ul></li>
+        <li>The large language should have been developed before the small language.
+          <ul>
+            <li>This objection is untimely.  In addition, developing a large language and then subsetting it would have a higher overall risk of failure; if the large language was never completed, the small language would not exist.</li></ul></li>
+        <li>The text-handling routines are redundant or inelegant in a Unicode world, but could not be removed or fundamentally altered due to charter restrictions.
+          <ul>
+            <li>Scheme would probably be better off not treating strings as sequences of characters, but rather treating characters as a special case of strings.  Unfortunately, that's too far away from the IEEE model.</li></ul></li>
+        <li>The interaction between exceptions, <span class="monospace">dynamic-wind</span>, and continuations is missing something orthogonal.
+          <ul>
+            <li>This objection is too vague to meet head-on.</li></ul></li>
+        <li>The draft made many matters settled by R6RS undefined again.
+          <ul>
+            <li>Since R6RS support never became pervasive, these matters were in practice not defined in a way that Schemers could rely on, unless they used only R6RS-compatible implementations.</li></ul></li>
+        <li>The order of arguments in the draft's <span class="monospace">bytevector-copy</span> is fundamentally incompatible with R6RS in an undetectable way, though it is R6RS that is wrong here.
+          <ul>
+            <li>True and unfortunate, but the draft's approach is consistent with the rest of Scheme.</li></ul></li>
+        <li>The draft should have included delimited continuation support.
+          <ul>
+            <li>The large language will provide it.</li></ul></li>
+        <li>The draft does not provide procedures that operate on mixed types of sequences (e.g. a map function that accepts a list and a vector and applies a two-argument function element-wise on them).
+          <ul>
+            <li>True.  Unfortunately, no one proposed them during the working life of WG1.</li></ul></li>
+        <li>The draft is too conservative in its changes to R5RS.
+          <ul>
+            <li>That was a charter requirement.</li></ul></li>
+        <li><a href="/ticket/467">#467</a> should not be reverted.</li></ul></div></body></html>

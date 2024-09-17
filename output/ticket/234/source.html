@@ -1,0 +1,185 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #234</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #234</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-05 12:16:26</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>`eager`, like `delay`, returns a promise object that can be forced by `force`, but it evaluates its argument up front (it is a procedure, not syntax) and stashes it in the promise in such a way that `force` can access it.  It comes from SRFI 45 and complements `lazy`, `delay`, and `force`, also from SRFI 45, that we now have.
+
+Semantically, writing `(eager expression)` is equivalent to writing `(let ((value expression)) (delay value))`.  However, the former is more efficient since it does not require unnecessary creation and evaluation of thunks.  And you can't make `eager` efficient yourself unless you have access to the internals of `force`.</pre>
+    <h2>id</h2>
+    <pre>234</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Add EAGER from SRFI 45</pre>
+    <h2>time</h2>
+    <pre>2011-07-15 11:31:10</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-05 12:16:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1349414186994209</pre>
+    <h2>ticket</h2>
+    <pre>234</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:16:26</pre>
+    <h2>Change at time 2012-10-05 12:16:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349414186994209</pre>
+    <h2>ticket</h2>
+    <pre>234</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:16:26</pre>
+    <h2>Change at time 2012-10-05 12:16:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349414186994209</pre>
+    <h2>ticket</h2>
+    <pre>234</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:16:26</pre>
+    <h2>Change at time 2011-09-12 03:53:32</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1315774412000000</pre>
+    <h2>ticket</h2>
+    <pre>234</pre>
+    <h2>time</h2>
+    <pre>2011-09-12 03:53:32</pre>
+    <h2>Change at time 2011-09-12 03:53:32</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1315774412000000</pre>
+    <h2>ticket</h2>
+    <pre>234</pre>
+    <h2>time</h2>
+    <pre>2011-09-12 03:53:32</pre>
+    <h2>Change at time 2011-09-12 03:53:32</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1315774412000000</pre>
+    <h2>ticket</h2>
+    <pre>234</pre>
+    <h2>time</h2>
+    <pre>2011-09-12 03:53:32</pre>
+    <h2>Change at time 2011-09-11 07:47:41</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 accepted this proposal.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1315702061000000</pre>
+    <h2>ticket</h2>
+    <pre>234</pre>
+    <h2>time</h2>
+    <pre>2011-09-11 07:47:41</pre>
+    <h2>Change at time 2011-09-11 07:47:41</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1315702061000000</pre>
+    <h2>ticket</h2>
+    <pre>234</pre>
+    <h2>time</h2>
+    <pre>2011-09-11 07:47:41</pre>
+    <h2>Change at time 2011-09-11 07:47:41</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1315702061000000</pre>
+    <h2>ticket</h2>
+    <pre>234</pre>
+    <h2>time</h2>
+    <pre>2011-09-11 07:47:41</pre></body></html>

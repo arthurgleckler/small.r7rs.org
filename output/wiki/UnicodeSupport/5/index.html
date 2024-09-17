@@ -1,0 +1,37 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>UnicodeSupport</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/UnicodeSupport.md">UnicodeSupport</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Unicode&shy;Support</h1>
+    <div class="wiki metadata">
+      <div class="author">aag</div>
+      <div class="time">2014-05-04 06:20:58</div>
+      <div class="version">5<span class="comment">Maintained previous correction.</span><a href="/wiki/UnicodeSupport/history">history</a></div>
+      <div class="source"><a href="/wiki/UnicodeSupport/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>I examined the results of <span class="monospace">(integer-&gt;char 256)</span>, the first Unicode character outside the 8-bit range; <span class="monospace">(integer-&gt;char 65536)</span>, the first Unicode character outside the Basic Multilingual Plane; <span class="monospace">(integer-&gt;char 128)</span>, the first non-ASCII character; and <span class="monospace">(integer-&gt;char 0)</span>, the ASCII NUL character.  I then attempted to wrap each character in a string.  In all cases where it was possible to create such a string, it correctly had a length of 1.</p>
+      <h2 id="Characters">Characters</h2>
+      <p>Full support:  Racket, Gauche, Gambit, MIT, Chicken, Scheme48/scsh, Guile, Kawa, Chez, Vicare, Larceny, Ypsilon, Mosh, STklos, KSi, SigScheme, XLisp, BDC, Foment, Owl Lisp, Chibi</p>
+      <p>Characters 0-65535 only:  RScheme, SISC, IronScheme, NexJ, JScheme</p>
+      <p>Characters 0-255 only:  Bigloo, SCM, Shoe, TinyScheme, Scheme 9, S7, UMB, Elk, SXM, Sizzle, Inlab</p>
+      <p>No <span class="monospace">integer-&gt;char</span> procedure: Rep, Schemik, Llava, FemtoLisp, Dfsch</p>
+      <h2 id="Strings">Strings</h2>
+      <p>Full support:  Racket, Gauche, Gambit, Chicken, Scheme48/scsh, Guile, Kawa, Chez, Vicare, Larceny, Ypsilon, Mosh, STklos, KSi, SigScheme, XLisp, BDC, Foment, Owl Lisp, Chibi</p>
+      <p>Characters 0-65535 only: SISC, IronScheme, NexJ, JScheme</p>
+      <p>Characters 0-255 only:  MIT (but MIT Scheme has UTF8 and &quot;wide&quot; strings, which do support full Unicode), Bigloo, RScheme, SCM, Shoe, TinyScheme, Scheme 9, S7, UMB, Elk, SXM, Sizzle, Inlab</p>
+      <p>No <span class="monospace">integer-&gt;char</span> procedure: Rep, Schemik, Llava, FemtoLisp, Dfsch</p>
+      <h2 id="Identifiers">Identifiers</h2>
+      <p>I tried to define the identifier π with the value 3.141592653 and then evaluate it.</p>
+      <p>Successful:  Racket, Gauche, Gambit, Chicken, Bigloo, Scheme48/scsh, Guile, Kawa, SISC, SCM, Chez, Vicare, Larceny, Ypsilon, Mosh, IronScheme, NexJ, JScheme, STklos, KSi, SigScheme, Shoe, TinyScheme, RScheme, S7, BDC, UMB, Elk, Llava, Sizzle, FemtoLisp, Dfsch, Inlab, Foment, Owl Lisp, Chibi</p>
+      <p>Unsuccessful: MIT, Chez (can't enter π at the REPL), Scheme 9, XLisp, Rep, Schemik, SXM</p>
+      <p>This test often succeeds because many Schemes treat anything that is not numeric or a delimiter as an identifier, even if they only understand 8-bit encodings.</p></div></body></html>

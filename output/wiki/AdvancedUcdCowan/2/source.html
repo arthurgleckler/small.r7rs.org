@@ -1,0 +1,157 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki AdvancedUcdCowan version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki AdvancedUcdCowan version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>66.108.19.185</pre>
+    <h2>name</h2>
+    <pre>AdvancedUcdCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>See UcdCowan for basic UCD procedures.
+
+It is an error to mutate any objects returned by these procedures.
+
+== Blocks ==
+
+''Blocks'' are disjoint objects that represent the allocation blocks into which the Unicode code point space is divided for administrative purposes.  Typically most of a block is allocated at once and contains characters from a single script, but there is often more than one block per script, some blocks contain characters from multiple scripts, and some characters in a block are allocated much later than the rest.  The list of blocks provided is implementation-dependent.  Since it is not possible to create new ones, `eqv?` may be used to compare them.
+
+`(blocks)`
+
+Returns a list of all blocks known to the implementation.
+
+`(block-name `''block''`)`
+
+Returns a string naming ''block''.
+
+`(block-first `''block''`)`
+
+Returns an exact integer representing the first (smallest) code point in the block.
+
+`(block-last `''block''`)`
+
+Returns an exact integer representing the last (largest) code point in the block.
+
+== Named Sequences ==
+
+Named sequences are disjoint objects which represent a sequence of Unicode code points that has a name specified by the Unicode Standard.  Named sequences may be provisional in one version of the UCD and then non-provisional in later versions.  The list of named sequences provided is implementation-dependent.  Since it is not possible to create new ones, `eqv?` may be used to compare them.
+
+`(named-sequences)`
+
+Returns a list of all named sequence objects known to the implementation.
+
+`(named-sequence-name `''named-sequence''`)`
+
+Returns a string naming ''named-sequence''.
+
+`(named-sequence-code-points `''named-sequence''`)`
+
+Returns a list of exact integers representing the code points of the ''named-sequence''.
+
+`(named-sequence-provisional? `''named-sequence''`)`
+
+Returns `#t` if the ''named-sequence'' is provisional, or `#f` if not.
+
+== Normalization corrections ==
+
+''Normalization-corrections'' are disjoint objects that represent official corrections to the UCD normalization tables.  The list of normalization-corrections provided is implementation-dependent.  Since it is not possible to create new ones, `eqv?` may be used to compare them.
+
+`(normalization-corrections)`
+
+Returns a list of all normalization-corrections known to the implementation.
+
+`(normalization-correction-description `''block''`)`
+
+Returns a string describing ''normalization-correction''.  Note that normalization-corrections don't have names.
+
+`(normalization-correction-codepoint `''block''`)`
+
+Returns an exact integer specifying the code point of the character whose normalization is being corrected.
+
+`(normalization-correction-old `''block''`)`
+
+Returns a list of exact integers specifying the normalization of `(normalization-correction-codepoint `''block''`)` before this normalization correction is applied.
+
+`(normalization-correction-new `''normalization-correction''`)`
+
+Returns a list of exact integers specifying the normalization of `(normalization-correction-codepoint `''block''`)` after this normalization correction is applied.
+
+`(normalization-correction-version `''block''`)`
+
+Returns a list of three exact integers specifying the version of the UCD (in the format of `ucd-version`) in which this normalization-correction was applied.
+
+== Standardized variants ==
+
+''Standardized-variants'' are disjoint objects that represent standardized variants of base charactesr.  The list of standardized-variants provided is implementation-dependent.  Since it is not possible to create new ones, `eqv?` may be used to compare them.
+
+`(standardized-variants)`
+
+Returns a list of all standardized-variants known to the implementation.
+
+`(standardized-variants-description `''standardized-variant''`)`
+
+Returns a string describing ''standardized-variant''.  Note that standardized-variants don't have names.
+
+`(standardized-variants-when `''standardized-variant''`)`
+
+Returns a string specifying the shaping environment under which ''standardized-variant'' is applied.
+
+`(standardized-variant-base-codepoint `''block''`)`
+
+Returns an exact integer specifying the code point of the base character of the standardized variant.
+
+`(standardized-variant-variant-codepoint `''block''`)`
+
+Returns an exact integer specifying the code point of the base character of the standardized variant.
+'''Issue: this name is regrettable.'''
+
+== Undigested stuff from UAX #42 ==
+
+
+=== CJK radicals ===
+
+The cjk-radicals child of the ucd describes the CJK radicals. It has one child element cjk-radical per radical. The attributes on that last element capture the radical number, the corresponding CJK radical character, and the corresponding CJK unified ideograph.
+
+[cjk radicals, 50] =  
+  ucd.content &amp;=
+    element cjk-radicals {
+      element cjk-radical { 
+        attribute number { xsd:string {pattern=&quot;[0-9]{1,3}'?&quot;}},
+        attribute radical { single-code-point },
+        attribute ideograph { single-code-point }} + }?
+
+=== Emoji sources ===
+
+The emoji-sources child of the ucd describes the emoji sources.
+
+[datatype for code points, 51] =  
+  jis-code-point = xsd:string { pattern = &quot;[0-9A-F]{4}&quot; }
+
+[emoji sources, 52] =  
+  ucd.content &amp;=
+    element emoji-sources {
+      element emoji-source {
+        attribute unicode { one-or-more-code-points },
+        attribute docomo { jis-code-point? },
+        attribute kddi { jis-code-point? },
+        attribute softbank { jis-code-point? } } + }?</pre>
+    <h2>time</h2>
+    <pre>2012-04-11 02:46:10</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

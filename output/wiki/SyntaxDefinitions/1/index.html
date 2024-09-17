@@ -1,0 +1,35 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>SyntaxDefinitions</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/SyntaxDefinitions.md">SyntaxDefinitions</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Syntax&shy;Definitions</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-05-31 05:36:40</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/SyntaxDefinitions/history">history</a></div>
+      <div class="source"><a href="/wiki/SyntaxDefinitions/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>These tests show the type of syntax definitions the Schemes in the suite understand.</p>
+      <h2 id="Define-macro">Define-macro</h2>
+      <p><span class="monospace">define-macro</span> is a low-level bare macro definition, analogous to Common Lisp <span class="monospace">defmacro</span>.  I tested <span class="monospace">(define-macro x (lambda (y) y))</span> followed by <span class="monospace">(x (+ 3 4))</span>, expecting it to return 7 on Schemes that support <span class="monospace">define-macro</span> and an error otherwise.  <span class="monospace">define-macro</span> is not part of any Scheme standard.</p>
+      <p>Supported: Gambit, Bigloo, Guile, Kawa, SISC, Ypsilon, NexJ, JScheme, SigScheme, Scheme 9, STklos, RScheme, Rep, Elk, Picrin</p>
+      <p>Not supported: Racket, Gauche, MIT, Chicken, Scheme48/scsh, SCM, Chez, Vicare, Larceny, Mosh, IronScheme, KSi, Shoe, TinyScheme, BDC, XLisp, Schemik, UMB, Llava, SXM, FemtoLisp, Inlab, Oaklisp, Sagittarius, Foment, Owl Lisp, Chibi</p>
+      <p>S7 and Dfsch accept <span class="monospace">define</span>-style syntax <span class="monospace">(define-macro (x y) y)</span> only.  The Sizzle documentation claims to do the same, but it didn't work for me.</p>
+      <h2 id="Syntax-rules">Syntax-rules</h2>
+      <p><span class="monospace">Syntax-rules</span> is a syntax transformer used with <span class="monospace">define-syntax</span> and its relatives.  It was described but not standardized in R4RS; with minor extensions, it is part of the R5RS, R6RS, and R7RS-small standards.  I tested <span class="monospace">(define-syntax x (syntax-rules () ((x y) y)))</span>, which is essentially equivalent to the <span class="monospace">define-macro</span> macro used above, but with hygiene.</p>
+      <p>Supported: Racket, Gauche, MIT, Gambit (with the <span class="monospace">-:s</span> switch), Chicken, Bigloo, Scheme48/scsh, Guile, Kawa, SISC, SCM (with the <span class="monospace">-r5 -m</span> switches), Chez, Vicare, Larceny, Ypsilon, Mosh, IronScheme, STklos, Scheme 9, SXM, Sagittarius, Foment, Picrin, Owl Lisp, Chibi</p>
+      <p>Not supported: NexJ, JScheme, KSi, SigScheme, Shoe, TinyScheme, RScheme, S7, BDC, XLisp, Rep, Schemik, UMB, Elk, Llava, Sizzle, FemtoLisp, Dfsch, Inlab, Oaklisp</p>
+      <h2 id="Syntax-case">Syntax-case</h2>
+      <h2 id="Syntacticclosures">Syntactic closures</h2>
+      <h2 id="Explicitrenaming">Explicit renaming</h2>
+      <h2 id="Implicitrenaming">Implicit renaming</h2></div></body></html>

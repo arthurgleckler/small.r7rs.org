@@ -1,0 +1,440 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1Ballot</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1Ballot.md">WG1Ballot</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Ballot</h1>
+    <div class="wiki metadata">
+      <div class="author">alexshinn</div>
+      <div class="time">2011-06-06 20:50:30</div>
+      <div class="version">25<span class="comment"></span><a href="/wiki/WG1Ballot/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1Ballot/25/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Instructions">Instructions</h1>
+      <ul>
+        <li>You may list as many of the options as you want in order of preference.</li>
+        <li>Options are comma-delimited (ignoring space) and case-insensitive.</li>
+        <li>You can pipe-delimit (|) options you want to give equal weight to.</li>
+        <li>You may write in your own option if you announce it to the list first.</li>
+        <li>You may specify a variant with option/variant, for example srfi-1/module to vote for srfi-1 but clarify it should be in a separate module. Please also include the srfi-1 option in this case.</li>
+        <li>You can write a free-form rationale after the &quot;preferences&quot; line,</li>
+        <li>module means &quot;yes, but I want it in a separate module&quot;,</li>
+        <li>wg2 means &quot;no, but I think it should go in WG2&quot;.</li>
+        <li>undecided means I want to discuss this issue further.</li>
+        <li>Abstain on any item by leaving the preferences blank.</li></ul>
+      <h1 id="WG1BallotItemsToFinalizebyJuly1st">WG1 Ballot Items To Finalize by July 1st</h1>
+      <h1 id="PreviousUndecidedandRe-openedBallotItems">Previous Undecided and Re-opened Ballot Items</h1>
+      <h3 id="#32user-definedtypes"><a href="/ticket/32">#32</a> user-defined types</h3>
+      <p>Do we support any means of creating disjoint user-defined types, such
+as in SRFI-9, SRFI-99 or the R6RS record system?</p>
+      <p>WG1 voted <b>srfi-9</b> before.  New arguments against filter
+constructors were raised, so the ticket was re-opened.</p>
+      <p>References:</p>
+      <ul>
+        <li>https://groups.google.com/d/topic/scheme-reports-wg1/BX2F10MO6_k/discussion</li></ul>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/RecordsCowan">RecordsCowan</a></li>
+            <li><b>hsu:</b> <a href="/wiki/RecordsArcfide">RecordsArcfide</a></li>
+            <li><b>medernach:</b> <a href="/wiki/AggregatesMedernach">AggregatesMedernach</a></li>
+            <li><b>rush:</b> <a href="/wiki/UserAggregatesRush">UserAggregatesRush</a></li>
+            <li><b>snellpym:</b> <a href="/wiki/UniqueTypesSnellPym">UniqueTypesSnellPym</a></li></ul></li>
+        <li><b>Options:</b> srfi-9, srfi-57, srfi-99, r6rs, cowan, hsu, medernach, rush, snellpym, none, wg2, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#28binaryI/Oports"><a href="/ticket/28">#28</a> binary I/O ports</h3>
+      <p>Do we provide any binary input or output ports, and if so how do we
+construct them and operate on them?  Can binary and textual operations
+be mixed on the different port types?</p>
+      <p><a href="/wiki/PortsCowan">PortsCowan</a> provides binary port operations along with other
+extensions.</p>
+      <p>R6RS provides an entirely new I/O system, as well as a separate
+R5RS-compatible I/O system.</p>
+      <p>The withdrawn SRFI-91 provides yet another I/O system supporting
+binary ports.</p>
+      <p>Note this item as well as <a href="/ticket/29">#29</a> and <a href="/ticket/31">#31</a> specify semi-orthogonal aspects
+of I/O systems which are typically specified together by individual
+proposals.  If the same proposal doesn't win for all three, the
+aspects will be merged as needed.</p>
+      <p>WG1 voted weakly in favor of <b>cowan</b> before.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r6rs:</b> <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html#node_sec_8.2">R6RS Port I/O</a></li>
+            <li><b>r6rs-simple:</b> <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html#node_sec_8.3">R6RS Simple I/O</a></li>
+            <li><b>srfi-91:</b> <a href="http://srfi.schemers.org/srfi-91/srfi-91.html">SRFI-91</a></li>
+            <li><b>cowan:</b> <a href="/wiki/PortsCowan">PortsCowan</a> (subset relevant to binary I/O)</li></ul></li>
+        <li><b>Options:</b> r6rs, r6rs-simple, srfi-91, cowan, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#83AuxiliaryKeywords"><a href="/ticket/83">#83</a> Auxiliary <a href="/wiki/Keywords">Keywords</a></h3>
+      <p>In R6RS auxiliary keywords (such as <span class="monospace">else</span> in <span class="monospace">cond</span> and <span class="monospace">case</span> forms)
+are explicitly exported from the <span class="monospace">(rnrs base (6))</span> library.  Do we
+want to bind and export these from the core library?</p>
+      <p>If <span class="monospace">else</span> is bound in the default module, then it must be imported at
+the call site whenever using it in <span class="monospace">cond</span> or it won't match
+hygienically.</p>
+      <p>If <span class="monospace">else</span> is <b>not</b> bound in the default module, then it must not
+be bound or imported at the call site whenever using it in <span class="monospace">cond</span> or
+it won't match hygienically.</p>
+      <p>Another option is to specify for <span class="monospace">cond</span> and <span class="monospace">case</span> that they match the
+<span class="monospace">else</span> identifier literally, ignoring any hygiene.  This breaks
+compatibility with R5RS and R6RS.</p>
+      <p>WG1 voted <b>unbound</b> previously.  New issues were brought up on the
+list so the ticket was re-opened.</p>
+      <p>References:</p>
+      <ul>
+        <li>http://lists.scheme-reports.org/pipermail/scheme-reports/2011-April/thread.html</li></ul>
+      <ul>
+        <li><b>Options:</b> bound, unbound, unhygienic, undecided</li>
+        <li><b>Default:</b> unbound</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#3modulenamingconvention"><a href="/ticket/3">#3</a> module naming convention</h3>
+      <p>We need a naming convention for the core modules and standard
+libraries of the new module system.</p>
+      <p>The existing break down is based on John Cowan's earlier proposal of
+factorings in items <a href="/ticket/71">#71</a>, <a href="/ticket/72">#72</a>, <a href="/ticket/73">#73</a>, <a href="/ticket/74">#74</a>, <a href="/ticket/75">#75</a>, <a href="/ticket/76">#76</a>, <a href="/ticket/77">#77</a>, as well as an
+I/O module breakdown in <a href="/wiki/PortsCowan">PortsCowan</a>.  There have been various tickets
+proposing changing this, so we are re-opening the ticket.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>draft-1:</b> the first draft</li>
+            <li><b>r5rs:</b> one single module</li>
+            <li><b>r6rs:</b></li>
+            <li><b>cowan:</b></li>
+            <li><b>shinn:</b> <a href="/wiki/ModuleFactoringShinn">ModuleFactoringShinn</a></li></ul></li>
+        <li><b>Options:</b> draft-1, r5rs, r6rs, cowan, shinn, undecided</li>
+        <li><b>Default:</b> draft-1</li>
+        <li><b>Preferences:</b></li></ul>
+      <h1 id="NewBallotItems">New Ballot Items</h1>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="#85Blobs,bytevectors,byte-vectors,octet-vectors,orsomethingelse?"><a href="/ticket/85">#85</a> Blobs, bytevectors, byte-vectors, octet-vectors, or something else?</h3>
+      <p>Now that we have blobs, we have to decide what to call them.  R6RS
+uses bytevector, SRFI-4 and SRFI-68 uses u8vector, while the original
+WG1 proposal used blob (which is therefore the default).</p>
+      <ul>
+        <li><b>Options:</b> blob, bytevector, byte-vector, u8vector, octet-vector, undecided</li>
+        <li><b>Default:</b> blob</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#118Simpleliteralsmustbeexplicitlydelimited."><a href="/ticket/118">#118</a> Simple literals must be explicitly delimited.</h3>
+      <p>In R5RS syntax such as <span class="monospace">#t#f</span> is left unspecified - some readers may
+parse this as the true literal followed by false.  R6RS requires
+identifiers, characters, booleans, number objects, and <span class="monospace">.</span> to be
+terminated with a &quot;delimiter&quot; or by the end of input.</p>
+      <p>References:</p>
+      <ul>
+        <li>http://scheme-punks.org/wiki/index.php?title=ERR5RS:Lexical_Syntax</li>
+        <li>http://lists.r6rs.org/pipermail/r6rs-discuss/2007-June/002649.html</li></ul>
+      <ul>
+        <li><b>Options:</b> delimited, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#119Whethertotreat#asadelimiter."><a href="/ticket/119">#119</a> Whether to treat # as a delimiter.</h3>
+      <p>In R5RS <span class="monospace">foo#f</span> is a valid identifier, whereas R6RS requires <span class="monospace">#</span> to
+act as a delimiter, so that this would parse as the identifier <span class="monospace">foo</span>
+followed by the false literal.</p>
+      <ul>
+        <li><b>Options:</b>  delimiter, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#123Extendunquoteandunquote-splicingtomultiplearguments"><a href="/ticket/123">#123</a> Extend unquote and unquote-splicing to multiple arguments</h3>
+      <p>This is a change also made by R6RS (and CL).</p>
+      <p>References:</p>
+      <ul>
+        <li>http://lists.scheme-reports.org/pipermail/scheme-reports/2011-April/000448.html</li>
+        <li>http://www.rhinocerus.net/forum/lang-scheme/98742-quasiquote-syntax-rules-macro.html</li>
+        <li>http://www.mail-archive.com/guile-user@gnu.org/msg03899.html</li></ul>
+      <ul>
+        <li><b>Options:</b> multiple, single, undecided</li>
+        <li><b>Default:</b> single</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#124Nestedquasiquotesemantics"><a href="/ticket/124">#124</a> Nested quasiquote semantics</h3>
+      <p>References:</p>
+      <ul>
+        <li>http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-14.html#node_sec_11.17</li>
+        <li>http://lists.nongnu.org/archive/html/chicken-hackers/2010-12/msg00008.html</li></ul>
+      <ul>
+        <li><b>Options:</b> r6rs, r5rs, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#125Allowproceduresnottobelocations(makingEQV?unspecifiedinsomeadditionalcases)"><a href="/ticket/125">#125</a> Allow procedures not to be locations (making EQV? unspecified in some additional cases)</h3>
+      <p>This is a change also made by R6RS.</p>
+      <ul>
+        <li><b>Options:</b> r6rs, r5rs, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#126Partlyspecifythemutabilityofthevaluesofquasiquotestructures"><a href="/ticket/126">#126</a> Partly specify the mutability of the values of quasiquote structures</h3>
+      <p>This is a change also made by R6RS.</p>
+      <ul>
+        <li><b>Options:</b> r6rs, r5rs, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#127Specifythedynamicenvironmentofthe''before''and''after''proceduresofdynamic-wind"><a href="/ticket/127">#127</a> Specify the dynamic environment of the <i>before</i> and <i>after</i> procedures of dynamic-wind</h3>
+      <p>R5RS is slightly ambiguous, saying</p>
+      <blockquote class="citation">
+        <p>BEFORE is called whenever execution enters the dynamic extent of the
+ call to THUNK and AFTER is called whenever it exits that dynamic
+ extent.
+ Jeronimo Pellegrini scripsit:
+ &gt; According to Section 6.7.1, &quot;Conversely, not all character ports are
+ &gt; binary ports -- for example, the /string ports/ discussed below&quot;.  It
+ &gt; is not really clear to wether the document *requires* string ports not
+ &gt; to be binary or if it was just an example of a port that *could* be
+ &gt; character but not binary.
+ I haven't thought about it, but I guess it *could* be the latter, if the
+ environment provides a default encoding for string ports.
+ Existing features of IEEE Scheme may be removed only if a strong
+ case can be made that they are fundamentally flawed. Insofar as
+ practical, the language should be backwards compatible with the IEEE
+ standard, the R5RS standard, and an appropriate subset of the R6RS
+ standard.
+ Unfortunately, most programming languages give nondescript names
+ such as DIV(IDE), QUOT(IENT), MOD(ULO), and REM(AINDER) to these
+ operations. The language should make clear to programmers what
+ division operations their programs are performing, especially when
+ negative dividends and divisors can arise, but perhaps may not often
+ arise during testing.
+ [...]
+ The R5RS gives the names <span class="monospace">quotient</span> and <span class="monospace">remainder</span> to the
+ truncating division operator pair, and the name <span class="monospace">modulo</span> to the
+ remainder half of the flooring division operator pair. For all these
+ three procedures in the R5RS, the dividend may be any integer, and
+ the divisor may be any nonzero integer.</p></blockquote>
+      <p>On the other hand, we may prefer relegating them to a
+backward-compatibility module.</p>
+      <p>Vote &quot;yes&quot; to keep, &quot;no&quot; to remove, and &quot;module&quot; to relegate to a
+module.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, module, undecided</li>
+        <li><b>Default:</b> yes</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#151Extend`finite?`and`nan?`tonon-realvalues"><a href="/ticket/151">#151</a> Extend <span class="monospace">finite?</span> and <span class="monospace">nan?</span> to non-real values</h3>
+      <p>R6RS specifies the domain of <span class="monospace">finite?</span> and <span class="monospace">nan?</span> as the real numbers
+only.  I propose that <span class="monospace">finite?</span> return <span class="monospace">#t</span> on a non-real value iff
+both the real part and the imaginary part are finite and not <span class="monospace">+nan.0</span>,
+and that <span class="monospace">nan?</span> return <span class="monospace">#t</span> on a non-real value iff either the real or
+the imaginary part is <span class="monospace">+nan.0</span>.</p>
+      <ul>
+        <li><b>Options:</b></li>
+        <li><b>Default:</b></li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#152exact-integer-sqrtinconsistentwithmultiplevaluesmodule"><a href="/ticket/152">#152</a> exact-integer-sqrt inconsistent with multiple values module</h3>
+      <p>R5RS does not actually specify any procedures which return multiple
+values, and so the decision to separate multiple values to a module
+was reasonable.  However, we also voted to make <span class="monospace">exact-integer-sqrt</span>,
+which is in the base module, return multiple values, namely the root
+and the remainder.  That would make the procedure useless unless
+multiple values are provided.</p>
+      <p>We can either make multiple values not a module, make
+<span class="monospace">exact-integer-sqrt</span> return a list (or single integer) rather than
+multiple values, relegate <span class="monospace">exact-integer-sqrt</span> to a new module, remove
+it altogether, or do nothing and leave the inconsistency.</p>
+      <ul>
+        <li><b>Options:</b> values-in-core, return-list, return-pair, return-root-only, new-module, remove, nothing, undecided</li>
+        <li><b>Default:</b> nothing</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#180Makecaseandcondclausesintobodies"><a href="/ticket/180">#180</a> Make case and cond clauses into bodies</h3>
+      <p>Andy Wingo suggests: make the clauses in <span class="monospace">case</span> and <span class="monospace">cond</span> forms
+(without <span class="monospace">=&gt;</span>, naturally) be BODY instances, to allow them to have
+definitions.  It is well defined AFAIK, and costs nothing.</p>
+      <p>The counter-argument is that it doesn't &quot;look&quot; like the sort of place
+definitions are allowed.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#181AddWHENandUNLESStothebasemodule"><a href="/ticket/181">#181</a> Add WHEN and UNLESS to the base module</h3>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#182AddWHILEandUNTIL"><a href="/ticket/182">#182</a> Add WHILE and UNTIL</h3>
+      <p>These trivial syntaxes add familiarity for new Scheme programmers
+coming from other languages, as will almost always be the case.  LOOP
+is too big and named-LET too alien.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b></li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#183Escapednewlineremovesfollowingwhitespace?"><a href="/ticket/183">#183</a> Escaped newline removes following whitespace?</h3>
+      <p>Andy Wingo suggests the R6RS handling of escaped embedded newlines:</p><span class="monospace">    &quot;asdadf \
+    asdfadf&quot;
+</span>
+      <p>in R6RS has the same meaning as &quot;asdf asdfadf&quot;.  It allows you to
+nicely indent strings that you need to line-break for width.  I
+suggest that the production</p><span class="monospace">   \ NEWLINE WHITESPACE*
+</span>
+      <p>within string literals be elided.</p>
+      <p>Note an alternate method for handling embedded strings with nice
+indentation is scribble syntax.</p>
+      <p>We voted on various string syntaxes previously but did not
+specifically propose this R6RS extension.  We should have a rationale
+if we don't follow it.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#184RequireCHAR=?,STRING=?etc.toacceptarbitrarynumbersofarguments?"><a href="/ticket/184">#184</a> Require CHAR=?, STRING=? etc. to accept arbitrary numbers of arguments?</h3>
+      <p>R5RS makes a point of specifying that supporting more than two
+arguments is optional.  (Everything not explicitly mentioned is
+optional, so this may have significance.)  R6RS requires accepting 2
+or more arguments.  Currently Racket, Gambit, Guile, Chez, Ikarus,
+Larceny, Ypsilon, Mosh, and Scheme 9 support the feature, whereas
+Gauche, MIT, Chicken, Bigloo, Scheme48/scsh, Kawa, SISC, Chibi,
+STklos, and SSCM don't.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b></li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#185Addsixth&quot;centered&quot;divisionoperator"><a href="/ticket/185">#185</a> Add sixth &quot;centered&quot; division operator</h3>
+      <p>From the Guile manual:</p>
+      <p>— Scheme Procedure: centered/ x y
+— Scheme Procedure: centered-quotient x y
+— Scheme Procedure: centered-remainder x y</p>
+      <p>These procedures accept two real numbers x and y, where the divisor y
+must be non-zero. centered-quotient returns the integer q and
+centered-remainder returns the real number r such that x = q*y + r and
+-|y/2| &lt;= r &lt; |y/2|. centered/ returns both q and r, and is more
+efficient than computing each separately.</p>
+      <p>Note that centered-quotient returns x/y rounded to the nearest
+integer. When x/y lies exactly half-way between two integers, the tie
+is broken according to the sign of y. If y &gt; 0, ties are rounded
+toward positive infinity, otherwise they are rounded toward negative
+infinity. This is a consequence of the requirement that -|y/2| &lt;= r &lt;
+|y/2|.</p>
+      <p>Note that these operators are equivalent to the R6RS operators div0,
+mod0, and div0-and-mod0.</p>
+      <p>--Andy Wingo</p>
+      <p>Taylor Campbell thinks these are useless.  We should probably have use
+cases for _any_ division operator we include.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#195Editorial:proposedrewordingfor`begin`"><a href="/ticket/195">#195</a> Editorial: proposed rewording for <span class="monospace">begin</span></h3>
+      <p>The documentation for `begin' specifies that it is a sequential
+construct; but really it splices as well, and also of course it's a
+keyword for the module system currently.  This is inaccurate of the
+spec to say that &quot;begin is for sequencing&quot;.</p>
+      <p>Suggestion: adopt the language of R6RS section 11.4.7.</p>
+      <p>--Andy Wingo</p>
+      <p>We should explain somewhere the four kinds of <span class="monospace">begin</span>s: (begin expr
+...), (begin decl ...), top-level begin, and module-top-level begin.
+Note that R7RS like R5RS does not have (begin decl ... expr ...).</p>
+      <p>Vote <span class="monospace">yes</span> to adopt the R6RS description, modified for differences in
+the language.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#198MakeitanerrorforaproceduremappedbyMAPandfriendstomutatetheresultlist/string/vector"><a href="/ticket/198">#198</a> Make it an error for a procedure mapped by MAP and friends to mutate the result list/string/vector</h3>
+      <p>This is possibly difficult to enforce, and can break existing R5RS
+programs written in very bad style.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#199MakeitanerrorforaproceduremappedbyMAPandfriendstoreturnmorethanonce"><a href="/ticket/199">#199</a> Make it an error for a procedure mapped by MAP and friends to return more than once</h3>
+      <p>This is possibly difficult to enforce, and can break existing R5RS
+programs.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#200Completingtheblobprocedures"><a href="/ticket/200">#200</a> Completing the blob procedures</h3>
+      <p>Add <span class="monospace">blob</span>, <span class="monospace">blob-map</span>, <span class="monospace">blob-for-each</span>, and blob conversion functions
+to and from lists/vectors/strings.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#205Rollpartial-blob-copy(!)intoblob-copy(!)"><a href="/ticket/205">#205</a> Roll partial-blob-copy(!) into blob-copy(!)</h3>
+      <p>... with extra arguments.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#206Provideread-syntaxforblobs"><a href="/ticket/206">#206</a> Provide read-syntax for blobs</h3>
+      <p>R6RS provides a <span class="monospace">#vu8(...)</span> read-syntax for bytevectors.  SRFI-4 uses
+<span class="monospace">#u8(...)</span>.</p>
+      <ul>
+        <li><b>Options:</b> r6rs, srfi-4, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#207Editorial:Polarcomplexnumbersareinexact"><a href="/ticket/207">#207</a> Editorial: Polar complex numbers are inexact</h3>
+      <p>Add a note saying that <span class="monospace">1@2</span> and <span class="monospace">(make-polar 1 2)</span> MAY evaluate to an
+inexact complex number.</p>
+      <ul>
+        <li><b>Options:</b></li>
+        <li><b>Default:</b></li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#208Is||avalididentifier?"><a href="/ticket/208">#208</a> Is || a valid identifier?</h3>
+      <p>The grammar in 7.1.1 allows <span class="monospace">||</span> as an &lt;identifier&gt;. However, page 5
+suggests the <span class="monospace">|...|</span> form is only for convenience (e.g. <span class="monospace">|foo bar|</span> is
+equivalent to <span class="monospace">foo\x20;bar</span>). There's no way to normalise <span class="monospace">||</span> to
+anything without the vertical bars that's a valid identifier. Was that
+intentional, or should the rule be</p><span class="monospace">&lt;vertical bar&gt; &lt;symbol element&gt;+ &lt;vertical bar&gt;
+</span>
+      <p>Vote <span class="monospace">remove</span> to remove the <span class="monospace">|...|</span> syntax altogether.</p>
+      <ul>
+        <li><b>Options:</b> remove, empty-valid, empty-invalid, undecided</li>
+        <li><b>Default:</b> empty-valid</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#191IncludeCLOSE-PORT?"><a href="/ticket/191">#191</a> Include CLOSE-PORT ?</h3>
+      <p>Should we include <span class="monospace">close-port</span>, as a generic version of
+<span class="monospace">close-input-port</span> and <span class="monospace">close-output-port</span>?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#188Clarifywordingof`and`and`or`definitions"><a href="/ticket/188">#188</a> Clarify wording of <span class="monospace">and</span> and <span class="monospace">or</span> definitions</h3>
+      <p>The definitions of <span class="monospace">and</span> and <span class="monospace">or</span> may be slightly confusing. Reword
+them to be more clear. One possible hiccup is that the current
+language permits the return of different false values, while a clearer
+wording may preclude this.</p>
+      <p>R6RS provides a clearer definition that does not provide wiggle room
+for multiple false values. Should we use that?</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#187Clarifyduplicatebindingsin`let*`"><a href="/ticket/187">#187</a> Clarify duplicate bindings in <span class="monospace">let*</span></h3>
+      <p>The language of the standard could clarify that duplicate bindings are
+permitted in the clauses of a <span class="monospace">let*</span>.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#215initialvalueargumenttomake-blob"><a href="/ticket/215">#215</a> initial value argument to make-blob</h3>
+      <p><span class="monospace">make-blob</span> should either have an initial value argument, or rationale
+why it is inconsistent with <span class="monospace">make-vector</span> and <span class="monospace">make-string</span>.</p>
+      <p>Vote <span class="monospace">yes</span> for an initial value argument.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#216Controllinguseofreaderlabelsonoutput"><a href="/ticket/216">#216</a> Controlling use of reader labels on output</h3>
+      <p>There are cases when one does not want to output reader labels for
+shared structure, such as when you don't care (and want the output to
+be more legible), or when you know that the time or space requirements
+to construct the table will be too large.</p>
+      <p>We could offer a parameter to control this, or have a separate
+procedure (e.g. <span class="monospace">write/simple</span>) which doesn't use the reader labels.</p>
+      <p>Finer grained control may also let use specify a predicate for which
+values are interesting (e.g. never use labels for strings), or only
+use labels for cycles, etc.</p>
+      <ul>
+        <li><b>Options:</b> parameter, write/simple, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b></li></ul></div></body></html>

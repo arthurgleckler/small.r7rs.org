@@ -1,0 +1,40 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>TranslucentRecordsDownsides</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/TranslucentRecordsDownsides.md">TranslucentRecordsDownsides</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Translucent&shy;Records&shy;Downsides</h1>
+    <div class="wiki metadata">
+      <div class="author">medernac</div>
+      <div class="time">2010-03-13 19:20:08</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/TranslucentRecordsDownsides/history">history</a></div>
+      <div class="source"><a href="/wiki/TranslucentRecordsDownsides/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="FromJeffDalton">From Jeff Dalton</h1>
+      <p><a href="http://groups.csail.mit.edu/mac/ftpdir/scheme-mail/HTML/rrrs-1996/msg00162.html">Reference</a></p>
+      <p>Perhaps I misunderstood what people meant by &quot;opaque&quot;.  I
+thought it meant the fields of the record could be accessed
+(and modified) only via the proper accessors (and mutators).
+With a non-opaque record, OTOH, there would be some other
+way to &quot;look inside&quot; (a metaphorical way of speaking that
+I thought would fit with the metaphor behind &quot;opaque&quot;).
+For instance, maybe (record-length rec) tells me the number
+of slots, (record-ref rec i) gives me the contents of the
+i-th slot, and (record-set! rec i value) puts a new value
+in the i-th slot.  (At least that looks like the kind of
+abstraction-breaking mechanism someone might object to.)</p>
+      <p>Now, in most cases no one is going to use record-ref and friends.
+It's not like ADT implementations would normally use them all over
+the place instead of calling the proper accessors (and mutators).
+Nor would someone writing client code be likely to use them.
+Neither of these things would happen except in fairly unusual
+cases.</p></div></body></html>

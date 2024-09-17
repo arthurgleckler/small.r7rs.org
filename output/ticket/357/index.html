@@ -1,0 +1,70 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>357: Formal Comment: The epoch of current-second should be 1970-01-01 00:00:00 TAI.</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 357: <span class="summary">Formal Comment: The epoch of current-second should be 1970-01-01 00:00:00 TAI.</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-04-05 09:59:36</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/357/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-03-12 06:33:58</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Formal Comment</p>
+        <p>Submitter's Name:           Alan Watson</p>
+        <p>Submitter's Email Address:  alan at alan-watson dot org</p>
+        <p>Draft Version of Report:    6</p>
+        <p>Section of draft R7RS:      6.13 Input and output</p>
+        <p>Summary:</p>
+        <p>The epoch of current-second should be 1970-01-01 00:00:00 TAI.</p>
+        <p>Full Description:</p>
+        <p>The current-second procedure in the sixth draft of the R7RS returns the number of TAI seconds since 1970-01-01 00:00:10 TAI. This epoch corresponds approximately to the Unix and POSIX epoch of 1970-01-01 00:00:00 UTC.</p>
+        <p>The timescale of current-second is sometime referred to as the &quot;TAI-10&quot; timescale. It is possible to set the system clock of some computers to run on this timescale rather than the POSIX timescale, although this is uncommon.  Conversion to UTC can then be achieved by using the &quot;right&quot; time zone database.</p>
+        <p>The precision time community does not formally refer to TAI and UTC in terms of seconds since an epoch. Instead, they specify a year, month, day, hour, minute, and second. The precision time community refers to the difference between UTC and TAI as the number of seconds between the start of a UTC day and the start of the corresponding TAI day. This offset is determined by the IERS and disseminated by the IERS and standards bodies such as NIST:</p>
+        <p>http://hpiers.obspm.fr/eop-pc/index.php?index=TAI-UTC_tab</p>
+        <p>http://data.iers.org/products/16/14889/orig/bulletinc-043.txt</p>
+        <p>ftp://time.nist.gov/pub/leap-seconds.list</p>
+        <p>In early 2012, the offset between TAI and UTC is 34 seconds.</p>
+        <p>I suspect there are likely to be three common operations on the result of current-time:</p>
+        <p>(a) Subtraction to determine intervals in seconds. For this, the epoch is irrelevant.</p>
+        <p>(b) Conversion to UTC. In converting to UTC, one has use not the widely-disseminated difference between TAI and UTC but rather this difference minus 10 seconds.</p>
+        <p>(c) Conversion to TAI calendar dates. In converting to TAI calendar dates, one has to first add 10 seconds so that the epoch coincides with the start of a TAI day.</p>
+        <p>It would appear that a more convenient epoch would be 1970-01-01 00:00:00 TAI.  This would eliminate the awkward adjustments by 10 seconds when converting to UTC and to TAI calendar dates.</p>
+        <p>Furthermore, in many implementations current-second will be implemented as the number of seconds since the POSIX epoch excluding leap seconds (e.g., the value returned by clock() or a similar system call) plus a constant. Again, this constant is not the widely-disseminated difference between UTC and TAI but rather is this difference minus 10 seconds. I have to date seen two implementations of current-time and both initially made the mistake of using 34 seconds for early 2012 rather than 24 seconds.</p>
+        <p>I submit that using an epoch of 1970-01-01 00:00:00 TAI is in most cases more convenient and likely to lead to fewer programming errors. It will be less convenient on systems that already use the &quot;TAI-10&quot; timescale, but these are much less common.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-12 06:37:10</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-05 09:59:36</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to adopt this proposal.  A formal response has been sent.</p></div></div></div></div></div></body></html>

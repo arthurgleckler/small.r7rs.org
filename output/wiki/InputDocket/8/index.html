@@ -1,0 +1,77 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>InputDocket</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/InputDocket.md">InputDocket</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Input&shy;Docket</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-29 12:45:02</div>
+      <div class="version">8<span class="comment"></span><a href="/wiki/InputDocket/history">history</a></div>
+      <div class="source"><a href="/wiki/InputDocket/8/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="WG2InputDocket">WG2 Input Docket</h2>
+      <p>This docket contains work items that have not yet been voted on.  See <a href="/wiki/WG2Dockets">WG2Dockets</a> for other dockets.</p>
+      <p>Applicable record instances (see http://www.r6rs.org/formal-comments/comment-6.txt):</p>
+      <p><span class="monospace">cond</span> <span class="monospace">=&gt;</span> with guard as well as generator (see <a href="/ticket/89">#89</a>):  <a href="http://srfi.schemers.org/srfi-61/srfi-61.html">SRFI 61</a></p>
+      <p><span class="monospace">cond</span> <span class="monospace">=&gt;</span> passes multiple values from predicate to consumer:</p>
+      <p>Combinators: <a href="/wiki/CombinatorsCowan">CombinatorsCowan</a></p>
+      <p>Container conversion: <a href="/wiki/WG1Ballot6Results#a433fullconversioncycleforcontainers">ballot options</a></p>
+      <p>Custom I/O ports:</p>
+      <p>Default exception handler controls:</p>
+      <p>Division library: <a href="/wiki/DivisionRiastradh">DivisionRiastradh</a></p>
+      <p><span class="monospace">drop-prefix</span> import spec:</p>
+      <p>Enumerations (R6RS, but see also http://www.r6rs.org/formal-comments/comment-262.txt):</p>
+      <p>Generalized <span class="monospace">equal</span>: <a href="/wiki/GeneralizedEqualCowan">GeneralizedEqualCowan</a></p>
+      <p>Evaluator arguments to procedures like <span class="monospace">load</span>: <a href="/ticket/277">#277</a></p>
+      <p><span class="monospace">export-all</span> library declaration: exports all identifiers defined in this library</p>
+      <p><span class="monospace">export-import</span> library declaration: syntactically the same as <span class="monospace">import</span>, but exports everything that is imported</p>
+      <p>Extended exact numbers:  <a href="/wiki/ExtendedRationalsCowan">ExtendedRationalsCowan</a></p>
+      <p>External representation of records:</p>
+      <p>Features, allowing libraries to add:</p>
+      <p>Futures:  <a href="http://docs.racket-lang.org/reference/futures.html">Racket API</a></p>
+      <p><span class="monospace">hex-digit-value</span>:</p>
+      <p>Identifier-syntax:</p>
+      <p><span class="monospace">if</span> with arbitrarily many arguments:</p>
+      <p>Imaginary inexact zero versions of <i>real</i>, <i>rational</i>, <i>integer</i>:</p>
+      <p>Immutable data: <a href="/wiki/ImmutableData">ImmutableData</a></p>
+      <p>Interrupts, timers, signals:</p>
+      <p>Jiffy cleanup:</p>
+      <p>List library (supplementary):  <a href="/wiki/ListsCowan">ListsCowan</a></p>
+      <p>Macro expander(s) available at run time:</p>
+      <p><span class="monospace">make-error-object</span> constructs error object without raising it:</p>
+      <p>Multiple values passed through =&gt; in <span class="monospace">cond</span> (see <a href="/ticket/90">#90</a>):</p>
+      <p>NaN dissector API (sign, quiet/signaling status, and integer tag): <a href="/wiki/NanMedernach">NanMedernach</a></p>
+      <p>Natural number predicates (from WG1):  <span class="monospace">exact-positive-integer?</span> and <span class="monospace">exact-non-negative-integer?</span>.</p>
+      <p><span class="monospace">number-&gt;string</span> variant with control for significant digits: <a href="http://lists.scheme-reports.org/pipermail/scheme-reports/2011-May/000709.html">Vincent Manis proposal</a>, R6RS</p>
+      <p><span class="monospace">number-&gt;string</span> variant handling arbitrary Unicode decimal digits:</p>
+      <p>Port encodings, buffering, line ending control:  <a href="/wiki/SettingsListsCowan">SettingsListsCowan</a> and <a href="/wiki/FilesAdvancedCowan">FilesAdvancedCowan</a></p>
+      <p>Port type detector: <a href="/ticket/177">#177</a></p>
+      <p>Procedure arity inspection: <a href="http://srfi.schemers.org/srfi-102/srfi-102.html">SRFI 102</a></p>
+      <p>R6RS compatibility libraries:</p>
+      <p>Random procedures from R6RS (notably <span class="monospace">symbol=?</span> and <span class="monospace">boolean=?</span>): to be spelled out</p>
+      <p><span class="monospace">Record-let</span>: <a href="/ticket/45">#45</a></p>
+      <p>Record external representations:</p>
+      <p>Raw strings:  &lt;&lt;, &quot;&quot;&quot;...&quot;&quot;&quot;:</p>
+      <p>Search and mismatch procedures:  <a href="/wiki/SearchMismatchCowan">SearchMismatchCowan</a></p>
+      <p>Setter procedures: <a href="http://srfi.schemers.org/srfi-17/srfi-17.html">SRFI 17</a></p>
+      <p><span class="monospace">standard-*-port</span> routines:  R6RS</p>
+      <p>String positions and slices (see http://www.r6rs.org/formal-comments/comment-235.txt):</p>
+      <p>Symbol library:  <a href="/wiki/SymbolsCowan">SymbolsCowan</a></p>
+      <p>Syntactic closures:</p>
+      <p><span class="monospace">syntax-case</span>:</p>
+      <p>Tree library: at least <span class="monospace">tree=?</span> and <span class="monospace">tree-copy</span>, probably Common Lisp <a href="http://www.lispworks.com/documentation/lw50/CLHS/Body/f_sublis.htm">SUBLIS and NSUBLIS</a>, fold, unfold, map ...</p>
+      <p>Thread-local storage:</p>
+      <p>Testing function arity: <a href="http://srfi.schemes.org/srfi-102/srfi-102.html">SRFI 102</a></p>
+      <p>Undefined value API: <a href="/ticket/49">#49</a></p>
+      <p>Unquote with multiple arguments:  see <a href="/ticket/123">#123</a></p>
+      <p>User-specified syntax-transformers:</p></div></body></html>

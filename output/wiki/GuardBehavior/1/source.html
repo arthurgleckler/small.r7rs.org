@@ -1,0 +1,68 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki GuardBehavior version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki GuardBehavior version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>98.14.173.81</pre>
+    <h2>name</h2>
+    <pre>GuardBehavior</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Helmut Eller asked what this example should return?
+
+{{{
+(let ((events '()))
+   (guard (c 
+           (#t #f))
+     (guard (c
+             ((dynamic-wind 
+                  (lambda () (set! events (cons 'c events)))
+                  (lambda () #f)
+                  (lambda () (set! events (cons 'd events))))
+              #f))
+       (dynamic-wind 
+           (lambda () (set! events (cons 'a events)))
+           (lambda () (raise 'error))
+           (lambda () (set! events (cons 'b events))))))
+   (reverse events))
+}}}
+
+Is it `(a b c d a b)` or `(a c d b)` or `(a b c d)` or unspecified?
+
+Aaron Hsu replied:
+
+The important parts here are the dynamic extent in which the cond-clauses are evaluated, and the dynamic extent of the implicit `raise` that occurs if none of the clauses fire. The extent/continuation of the `cond` evaluation is that of the whole `guard`, whereas the re-raise is that of the original `raise`. 
+
+This means that the first raise will trigger the A and B setters, and then the C and D setters will trigger. At this point, since the result is `#f`, the implementation should re-rais the object from the original calling extent, thus triggering A and B setters again, before finally returning without re-entering again. 
+
+This gives `(a b c d a b)` as the only valid result.
+
+My tests:
+
+We do indeed get `(a b c d a b)` from Chez, Ikarus, Vicare, Larceny, Ypsilon, Mosh, Chibi.
+
+However, !IronScheme, Racket (in #lang r6rs mode), STklos all return `(a b c d)`.  In the case of !IronScheme at least, that is because it supports escape continuations only, and so the outer continuation in `guard` cannot re-enter the dynamic extent of the body.
+
+!SigScheme returns `(a c d b)`, apparently evaluating the test of the cond-clause in the dynamic environment of `raise` and unwinding the stack only when the test returns true.  That's arguably &quot;better&quot; that `(a b c d)` as this will call other handlers in the correct environment if the test returns `#f`.  
+
+The other Schemes all report errors, typically about `guard` or `raise` being undefined, or that `(#t #f)` is not a valid procedure call.</pre>
+    <h2>time</h2>
+    <pre>2012-06-09 08:38:56</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

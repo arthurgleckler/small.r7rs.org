@@ -1,0 +1,129 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki NumericVectorsCowan version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki NumericVectorsCowan version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>69.195.55.172</pre>
+    <h2>name</h2>
+    <pre>NumericVectorsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This is a proposal for a WG2 numeric vector API.  The conceit is that we provide what appear to be a set of specialized numeric-only vectors a la SRFI 4, but there really is only one underlying type, the bytevector.  This makes it easy to see a single byte sequence in a variety of ways, not just as homogeneous vectors.
+
+This design differs from related designs in that everything is a separate procedure with minimal arguments; this makes for a ''lot'' of procedures, but each one can be easily inlined by even a very dumb compiler, providing high efficiency.
+
+== Numeric types ==
+
+A &lt;type&gt; consists of a &lt;principal type&gt; followed by an &lt;endianism&gt;.
+
+The &lt;principal type&gt; values are:
+
+ `u8`::
+  unsigned 8-bit integer
+ `s8`::
+  signed 8-bit integer
+ `u16`::
+  unsigned 16-bit integer
+ `s16`::
+  signed 16-bit integer
+ `u32`::
+  unsigned 32-bit integer
+ `s32`::
+  signed 32-bit integer
+ `u64`::
+  unsigned 64-bit integer
+ `s64`::
+  signed 64-bit integer
+ `u128`::
+  unsigned 128-bit integer
+ `s128`::
+  signed 128-bit integer
+ `f32`::
+  32-bit float
+ `f64`::
+  64-bit float
+ `c64`::
+  64-bit complex number (two 32-bit floats, real followed by imaginary)
+ `c128`::
+  128-bit complex number (two 64-bit floats, real followed by imaginary)
+
+The &lt;endianism&gt; values are:
+
+ (empty)::
+  Native representations (system-dependent)
+ `le`::
+  Little-endian (for float and complex, IEEE format)
+ `be`::
+  Big-endian (for float and complex, IEEE format)
+
+Endianism is not applicable to the `u8` and `s8` types.
+
+
+== Constructors ==
+
+`(make-&lt;type&gt;vector `''k''` ` [ ''fill'' ]`)`
+
+Returns a newly allocated bytevector of length ''k * b'', where ''b'' is the number of bytes consumed by &lt;type&gt;.  ''Fill'' is converted to a binary value according to &lt;type&gt; and used to fill the bytevector; the default is implementation-defined.
+
+`(&lt;type&gt;vector ` ''v'' ... `)`
+
+Returns a newly allocated bytevector of length ''k * b'', where ''k'' is the number of arguments to the procedure and ''b'' is the number of bytes specified by &lt;type&gt;.  It is filled with the binary values resulting from encoding the ''v'' values according to &lt;type&gt;.
+
+== Selectors ==
+
+`(&lt;type&gt;vector-length ` ''bytevector''`)`
+
+Returns the length of ''bytevector'' divided by ''b'', where ''b'' is the number of bytes specified by &lt;type&gt;, and rounded toward zero.
+
+`(bytevector-&lt;type&gt;-ref` ''bytevector k''`)`
+
+Returns a Scheme number corresponding to the binary value encoded according to ''type'' beginning at offset ''k'' in ''bytevector''.  This procedure treats ''bytevector'' as potentially containing more than one type.
+
+`(&lt;type&gt;vector-ref` ''bytevector k''`)`
+
+Returns a Scheme number corresponding to the binary value encoded according to ''type'' beginning at offset ''k * b'' in ''bytevector'', where ''b'' is the size of the binary value in bytes.  This procedure treats ''bytevector'' as a uniformly typed vector.
+
+== Mutators ==
+
+(`bytevector-&lt;type&gt;-set!` ''bytevector k v''`)`
+
+Converts ''v'' to a binary value encoded according to ''type'' and places it into ''bytevector'' beginning at offset ''k''.  This procedure treats ''bytevector'' as potentially containing more than one type.
+
+(`&lt;type&gt;vector-set!` ''bytevector k v''`)`
+
+Converts ''v'' to a binary value encoded according to ''type'' and places it into ''bytevector'' beginning at offset ''k * b'', where ''b'' is the size of the binary value in bytes.  This procedure treats ''bytevector'' as a uniformly typed vector.
+
+== Conversions ==
+
+(`vector-&gt;&lt;type&gt;vector `''vector''`)`
+
+Returns a vector with the same elements as ''&lt;type&gt;vector''.
+
+(`&lt;type&gt;vector-&gt;vector `''&lt;type&gt;vector''`)`
+
+Returns a &lt;type&gt;vector with the same elements as ''vector''.  It is an error if an element cannot be accurately converted to `&lt;type&gt;`.
+
+
+=== Equality, map, for-each, fold, unfold ===
+
+'''TBD'''</pre>
+    <h2>time</h2>
+    <pre>2012-11-22 22:53:51</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

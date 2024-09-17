@@ -1,0 +1,72 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ExtendedRecordSyntaxCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ExtendedRecordSyntaxCowan.md">ExtendedRecordSyntaxCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Extended&shy;Record&shy;Syntax&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-04-09 22:38:49</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ExtendedRecordSyntaxCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ExtendedRecordSyntaxCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a proposal for extending the syntax of R7RS record type definitions to accommodate the procedural layer of <a href="http://srfi.schemers.org/srfi-99/srfi-99.html">SRFI 99</a>.  It is a reduced version of the SRFI 99 syntactic layer that can be implemented with <span class="monospace">syntax-rules</span>.</p>
+      <h2 id="SyntacticLayer">Syntactic Layer</h2>
+      <p>The syntactic layer consists of R7RS <span class="monospace">define-record-type</span> extended with single inheritance and mechanisms for abstract record types.</p>
+      <p>The syntax of a record-type definition is:</p><pre>
+ &lt;definition&gt;           
+   -&gt; &lt;record type definition&gt;
+
+ &lt;record type definition&gt;
+   -&gt; (define-record-type &lt;type spec&gt;
+        &lt;constructor spec&gt;
+        &lt;predicate spec&gt;
+        &lt;field spec&gt; ...)
+
+ &lt;type spec&gt;  -&gt; &lt;type name&gt;
+              -&gt; (&lt;type name&gt; &lt;parent&gt;)
+
+ &lt;constructor spec&gt;
+              -&gt; #f
+              -&gt; &lt;constructor name&gt;
+              -&gt; (&lt;constructor name&gt; &lt;field name&gt; ...)
+
+ &lt;predicate spec&gt;
+              -&gt; #f
+              -&gt; &lt;predicate name&gt;
+
+ &lt;field spec&gt; -&gt; (&lt;field name&gt; &lt;accessor name&gt;)
+              -&gt; (&lt;field name&gt; &lt;accessor name&gt; &lt;mutator name&gt;)
+
+ &lt;parent&gt;           -&gt; &lt;expression&gt;
+
+ &lt;type name&gt;        -&gt; &lt;identifier&gt;
+ &lt;constructor name&gt; -&gt; &lt;identifier&gt;
+ &lt;predicate name&gt;   -&gt; &lt;identifier&gt;
+ &lt;accessor name&gt;    -&gt; &lt;identifier&gt;
+ &lt;mutator name&gt;     -&gt; &lt;identifier&gt;
+ &lt;field name&gt;       -&gt; &lt;identifier&gt;
+</pre>
+
+      <p>The semantics of a record type definition is the same as in R7RS (or SRFI 9, except that record types are generative).
+The record type definition macro-expands into a cluster of definitions that:</p>
+      <ul>
+        <li>define the <span class="monospace">&lt;type name&gt;</span> as the record-type descriptor for the new record-type;</li>
+        <li>defines a constructor for instances of the new record-type (unless the constructor spec is <span class="monospace">#f</span>);</li>
+        <li>defines a predicate that recognizes instances of the new record-type and its subtypes (unless the predicate spec is <span class="monospace">#f</span>);</li>
+        <li>defines an accessor for each field name;</li>
+        <li>defines a mutator for each mutable field name.</li></ul>
+      <p>A record type definition extends SRFI 9 with the following additional options:</p>
+      <ul>
+        <li>If a <span class="monospace">&lt;parent&gt;</span> expression is specified, then it must evaluate to a record-type descriptor that serves as the parent record-type for the record-type being defined.</li>
+        <li>If <span class="monospace">#f</span> is specified for the constructor or predicate, then no constructor or predicate procedure is defined.  (This is useful when the record-type being defined will be used as an abstract base class.)</li>
+        <li>If the constructor name is specified as an identifier, then the constructor's arguments correspond to the fields of the parent (if any) followed by the new fields added by this record-type definition in the specified order.</li></ul></div></body></html>

@@ -1,0 +1,143 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #510</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #510</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Aaron Hsu writes:
+
+  While the WG1 made the arguable decision of altering the R6RS module syntax in favor of “system” extensions [rant: the very idea of system extensions is anathema to Scheme and the Scheme Way], we doggedly held to demonstrably poor scalability of SRFI-9 records. The limited expressivity and power of the record system are understandable, given our constraints. What I do not understand is our refusal to use a syntax both successfully demonstrated as workable and successful in R6RS as well as fundamentally more scalable and open to clean extension. This makes no sense, given the trivially easy way in which this could have been addressed. The end result of this is that any real Scheme system worth its salt will included its own, proper record system, rather than extending the syntax of the standard one.
+
+Emmanuel Medernach writes:
+
+  I view making SRFI-9 &quot;The One True Scheme Record&quot; as  a bad decision, I admit  it is widespread and should  have been standardized but as  a module instead.
+
+The intention was to make it the universal facade (because it is already widespread) rather than the universal system.  Underneath it can be, and indeed already is, almost any sort of record system.  It's true that the syntax is difficult and messy to extend compared to the R6RS syntax, but it is already in more widespread use than any implementation-specific record-system syntax.  WG members who voted for it emphasized the importance of compatibility.</pre>
+    <h2>id</h2>
+    <pre>510</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>SRFI 9 records shouldn't be universal</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 08:20:59</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG decided by unanimous consent to take no action on this ticket.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>510</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>510</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>510</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-05-13 08:27:19</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1368408439812674</pre>
+    <h2>ticket</h2>
+    <pre>510</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 08:27:19</pre>
+    <h2>Change at time 2013-05-13 08:27:19</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>Aaron Hsu writes:
+
+  While the WG1 made the arguable decision of altering the R6RS module syntax in favor of “system” extensions [rant: the very idea of system extensions is anathema to Scheme and the Scheme Way], we doggedly held to demonstrably poor scalability of SRFI-9 records. The limited expressivity and power of the record system are understandable, given our constraints. What I do not understand is our refusal to use a syntax both successfully demonstrated as workable and successful in R6RS as well as fundamentally more scalable and open to clean extension. This makes no sense, given the trivially easy way in which this could have been addressed. The end result of this is that any real Scheme system worth its salt will included its own, proper record system, rather than extending the syntax of the standard one.
+
+Emmanuel Medernach writes:
+
+  I view making SRFI-9 &quot;The One True Scheme Record&quot; as  a bad decision, I admit  it is widespread and should  have been standardized but as  a module instead.
+
+The intention was to make it the universal facade (because it is already widespread) rather than the universal system.  Underneath it can be, and indeed already is, almost any sort of record system.  It's true that the syntax is difficult and messy to extend compared to the R6RS syntax, but it is already in more widespread use than any implementation-specific record-system syntax.  WG members who voted for it emphasized the importance of compatibility.</pre>
+    <h2>oldvalue</h2>
+    <pre>Emmanuel Medernach writes:
+
+  I view making SRFI-9 &quot;The One True Scheme Record&quot; as  a bad decision, I admit  it is widespread and should  have been standardized but as  a module instead.
+
+The intention was to make it the universal facade (because it is already widespread) rather than the universal system.  Underneath it can be, and indeed already is, almost any sort of record system.</pre>
+    <h2>raw-time</h2>
+    <pre>1368408439812674</pre>
+    <h2>ticket</h2>
+    <pre>510</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 08:27:19</pre></body></html>

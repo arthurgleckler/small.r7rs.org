@@ -1,0 +1,47 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki DirectoryPortsCowan version 7</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki DirectoryPortsCowan version 7</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>DirectoryPortsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Directory ports ==
+
+This proposal depends on SettingsListsCowan.  See DirectoriesCowan for a proposal for creating and destroying directories.
+
+== Procedures ==
+
+`(open-directory `''filename''`)`
+
+''Filename'' can be a string or a ''settings list'' as described in SettingsListsCowan.  In addition to the keys `path` and `encoding` specified there, the key `hidden` can have the values `none` (don't expose hidden files), `all` (expose all files), and `dots` (expose all files except `.` and `..`).  On Posix systems, hidden files have names beginning with `.`; on Windows, hidden files are named `.`, `..`, or have the `hidden` file attribute.
+
+The returned value is an input port, but it is neither a binary port nor a character port.  The only standard procedure callable on it is `read`, which returns the next available filename as a string (or, when necessary, an implementation-dependent object).  Filenames are returned in arbitrary order.
+
+`(directory-port? `''obj''`)`
+
+Returns `#t` if ''obj'' is a directory port.  Directory ports are a disjoint type.
+
+</pre>
+    <h2>time</h2>
+    <pre>2011-11-02 05:23:43</pre>
+    <h2>version</h2>
+    <pre>7</pre></body></html>

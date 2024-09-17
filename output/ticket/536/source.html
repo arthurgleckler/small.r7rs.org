@@ -1,0 +1,193 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #536</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #536</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Michael Montague writes:
+
+  R6RS libraries without versions and import levels seem awfully close to R7RS libraries; could they be made closer to the same without losing the benefits of R7RS libraries?  For example, assuming #535, I believe that the following would be a valid R6RS and R7RS library (ignoring library vs define-library keyword).
+
+{{{
+(library (stack)
+
+  (export make push! pop! empty!)
+
+  (import (rnrs))
+
+  (begin ;;; &lt;----- all I did was add this to the example in section 7.3 of R6RS
+
+  (define (make) (list '()))
+
+  (define (push! s v) (set-car! s (cons v (car s))))
+
+  (define (pop! s) (let ([v (caar s)])
+                     (set-car! s (cdar s))
+                     v))
+
+  (define (empty! s) (set-car! s '()))))
+}}}
+
+This is a valid transformation even without #535, at least for an implementation that provides the `(rnrs)` library.  The effect of #535 is to forbid multiple `begin` declarations; the existing draft already permits single ones.
+
+The primary benefit of using a distinct keyword is to allow R6RS implementations to immediately reject R7RS libraries that they cannot process.  R7RS implementations that don't provide the R6RS system libraries (such as Chibi) can also reject R6RS user libraries easily, but of course there is nothing to prevent R7RS implementations from accepting R6RS libraries as well, as Sagittarius does.</pre>
+    <h2>id</h2>
+    <pre>536</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>R6RS and R7RS libraries should be made closer</pre>
+    <h2>time</h2>
+    <pre>2013-05-20 00:11:52</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG decided by unanimous consent to take no action on this ticket.</pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>536</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>536</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>536</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-05-21 01:40:04</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>See also my comment to #533.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1369075204240921</pre>
+    <h2>ticket</h2>
+    <pre>536</pre>
+    <h2>time</h2>
+    <pre>2013-05-21 01:40:04</pre>
+    <h2>Change at time 2013-05-21 00:32:25</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Michael Montague writes:
+
+  Having different keywords harms scheme users who want to write portable libraries. Today, a scheme user who wants to write portable libraries has to make a choice: use R6RS `library` or R7RS `define-library`.
+
+In R7RS, at least, it's possible to segregate the code from the library declarations.  R6RS systems that support `include` can do that too, or you can write `include` as a syntax-case macro.  There's a sample definition in [http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-13.html#node_sec_12.6 R6RS section 12.6].  This also allows you to use the code on a pure R5RS system with no modules, or (as my sample implementations do) on an R5RS system like Chicken with its own module system.
+
+  Change to the same keyword, and the scheme user has a way to write portable libraries that work on as many scheme systems as possible now and into the future, including current R6RS systems and future R7RS systems.
+
+Well, the WG will consider the question.  It's been treated as a bikeshed issue so far.  See #102 and the [wiki:WG1Ballot2 second ballot], where we chose `module`, and [wiki:WG1Ballot4Results fourth ballot], where we changed it to `define-library` to be closer to R6RS without colliding with it.
+
+  The second sentence of the Charter for working group 1 is &quot;The purpose of this work is to facilitate sharing of Scheme code.&quot; I believe this is a way to increase the sharing of Scheme code.
+
+  The base library problem is solvable. For instance, R7RS has the library `(scheme r5rs)`. Since R6RS is based on R5RS, it should be easy to provide the same library on those systems.
+
+I don't expect that R6RS users will tend to restrict themselves to the R5RS part of the system, though.
+</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1369071145501630</pre>
+    <h2>ticket</h2>
+    <pre>536</pre>
+    <h2>time</h2>
+    <pre>2013-05-21 00:32:25</pre>
+    <h2>Change at time 2013-05-20 12:08:36</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Michael Montague replies:
+
+  Right now, it is not possible to have a library which works in both R6RS and R7RS. If the `define-library` keyword was changed to `library` then some libraries would work in both R6RS and R7RS.
+
+In the general case, no library can work exactly unchanged on both R6RS and R7RS systems because of the differences in the names and contents of the libraries they need to import.  At the very least, each needs to import the base library, which means that an R7RS library will begin with `(import (rnrs base))` and an R7RS library with `(import (scheme base))`.  This difference is unavoidable, of course, since these libraries are quite distinct.
+
+  Using a distinct keyword makes portability of libraries between R6RS and R7RS impossible. I believe that normal error detection on R6RS systems should detect R7RS libraries (outside the common subset) as an error.  And vice versa for R7RS systems. It seems like it would be reasonably easy for a system to decide that the error is likely caused by an incompatible library. And for systems that want to support both R6RS and R7RS, it seems like attempting to load the library first as R7RS and if that doesn't work then as R6RS would do the trick.
+
+Quite so, but this is equally true if the libraries are (as they are today) syntactically distinct.
+
+In short, having this difference helps humans and simple-minded classifiers
+and doesn't actually harm anyone that I can see.  If you see further than I do, please help me here.
+
+
+</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1369026516300625</pre>
+    <h2>ticket</h2>
+    <pre>536</pre>
+    <h2>time</h2>
+    <pre>2013-05-20 12:08:36</pre></body></html>

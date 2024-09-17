@@ -1,0 +1,312 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ContainerSrfiComparison</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ContainerSrfiComparison.md">ContainerSrfiComparison</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Container&shy;Srfi&shy;Comparison</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-12-17 15:37:54</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ContainerSrfiComparison/history">history</a></div>
+      <div class="source"><a href="/wiki/ContainerSrfiComparison/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a face-to-face comparison of three container SRFIs, <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> for lists, <a href="http://srfi.schemers.org/srfi-13/srfi-13.html">SRFI 13</a> for strings, and <a href="http://srfi.schemers.org/srfi-43/srfi-43.html">SRFI 43</a> for vectors.  It will eventually mature into a proposal to make them match up to some degree, as has been done in R7RS-small, but at the moment it's just data.  Procedures present in the small language have mostly been removed unless they have corresponding procedures in other SRFIs that aren't part of the small language, as I assume that they won't be separately part of the large language.</p>
+      <p>The following sections are omitted here because they aren't likely to have counterparts in other containers:</p>
+      <ul>
+        <li>zip (SRFI 1)</li>
+        <li>association list (SRFI 1)</li>
+        <li>set operations on lists (SRFI 1)</li>
+        <li>alphabetic case mapping (SRFI 13)</li>
+        <li>low-level procedures (SRFI 13)</li></ul>
+      <h2 id="Constructors">Constructors</h2>
+      <table><tr><td class="default">
+            <p>xcons</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>cons*</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>list-tabulate</p></td><td class="default">
+            <p>string-tabulate</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>circular-list</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>iota</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>vector-reverse-copy</p></td></tr></table>
+      <h2 id="Predicates">Predicates</h2>
+      <table><tr><td class="default">
+            <p>null?</p></td><td class="default">
+            <p>string-null?</p></td><td class="default">
+            <p>vector-empty??</p></td></tr><tr><td class="default">
+            <p>proper-list?</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>circular-list?</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="left">
+            <p>dotted-list?</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>not-pair?</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>null-list?</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="left">
+            <p>list=</p></td><td class="default">
+            <p>-</p></td><td class="left">
+            <p>vector=</p></td></tr></table>
+      <h2 id="Selectors">Selectors</h2>
+      <table><tr><td class="default">
+            <p>first .. tenth</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>car+cdr</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>take(!)</p></td><td class="default">
+            <p>string-take</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>drop</p></td><td class="default">
+            <p>string-drop</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>take-right(!)</p></td><td class="default">
+            <p>string-take-right</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>drop-right</p></td><td class="default">
+            <p>string-drop-right</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>split-at(!)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>last</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>last-pair</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="left">
+            <p>string-padâ€</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="left">
+            <p>string-pad-rightâ€</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="left">
+            <p>string-trimâ€</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="left">
+            <p>string-trim-rightâ€</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="left">
+            <p>string-trim-bothâ€</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Comparisons">Comparisons</h2>
+      <table><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string(-ci)-&lt;&gt;</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-compare(-ci)</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-hash(-ci)</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Prefixesandsuffixes">Prefixes and suffixes</h2>
+      <table><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-prefix(-ci)?</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-suffix(-ci)?</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-prefix-length(-ci)</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-suffix-length(-ci)</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Length">Length</h2>
+      <table><tr><td class="default">
+            <p>length+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Append">Append</h2>
+      <table><tr><td class="left">
+            <p>append!</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Concatenate">Concatenate</h2>
+      <table><tr><td class="default">
+            <p>concatenate(!)</p></td><td class="default">
+            <p>string-concatenate</p></td><td class="default">
+            <p>vector-concatenate</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-join</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-concatenate-reverse</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Reverse">Reverse</h2>
+      <table><tr><td class="default">
+            <p>reverse(!)</p></td><td class="default">
+            <p>string-reverse(!)</p></td><td class="left">
+            <p>vector-reverse!</p></td></tr><tr><td class="default">
+            <p>append-reverse(!)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="left">
+            <p>vector-swap!</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>reverse-list-&gt;string</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>reverse-vector-&gt;list</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>reverse-list-&gt;vector</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Count">Count</h2>
+      <table><tr><td class="default">
+            <p>count</p></td><td class="left">
+            <p>string-countâ€</p></td><td class="default">
+            <p>vector-count</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-contains(-ci)</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Fold,unfold&amp;map">Fold, unfold &amp; map</h2>
+      <table><tr><td class="default">
+            <p>fold</p></td><td class="default">
+            <p>string-fold</p></td><td class="default">
+            <p>vector-fold</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-fold-right</p></td><td class="default">
+            <p>vector-fold-right</p></td></tr><tr><td class="default">
+            <p>unfold</p></td><td class="default">
+            <p>string-unfold</p></td><td class="default">
+            <p>vector-unfold</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-unfold-right</p></td><td class="default">
+            <p>vector-unfold-right</p></td></tr><tr><td class="default">
+            <p>pair-fold</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>reduce</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>fold-right</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>unfold-right</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>pair-fold-right</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>reduce-right</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>append-map(!)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>map(!)</p></td><td class="default">
+            <p>string-map(!)</p></td><td class="default">
+            <p>vector-map(!)</p></td></tr><tr><td class="default">
+            <p>pair-for-each</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>filter-map</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>map-in-order</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>string-for-each-index</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Replicate&amp;rotate">Replicate &amp; rotate</h2>
+      <table><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>xsubstring</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="left">
+            <p>string-xcopy!</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Filtering&amp;partitioning">Filtering &amp; partitioning</h2>
+      <table><tr><td class="default">
+            <p>filter(!)</p></td><td class="left">
+            <p>string-filterâ€</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>partition(!)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>remove(!)</p></td><td class="left">
+            <p>string-deleteâ€</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Searching">Searching</h2>
+      <table><tr><td class="default">
+            <p>find</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>find-tail</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>any</p></td><td class="left">
+            <p>string-anyâ€</p></td><td class="default">
+            <p>vector-any</p></td></tr><tr><td class="default">
+            <p>every</p></td><td class="left">
+            <p>string-everyâ€</p></td><td class="default">
+            <p>vector-every</p></td></tr><tr><td class="default">
+            <p>list-index</p></td><td class="left">
+            <p>string-indexâ€</p></td><td class="default">
+            <p>vector-index</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="left">
+            <p>string-index-rightâ€</p></td><td class="default">
+            <p>vector-index-right</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="left">
+            <p>string-skipâ€</p></td><td class="default">
+            <p>vector-skip</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="left">
+            <p>string-skip-rightâ€</p></td><td class="default">
+            <p>vector-skip-right</p></td></tr><tr><td class="default">
+            <p>take-while(!)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>drop-while</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>span(!)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>break(!)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>vector-binary-search</p></td></tr></table>
+      <h2 id="Deleting">Deleting</h2>
+      <table><tr><td class="default">
+            <p>delete(!)</p></td><td class="left">
+            <p>string-deleteâ€</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>delete-duplicates(!)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Stringoddities">String oddities</h2>
+      <p>substring/shared, string-concatenate/shared, string-append/shared, string-concatenate-reverse/shared, string-replace, string-tokenize</p>
+      <p>â€ Polymorphic procedure: accepts character, character set, or predicate</p></div></body></html>

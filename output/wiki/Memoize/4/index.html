@@ -1,0 +1,31 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Memoize</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/Memoize.md">Memoize</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Memoize</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-06-24 11:55:49</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/Memoize/history">history</a></div>
+      <div class="source"><a href="/wiki/Memoize/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This isn't a proposal, just some ideas and discussion points.</p>
+      <p>The basic interface to memoizing is a variant of <span class="monospace">lambda</span>, perhaps called <span class="monospace">lambda/memo</span> as in Racket, or perhaps something else.  It returns a procedure that <i>memoizes</i> the results of calls on it in a <i>store</i>, and then pulls the results out of the store on later calls with the same arguments.  (Obviously you don't want to memoize impure procedures.)  Plausible stores are a-lists, hash tables, mutable or immutable sets, and other data structures.  It's easy to see how <span class="monospace">define/memo</span> would work as a more convenient version of this.</p>
+      <p>The store can be abstracted into a record with four fields: a store creation procedure, a getter, a setter, and a <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a> comparator which defines what counts as &quot;the same arguments&quot; and is passed to the store creation procedure.  We need some standard stores, though unless memoization is tightly coupled to something like hash tables or trees, they won't be very efficient ones.  On the other hand, if it happens that the range of the argument is 0 to a small exact integer, a vector store would be much better than a hash table store.</p>
+      <h2 id="Issues">Issues</h2>
+      <ul>
+        <li>How do we associate the store object with a particular lambda?  Dynamic parameters seem like the Wrong Thing; the store object should be statically bound to the memoized procedure.  Adding extra arguments to <span class="monospace">lambda/memo</span> beyond the lambda-list and the body doesn't seem like a win either: how do you know if the extra arguments are arguments, or part of the body?.</li></ul>
+      <ul>
+        <li>If multiple arguments and/or multiple returns are allowed, how are they packaged up in the store?  Vectors?  Lists?  Something else?</li></ul>
+      <ul>
+        <li>Should there be some way to let the function decide which return values to memoize?</li></ul></div></body></html>

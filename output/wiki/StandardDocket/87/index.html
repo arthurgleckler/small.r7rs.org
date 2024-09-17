@@ -1,0 +1,60 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StandardDocket</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StandardDocket.md">StandardDocket</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Standard&shy;Docket</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-08-28 08:21:31</div>
+      <div class="version">87<span class="comment"></span><a href="/wiki/StandardDocket/history">history</a></div>
+      <div class="source"><a href="/wiki/StandardDocket/87/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="WG2StandardDocket">WG2 Standard Docket</h2>
+      <p>This is a list of work items that WG2 has voted to work on, and proposals for those work items.  See <a href="/wiki/WG2Dockets">WG2Dockets</a> for other dockets.</p>
+      <p>Applicable record instances: <a href="http://www.r6rs.org/formal-comments/comment-6.txt">R6RS formal comment</a></p>
+      <p>Assertions: <a href="http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-14.html#node_idx_750">R6RS</a>, R6RS with optional message and irritants.</p>
+      <p>Binary heap: <a href="/wiki/BinaryHeapsCowan">BinaryHeapsCowan</a></p>
+      <p>Container conversion: See <a href="/wiki/BytevectorsCowan">BytevectorsCowan</a>, <a href="/wiki/NumericVectorsCowan">NumericVectorsCowan</a>, and <a href="/wiki/WG1Ballot6Results#a433fullconversioncycleforcontainers">WG1 ballot options</a></p>
+      <p>Continuation API:  <a href="http://repository.readscheme.org/ftp/papers/sw2001/feeley.pdf">Feeley's paper</a> (PDF)</p>
+      <p>Date and time arithmetic: <a href="/wiki/TimeAdvancedCowan">TimeAdvancedCowan</a> plus <a href="/wiki/TimePeriodsCowan">TimePeriodsCowan</a>, <a href="http://srfi.schemers.org/srfi-19/srfi-19.html">SRFI 19</a></p>
+      <p>Date-time parser: <a href="https://code.google.com/p/hato/source/browse/hato-date.scm">Hato date parser</a>, <a href="http://srfi.schemers.org/srfi-19/srfi-19.html">SRFI 19</a></p>
+      <p>Evaluator arguments to procedures like <span class="monospace">load</span>: see <a href="/ticket/277">#277</a></p>
+      <p>File system directories (reading): <a href="http://www.scsh.net/docu/html/man-Z-H-4.html#node_sec_3.3">SCSH directory stream interface</a>, <a href="/wiki/DirectoryPortsCowan">DirectoryPortsCowan</a>, <span class="monospace">directory-files</span> to return a list of all files in the dir (in WG1 vote order) [Yellow]</p>
+      <p>File system directories (creation, removal): <a href="/wiki/DirectoriesCowan">DirectoriesCowan</a></p>
+      <p>Futures:  <a href="http://docs.racket-lang.org/reference/futures.html">Racket API</a></p>
+      <p><span class="monospace">if</span> with arbitrarily many arguments: <a href="http://dpk.io/r7rs/naryif-20130406">David Kendal's rationale</a></p>
+      <p>Library declarations: <a href="/wiki/LibraryDeclarationsCowan">LibraryDeclarationsCowan</a></p>
+      <p>Mailboxes, channels, synchronized queues: <a href="http://www.s48.org/1.9/manual/manual-Z-H-8.html#node_sec_7.8">Scheme48 from Concurrent ML</a></p>
+      <p><span class="monospace">make-error-object</span>: constructs error object without raising it</p>
+      <p>Memoization: <a href="/wiki/Memoize">Memoize</a> (not a proposal yet), <a href="http://planet.racket-lang.org/display.ss?package=memoize.plt&amp;owner=dherman">Racket</a>, <a href="http://hackage.haskell.org/package/memoize-0.1/docs/Data-Function-Memoize.html">Haskell</a></p>
+      <p>Message digests (CRC, MD5, SHA1, SHA2):</p>
+      <p>Multiple values passed through =&gt; in <span class="monospace">cond</span>: see <a href="/ticket/90">#90</a></p>
+      <p>Mutable environments for <span class="monospace">eval</span>:  <a href="/wiki/MutableEnvironmentsCurtisCowan">MutableEnvironmentsCurtisCowan</a></p>
+      <p>Mutexes, condition variables: <a href="http://srfi.schemers.org/srfi-18/srfi-18.html">SRFI 18</a></p>
+      <p>Optional arguments (other than by <span class="monospace">case-lambda</span>): <a href="http://mumble.net/~campbell/proposals/optional.text">OptionalsRiastradh</a></p>
+      <p>Procedure arity inspection: <a href="http://srfi.schemers.org/srfi-102/srfi-102.html">SRFI 102</a>, <a href="http://srfi.schemers.org/srfi-102/mail-archive/msg00011.html">Dybvig's proposal</a></p>
+      <p>Processes (system, popen, etc): <a href="/wiki/SystemCommandCowan">SystemCommandCowan</a> + <a href="/wiki/ProcessPortsCowan">ProcessPortsCowan</a></p>
+      <p>Raw strings:  &lt;&lt;, &quot;&quot;&quot;...&quot;&quot;&quot;, <a href="http://srfi.schemers.org/srfi-109/srfi-109.html">SRFI 109</a></p>
+      <p>Record introspection: <a href="http://srfi.schemers.org/srfi-99/srfi-99.html">SRFI 99</a></p>
+      <p><span class="monospace">Record-let</span>: <a href="/ticket/45">#45</a></p>
+      <p>REPL facilities: <a href="/wiki/ReplCowan">ReplCowan</a></p>
+      <p>Shift and reset: <a href="https://github.com/tonyg/pgg/blob/master/shift-reset.scm">Scheme48</a>, <a href="http://docs.racket-lang.org/reference/cont.html">Racket</a></p>
+      <p>Symbol library:  <a href="/wiki/SymbolsCowan">SymbolsCowan</a></p>
+      <p><span class="monospace">syntax-case</span> (voted down, but restored by popular demand): <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-13.html">R6RS</a></p>
+      <p>TCP protocol: <a href="/wiki/NetworkPortsCowan">NetworkPortsCowan</a></p>
+      <p>Thread-local storage: <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/ThreadLocal.html">Java</a></p>
+      <p>Threads:  <a href="/wiki/ThreadsCowan">ThreadsCowan</a>, <a href="http://srfi.schemers.org/srfi-18/srfi-18.html">SRFI 18</a></p>
+      <p>UDP protocol:  <a href="/wiki/DatagramChannelsCowan">DatagramChannelsCowan</a></p>
+      <p>Undefined value API: see <a href="/ticket/49">#49</a></p>
+      <p>Unicode character database: <a href="/wiki/UcdCowan">UcdCowan</a></p>
+      <p>Unicode normalization: <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-2.html#node_idx_58">R6RS</a>, <span class="monospace">string-ni=?</span> and friends (from earlier R7RS-small drafts).</p></div></body></html>

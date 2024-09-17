@@ -1,0 +1,63 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ConsentDocket version 11</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ConsentDocket version 11</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>98.14.172.212</pre>
+    <h2>name</h2>
+    <pre>ConsentDocket</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== WG2 Consent Docket ==
+
+The following items will be approved without a formal vote unless someone objects, in which case they will be moved to another docket.  See [wiki:WG2Dockets WG2Dockets] for other dockets.
+
+Note: &quot;Prefix stripping&quot; means that prefixes such as `fx`, `fl`, or `bitwise-` are removed from identifiers exported by this package.  That way, users can add back their own prefixes using the facilities of `import`.
+
+Assertions: The R6RS procedure `assertion-violation` (same as R6RS `error`), with appropriate condition object support dependent on WG1 and WG2 decisions.
+
+Bitwise: The R6RS `arithmetic bitwise` library with prefix stripping.
+
+Explicit renaming macros: Uses the `er-macro-transformer` keyword (bare lambdas are unsupported).  Three arguments are provided to transformers: `form rename compare`.
+
+Fixnum arithmetic: The R6RS `arithmetic fixnum` library with prefix stripping.
+
+Format combinators: Alex Shinn's [http://synthcode.com/scheme/fmt/ fmt library], with prefix stripping and a touch of renaming.  The C formatting library is excluded.
+
+Pretty-printer: see Format combinators
+
+Generalized getters and setters: SRFI 17.
+
+Getopt/args-fold:  SRFI 37.
+
+Regex (S-exps and strings): Alex Shinn's [http://synthcode.com/scheme/irregex/ irregex library], with prefix stripping and a touch of renaming.  Specify full PCRE compatibility even though the irregex implementation doesn't support all of it.
+
+SRFIs 1, 2, 13, 14, 31, 41, 43: Per those SRFIs, with possible prefix stripping (don't want to overdo it).  Some of these procedures may wind up in WG1 Scheme per CompleteSequenceCowan.
+
+SRFI 38: Already in WG1, so nothing to provide.
+
+When/unless: Already in WG1, so nothing to provide.
+
+ 
+
+</pre>
+    <h2>time</h2>
+    <pre>2011-10-25 13:25:55</pre>
+    <h2>version</h2>
+    <pre>11</pre></body></html>

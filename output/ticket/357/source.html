@@ -1,0 +1,181 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #357</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #357</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-04-05 09:59:36</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Formal Comment
+
+Submitter's Name:           Alan Watson
+
+Submitter's Email Address:  alan at alan-watson dot org
+
+Draft Version of Report:    6
+
+Section of draft R7RS:      6.13 Input and output
+
+Summary:
+
+The epoch of current-second should be 1970-01-01 00:00:00 TAI.
+
+Full Description:
+
+The current-second procedure in the sixth draft of the R7RS returns the number of TAI seconds since 1970-01-01 00:00:10 TAI. This epoch corresponds approximately to the Unix and POSIX epoch of 1970-01-01 00:00:00 UTC.
+
+The timescale of current-second is sometime referred to as the &quot;TAI-10&quot; timescale. It is possible to set the system clock of some computers to run on this timescale rather than the POSIX timescale, although this is uncommon.  Conversion to UTC can then be achieved by using the &quot;right&quot; time zone database.
+
+The precision time community does not formally refer to TAI and UTC in terms of seconds since an epoch. Instead, they specify a year, month, day, hour, minute, and second. The precision time community refers to the difference between UTC and TAI as the number of seconds between the start of a UTC day and the start of the corresponding TAI day. This offset is determined by the IERS and disseminated by the IERS and standards bodies such as NIST:
+
+  http://hpiers.obspm.fr/eop-pc/index.php?index=TAI-UTC_tab
+
+  http://data.iers.org/products/16/14889/orig/bulletinc-043.txt
+
+  ftp://time.nist.gov/pub/leap-seconds.list
+
+In early 2012, the offset between TAI and UTC is 34 seconds.
+
+I suspect there are likely to be three common operations on the result of current-time:
+
+(a) Subtraction to determine intervals in seconds. For this, the epoch is irrelevant.
+
+(b) Conversion to UTC. In converting to UTC, one has use not the widely-disseminated difference between TAI and UTC but rather this difference minus 10 seconds.
+
+(c) Conversion to TAI calendar dates. In converting to TAI calendar dates, one has to first add 10 seconds so that the epoch coincides with the start of a TAI day.
+
+It would appear that a more convenient epoch would be 1970-01-01 00:00:00 TAI.  This would eliminate the awkward adjustments by 10 seconds when converting to UTC and to TAI calendar dates.
+
+Furthermore, in many implementations current-second will be implemented as the number of seconds since the POSIX epoch excluding leap seconds (e.g., the value returned by clock() or a similar system call) plus a constant. Again, this constant is not the widely-disseminated difference between UTC and TAI but rather is this difference minus 10 seconds. I have to date seen two implementations of current-time and both initially made the mistake of using 34 seconds for early 2012 rather than 24 seconds.
+
+I submit that using an epoch of 1970-01-01 00:00:00 TAI is in most cases more convenient and likely to lead to fewer programming errors. It will be less convenient on systems that already use the &quot;TAI-10&quot; timescale, but these are much less common.
+</pre>
+    <h2>id</h2>
+    <pre>357</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Formal Comment: The epoch of current-second should be 1970-01-01 00:00:00 TAI.</pre>
+    <h2>time</h2>
+    <pre>2012-03-12 06:33:58</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-04-05 09:59:36</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG voted to adopt this proposal.  A formal response has been sent.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1333594776201032</pre>
+    <h2>ticket</h2>
+    <pre>357</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 09:59:36</pre>
+    <h2>Change at time 2012-04-05 09:59:36</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1333594776201032</pre>
+    <h2>ticket</h2>
+    <pre>357</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 09:59:36</pre>
+    <h2>Change at time 2012-04-05 09:59:36</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>accepted</pre>
+    <h2>raw-time</h2>
+    <pre>1333594776201032</pre>
+    <h2>ticket</h2>
+    <pre>357</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 09:59:36</pre>
+    <h2>Change at time 2012-03-12 06:37:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1331509030404064</pre>
+    <h2>ticket</h2>
+    <pre>357</pre>
+    <h2>time</h2>
+    <pre>2012-03-12 06:37:10</pre>
+    <h2>Change at time 2012-03-12 06:37:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1331509030404064</pre>
+    <h2>ticket</h2>
+    <pre>357</pre>
+    <h2>time</h2>
+    <pre>2012-03-12 06:37:10</pre>
+    <h2>Change at time 2012-03-12 06:37:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>accepted</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1331509030404064</pre>
+    <h2>ticket</h2>
+    <pre>357</pre>
+    <h2>time</h2>
+    <pre>2012-03-12 06:37:10</pre></body></html>

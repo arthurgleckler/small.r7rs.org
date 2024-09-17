@@ -1,0 +1,27 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>SquareBrackets</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/SquareBrackets.md">SquareBrackets</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Square&shy;Brackets</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-06-17 00:15:53</div>
+      <div class="version">6<span class="comment"></span><a href="/wiki/SquareBrackets/history">history</a></div>
+      <div class="source"><a href="/wiki/SquareBrackets/6/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>I tested the usual suite of Schemes with <span class="monospace">'[a b c]</span> to see how they reacted to the square brackets.  R6RS requires the result to be <span class="monospace">(a b c)</span>.</p>
+      <p>Evaluates to <span class="monospace">(a b c)</span>: Racket, Gauche, Gambit, Chicken, Bigloo, Guile, SISC, Chez, Vicare, Larceny, Ypsilon, Mosh, IronScheme, Scheme 9, STklos, KSi, Schemik, Elk, Oaklisp, SXM, Sizzle, Spark, Sagittarius</p>
+      <p>Evaluates to the symbol <span class="monospace">[a</span>, followed by undefined-variable error on <span class="monospace">b</span>:  Chibi, SCM, Shoe, TinyScheme, Dream, S7, BDC, XLisp, UMB, VX, Llava, Dfsch, Inlab</p>
+      <p>Syntax error: MIT, Scheme48/scsh, NexJ, SigScheme, RScheme, Owl Lisp</p>
+      <p>Evaluates to <span class="monospace">#(a b c)</span>: Rep, FemtoLisp</p>
+      <p>Evaluates to <span class="monospace">($bracket-list$ a b c)</span>: Kawa</p></div></body></html>

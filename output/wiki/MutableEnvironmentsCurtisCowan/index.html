@@ -1,0 +1,69 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>MutableEnvironmentsCurtisCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/MutableEnvironmentsCurtisCowan.md">MutableEnvironmentsCurtisCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Mutable&shy;Environments&shy;Curtis&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-12-07 05:55:16</div>
+      <div class="version">5<span class="comment"></span><a href="/wiki/MutableEnvironmentsCurtisCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/MutableEnvironmentsCurtisCowan/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This proposal provides mutable environments for R7RS-large.  It's based on <a href="http://groups.csail.mit.edu/mac/ftpdir/scheme-mail/HTML/rrrs-1988/msg00139.html">this proposal by Pavel Curtis</a>, but he is not responsible for the use I have made of it.</p>
+      <h2 id="Introduction">Introduction</h2>
+      <p>The small language provides four procedures that return global environment specifiers for use by <span class="monospace">eval</span>.  They are:</p>
+      <ul>
+        <li><span class="monospace">environment</span>, which returns an immutable environment specifier when passed on zero or more import-specs which contains the bindings made available by those import specs</li></ul>
+      <ul>
+        <li><span class="monospace">scheme-report-environment</span>, which when passed the argument <span class="monospace">5</span> returns a specifier for a copy of the R5RS environment, which may or may not be mutable</li></ul>
+      <ul>
+        <li><span class="monospace">null-environment</span>, which when passed the argument <span class="monospace">5</span> returns a specifier for a copy of the R5RS environment containing syntax keywords only, which may or may not be mutable</li></ul>
+      <ul>
+        <li><span class="monospace">interaction-environment</span>, which returns a mutable environment specifier containing implementation-defined bindings, including at least those exported by the base library</li></ul>
+      <h2 id="Procedures">Procedures</h2>
+      <p>The following procedures allow an application to generate, examine, and mutate environment specifiers which can be used like those obtained from the R7RS-small procedures above.</p>
+      <h2 id="Constructor">Constructor</h2>
+      <p><span class="monospace">(make-environment </span><i>environment</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated mutable environment specifier that has imported into it the bindings of the <i>environments</i>.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(environment? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an environment specifier, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(mutable-environment? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a mutable environment specifier, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(environment-bound? </span><i>environment symbol</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>symbol</i> is bound in the environment specified by <i>environment</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(environment-syntax-keyword? </span><i>environment symbol</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>symbol</i> is bound as a syntax keyword in the environment specified by <i>environment</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(environment-assigned? </span><i>environment symbol</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>symbol</i> is bound as a variable and is assigned a value in the environment specified by <i>environment</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <h2 id="Accessors">Accessors</h2>
+      <p><span class="monospace">(environment-ref </span><i>environment symbol</i><span class="monospace">)</span></p>
+      <p>If <i>symbol</i> is bound as a variable that has been assigned a value in the environment specified by <i>environment</i>, returns the value bound to it.  If <i>symbol</i> is bound as a syntax keyword, returns an implementation-defined object which specifies whatever is bound to it such that it can be passed to <span class="monospace">environment-set!</span>.  If <i>symbol</i> is not bound or not assigned, returns <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(environment-imports </span><i>environment</i><span class="monospace">)</span></p>
+      <p>Returns a list of environments that have been imported into <i>environment</i>.  It is an error to mutate this list.</p>
+      <h2 id="Mutators">Mutators</h2>
+      <p><span class="monospace">(environment-bind </span><i>mutable-environment symbol syntax-keyword?</i><span class="monospace">)</span></p>
+      <p>Binds <i>symbol</i> in <i>mutable-environment</i> as a syntax keyword or variable.  The value is unassigned.</p>
+      <p><span class="monospace">(environment-import! </span><i>mutable-environment environment</i> ...<span class="monospace">)</span></p>
+      <p>Modifies <i>mutable-environment</i> to import <i>environments</i>.  It is an error if any symbol is imported from more than one environment, either specified or already imported into <i>mutable-environment</i>.  Any symbols bound in <i>mutable-environment</i> shadow symbols in the imported environments.</p>
+      <p><span class="monospace">(environment-unimport! </span><i>mutable-environment environment</i> ...<span class="monospace">)</span></p>
+      <p>Modifies <i>mutable-environment</i> to not import <i>environments</i>.  Unimporting an environment that is not imported has no effect.</p>
+      <p><span class="monospace">(environment-set! </span><i>mutable-environment symbol value</i><span class="monospace">)</span></p>
+      <p>In <i>mutable-environment </i>, assigns <i>symbol</i> (which must be bound as a variable or syntax keyword) to <i>value</i>.  It is an error if <i>symbol</i> is bound to a syntax keyword but <i>value</i> is not derived from a call on <span class="monospace">environment-ref</span> passing an already existing syntax keyword.  Returns an unspecified value.</p>
+      <p><span class="monospace">(environment-remove! </span><i>mutable-environment symbol</i><span class="monospace">)</span></p>
+      <p>In the mutable environment specified by <i>environment</i>, removes any binding for <i>symbol</i> created by <span class="monospace">environment-set!</span>, revealing any imported binding.  If there is no such binding, it does nothing.  Returns an unspecified value.</p>
+      <p><span class="monospace">(environment-freeze! </span><i>environment</i><span class="monospace">)</span></p>
+      <p>Causes <i>environment</i> to become an immutable environment.</p>
+      <h2 id="Thewholeenvironment">The whole environment</h2>
+      <p><span class="monospace">(environment-for-each </span><i>environment proc</i><span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> on each identifier bound in the environment specified by <i>environment</i> whose value is not imported.  <i>Proc</i> is passed the identifier and the value (or an unspecified value if the identifier is bound as a syntax keyword or unassigned).  Note that imported identifiers when the environment was created are not passed to <i>proc</i> unless their bindings or values have been changed.</p></div></body></html>

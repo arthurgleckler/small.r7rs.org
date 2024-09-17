@@ -1,0 +1,74 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>426: Formal Comment: The descriptions of the dynamic features need to be clearer  and more consistent</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 426: <span class="summary">Formal Comment: The descriptions of the dynamic features need to be clearer  and more consistent</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 10:15:25</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/426/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-06-29 04:39:47</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Submitter's name: Richard Kelsey</p>
+        <p>Submitter's email: kelsey at s48.org</p>
+        <p>Relevant draft: r7rs draft 6</p>
+        <p>Type: clarification</p>
+        <p>Priority: major</p>
+        <p>Relevant section of draft: Derived expressions, control features, exceptions</p>
+        <p>Summary: The descriptions of the dynamic features need to be clearer and more consistent.</p>
+        <p>There are now three separate features that relate to the dynamic context: <span class="monospace">dynamic-wind</span>, dynamic bindings, and exception handling.  These need to be defined in some unified way and their interaction described.</p>
+        <p>For example, dynamic bindings are described using the term 'dynamic environment' which is itself not defined.  There is a paragraph on how dynamic bindings interact with threads, which are not mentioned anywhere else in the report, but nothing is said about how dynamic bindings interact with <span class="monospace">call/cc</span> or <span class="monospace">dynamic-wind</span>.</p>
+        <p>Suggestion:</p>
+        <ul>
+          <li>Add a new section 3.6 that includes the definition of 'dynamic extent' currently in section 6.10 and a definition of 'dynamic environment'.  Mention that the dynamic environment is captured by <span class="monospace">call/cc</span>.  Say something about threads, if necessary.</li></ul>
+        <ul>
+          <li>Remove the paragraph about threads from the section on dynamic bindings.</li></ul>
+        <ul>
+          <li>In the description of <span class="monospace">dynamic-wind</span>, say that the dynamic environment that is in place when the <i>before</i> and <i>after</i> thunks are called is the the dynamic environment of the call to <span class="monospace">dynamic-wind</span>.</li></ul>
+        <ul>
+          <li>6.11 paragraph 2; change &quot;The system implicitly maintains a current exception handler&quot; to &quot;The system implicitly maintains a current exception handler in the dynamic environment&quot;.</li></ul>
+        <ul>
+          <li>Description of <span class="monospace">with-exception-handler</span>: change &quot;<i>Handler</i> is installed as the current exception handler for the dynamic extent (as determined by <span class="monospace">dynamic-wind</span>) of the invocation of <i>thunk</i>&quot; to &quot;<i>Handler</i> is installed as the current exception handler in the dynamic environment used for the invocation of <i>thunk</i>&quot;.</li></ul>
+        <ul>
+          <li>The description of <span class="monospace">raise </span>talks about the dynamic extent of continuations, but it is calls that have a dynamic extent, not continuations.  Rephrase it in terms of continuations and dynamic environments.</li></ul>
+        <ul>
+          <li>The description of <span class="monospace">raise-continuable</span> also needs to be rephrased in terms of continuations and dynamic environments.</li></ul>
+        <ul>
+          <li>Ideally, the dynamic environment and <span class="monospace">dynamic-wind</span> would be included in the formal semantics.</li></ul></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-02 09:46:11</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 10:15:25</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Included detail changes, but no new section.</p></div></div></div></div></div></body></html>

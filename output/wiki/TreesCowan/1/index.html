@@ -1,0 +1,86 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>TreesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/TreesCowan.md">TreesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Trees&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-06-16 05:36:17</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/TreesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/TreesCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Trees, like lists, are an application of Scheme pairs.  A <i>leaf</i> is any Scheme object that is neither a pair nor the empty list.  A <i>tree</i> is either a leaf, or a proper list of trees.  Parts of trees are called <i>nodes</i>.  Improper and circular lists cannot be trees or parts of trees.  The words <i>parent, child, ancestor, descendant, sibling</i> are used with the usual meanings.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(leaf? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a leaf, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(tree? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a tree, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(tree-contains? </span><i>tree node</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>node</i> is a node of <i>tree</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(tree-ancestor? </span><i>tree ancestor descendant</i><span class="monospace">)</span></p>
+      <p>If <i>ancestor</i> is an ancestor node of <i>descendant</i> in <i>tree</i>, return <span class="monospace">#t</span>; otherwise return <span class="monospace">#f</span>.  It is an error if either <i>ancestor</i> or <i>descendant</i> is not a node of <i>root</i>.</p>
+      <p><span class="monospace">(tree-c-commands? </span><i>tree commander commanded</i><span class="monospace">)</span></p>
+      <p>If the node <i>commander</i> c-commands the node <i>commanded</i> in <i>tree</i>, return <span class="monospace">#t</span>; otherwise return <span class="monospace">#f</span>.  It is an error if either <i>ancestor</i> or <i>descendant</i> is not a node of <i>root</i>.</p>
+      <p>A node in a tree c-commands its sibling node(s) and all of its siblings' descendants; however, a node without siblings c-commands everything that its parent node c-commands.</p>
+      <p><span class="monospace">(tree=? </span><i>same? tree1 tree2</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>tree1</i> and <i>tree2</i> are isomorphic and their leaves are the same in the sense of <i>same?</i></p>
+      <h2 id="Treeoperations">Tree operations</h2>
+      <p><span class="monospace">(tree-copy </span><i>tree</i><span class="monospace">)</span></p>
+      <p>Return a copy of <i>tree</i>.  Leaves are shared, but tree structure is not.</p>
+      <p><span class="monospace">(tree-depth-of </span><i>tree node</i><span class="monospace">)</span></p>
+      <p>Return the depth of <i>node</i> within <i>tree</i> as an exact integer.</p>
+      <p><span class="monospace">(tree-depth </span><i>tree</i><span class="monospace">)</span></p>
+      <p>Return the maximum depth of <i>tree</i> as an exact integer.  Leaves have depth 0.</p>
+      <p><span class="monospace">(tree-parent </span><i>tree node</i><span class="monospace">)</span></p>
+      <p>Returns the parent node of <i>node</i> within <i>tree</i>.  This involves a search from the root of <i>tree</i>.  It is an error if <i>node</i> is not a descendant of <i>tree</i>.</p>
+      <p><span class="monospace">(tree-node-path </span><i>tree node</i><span class="monospace">)</span></p>
+      <p>Returns a list of nodes containing <i>node</i> and all of <i>node</i>s ancestors ending with <i>tree</i>.  It is an error if <i>node</i> is not a descendant of <i>tree</i>.</p>
+      <h2 id="Nodeexamination">Node examination</h2>
+      <p>The following functions examine all nodes in the tree in an unspecified order.  <i>Pred</i> is a predicate which has no side effects and always returns the same result on the same argument.</p>
+      <p><span class="monospace">(tree-size </span><i>tree</i><span class="monospace">)</span></p>
+      <p>Returns the number of nodes in <i>tree</i> as an exact integer.</p>
+      <p><span class="monospace">(tree-count </span><i>pred tree</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(tree-count-leaves </span><i>pred tree</i><span class="monospace">)</span></p>
+      <p>Returns the number of nodes/leaves of <i>tree</i> that satisfy <i>pred</i> as an exact integer.</p>
+      <p><span class="monospace">(tree-any? </span><i>pred tree</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(tree-any-leaves? </span><i>pred tree</i><span class="monospace">)</span></p>
+      <p>Examines the nodes/leaves of <i>tree</i> to determine if any of them satisfy <i>pred</i>.</p>
+      <p><span class="monospace">(tree-every? </span><i>pred tree</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(tree-every-leaf? </span><i>pred tree</i><span class="monospace">)</span></p>
+      <p>Returns the number of nodes/leaves of <i>tree</i> to determine if all of them satisfy <i>pred</i>.</p>
+      <h2 id="Treewalkers">Tree walkers</h2>
+      <p>The following procedures return finite SRFI 121 generators that step through the nodes of a tree in any of a variety of orders.  When all the nodes have been returned, the generator returns an EOF object.</p>
+      <p><span class="monospace">(tree-make-preorder-node-generator </span><i>tree</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(tree-make-preorder-leaf-generator </span><i>tree</i><span class="monospace">)</span></p>
+      <p>Returns a generator that when invoked returns the nodes/leaves of <i>tree</i> in preorder: parents are generated before children, and children are generated in left-to-right order.</p>
+      <p><span class="monospace">(tree-make-postorder-node-generator </span><i>tree</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(tree-make-postorder-leaf-generator </span><i>tree</i><span class="monospace">)</span></p>
+      <p>Returns a generator that when invoked returns the nodes/leaves of <i>tree</i> in postorder: children are generated in left-to-right order and then their parent is generated.</p>
+      <p><span class="monospace">(tree-make-depthfirst-node-generator </span><i>tree</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(tree-make-depthfirst-leaf-generator </span><i>tree</i><span class="monospace">)</span></p>
+      <p>Returns a generator that when invoked returns the nodes/leaves of <i>tree</i> in depth-first order: the root is generated, then all children of the root in left-to-right order, then all grandchildren of the root, and so on.</p>
+      <h2 id="Treerewriting">Tree rewriting</h2>
+      <p>These procedures do not mutate the tree they work on, but return a new tree isomorphic to the old tree and with the same elements, except as specified below.  The new tree may share storage with the old.</p>
+      <p><span class="monospace">(tree-add </span><i>tree node newnode</i><span class="monospace">)</span></p>
+      <p>Returns a tree where <i>node</i> has an additional child, <i>newnode</i>,  which is placed to the right of all existing children.  It is an error if <i>node</i> is not a descendant of <i>tree</i>, if <i>newnode</i> is a descendant of <i>tree</i>, or if <i>node</i> is a leaf.</p>
+      <p><span class="monospace">(tree-insert </span><i>tree node index newnode</i><span class="monospace">)</span></p>
+      <p>Returns a tree where <i>node</i> has an additional child, <i>newnode</i>,  which is placed immediately to the left of the child whose position in <i>node</i> is <i>index</i> (an exact integer).  It is an error if <i>node</i> is not a descendant of <i>tree</i>, if <i>newnode</i> is a descendant of <i>tree</i>, if <i>node</i> is a leaf, or if <i>index</i> is greater than or equal to   the number of child nodes of <i>node</i>.</p>
+      <p><span class="monospace">(tree-prune </span><i>tree node</i><span class="monospace">)</span></p>
+      <p>Returns a tree where <i>node</i> and all its descendants are not part of the new tree.  It is an error if <i>node</i> is not a descendant of <i>tree</i>.</p>
+      <p><span class="monospace">(tree-replace </span><i>tree node newnode</i><span class="monospace">)</span></p>
+      <p>Returns a tree where <i>node</i> has been replaced by <i>newnode</i> in the new tree.  It is an error if <i>node</i> is not a descendant of <i>tree</i> or if <i>newnode</i> is a descendant of <i>tree</i>.</p>
+      <h2 id="Nodenumbering">Node numbering</h2>
+      <p>TBD</p>
+      <h2 id="Output">Output</h2>
+      <p><span class="monospace">(tree-display-leaves </span><i>tree</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Walks through the leaves of <i>tree</i> in postorder and displays them (as if using <span class="monospace">display</span>) to <i>port</i>, which defaults to the value of <span class="monospace">(current-output-port)</span>.</p></div></body></html>

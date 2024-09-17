@@ -1,0 +1,148 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StringNormalization</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StringNormalization.md">StringNormalization</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">String&shy;Normalization</h1>
+    <div class="wiki metadata">
+      <div class="author">alexshinn</div>
+      <div class="time">2010-09-07 14:31:07</div>
+      <div class="version">1<span class="comment">initial string normalization discussion</span><a href="/wiki/StringNormalization/history">history</a></div>
+      <div class="source"><a href="/wiki/StringNormalization/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="StringNormalization">String Normalization</h1>
+      <h2 id="Introduction">Introduction</h2>
+      <p>There are four Unicode normalization forms defined in
+<a href="http://unicode.org/reports/tr15/">UAX #15</a>, corresponding to two types
+of character equivalence.</p>
+      <p>The first, and most important, is canonical equivalence.  This is
+equivalence between sequences of codepoints which represent the same
+abstract character.  This includes:</p>
+      <ul>
+        <li>pre-composed characters and their separate base+combining forms</li>
+        <li>pre-composed Hangul and their Jamo sequences</li>
+        <li>unified singleton characters (e.g. mapping the Ohm sign to the Greek capital Omega by which it is represented)</li>
+        <li>canonical ordering for combining marks when multiple combining marks are used</li></ul>
+      <p>The second character equivalence is compatibility equivalence.
+Compatibility equivalence is where two characters represent the same
+abstract character but differ in appearance or behavior.  Differences
+include:</p>
+      <ul>
+        <li>Font variants - cursive, bold, mathematical</li>
+        <li>Breaking differences - different hyphen and space types</li>
+        <li>Circled characters</li>
+        <li>Width, size, rotated - variations common in Japanese scripts</li>
+        <li>Superscripts and subscripts - 2**5 becomes &quot;2&quot;+&quot;5&quot;</li>
+        <li>Squared characters - Japanese words written in a single character square</li>
+        <li>Fractions - representing the single 1/2 character as &quot;1&quot;+&quot;/&quot;+&quot;2&quot;</li></ul>
+      <p>These two equivalences can be combined to provide four normalization
+forms:</p>
+      <ul>
+        <li>NFD - canonical decomposition</li>
+        <li>NFC - canonical decomposition, followed by canonical composition</li>
+        <li>NFKD - compatibility decomposition</li>
+        <li>NFKC - compatibility decomposition, followed by canonical composition</li></ul>
+      <p>Order matters, since the canonical and compatibility normalizations
+are not commutative.  Normalizing by performing canonical composition
+followed by compatibility decomposition is not a defined form in the
+standard.</p>
+      <p>Note that neither of these equivalences ignore control characters, nor
+do they attempt to unify characters which look alike, such as Latin
+and Cyrillic &quot;o&quot;, so spoofing is a security issue regardless of
+Unicode normalization.</p>
+      <h2 id="ProblemswithNormalization">Problems with Normalization</h2>
+      <p>The problem inherent in a character set as complex as Unicode is the
+&quot;same&quot; (by any of the definitions above) character can have multiple
+representations.  Thus the same conceptual word may be represented
+with different sets of codepoints, and not match as a search term or
+database key or filename, etc.  For example, Googling the same word
+with different forms for NFC and NFK will return a different set of
+results, which makes no sense.  Since web search is inherently an
+approximate art to begin with, this is perhaps not directly perceived
+as a &quot;bug&quot; by users, though certainly their experience would be
+improved if searching gave the same results.</p>
+      <p>Googling for <a href="http://www.google.com/search?q=unicode+normalization+bug">unicode normalization bug</a>,
+on the other hand, turns up a large number of hits for interoperability
+problems with filenames, and with systems sharing data between
+multiple users such as wikis.</p>
+      <p>A large part of the problem is that whereas Windows and Linux tend to
+default to NFC normalization, and Mac OS X input tends to produce NFC,
+the Mac HFS filesystem automatically normalizes to NFD (as well as
+doing full Unicode case-folding).  But even if this were not the case
+problems would arise, just less predictably.</p>
+      <h2 id="ApproachestoNormalization">Approaches to Normalization</h2>
+      <p>R6RS provided four separate procedures to convert explicitly between
+the four Unicode normalization forms.  This is the obvious choice, and
+is what most other languages do.  Whenever normalization matters (yes,
+every programmer working with any kind of text needs to understand
+normalization and when it is necessary), you need to convert all input
+to a chosen normalization form.  Or more likely ignore it until you
+get a rare but inevitable normalization bug, then go back to your
+design and figure out where all the relevant inputs are.  But it's
+what everyone else does, so at least we won't get laughed at for this
+choice.</p>
+      <p>Another option is to leave all strings in their original form and just
+compare them in a normalization-insensitive manner, e.g. with
+`string-ni=?'.  If you want to hash with these you'll also need
+`string-hash-ni', and if you want to sort strings or use them in
+search trees you'll need `string-ni&lt;?'.  Searching will require
+`string-contains-ni', though this could (very inefficiantly) be built
+using `string-ni=?'.  In general, anything that needs to be
+normalization independent needs to be built specially.  And you get a
+lot of duplicated work.  And the programmer still needs to remember to
+actually _use_ this API where appropriate instead of `string=?' and
+the like.</p>
+      <p>How can we make things easier for the programmer?  One approach is to
+globally represent all strings in the same normalization form in
+memory.  This is mostly a matter of normalizing on port input, but
+also involves some simple checks on endpoints when concatenating
+strings.  String mutation is more complicated as well, though I think
+strings should be immutable anyway.  The advantage is this is all done
+once, at the implementation level.  The programmer never needs to
+worry about normalization, and can just compare with `string=?' and
+`string&lt;?' like before (so existing code works too).  Normalization
+then becomes an encoding issue, only of concern when working with an
+external system or format that expects a normalization form different
+from your own.</p>
+      <p>Automated normalization is not a complete silver bullet though.  The
+fundamental problem is that we're working with codepoints when
+conceptually most of the time we want to be working with graphemes.
+The problem can be seen when searching for a string ending in a base
+character in a document which has that same string followed by a
+combining character (in any of the normal forms this is possible).
+Even when both are in the same normal form the search will return
+success, but the string doesn't actually match.  If we were comparing
+grapheme by grapheme, on the other hand, it would correctly ignore the
+partial match.  And assuming graphemes are all internally normalized
+this would provide the same benefits of automatically normalized
+strings.  So using graphemes instead of codepoints (or layered over
+codepoints) as our basic unit of strings looks like a promising way to
+simplify the programmer's life.</p>
+      <p>Of course, with the exception of the first option none of these have
+been specified formally, much less implemented, much less tested and
+used in real applications.  But they deserve consideration.
+Unfortunately, the first option, by exposing direct control over
+codepoint sequences, makes it impossible to implement either of the
+last two options, so it seems premature to standardize on this in WG1.</p>
+      <p>A practical compromise would be to provide a single `string-normalize'
+procedure, which converts a string to a system-specific normalization
+form.  In an ASCII-only implementation, or an auto-normalizing
+implementation this could be the identify function.  Other
+implementations would simply choose a single preferred form.  Then
+programmers writing portable code could code just as they do in the
+first option, with the caveat that the normalization form has been
+chosen for them.  This procedure would be sufficient to implement the
+API described in the second option, though more optimized versions
+could be provided by the implementation.  Control of explicit
+normalization forms would be a matter for I/O and/or byte-vectors,
+probably in a separate WG2 module.  And APIs that make the
+programmer's life easier would at least be possible.</p></div></body></html>

@@ -1,0 +1,80 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>EnumContainersCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/EnumContainersCowan.md">EnumContainersCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Enum&shy;Containers&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-06-15 23:01:04</div>
+      <div class="version">10<span class="comment"></span><a href="/wiki/EnumContainersCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/EnumContainersCowan/10/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p><b>THIS IS NOT A PROPOSAL.  It's just a dumping ground for some stuff I don't want to lose track of.  There will be a proper proposal later.</b></p>
+      <h2 id="Enumerationsets">Enumeration sets</h2>
+      <p>Except as noted below, the procedures for creating and manipulating enumeration sets are the same as those for sets, except that <span class="monospace">set</span> is replaced by <span class="monospace">enum-set</span> in their names.  Wherever a newly allocated enumeration set is returned, it has the same enumeration type as the source sets.  It is an error to operate on enumeration sets of different types in a single procedure.</p>
+      <p><span class="monospace">(enum-type-&gt;enum-set </span><i>enum-type</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set.  The possible elements of the set are the enum objects in <i>enum-type</i>.  The set contains all possible elements.  The approximate R6RS equivalent is <span class="monospace">enum-set-universe</span>.</p>
+      <p><span class="monospace">(enum-set </span><i>enum-type</i><span class="monospace"> </span><i>element</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <i>enum-type</i>. The set is initialized to contain the <i>elements</i>.  There is no R6RS equivalent.</p>
+      <p><span class="monospace">(list-&gt;enum-set </span><i>enum-type</i><span class="monospace"> </span><i>list</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <i>enum-type</i>. The set is initialized to contain the elements of <i>list</i>.  There is no R6RS equivalent.</p>
+      <p><span class="monospace">(enum-set-complement </span><i>enum-set</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set that is the complement of <i>enum-set</i>.  This procedure is also in R6RS.</p>
+      <p><span class="monospace">(enum-set-projection </span><i>enum-set</i><span class="monospace"> </span><i>enum-type</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set of type <i>enum-type</i>.  Its elements are the enum objects in <i>enum-type</i> which have the same names as members of <i>enum-set</i>.  Enum objects without corresponding names are ignored.  This procedure is also in R6RS, but uses a second enum-set in place of <i>enum-type</i>.</p>
+      <p>There will probably be more, depending on how integer sets turn out:  <span class="monospace">enum-set-complement</span>, <span class="monospace">enum-set-complement!</span>, <span class="monospace">enum-set-min</span>, <span class="monospace">enum-set-max</span>.</p>
+      <h2 id="Enumerationmaps">Enumeration maps</h2>
+      <p>Based on vectors indexed by the enum's ordinal.  Procedures:</p><span class="monospace">Constructors
+
+enum-type-&gt;enum-map                        enum-map-unfold
+
+Predicates
+
+enum-map?          enum-map-contains?      enum-map=?
+
+Accessors
+
+enum-map-ref       enum-map-ref/default
+
+Mutators
+
+enum-map-set!      enum-map-set-entries!
+enum-map-delete!   enum-map-delete-keys!
+enum-map-push!     enum-map-pop!
+enum-map-search!   enum-map-clear!
+
+The whole enum map
+
+enum-map-size 
+enum-map-keys      enum-map-values         enum-map-entries
+enum-map-find      enum-map-count
+enum-map-any       enum-map-every
+enum-map-map       enum-map-map-values
+enum-map-for-each  enum-map-map!
+enum-map-collect   enum-map-fold
+enum-map-filter!   enum-map-remove!
+
+Copying and conversion
+
+enum-map-copy
+enum-map-&gt;alist
+
+Enum maps as functions
+
+enum-map-accessor  enum-map-accessor/default
+enum-map-union     enum-map-intersection
+enum-map-difference enum-map-xor
+
+Comparators
+enum-map-comparator make-enum-map-comparator
+</span></div></body></html>

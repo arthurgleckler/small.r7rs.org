@@ -1,0 +1,111 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>JsoCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://htmlpreview.github.io/?https://github.com/johnwcowan/r7rs-work/blob/master/JsoCowan.html">JsoCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Jso&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-08-16 01:53:50</div>
+      <div class="version">6<span class="comment"></span><a href="/wiki/JsoCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/JsoCowan/6/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This library allows the creation and use of <i>JavaScript-style objects (JSOs)</i>, which are chained mappings that map keys (which are symbols) to arbitrary values.  JSOs are represented using a variant of alists, but they are not compatible with alist procedures.</p>
+      <p>When you create a JSO, you can specify a <i>prototype JSO</i>. The recursive sequence of a JSO's prototype, the prototype of its prototype, and so on, is called the <i>prototype chain</i>. If a JSO doesn't contain a particular key, the prototype chain will be searched for it. Modifications, however, are only applied to the JSO proper, never to anything along the prototype chain. Note that this value is not itself a JSO.  A JSO without a prototype chain is called a <i>free JSO</i>.</p>
+      <p>An attempt to look up an unknown key returns (by default) a unique value known as <i>the undefined value</i>, which can be tested with <span class="monospace">jso-undef?</span>. This is not to be confused with the general Scheme concept of returning an undefined value from a procedure, which may be any value and need not be consistent between two invocations of the same procedure.</p>
+      <p>A JSO is represented as a Scheme pair whose car is the symbol <span class="monospace">@</span> and whose cdr is the concatenation of zero or more two-element lists with another JSO or the empty list.  The first element of each two-element list is a symbol known as the <i>key</i> and the second element is an arbitrary Scheme object known as the <i>value</i>.  Keys are tested for equality with <span class="monospace">eqv?</span>.  It is no accident that the attribute list of an SXML element has the same representation as a JSO.</p>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(make-jso </span><i>prototype obj</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated JSO with the specified <i>prototype</i>.  If <i>prototype</i> is the undefined object, the JSO is free.  Additional arguments are alternating keys and values of the JSO.</p>
+      <p><span class="monospace">(alist-&gt;jso </span><i>alist prototype</i><span class="monospace">)</span></p>
+      <p>Creates a newly allocated JSO with the specified <i>prototype</i> (or a free JSO if <i>prototype</i> is the undefined value).  The key-value pairs of <i>alist</i> become the corresponding keys and values of the JSO.</p>
+      <p><span class="monospace">jso-null</span></p>
+      <p>A variable whose value is <i>the null JSO</i>, a unique free JSO with no keys or values.  It is an error to mutate the null JSO in any way.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(jso-undef? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is the undefined value, and <span class="monospace">#f</span> otherwise.  The undefined value is distinct in the sense of <span class="monospace">eqv?</span> from every other Scheme object.</p>
+      <p><span class="monospace">(jso? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if the car of <i>jso</i> is the symbol <span class="monospace">@</span>, and <span class="monospace">#f</span> otherwise.  The rest of the JSO is left unexamined.</p>
+      <p>(<span class="monospace">jso-null? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is the null JSO and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(jso-empty? </span><i>jso</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if the JSO has no keys, and <span class="monospace">#f</span> otherwise.  The prototype chain is left unexamined.</p>
+      <p><span class="monospace">(jso-contains? </span><i>jso key</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>jso</i> contains <i>key</i>, and <span class="monospace">#f</span> otherwise.  The prototype chain is left unexamined.</p>
+      <h2 id="Accessors">Accessors</h2>
+      <p><span class="monospace">(jso-ref </span><i>jso key</i> [ <i>failure</i> [ <i>success</i> ] ]<span class="monospace">)</span></p>
+      <p>Searches <i>jso</i>, including the prototype chain, for the key <i>key</i>, invokes the procedure <i>success</i> on it, and returns the result.  If <i>key</i> is not found, invokes the thunk <i>failure</i> and returns the result.  If <i>success</i> is not specified, it is the identity function; if <i>fail</i> is not specified, it is a procedure that returns the undefined value.</p>
+      <p><span class="monospace">(jso-local-ref </span><i>jso key</i> [ <i>failure</i> [ <i>success</i> ] ]<span class="monospace">)</span></p>
+      <p>The same as <span class="monospace">jso-ref</span>, except that it does not search the prototype chain.</p>
+      <p><span class="monospace">(jso-size </span><i>jso</i><span class="monospace">)</span></p>
+      <p>Returns the number of keys in <i>jso</i> as an exact integer.  The prototype chain is left unexamined.</p>
+      <p><span class="monospace">(jso-prototype </span><i>jso</i><span class="monospace">)</span></p>
+      <p>Returns the prototype of <i>jso</i>, or the undefined value if <i>jso</i> is free.</p>
+      <h2 id="Conversions">Conversions</h2>
+      <p><span class="monospace">(jso-keys </span><i>jso</i><span class="monospace">)</span></p>
+      <p>Returns a list of the keys of <i>jso</i>.  The prototype chain is left unexamined.</p>
+      <p><span class="monospace">(jso-values </span><i>jso</i><span class="monospace">)</span></p>
+      <p>Returns a list of the values of <i>jso</i> in the same order as <span class="monospace">jso-keys</span> returns the keys.  The prototype chain is left unexamined.</p>
+      <p><span class="monospace">(jso-&gt;alist </span><i>jso</i>)</p>
+      <p>Creates a newly allocated alist whose key-value pairs are the keys and values of the JSO. The prototype chain is left unexamined.</p>
+      <p><span class="monospace">(full-jso-&gt;alist </span><i>jso</i>)</p>
+      <p>Creates a newly allocated alist whose key-value pairs are the keys and values of the JSO, including its prototype chain.</p>
+      <p><span class="monospace">(alist-&gt;jso </span><i>alist</i><span class="monospace">)</span></p>
+      <p>Creates a free JSO whose keys and values are the key-value pairs of the alist.  If any key is not a symbol, an error is signaled.</p>
+      <h2 id="Copying,mapping,andfolding">Copying, mapping, and folding</h2>
+      <p><span class="monospace">(jso-copy </span><i>jso</i><span class="monospace">)</span></p>
+      <p>Returns a copy of <i>jso</i>, sharing the same prototype chain.  The keys and values are shared, but not the structural pairs.</p>
+      <p><span class="monospace">(jso-free-copy </span><i>jso</i><span class="monospace">)</span></p>
+      <p>Returns a copy of <i>jso</i> that is free.  The keys and values are shared, but not the structural pairs.</p>
+      <p><span class="monospace">(jso-full-copy </span><i>jso</i><span class="monospace">)</span></p>
+      <p>Returns a copy of <i>jso</i>, including the prototype chain.  The keys and values are shared, but not the structural pairs.</p>
+      <p><span class="monospace">(jso-map </span><i>proc jso</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated JSO after applying <i>proc</i> to each key and value of <i>jso</i>.  The prototype chains are shared.</p>
+      <p><span class="monospace">(jso-full-map </span><i>proc jso</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated JSO after applying <i>proc</i> to each key, including those in the prototype chain.</p>
+      <p><span class="monospace">(jso-for-each </span><i>proc jso</i><span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to each key and value.  The prototype chain is left unexamined.  Returns an undefined value (not necessarily <i>the</i> undefined value).</p>
+      <p><span class="monospace">(jso-full-for-each </span><i>proc jso</i><span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to each key and value, including those in the prototype chain.  Returns an undefined value (not necessarily <i>the</i> undefined value).</p>
+      <h2 id="Mutators">Mutators</h2>
+      <p><span class="monospace">(jso-set! </span><i>jso key value</i><span class="monospace">)</span></p>
+      <p>Searches <i>jso</i> for <i>key</i>, and if found changes its value to <i>value</i>.  If <i>key</i> is not found, <i>key</i> and <i>value</i> are added as the last key before the prototype chain. The prototype chain is left unexamined.  Returns an undefined value (not necessarily <i>the</i> undefined value).</p>
+      <p><span class="monospace">(jso-delete! </span><i>jso key</i> ...<span class="monospace">)</span></p>
+      <p>Searches <i>jso</i> and removes all keys (and their values) that are equal to any of the <i>keys</i>. The prototype chain is left unexamined. Unknown keys are ignored.  Returns an undefined value (not necessarily <i>the</i> undefined value).</p>
+      <p><span class="monospace">(jso-delete-all! </span><i>jso key-list</i><span class="monospace">)</span></p>
+      <p>Does the same as <span class="monospace">jso-delete!</span>, except that the keys to be deleted are specified as a list.</p>
+      <p><span class="monospace">(jso-set-prototype! </span><i>jso prototype</i><span class="monospace">)</span></p>
+      <p>Replaces the prototype of <i>jso</i> with <i>prototype</i>.  If <i>prototype</i> is the undefined value, <i>jso</i> becomes free.  Returns an undefined value (not necessarily <i>the</i> undefined value).</p>
+      <p><span class="monospace">(jso-map! </span><i>proc jso</i><span class="monospace">)</span></p>
+      <p>Mutates <i>jso</i> by applying <i>proc</i> to each value.  The prototype chain is left unexamined.  Returns an undefined value (not necessarily <i>the</i> undefined value).</p>
+      <h2 id="Methodcalls">Method calls</h2>
+      <p><span class="monospace">(jso-apply </span><i>jso key argument</i> ...<span class="monospace">)</span></p>
+      <p>Applies the result of <span class="monospace">(jso-ref </span><i>jso key</i><span class="monospace">)</span> to <i>jso</i> and the <i>arguments</i>, returning the result(s).  If the result does not exist or is not a procedure, it is an error.</p>
+      <p><span class="monospace">(jso-apply/fallback </span><i>jso key failure argument</i> ...<span class="monospace">)</span></p>
+      <p>Applies the result of <span class="monospace">(jso-ref </span><i>jso key</i><span class="monospace">)</span> to <i>jso</i> and the <i>arguments</i>, returning the result(s).  If the result does not exist, the thunk <i>failure</i> is invoked.  If the result is not a procedure, it is an error.</p>
+      <h2 id="JSON">JSON</h2>
+      <p><span class="monospace">(json-value? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a JSON value: that is, a finite real number, a string, a boolean, a proper list whose elements (if any) are JSON values, or a JSO whose values are JSON values (the prototype chains are left unexamined).  The procedure verifies that any JSO's keys are symbols.</p>
+      <p>Note that when discriminating between JSON values, they should be tested in the following order:  the empty list representing an empty JSON array, the null JSO representing JSON <span class="monospace">null</span>, any other JSO representing a JSON object, and any other list representing a non-empty JSON array.</p>
+      <p><span class="monospace">(json-escape-string </span><i>string ascii?</i><span class="monospace">)</span></p>
+      <p>Inserts JSON escapes into a plain Scheme string to make it a valid JSON string.  In particular, all characters that cannot appear directly in a JSON string, or that have single-character escape sequences, are escaped.  As JSON requires, characters larger than <span class="monospace">#\xFFFF</span> are encoded as two consecutive <span class="monospace">\u</span> sequences.</p>
+      <p>If the <i>ascii?</i> argument is true, all non-ASCII characters are also escaped.</p>
+      <p><span class="monospace">(json-unescape-string </span><i>string</i><span class="monospace">)</span></p>
+      <p>Interprets all escape sequences in a valid JSON string and returns the result.  An error is signaled if a malformed escape sequence is found.</p>
+      <p><span class="monospace">(json-write </span><i>obj options</i> [ <i>port</i> ] ]<span class="monospace">)</span></p>
+      <p>Output <i>obj</i> to <i>port</i> (which defaults to the value of <span class="monospace">(current-output-port)</span>) in <a href="https://tools.ietf.org/html/rfc7159">JSON format</a>.  Exact rationals other than integers are converted to inexact numbers before being output.  The null JSO is output as the keyword <span class="monospace">null</span>.  If <i>obj</i> is not a JSON value, an error is signaled before any output is done.</p>
+      <p>The <i>options</i> argument is a list of symbols.  The symbol <span class="monospace">ascii</span> causes all non-ASCII characters in strings to be escaped.  The symbol <span class="monospace">pretty</span> may cause the JSON to be pretty-printed.  All other symbols are implementation-dependent.</p>
+      <p><span class="monospace">(json-read </span>[ <i>prototype</i> [ <i>port</i> ] ]<span class="monospace">)</span></p>
+      <p>Reads the <a href="https://tools.ietf.org/html/rfc7159">JSON representation</a> of a JSON value from <i>port</i> (which defaults to the value of <span class="monospace">(current-input-port)</span>) and returns the appropriate value.  Any leading whitespace is skipped.
+ 
+Integers are returned as exact numbers in accordance with Scheme rules; all other JSON numbers are returned as inexact numbers.  The keyword <i>null</i> is returned as the null JSO.  If the representation is not syntactically correct JSON, an error is signaled.  If an end of file is read from <i>port</i>, then if nothing has been read yet an end-of-file object is returned; otherwise, an error is signaled.</p>
+      <p>Any JSOs returned are created with <i>prototype</i>, or as free JSOs if <i>prototype</i> is the undefined value or omitted.</p></div></body></html>

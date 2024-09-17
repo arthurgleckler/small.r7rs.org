@@ -1,0 +1,204 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>FlonumsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/FlonumsCowan.md">FlonumsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Flonums&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-10-22 02:19:42</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/FlonumsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/FlonumsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Flonumspackage">Flonums package</h2>
+      <p><i>Flonums</i> are a subset of the inexact real numbers provided by a Scheme implementation.  In most Schemes, the flonums and the inexact reals are the same.</p>
+      <p>The procedures in this package don't have hard-coded prefixes.  The intent is that they be placed in a module.  Users can then import this module with their own prefix such as <span class="monospace">fl</span>, or <span class="monospace">ƒ</span> if their Scheme implementation supports that character, or with no prefix at all if the intent is to override the normal Scheme arithmetic routines.</p>
+      <h2 id="Basicprocedures">Basic procedures</h2>
+      <p><span class="monospace">(flonum? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns #t if obj is a flonum, #f otherwise.</p>
+      <p><span class="monospace">(real-&gt;flonum </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns the best flonum representation of x.</p>
+      <h2 id="R6RS-compatibleprocedures">R6RS-compatible procedures</h2>
+      <p>The following core Scheme procedures have flonum equivalents:</p><span class="monospace">= &lt; &lt;= &gt; &gt;= 
+integer? zero? positive? negative? odd? even? finite? infinite? nan?
++ - * /
+abs numerator denominator floor ceiling truncate round
+exp log sin cos tan asin acos atan
+sqrt expt
+</span>
+      <p>TODO: need to see about integer division procedures</p>
+      <h2 id="C99&lt;math.h&gt;constants">C99 &lt;math.h&gt; constants</h2>
+      <p>The following constants are defined in terms of the constants of the &lt;math.h&gt; header of ISO/IEC 9899:1999 (C language).</p>
+      <table><tr><td class="default">
+            <p>Scheme name</p></td><td class="default">
+            <p>C name</p></td><td class="default">
+            <p>Comments</p></td></tr><tr><td class="default">
+            <p>e</p></td><td class="default">
+            <p>M_E</p></td><td class="default">
+            <p>Value of e</p></td></tr><tr><td class="default">
+            <p>log2-e</p></td><td class="default">
+            <p>M_LOG2E</p></td><td class="default">
+            <p>Value of log2e</p></td></tr><tr><td class="default">
+            <p>log10-e</p></td><td class="default">
+            <p>M_LOG10E</p></td><td class="default">
+            <p>Value of log10e</p></td></tr><tr><td class="default">
+            <p>ln-2</p></td><td class="default">
+            <p>M_LN2</p></td><td class="default">
+            <p>Value of loge2</p></td></tr><tr><td class="default">
+            <p>ln-10</p></td><td class="default">
+            <p>M_LN10</p></td><td class="default">
+            <p>Value of loge10</p></td></tr><tr><td class="default">
+            <p>pi</p></td><td class="default">
+            <p>M_PI</p></td><td class="default">
+            <p>Value of pi</p></td></tr><tr><td class="default">
+            <p>pi/2</p></td><td class="default">
+            <p>M_PI_2</p></td><td class="default">
+            <p>Value of pi/2</p></td></tr><tr><td class="default">
+            <p>pi/4</p></td><td class="default">
+            <p>M_PI_4</p></td><td class="default">
+            <p>Value of pi/4</p></td></tr><tr><td class="default">
+            <p>one-over-pi</p></td><td class="default">
+            <p>M_1_PI</p></td><td class="default">
+            <p>Value of 1/pi</p></td></tr><tr><td class="default">
+            <p>two-over-pi</p></td><td class="default">
+            <p>M_2_PI</p></td><td class="default">
+            <p>Value of 2/pi</p></td></tr><tr><td class="default">
+            <p>two-over-sqrt-pi</p></td><td class="default">
+            <p>M_2_SQRTPI</p></td><td class="default">
+            <p>Value of 2/sqrt(pi)</p></td></tr><tr><td class="default">
+            <p>sqrt-2</p></td><td class="default">
+            <p>M_SQRT2</p></td><td class="default">
+            <p>Value of sqrt(2)</p></td></tr><tr><td class="default">
+            <p>one-over-sqrt-2</p></td><td class="default">
+            <p>M_SQRT1_2</p></td><td class="default">
+            <p>Value of 1/sqrt(2)</p></td></tr><tr><td class="default">
+            <p>maximum-flonum</p></td><td class="default">
+            <p>HUGE_VAL</p></td><td class="default">
+            <p>+inf.0 or else the largest finite flonum</p></td></tr><tr><td class="default">
+            <p>fast-multiply-add</p></td><td class="default">
+            <p>FP_FAST_FMA, or 0 if not defined</p></td><td class="default">
+            <p>multiply-add is fast</p></td></tr><tr><td class="default">
+            <p>integer-exponent-zero</p></td><td class="default">
+            <p>FP_ILOGB0</p></td><td class="default">
+            <p>what (integer-binary-log 0) returns</p></td></tr><tr><td class="default">
+            <p>integer-exponent-nan</p></td><td class="default">
+            <p>FP_ILOGBNAN</p></td><td class="default">
+            <p>what (integer-binary-log +0.nan) returns</p></td></tr></table>
+      <h2 id="C99&lt;math.h&gt;procedures">C99 &lt;math.h&gt; procedures</h2>
+      <p>The following procedures are defined in terms of the functions of the &lt;math.h&gt; header of ISO/IEC 9899:1999 (C language).  In the C signatures, the types &quot;double&quot; and &quot;int&quot; are mapped to Scheme flonums and (suitably bounded) Scheme exact integers respectively.</p>
+      <table><tr><td class="default">
+            <p>Scheme name</p></td><td class="default">
+            <p>C signature</p></td><td class="default">
+            <p>Comments</p></td></tr><tr><td class="default">
+            <p>acosh</p></td><td class="default">
+            <p>double      acosh(double)</p></td><td class="default">
+            <p>hyperbolic arc cosine</p></td></tr><tr><td class="default">
+            <p>asinh</p></td><td class="default">
+            <p>double      asinh(double)</p></td><td class="default">
+            <p>hyperbolic arc sine</p></td></tr><tr><td class="default">
+            <p>atanh</p></td><td class="default">
+            <p>double      atanh(double)</p></td><td class="default">
+            <p>hyperbolic arc tangent</p></td></tr><tr><td class="default">
+            <p>cbrt</p></td><td class="default">
+            <p>double      cbrt(double);</p></td><td class="default">
+            <p>cube root</p></td></tr><tr><td class="default">
+            <p>complementary-error-function</p></td><td class="default">
+            <p>double      erfc(double)</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>copy-sign</p></td><td class="default">
+            <p>double      copysign(double x, double y)</p></td><td class="default">
+            <p>result has magnitude of x and sign of y</p></td></tr><tr><td class="default">
+            <p>cosh</p></td><td class="default">
+            <p>double      cosh(double)</p></td><td class="default">
+            <p>hyperbolic cosine</p></td></tr></table>
+      <p>||double      ldexp(double x, int n)||x*2^n</p>
+      <table><tr><td class="default">
+            <p>error-function</p></td><td class="default">
+            <p>double      erf(double)</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>exp-binary</p></td><td class="default">
+            <p>double      exp2(double)</p></td><td class="default">
+            <p>base-2 exponential</p></td></tr><tr><td class="default">
+            <p>exp-minus-1</p></td><td class="default">
+            <p>double      expm1(double)</p></td><td class="default">
+            <p>exp(x)-1</p></td></tr><tr><td class="default">
+            <p>exponent</p></td><td class="default">
+            <p>double      logb(double x)</p></td><td class="default">
+            <p>the exponent of x, which is the integral part of log_r(|x|), as a signed floating-point value, for non-zero x, where r is the radix of the machine's floating-point arithmetic</p></td></tr><tr><td class="default">
+            <p>first-bessel-order-0</p></td><td class="default">
+            <p>double      j0(double)</p></td><td class="default">
+            <p>bessel function of the first kind, order 0</p></td></tr><tr><td class="default">
+            <p>first-bessel-order-1</p></td><td class="default">
+            <p>double      j1(double)</p></td><td class="default">
+            <p>bessel function of the first kind, order 1</p></td></tr><tr><td class="default">
+            <p>first-bessel</p></td><td class="default">
+            <p>double      jn(int n, double)</p></td><td class="default">
+            <p>bessel function of the first kind, order n</p></td></tr><tr><td class="default">
+            <p>fraction-exponent</p></td><td class="default">
+            <p>double      modf(double, double *)</p></td><td class="default">
+            <p>returns two values, fraction and int exponent</p></td></tr><tr><td class="default">
+            <p>gamma</p></td><td class="default">
+            <p>double      tgamma(double)</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>hypotenuse</p></td><td class="default">
+            <p>double      hypot(double, double)</p></td><td class="default">
+            <p>sqrt(x<sup>2+y</sup>2)</p></td></tr><tr><td class="default">
+            <p>integer-exponent</p></td><td class="default">
+            <p>int         ilogb(double)</p></td><td class="default">
+            <p>binary log as int</p></td></tr><tr><td class="default">
+            <p>log-binary</p></td><td class="default">
+            <p>double      log2(double)</p></td><td class="default">
+            <p>log base 2</p></td></tr><tr><td class="default">
+            <p>log-decimal</p></td><td class="default">
+            <p>double      log10(double)</p></td><td class="default">
+            <p>log base 10</p></td></tr><tr><td class="default">
+            <p>log-gamma</p></td><td class="default">
+            <p>double      lgamma(double)</p></td><td class="default">
+            <p>returns two values, log(|gamma(x)|) and sgn(gamma(x))</p></td></tr><tr><td class="default">
+            <p>log-one-plus</p></td><td class="default">
+            <p>double      log1p(double x)</p></td><td class="default">
+            <p>log (1+x)</p></td></tr><tr><td class="default">
+            <p>multiply-add</p></td><td class="default">
+            <p>double      fma(double a, double b, double c)</p></td><td class="default">
+            <p>a*b+c</p></td></tr><tr><td class="default">
+            <p>next-after</p></td><td class="default">
+            <p>double      nextafter(double, double)</p></td><td class="default">
+            <p>next flonum following x in the direction of y</p></td></tr><tr><td class="default">
+            <p>normalized-fraction-exponent</p></td><td class="default">
+            <p>double      frexp(double, int *)</p></td><td class="default">
+            <p>returns two values, fraction in range [1/2,1) and int exponent</p></td></tr><tr><td class="default">
+            <p>positive-difference</p></td><td class="default">
+            <p>double      fdim(double, double)</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <p>||remquo||double      remquo(double, double, int *)||returns two values, rounded remainder and low-order n bits of the quotient (n is implementation-defined)</p>
+      <table><tr><td class="default">
+            <p>scalbn</p></td><td class="default">
+            <p>double      scalbn(double x, int y)</p></td><td class="default">
+            <p>x*r^y, where r is the machine float radix</p></td></tr><tr><td class="default">
+            <p>second-bessel-order-0</p></td><td class="default">
+            <p>double      y0(double)</p></td><td class="default">
+            <p>bessel function of the second kind, order 0</p></td></tr><tr><td class="default">
+            <p>second-bessel-order-1</p></td><td class="default">
+            <p>double      y1(double)</p></td><td class="default">
+            <p>bessel function of the second kind, order 1</p></td></tr><tr><td class="default">
+            <p>second-bessel</p></td><td class="default">
+            <p>double      yn(int n, double)</p></td><td class="default">
+            <p>bessel function of the second kind, order n</p></td></tr><tr><td class="default">
+            <p>sinh</p></td><td class="default">
+            <p>double      cosh(double)</p></td><td class="default">
+            <p>hyperbolic sine</p></td></tr><tr><td class="default">
+            <p>tanh</p></td><td class="default">
+            <p>double      cosh(double)</p></td><td class="default">
+            <p>hyperbolic tangent</p></td></tr></table>
+      <h2 id="Generalremarks">General remarks</h2>
+      <p>In the event that these operations do not yield a real result for the given arguments, the result may be a NaN, or may be some unspecified flonum.</p>
+      <p>Implementations that use IEEE binary floating-point arithmetic should follow the relevant standards for these procedures.</p></div></body></html>

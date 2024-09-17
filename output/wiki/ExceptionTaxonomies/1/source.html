@@ -1,0 +1,318 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ExceptionTaxonomies version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ExceptionTaxonomies version 1</h1>
+    <h2>author</h2>
+    <pre>aag</pre>
+    <h2>comment</h2>
+    <pre>Added a catalog of condition/exception taxonomies used by Scheme implementations.</pre>
+    <h2>ipnr</h2>
+    <pre>71.139.36.79</pre>
+    <h2>name</h2>
+    <pre>ExceptionTaxonomies</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= Condition/Exception Taxonomies =
+
+This page lists the condition/exception system taxonomies for several Scheme implementations and SRFIs and for R6RS.
+
+== Bigloo ==
+{{{
+  &amp;exception
+    &amp;error
+      &amp;http-error
+        &amp;http-redirection-error
+        &amp;http-status-error
+      &amp;io-error
+        &amp;io-file-not-found-error
+        &amp;io-malformed-url-error
+        &amp;io-parse-error
+        &amp;io-port-error
+          &amp;io-closed-error
+          &amp;io-read-error
+          &amp;io-write-error
+        &amp;io-unknown-host-error
+      &amp;process-exception
+      &amp;type-error
+    &amp;http-redirection
+    &amp;warning
+      &amp;eval-warning
+}}}
+
+== Chez Scheme ==
+{{{
+  &amp;condition
+    &amp;irritants
+    &amp;message
+    &amp;serious
+      &amp;violation
+        &amp;assertion
+        &amp;implementation-restriction
+          &amp;no-infinities
+          &amp;no-nans
+        &amp;lexical
+        &amp;non-continuable
+        &amp;syntax
+        &amp;undefined
+      &amp;error
+        &amp;i/o
+          &amp;i/o-port
+            &amp;i/o-decoding
+            &amp;i/o-encoding
+          &amp;i/o-read
+          &amp;i/o-write
+          &amp;i/o-invalid-position
+          &amp;i/o-filename
+            &amp;i/o-file-already-exists
+            &amp;i/o-file-does-not-exist
+            &amp;i/o-file-protection
+              &amp;i/o-file-is-read-only
+    &amp;warning
+    &amp;who
+}}}
+
+== Gambit ==
+
+  Gambit doesn't have a hierarchy, but it does have a set of standard
+  exceptions.
+{{{
+  heap-overflow-exception
+  stack-overflow-exception
+
+  no-such-file-or-directory-exception
+  os-exception
+  unbound-os-environment-variable-exception
+
+  abandoned-mutex-exception
+  deadlock-exception
+  join-timeout-exception
+  scheduler-exception
+  started-thread-exception
+  terminated-thread-exception
+  uncaught-exception
+
+  cfun-conversion-exception
+  multiple-c-return-exception
+  sfun-conversion-exception
+
+  datum-parsing-exception
+
+  expression-parsing-exception
+  unbound-global-exception
+
+  divide-by-zero-exception
+  improper-length-list-exception
+  range-exception
+  type-exception
+
+  keyword-expected-exception
+  nonprocedure-operator-exception
+  number-of-arguments-limit-exception
+  unknown-keyword-argument-exception
+  wrong-number-of-arguments-exception
+
+  error-exception
+}}}
+
+== Gauche ==
+{{{
+  &lt;condition&gt;
+    &lt;compound-condition&gt;
+    &lt;message-condition&gt;
+      &lt;error&gt;
+        &lt;io-error&gt;
+          &lt;port-error&gt;
+            &lt;io-closed-error&gt;
+            &lt;io-read-error&gt;
+            &lt;io-unit-error&gt;
+            &lt;io-write-error&gt;
+        &lt;read-error&gt;
+        &lt;system-error&gt;
+        &lt;unhandled-signal-error&gt;
+    &lt;serious-condition&gt;
+      &lt;serious-compound-condition&gt;
+}}}
+
+== GNU/MIT Scheme ==
+{{{
+  serious-condition
+    error
+      simple-error
+      illegal-datum
+        wrong-type-datum
+          wrong-type-argument
+          wrong-number-of-arguments
+        datum-out-of-range
+          bad-range-argument
+        inapplicable-object
+      file-error
+        file-operation-error
+        derived-file-error
+      port-error
+        derived-port-error
+      variable-error
+        unbound-variable
+        unassigned-variable
+      arithmetic-error
+        divide-by-zero
+        floating-point-overflow
+        floating-point-underflow
+      control-error
+        no-such-restart
+      not-loading
+      primitive-procedure-error
+        system-call-error
+    warning
+      simple-warning
+    simple-condition
+    breakpoint
+}}}
+
+== Guile ==
+
+  Guile implements SRFI 18, SRFI 34, and R6RS exceptions.
+
+== Ikarus ==
+
+  Ikarus implements R6RS exceptions.
+
+== Kawa ==
+
+  Kawa gets its taxonomy of exceptions from Java.
+
+== Larceny ==
+
+  Larceny implements R6RS exceptions.
+
+== Racket ==
+{{{
+  exn
+    exn:break
+    exn:fail
+      exn:fail:contract
+        exn:fail:contract:arity
+        exn:fail:contract:divide-by-zero
+        exn:fail:contract:non-fixnum-result
+        exn:fail:contract:continuation
+        exn:fail:contract:variable
+      exn:fail:filesystem
+        exn:fail:filesystem:exists
+        exn:fail:filesystem:version
+      exn:fail:network
+      exn:fail:out-of-memory
+      exn:fail:read
+        exn:fail:read:eof
+        exn:fail:read:non-char
+      exn:fail:syntax
+      exn:fail:unsupported
+      exn:fail:user
+}}}
+
+== R6RS ==
+{{{
+  &amp;condition
+    &amp;irritants
+    &amp;message
+    &amp;serious
+      &amp;error
+      &amp;violation
+         &amp;assertion
+         &amp;non-continuable
+         &amp;implementation-restriction
+         &amp;lexical
+         &amp;syntax
+         &amp;undefined
+    &amp;warning
+    &amp;who
+}}}
+
+== Scheme48 ==
+
+  Scheme48 implements SRFI 34, SRFI 35, and SRFI 36.
+
+== SCM ==
+
+  SCM doesn't have an exception system, although it does have a way of handling the following exceptions reported by C code:
+{{{
+  alarm-interrupt
+  arithmetic-error
+  end-of-program
+  out-of-storage
+  profile-alarm-interrupt
+  thrashing
+  user-interrupt
+  virtual-alarm-interrupt
+}}}
+
+== Scsh ==
+
+  Scsh has no condition system.  It does include an exception system for handling errors reported by Unix system calls.
+
+== SISC ==
+
+  SISC gets its taxonomy of exceptions from Java.  It also implements SRFI 18, SRFI 34, and SRFI 35.
+
+== SRFI 12: Exception Handling ==
+
+  Any object can be used to represent a condition in this system.  There is no standard taxonomy of conditions, but there are two types of condition for which special support is included:
+{{{
+  composite condition
+  property condition
+}}}
+
+== SRFI 18: Multithreading support ==
+{{{
+  abandoned-mutex-exception
+  join-timeout-exception
+  terminated-thread-exception
+  uncaught-exception
+}}}
+
+== SRFI 34: Exception Handling for Programs ==
+
+  No condition taxonomy is defined.  However, it does refer to SRFI 35 and SRFI 36.
+
+== SRFI 35: Conditions ==
+{{{
+  &amp;condition
+    &amp;message
+    &amp;serious
+      &amp;error
+}}}
+
+== SRFI 36: I/O Conditions ==
+{{{
+  &amp;error
+    &amp;i/o-error
+      &amp;i/o-filename-error
+        &amp;i/o-file-already-exists-error
+        &amp;i/o-file-protection-error
+          &amp;i/o-file-is-read-only-error
+        &amp;i/o-malformed-filename-error
+        &amp;i/o-no-such-file-error
+      &amp;i/o-port-error
+        &amp;i/o-closed-error
+        &amp;i/o-read-error
+        &amp;i/o-write-error
+  &amp;read-error
+}}}
+
+== STklos ==
+
+  STklos supports SRFI 34, SRFI 35, and SRFI 36.</pre>
+    <h2>time</h2>
+    <pre>2010-08-29 21:16:18</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

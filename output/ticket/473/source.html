@@ -1,0 +1,199 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #473</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #473</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-12 02:22:27</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>R6RS allows only a single library declaration, `import`,
+at the beginning of a program body, and this must
+contain all imported libraries.
+
+Pending the result of ticket #472 we may also allow
+`include(-ci)` and `cond-expand` to expand into
+imports, and so the single form restriction would not
+make sense.  However, it would be reasonable to
+restrict all library declarations to the beginning of
+a program - the first non-declaration would begin
+the real body.  This is the `beginning-only` option.
+
+The advantage of the `r6rs` proposal is that it would
+not require any changes in existing R6RS program
+loading implementations to support.  If the result of
+ticket #472 indicates multiple declaration types are
+available this option would automatically become
+invalid, so you don't need to vote against it on those
+grounds.
+
+The advantage of the `beginning-only` option is
+that it becomes possible to statically determine
+all program imports without expansion, which was
+the primary motivation of a static library system.
+
+The final alternative is `any-top-level`, which
+allows these forms anywhere at the top-level,
+possibly interspersed with definitions.  The advantage
+of this is that you can cut&amp;paste repl sessions
+(for which interspersed imports are always allowed)
+as a program.  The disadvantage is that programs
+can no longer be resolved separately from expansion.</pre>
+    <h2>id</h2>
+    <pre>473</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>alexshinn</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>library declaration locations in top-level</pre>
+    <h2>time</h2>
+    <pre>2012-09-13 21:13:27</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-12 02:22:27</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1349983347762604</pre>
+    <h2>ticket</h2>
+    <pre>473</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 02:22:27</pre>
+    <h2>Change at time 2012-10-12 02:22:27</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349983347762604</pre>
+    <h2>ticket</h2>
+    <pre>473</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 02:22:27</pre>
+    <h2>Change at time 2012-10-12 02:22:27</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349983347762604</pre>
+    <h2>ticket</h2>
+    <pre>473</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 02:22:27</pre>
+    <h2>Change at time 2012-10-04 21:37:37</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1349361457959088</pre>
+    <h2>ticket</h2>
+    <pre>473</pre>
+    <h2>time</h2>
+    <pre>2012-10-04 21:37:37</pre>
+    <h2>Change at time 2012-10-04 21:37:37</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1349361457959088</pre>
+    <h2>ticket</h2>
+    <pre>473</pre>
+    <h2>time</h2>
+    <pre>2012-10-04 21:37:37</pre>
+    <h2>Change at time 2012-10-04 21:37:37</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1349361457959088</pre>
+    <h2>ticket</h2>
+    <pre>473</pre>
+    <h2>time</h2>
+    <pre>2012-10-04 21:37:37</pre>
+    <h2>Change at time 2012-10-03 01:10:13</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 voted to adopt the `beginning-only` alternative.  This means that programs (but not libraries or the REPL) must have all their `import` declarations appear at the beginning of the program.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1349201413377997</pre>
+    <h2>ticket</h2>
+    <pre>473</pre>
+    <h2>time</h2>
+    <pre>2012-10-03 01:10:13</pre>
+    <h2>Change at time 2012-10-03 01:10:13</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1349201413377997</pre>
+    <h2>ticket</h2>
+    <pre>473</pre>
+    <h2>time</h2>
+    <pre>2012-10-03 01:10:13</pre></body></html>

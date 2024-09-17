@@ -1,0 +1,29 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NegativeSqrt</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NegativeSqrt.md">NegativeSqrt</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Negative&shy;Sqrt</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-07-16 01:16:33</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/NegativeSqrt/history">history</a></div>
+      <div class="source"><a href="/wiki/NegativeSqrt/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a test of <span class="monospace">(sqrt -1)</span> to determine various issues: does the value become inexact, and if we don't have complex numbers, do we get an error or a NaN?</p>
+      <p>Returns exact <span class="monospace">+i</span>:  Racket, MIT, Gambit, Chibi, Chez, Vicare, Ypsilon, Mosh, IronScheme, STklos, Spark, Owl Lisp</p>
+      <p>Return inexact <span class="monospace">0.0+1.0i</span>: Gauche, Chicken (with the numbers egg), Scheme48, Guile, Kawa, SISC, SCM, Larceny, KSi, UMB</p>
+      <p>Returns <span class="monospace">+nan.0</span>: Chicken (without the numbers egg), NexJ, RScheme, BDC, VX, Inlab</p>
+      <p>Returns <span class="monospace">+nan.0+nan.0i</span>: Scheme 7</p>
+      <p>Signals an error: Bigloo, scsh, Ikarus, Scheme 9, XLisp, Rep, Schemik, Elk, Llava, SXM, Sizzle, Dfsch</p>
+      <p><span class="monospace">sqrt</span> is undefined: SigScheme, Shoe, TinyScheme, Oaklisp, FemtoLisp</p>
+      <p>Dream hangs.</p></div></body></html>

@@ -1,0 +1,206 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #469</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #469</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-12 06:24:02</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>{{{
+On Wed, Aug 8, 2012 at 5:11 AM, Mark H Weaver &lt;mhw@netris.org&gt; wrote:
+&gt;&gt; There is widespread agreement in the relevant floating point standards
+&gt;&gt; (C99, C11, ISO/IEC 10967, and probably IEEE 754 although I haven't
+&gt;&gt; purchased a copy) that (angle -0.0-0.0i) = (atan -0.0 -0.0) = -pi, but
+&gt;&gt; the definition of 'angle' on page 36 of R7RS-draft-6 (section 6.2.6)
+&gt;&gt; asserts that -pi&lt;  (angle z)&lt;= pi for all complex 'z'.  I suggest that
+&gt;&gt; this be changed to -pi&lt;= (angle z)&lt;= pi.
+&gt;
+&gt; Another problem along the same lines: earlier on page 36, R7RS-draft-6
+&gt; asserts that the value of &quot;log z is defined to be the one whose
+&gt; imaginary part lies in the range from -pi (exclusive) to pi
+&gt; (inclusive)&quot;, and then proceeds to define the inverse trigonometric
+&gt; functions in terms of log.  That should be changed to '-pi (inclusive)'.
+&gt;
+&gt; Note that X3J13 voted for these changes to Common Lisp in January 1989.
+&gt;   Search for &quot;COMPLEX-ATAN-BRANCH-CUT&quot; in the following pages for more
+&gt; details:
+}}}
+
+http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node128.html
+
+http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node129.html
+</pre>
+    <h2>id</h2>
+    <pre>469</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Change definition of (atan -0.0 -0.0)</pre>
+    <h2>time</h2>
+    <pre>2012-08-29 12:10:17</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-12 06:24:02</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1349997842512012</pre>
+    <h2>ticket</h2>
+    <pre>469</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 06:24:02</pre>
+    <h2>Change at time 2012-10-12 06:24:02</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349997842512012</pre>
+    <h2>ticket</h2>
+    <pre>469</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 06:24:02</pre>
+    <h2>Change at time 2012-10-12 06:24:02</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349997842512012</pre>
+    <h2>ticket</h2>
+    <pre>469</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 06:24:02</pre>
+    <h2>Change at time 2012-09-19 00:33:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The first point has been added.  The second point was already added as an editorial change.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1347989609064731</pre>
+    <h2>ticket</h2>
+    <pre>469</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 00:33:29</pre>
+    <h2>Change at time 2012-09-19 00:33:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1347989609064731</pre>
+    <h2>ticket</h2>
+    <pre>469</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 00:33:29</pre>
+    <h2>Change at time 2012-09-19 00:33:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1347989609064731</pre>
+    <h2>ticket</h2>
+    <pre>469</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 00:33:29</pre>
+    <h2>Change at time 2012-09-19 00:20:46</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 accepted this under no-objection procedure.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1347988846291581</pre>
+    <h2>ticket</h2>
+    <pre>469</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 00:20:46</pre>
+    <h2>Change at time 2012-09-19 00:20:46</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1347988846291581</pre>
+    <h2>ticket</h2>
+    <pre>469</pre>
+    <h2>time</h2>
+    <pre>2012-09-19 00:20:46</pre>
+    <h2>Change at time 2012-08-29 12:11:46</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>See also http://www.lispworks.com/documentation/lw61/CLHS/Issues/iss069_w.htm and http://www.lispworks.com/documentation/lw61/CLHS/Issues/iss192_w.htm.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1346217106438264</pre>
+    <h2>ticket</h2>
+    <pre>469</pre>
+    <h2>time</h2>
+    <pre>2012-08-29 12:11:46</pre></body></html>

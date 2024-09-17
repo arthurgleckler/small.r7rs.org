@@ -1,0 +1,121 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki BlobAPI version 9</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki BlobAPI version 9</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>98.14.173.81</pre>
+    <h2>name</h2>
+    <pre>BlobAPI</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This is a proposal for a WG2 bytevector API.  The conceit is that everything is a separate procedure with minimal arguments; this makes for a ''lot'' of procedures, but each one can be easily inlined by even a very dumb compiler, providing high efficiency.
+
+
+== Numeric procedures ==
+
+(`bytevector-&lt;type&gt;&lt;endian&gt;-ref` ''bytevector n''`)`
+
+Returns a Scheme number corresponding to the binary value encoded according to ''type'' beginning at offset ''n'' in ''bytevector''.  This procedure treats ''bytevector'' as potentially containing more than one type.
+
+(`&lt;type&gt;&lt;endian&gt;vector-ref` ''bytevector n''`)`
+
+Returns a Scheme number corresponding to the binary value encoded according to ''type'' beginning at offset ''n * b'' in ''bytevector'', where ''b'' is the size of the binary value in bytes.  This procedure treats ''bytevector'' as a uniformly typed vector.
+
+(`bytevector-&lt;type&gt;&lt;endian&gt;-set!` ''bytevector n v''`)`
+
+Converts ''v'' to a binary value encoded according to ''type'' and places it into ''bytevector'' beginning at offset ''n''.  This procedure treats ''bytevector'' as potentially containing more than one type.
+
+(`&lt;type&gt;&lt;endian&gt;vector-set!` ''bytevector n v''`)`
+
+Converts ''v'' to a binary value encoded according to ''type'' and places it into ''bytevector'' beginning at offset ''n * b'', where ''b'' is the size of the binary value in bytes.  This procedure treats ''bytevector'' as a uniformly typed vector.
+
+(`&lt;type&gt;&lt;endian&gt;vector-length` ''bytevector''`)`
+
+Returns a Scheme number corresponding to the length of ''bytevector''divided by the size of the binary value in bytes.
+
+== Numeric types ==
+
+The types are:
+
+ `u8`::
+  unsigned 8-bit integer
+ `s8`::
+  signed 8-bit integer
+ `u16`::
+  unsigned 16-bit integer
+ `s16`::
+  signed 16-bit integer
+ `u32`::
+  unsigned 32-bit integer
+ `s32`::
+  signed 32-bit integer
+ `u64`::
+  unsigned 64-bit integer
+ `s64`::
+  signed 64-bit integer
+ `u128`::
+  unsigned 128-bit integer
+ `s128`::
+  signed 128-bit integer
+ `f32`::
+  32-bit float
+ `f64`::
+  64-bit float
+ `c64`::
+  64-bit complex number (two 32-bit floats, real followed by imaginary)
+ `c128`::
+  128-bit complex number (two 64-bit floats, real followed by imaginary)
+
+The endianism values are:
+
+ (empty)::
+  Native representations (system-dependent)
+ `le`::
+  Little-endian (for float and complex, IEEE format)
+ `be`::
+  Big-endian (for float and complex, IEEE format)
+
+Endianism is not applicable to the `u8` and `s8` types.
+
+
+== String procedures ==
+
+ (`bytevector-&lt;encoding&gt;-ref` ''bytevector n l''`)`::
+  Returns a Scheme string corresponding to the binary value encoded according to ''encoding'' beginning at offset ''n'' in ''bytevector'' and continuing for ''l'' bytes.
+ (`bytevector-&lt;encoding&gt;-set!` ''blob n v''`)`::
+  Converts ''v'' to a binary string encoded according to ''encoding'' and places it into ''bytevector'' beginning at offset ''n''.  Returns the number of bytes encoded.
+
+== String encodings ==
+
+ `utf8`::
+  UTF-8 encoding
+ `utf16`::
+  UTF-16 encoding (respects BOM if present, defaults to native encoding otherwise)
+ `utf16be`::
+  UTF-16BE encoding (treats BOM as a normal character)
+ `utf16le`::
+  UTF-16LE encoding (treats BOM as a normal character)
+
+=== Equality, map, for-each, fold, unfold ===
+
+'''TBD'''</pre>
+    <h2>time</h2>
+    <pre>2012-06-08 10:31:09</pre>
+    <h2>version</h2>
+    <pre>9</pre></body></html>

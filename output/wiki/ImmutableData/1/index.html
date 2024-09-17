@@ -1,0 +1,33 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImmutableData</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImmutableData.md">ImmutableData</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Immutable&shy;Data</h1>
+    <div class="wiki metadata">
+      <div class="author">medernac</div>
+      <div class="time">2010-11-13 17:58:30</div>
+      <div class="version">1<span class="comment">Immutable data</span><a href="/wiki/ImmutableData/history">history</a></div>
+      <div class="source"><a href="/wiki/ImmutableData/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Immutabledata">Immutable data</h2>
+      <p>Why not having a distinct 'immutable' data type, containing a value
+which cannot be mutated, and an associated function which creates copy
+of the immutable data at each call ?</p>
+      <p><span class="monospace">(make-immutable data)</span></p>
+      <p>Returns an immutable data containing a copy of data.</p>
+      <p><span class="monospace">(immutable? obj)</span></p>
+      <p>Returns #t if obj is an immutable, otherwise returns #f.</p>
+      <p><span class="monospace">(immutable-&gt;copy obj)</span></p>
+      <p>This is an error if obj is not an immutable, else it returns a copy of the data contained in obj.</p>
+      <h3 id="Note">Note</h3>
+      <p>Of course it is impossible to mutate the value contained inside an 'immutable' object, however the 'immutable' object itself could be mutated. For instance it is possible to mutate a variable containing an 'immutable' object, or a list containing 'immutable' objects but not a list contained inside an 'immutable' object.</p></div></body></html>

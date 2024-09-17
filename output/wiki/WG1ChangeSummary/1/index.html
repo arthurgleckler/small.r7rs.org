@@ -1,0 +1,67 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1ChangeSummary</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1ChangeSummary.md">WG1ChangeSummary</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Change&shy;Summary</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2011-07-14 05:46:59</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/WG1ChangeSummary/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1ChangeSummary/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a very brief summary of what's changed in WG1 relative to R5RS so far:</p>
+      <ul>
+        <li>Modules with <span class="monospace">import</span>, <span class="monospace">export</span>, <span class="monospace">begin</span> (for embedded code), <span class="monospace">include</span>, <span class="monospace">include-ci</span>, and <span class="monospace">cond-expand</span></li>
+        <li><span class="monospace">Syntax-rules</span>: ellipsis escaping, SRFI 46, tail patterns, and the <span class="monospace">_</span> wildcard</li>
+        <li>Identifiers are case-sensitive</li>
+        <li>Identifiers and other syntax must be delimited with whitespace</li>
+        <li>Extended identifier syntax, including <span class="monospace">\</span> and <span class="monospace">|...|</span> escapes</li>
+        <li><span class="monospace">#;</span> and <span class="monospace">#| ... |#</span> comment styles</li>
+        <li>List of named characters and string esscapes standardized</li>
+        <li>Exception system</li>
+        <li>The only standardized condition is <span class="monospace">error</span> (with accessors and predicate)</li>
+        <li>Inexact infinities on systems that support them</li>
+        <li>IEEE semantics for transcendental functions</li>
+        <li>Unicode is supported but not required, including folding and normalization</li>
+        <li>Binary I/O</li>
+        <li>String and bytevector ports</li>
+        <li>SRFI 9 records</li>
+        <li><span class="monospace">Transcript-on</span> and <span class="monospace">transcript-off</span> are gone</li>
+        <li><span class="monospace">Letrec*</span>, <span class="monospace">let-values</span>, and <span class="monospace">let*-values</span></li>
+        <li><span class="monospace">Syntax-error</span></li>
+        <li><span class="monospace">Map</span>, <span class="monospace">for-each</span>, <span class="monospace">assoc</span>, and <span class="monospace">member</span> extended as in SRFI 1</li>
+        <li>Internal <span class="monospace">define-syntax</span></li>
+        <li>Bytevectors</li>
+        <li>Support for cyclic list structure as in SRFI 1</li>
+        <li>Read and write cyclic data, with <span class="monospace">write-simple</span> to suppress writing</li>
+        <li><span class="monospace">exact-integer?</span> and <span class="monospace">exact-integer-sqrt</span></li>
+        <li><span class="monospace">Current-error-port</span></li>
+        <li><span class="monospace">Delete-file</span> and <span class="monospace">file-exists</span></li>
+        <li><span class="monospace">Finite?</span> and <span class="monospace">nan?</span> as in R6RS but supporting complex numbers too</li>
+        <li><span class="monospace">Command-line</span>, <span class="monospace">exit</span>, <span class="monospace">get-environment-variable</span>, <span class="monospace">get-environment-variables</span></li>
+        <li><span class="monospace">Call/cc</span></li>
+        <li>SRFI 39 parameters</li>
+        <li>Access to TAI and elapsed time</li>
+        <li><span class="monospace">Case-lambda</span></li>
+        <li><span class="monospace">=&gt;</span> in <span class="monospace">case</span></li>
+        <li>Case folding flags</li>
+        <li><a href="/wiki/DivisionRiastradh">DivisionRiastradh</a></li>
+        <li><span class="monospace">Port?</span>, <span class="monospace">close-port</span>, and <span class="monospace">port-closed?</span></li>
+        <li>Real numbers have #e0 as the imaginary part</li>
+        <li>Nested quasiquotes with partial specification for mutability</li>
+        <li>Procedures need not be tagged with locations</li>
+        <li>Dynamic-wind thunks run in the outer dynamic environment</li>
+        <li><span class="monospace">Read-line</span></li>
+        <li>Physical newline in a string means <span class="monospace">\n</span></li>
+        <li><span class="monospace">Environment</span> from R6RS</li>
+        <li>Multiple values can be sent to continuations which discard them</li></ul></div></body></html>

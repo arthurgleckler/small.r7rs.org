@@ -1,0 +1,42 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ChezReplSemantics</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ChezReplSemantics.md">ChezReplSemantics</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Chez&shy;Repl&shy;Semantics</h1>
+    <div class="wiki metadata">
+      <div class="author">arcfide</div>
+      <div class="time">2010-02-16 02:15:48</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ChezReplSemantics/history">history</a></div>
+      <div class="source"><a href="/wiki/ChezReplSemantics/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="REPLSemanticsofChezScheme">REPL Semantics of Chez Scheme</h1>
+      <h2 id="Introduction">Introduction</h2>
+      <p>Chez Scheme represents an example of a high-speed incremental compiler with an interactive environemnt that follows a traditional lisp REPL behavior. It is interesting to note that Chez Scheme achieves high performance while still providing a dynamic environment, though the optimizations that Chez Scheme can make are limited by the top level semantics.</p>
+      <h2 id="OfficialDocumentation">Official Documentation</h2>
+      <p>The Chez Scheme User's Guide Version 8 provides a chapter on the <a href="http://www.scheme.com/csug8/use.html#./use:h3">Interaction Environment</a> of Chez Scheme. The reader is referred to this reading for the full description.</p>
+      <h2 id="ImportantKeyREPLSemantics">Important Key REPL Semantics</h2>
+      <ul>
+        <li>Expressions are entered at the REPL one at a time</li>
+        <li>Each expression received is expanded and evaluated in the current interaction environment before the next expression that is entered is processed</li>
+        <li>Files that are <span class="monospace">load</span>ed by reading each form in the file and processing each in turn, as if they had been entered by hand into the REPL</li>
+        <li>There is a single interaction environment containing bindings to macro transformers and procedures</li>
+        <li>The initial environment is the Chez Scheme default environment</li>
+        <li>All initial bindings are immutable</li>
+        <li>Definitions are mutable</li>
+        <li>Initial bindings may be redefined</li>
+        <li>A parameter exists that allows you to alter the interaction environment using <span class="monospace">environment</span> controls</li>
+        <li>All identifiers are considered implicitly bound if not already defined
+          <ul>
+            <li>This allows recursive definitions to be entered one at a time</li>
+            <li>As a result, top-level identifiers will mess with <span class="monospace">free-identifier=?</span>, requiring auxilary syntaxes to be explicitly bound instead of implicitly used</li></ul></li>
+        <li>Top level identifiers are not optimized away, since they may be reassigned</li></ul></div></body></html>

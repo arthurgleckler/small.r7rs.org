@@ -1,0 +1,91 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ExceptionHandlingCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ExceptionHandlingCowan.md">ExceptionHandlingCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Exception&shy;Handling&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">arcfide</div>
+      <div class="time">2010-08-29 20:30:53</div>
+      <div class="version">12<span class="comment">My comments and position</span><a href="/wiki/ExceptionHandlingCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ExceptionHandlingCowan/12/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Design">Design</h1>
+      <p>When a situation calling for exceptional handling is
+detected either by the implementation or by a
+user program, a representation of that situation called a <i>condition</i>
+(which can be any Scheme object) is constructed, and the exception is
+announced by an action called <i>signaling
+the condition</i>.  This action allows a dynamically established <i>condition handler</i>
+an opportunity to resolve the problem.  At any given time, only one handler
+is active.</p>
+      <p>When a condition is signaled, the active handler is called with one
+argument, a condition which represents the situation.  The
+handler function will execute in the dynamic environment of the call to
+<span class="monospace">signal</span>, except that the current condition handler
+becomes the <i>enclosing handler</i>, which is the handler that was current at the point that the
+current handler function was established as the active handler.  This means that
+a handler is not expected to handle conditions signaled within its dynamic extent.</p>
+      <p>If a handler returns normally, any values it returns are discarded.
+The enclosing handler is invoked on the condition instead, and this
+operation may be repeated until there are no more handlers.
+Escaping from handler control is performed by invoking a captured
+continuation.  For example, a handler may return to the point where it was
+signaled by invoking a continuation stored inside the condition.  Alternatively,
+it may return to the point where it was bound by invoking a
+continuation in a variable that is lexically visible to the handler.
+In any case, the appropriate current handler will be restored as part of the
+dynamic environment.</p>
+      <p>The outermost condition handler is implementation-defined.  It generally invokes
+a top-level exit continuation for the whole program, or the current
+thread (if some concept of threading exists), possibly displaying
+useful debugging information to some interested parties in some
+implementation-specific way.  Implementations may provide
+an interactive debugger that lets the programmer perform actions other
+than invoking the top-level exit continuation, perhaps invoking retries
+or other arbitrary continuations.</p>
+      <p>See <a href="/wiki/StandardConditionPredicatesCowan">StandardConditionPredicatesCowan</a> for standard predicates and accessors useful
+with implementation-defined conditions.</p>
+      <h1 id="Procedures">Procedures</h1>
+      <ul>
+        <li><span class="monospace">(current-condition-handler)</span></li></ul>
+      <p>Returns the current condition handler.</p>
+      <ul>
+        <li><span class="monospace">(with-condition-handler </span><i>handler</i><span class="monospace"> </span><i>thunk</i><span class="monospace">)</span></li></ul>
+      <p>Applies <i>thunk</i> within a dynamic environment in
+which  `<span class="monospace">handler</span>` is the current condition handler.  The supplied handler is executed
+in the dynamic environment of the call to <span class="monospace">signal</span> that signals the condition,
+except that the condition handler which was in effect when <span class="monospace">with-condition-handler</span> was called is
+reinstated for the dynamic extent of the handler.  So if it signals any conditions without
+explicitly changing to a different dynamic environment through applying continuations,
+they will be passed to the previous handler, not the same one.</p>
+      <ul>
+        <li><span class="monospace">(signal </span><i>object</i><span class="monospace">)</span></li></ul>
+      <p>Signals the condition <i>object</i>.  Never returns normally.</p>
+      <ul>
+        <li><span class="monospace">(error-in </span><i>who</i><span class="monospace"> </span><i>message</i><span class="monospace">. </span> <i>irritants</i><span class="monospace">)</span></li></ul>
+      <p>Constructs a condition and signals it.  Never returns normally.
+This procedure is compatible with R6RS <span class="monospace">error</span>.</p>
+      <p>The <span class="monospace">who</span> argument must be a string or a symbol that describes the procedure or operation that detected the exception. The <i>message</i> argument must be a string that describes the exceptional situation. The <i>irritants</i> should be the arguments to the operation that detected the operation, but may be any objects relevant to the exception.</p>
+      <ul>
+        <li><span class="monospace">(error </span><i>message</i><span class="monospace">. </span> <i>irritants</i><span class="monospace">)</span></li></ul>
+      <p>Constructs a condition and signals it.  Never returns normally.
+This procedure is compatible with SRFI 23.</p>
+      <p>The <i>message</i> argument must be a string that describes the exceptional situation. The <i>irritants</i> should be the arguments to the operation that detected the operation, but may be any objects relevant to the exception.</p>
+      <h1 id="CommentsandPositions">Comments and Positions</h1>
+      <p>Rather than write out my own exception proposal, I will just put my comments here. This system is very close to R6RS, but does not provide good reasons for deviating from R6RS' in the ways that it does. In the name of backwards compatibility, I see no good reason to not use R6RS' system over this one, given that the system would only change names and introduce only two extra names. This gains backwards compatibility with the most widely implemented exception system (across implementations, if not in total code base), doesn't lose simplicity, gains usability and convenience, maintains expressiveness, and makes life at least no more difficult for those trying to port code from non-R6RS systems. - Aaron W. Hsu (arcfide)</p>
+      <h1 id="Thanks">Thanks</h1>
+      <p>Thanks to Taylor Campbell, Alaric Snell-Pym as the author of
+<a href="/wiki/ErrorsSnellPym">ErrorsSnellPym</a>, Kent Pitman as the author of the ISLisp specification,
+and the editors of R6RS and the ANSI CL standard,
+from all of whom I have derived inspiration and stolen descriptions.  They bear no responsibility
+for infelicities in this proposal.</p></div></body></html>

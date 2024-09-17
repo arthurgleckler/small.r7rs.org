@@ -1,0 +1,35 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>MultipleValues</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/MultipleValues.md">MultipleValues</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Multiple&shy;Values</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-11-18 09:31:54</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/MultipleValues/history">history</a></div>
+      <div class="source"><a href="/wiki/MultipleValues/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h3 id="Whereasinglevalueisexpected">Where a single value is expected</h3>
+      <p>I asked my usual suite of Schemes to evaluate <span class="monospace">(+ 1 (values 2 3))</span>.</p>
+      <p>Racket, MIT,
+Gambit, Scheme48/scsh, Kawa, SISC, Chibi, SCM, Chez, Ikarus/Vicare, Ypsilon,
+IronScheme, KSi, SigScheme, Shoe, SXM, Sizzle, Spark, Femtolisp, Owl Lisp
+all report errors, either of the form &quot;Single
+value expected, multiple values received&quot;, or else a low-level error
+reflecting how multiple values are represented.</p>
+      <p>Gauche, Chicken,
+Bigloo, Guile, Larceny, Mosh, NexJ, STklos, S7, XLisp, Dfsch reduce the multiple values to a
+single value.  Of these, Guile and NexJ treat zero values passed to a single-valued continuation as an error, Bigloo transforms it to 0, XLisp and Dfsch as the empty list, and the rest as their implementation-specific &quot;undefined&quot; value.</p>
+      <p>TinyScheme, Scheme 9, Dream, Rep, Schemik, Elk, UMB, VX, Oaklisp, Inlab don't support <span class="monospace">values</span>.</p>
+      <h3 id="Embeddedinabeginblock">Embedded in a begin block</h3>
+      <p>Here I'm testing <span class="monospace">(begin (values 1 2) 3)</span> and <span class="monospace">(begin (values) 3)</span>.  Of the Schemes above that support multiple values, only SCM, SigScheme, Shoe, and Owl Lisp report an error; the rest return 3.</p></div></body></html>

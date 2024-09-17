@@ -1,0 +1,87 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki IntegerSetsCowan version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki IntegerSetsCowan version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>IntegerSetsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Issues ==
+
+1. Limited sets as below, or unlimited sets as in Chicken or Chibi?
+
+{{{
+#!html
+&lt;h2 id=&quot;Integersetprocedures&quot;&gt;Integer set procedures&lt;/h2&gt;&lt;p&gt;
+
+The elements of an integer set are non-negative exact integers less than the set's &lt;em&gt;limit&lt;/em&gt;, which is specified instead of a comparator when it is created.  The procedures for creating and manipulating integer sets are the same as those for &lt;a href=&quot;http://srfi.schemers.org/srfi-113/srfi-113.html&quot;&gt;SRFI 113 sets&lt;/a&gt;, except that &lt;code&gt;set&lt;/code&gt; is replaced by &lt;code&gt;integer-set&lt;/code&gt; in their names, that &lt;code&gt;set-comparator&lt;/code&gt; is replaced by &lt;code&gt;integer-set-limit&lt;/code&gt;, and that in &lt;code&gt;integer-set&lt;/code&gt;, &lt;code&gt;integer-set-unfold&lt;/code&gt;, &lt;code&gt;integer-set-map&lt;/code&gt;, and &lt;code&gt;integer-set-copy&lt;/code&gt; the &lt;em&gt;comparator&lt;/em&gt; argument is replaced by a &lt;em&gt;limit&lt;/em&gt; argument, a non-negative integer.&lt;/p&gt;
+
+&lt;p&gt;Wherever a newly allocated integer set is returned by any other procedure, it has the same limit as the source sets.  It is an error for a single procedure to be invoked on integer sets with different limits.&lt;/p&gt;
+
+&lt;p&gt;Although sets subsume integer sets, providing them separately allows for increased implementation efficiency.  There are two Chicken eggs that provide integer sets: &lt;a href=&quot;http://wiki.call-cc.org/eggref/4/iset#integer-sets&quot;&gt;&lt;code&gt;iset&lt;/code&gt;&lt;/a&gt;, which is conceptually similar to the integer sets described here; and &lt;a href=&quot;http://wiki.call-cc.org/eggref/4/cis&quot;&gt;&lt;code&gt;cis&lt;/code&gt;&lt;/a&gt;, which uses lists of integer intervals.&lt;/p&gt;
+
+
+
+&lt;h3 id=&quot;Additionalintegersetprocedures&quot;&gt;Additional integer set procedures&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;(integer-set-limit &lt;/code&gt;&lt;em&gt;integer-set&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Returns the limit of &lt;em&gt;integer-set&lt;/em&gt;.  This procedure corresponds to &lt;code&gt;set-comparator&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;(universal-integer-set &lt;/code&gt;&lt;em&gt;limit&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;&lt;p&gt;
+
+Returns a newly allocated integer set.  The possible elements of the set are the exact integers from 0 to &lt;em&gt;limit&lt;/em&gt; - 1, where &lt;em&gt;limit&lt;/em&gt; is an exact non-negative integer.  The set contains all possible elements.
+
+&lt;/p&gt;&lt;p&gt;&lt;code&gt;(range-&amp;gt;integer-set &lt;/code&gt;&lt;em&gt;limit low high&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;&lt;p&gt;
+
+Returns a newly allocated integer set.  The possible elements of the set are the exact integers from 0 to &lt;em&gt;limit&lt;/em&gt; - 1, where &lt;em&gt;limit&lt;/em&gt; is an exact non-negative integer.  The set contains the elements from &lt;em&gt;low&lt;/em&gt; (inclusive) to &lt;em&gt;high&lt;/em&gt; (exclusive).
+
+&lt;/p&gt;&lt;p&gt;&lt;code&gt;(integer-set-adjoin-range &lt;/code&gt;&lt;em&gt;integer-set low high&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;&lt;p&gt;
+
+Returns a newly allocated integer set with the same limit as &lt;em&gt;integer-set&lt;/em&gt; and that contains all its values, and in addition each integer from &lt;em&gt;low&lt;/em&gt; (inclusive) to &lt;em&gt;high&lt;/em&gt; (exclusive) unless it is already equal to an existing member.
+
+&lt;/p&gt;&lt;p&gt;&lt;code&gt;(integer-set-adjoin-range! &lt;/code&gt;&lt;em&gt;integer-set low high&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;&lt;p&gt;
+
+A linear update procedure that returns an integer set with the same limit as &lt;em&gt;integer-set&lt;/em&gt; and that contains all its values, and in addition each integer from &lt;em&gt;low&lt;/em&gt; (inclusive) to &lt;em&gt;high&lt;/em&gt; (exclusive) unless it is already equal to an existing member.
+
+&lt;/p&gt;&lt;p&gt;&lt;code&gt;(integer-set-complement &lt;/code&gt;&lt;em&gt;integer-set&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;&lt;p&gt;
+
+Returns a newly allocated integer set that is the complement of &lt;em&gt;integer-set&lt;/em&gt;.
+
+&lt;/p&gt;&lt;p&gt;&lt;code&gt;(integer-set-complement! &lt;/code&gt;&lt;em&gt;integer-set&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;&lt;p&gt;
+
+A linear update procedure that returns a set that is the complement of &lt;em&gt;integer-set&lt;/em&gt;.
+
+&lt;/p&gt;&lt;p&gt;&lt;code&gt;(integer-set-min &lt;/code&gt;&lt;em&gt;integer-set&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;&lt;p&gt;&lt;code&gt;(integer-set-max &lt;/code&gt;&lt;em&gt;integer-set&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;&lt;p&gt;
+
+Returns the smallest or largest integer in &lt;i&gt;integer-set&lt;/i&gt;, or &lt;code&gt;#f&lt;/code&gt; if there is none.
+
+&lt;/p&gt;&lt;p&gt;&lt;code&gt;(integer-set-delete-min! &lt;/code&gt;&lt;em&gt;integer-set&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;(integer-set-delete-max! &lt;/code&gt;&lt;em&gt;integer-set&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;&lt;/p&gt;&lt;p&gt;
+
+Linear update procedures that return two values: the smallest or largest integer in &lt;em&gt;integer-set&lt;/em&gt; or &lt;code&gt;#f&lt;/code&gt; if there is none, and a set which contains all the elements of &lt;em&gt;set&lt;/em&gt; except the integer being returned.
+
+&lt;/p&gt;
+}}}</pre>
+    <h2>time</h2>
+    <pre>2014-08-17 08:55:28</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

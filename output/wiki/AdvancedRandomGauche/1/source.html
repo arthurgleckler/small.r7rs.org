@@ -1,0 +1,190 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki AdvancedRandomGauche version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki AdvancedRandomGauche version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>AdvancedRandomGauche</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>{{{
+#!html
+&lt;p&gt;This module defines a set of generators and generator makers
+that yield random data of specific type and distribution.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;a name=&quot;Generators-of-primitive-data-types&quot;&gt;&lt;/a&gt;
+&lt;h3 class=&quot;subheading&quot;&gt;Generators of primitive data types&lt;/h3&gt;
+
+&lt;p&gt;Those generators generate uniformly distributed data.
+&lt;/p&gt;
+&lt;p&gt;In the following examples, we use the &lt;code&gt;generator-&amp;gt;list&lt;/code&gt; procedure to show
+some concrete data from the generators.
+&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-integers_002dbetween_0024&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-integer-generator&lt;/code&gt;&lt;i&gt; lower-bound upper-bound&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Create exact integer generators.  Creates a generator that generates integers between
+&lt;var&gt;lower-bound&lt;/var&gt; (inclusive) and &lt;var&gt;upper-bound&lt;/var&gt; (exclusive) uniformly.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;;; A dice roller
+(define dice (make-random-integer-generator 1 7))
+
+;; Roll the dice 10 times
+(generator-&amp;gt;list dice 10)
+ &amp;rArr; (6 6 2 4 2 5 5 1 2 2)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-int8s&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-u8-generator&lt;/code&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-uint8s&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-s8-generator&lt;/code&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-int16s&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-u16-generator&lt;/code&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-uint16s&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-s16-generator&lt;/code&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-int32s&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-u32-generator&lt;/code&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-uint32s&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-s32-generator&lt;/code&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-int64s&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-u64-generator&lt;/code&gt;&lt;/dt&gt;
+&lt;dt&gt;&lt;a name=&quot;index-uint64s&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-s64-generator&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Uniform integer generators.  Generate integers in the ranges of
+8, 16, 32, and 64bit signed and unsigned integers.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list int8s 10)
+ &amp;rArr; (20 -101 50 -99 -111 -28 -19 -61 39 110)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-booleans&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-boolean-generator&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Generates boolean values (&lt;code&gt;#f&lt;/code&gt; and &lt;code&gt;#t&lt;/code&gt;) with equal probability.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list booleans 10)
+ &amp;rArr; (#f #f #t #f #f #t #f #f #f #f)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-chars_0024&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-char-generator&lt;/code&gt;&lt;i&gt; [ char-set ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator that generates characters in the SRFI 14 &lt;var&gt;char-set&lt;/var&gt; uniformly.
+The default &lt;var&gt;char-set&lt;/var&gt; is &lt;code&gt;[A-Za-z0-9]&lt;/code&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(define alphanumeric-chars (make-random-char-generator))
+
+(generator-&amp;gt;list alphanumeric-chars 10)
+ &amp;rArr; (#\f #\m #\3 #\S #\z #\m #\x #\S #\l #\y)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-reals_002dbetween_0024&quot;&gt;&lt;/a&gt;&lt;code&gt;make-random-real-generator&lt;/code&gt;&lt;i&gt; lower-bound upper-bound&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Create a generator that generates inexact real numbers uniformly with given range.
+The procedure returns reals between
+lower-bound and upper-bound, both exclusive.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(define uniform-100 (make-random-real-generator 0 100))
+
+(generator-&amp;gt;list uniform-100 10)
+ &amp;rArr; (81.67965004942268 81.84927577572596 53.02443813660833)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Note that a generator from &lt;code&gt;make-random-real-generator&lt;/code&gt; can generate the upper-bound, as opposed to &lt;code&gt;make-random-integer-generator&lt;/code&gt;.  If you need to exclude
+the bound value, just discard it; &lt;code&gt;gfilter&lt;/code&gt; may come
+handy.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(define generate-from-0-below-1
+  (gfilter (lambda (r) (not (= r 1.0))) (make-random-real-generator$ 0.0 1.0)))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;a name=&quot;Nonuniform-distributions&quot;&gt;&lt;/a&gt;
+&lt;h3 class=&quot;subheading&quot;&gt;Nonuniform distributions&lt;/h3&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-reals_002dnormal_0024&quot;&gt;&lt;/a&gt;&lt;code&gt;make-normal-generator&lt;/code&gt;&lt;i&gt; [ mean [ deviation ] ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator that yields real numbers from a normal distribution
+with the specified &lt;var&gt;mean&lt;/var&gt; and &lt;var&gt;deviation&lt;/var&gt;.  The default value of &lt;var&gt;mean&lt;/var&gt; is 0.0
+and &lt;var&gt;deviation&lt;/var&gt; is 1.0.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-reals_002dexponential_0024&quot;&gt;&lt;/a&gt;&lt;code&gt;make-exponential-generator&lt;/code&gt;&lt;i&gt; mean&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator that yields real numbers from an exponential distribution
+with the specified &lt;var&gt;mean&lt;/var&gt;.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-integers_002dgeometric_0024&quot;&gt;&lt;/a&gt;&lt;code&gt;make-geometric-generator&lt;/code&gt;&lt;i&gt; p&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator that yields integers from the geometric distribution
+with success probability &lt;var&gt;p&lt;/var&gt; (0 &amp;lt;= p &amp;lt;= 1).  The mean is &lt;code&gt;1/p&lt;/code&gt; and
+variance is &lt;code&gt;(1-p)/p^2&lt;/code&gt;.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-integers_002dpoisson_0024&quot;&gt;&lt;/a&gt;&lt;code&gt;make-poisson-generator&lt;/code&gt;&lt;i&gt; L&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Creates a generator that yields integers from the Poisson distribution with
+mean &lt;var&gt;L&lt;/var&gt;, variance &lt;var&gt;L&lt;/var&gt;.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;a name=&quot;Generator &quot;&gt;&lt;/a&gt;
+&lt;h3 class=&quot;subheading&quot;&gt;Aggregate data generator operations&lt;/h3&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-samples_002dfrom&quot;&gt;&lt;/a&gt;&lt;code&gt;gsamples&lt;/code&gt;&lt;i&gt; generator&lt;/i&gt; ...&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Takes the &lt;i&gt;generators&lt;/i&gt;
+and returns a new generator.  Every time the resulting generator is called,
+it picks one of the input generators with equal probability, then
+calls it to get a value.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-weighted_002dsamples_002dfrom&quot;&gt;&lt;/a&gt;&lt;code&gt;gweighted-samples&lt;/code&gt; (&lt;i&gt;weight generator&lt;/i&gt;) ...&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;The arguments alternate between nonnegative real numbers and generators.
+The real number determines the weight, or the relative probability
+that the generator which follows it is chosen.  The sum of the weights doesn&amp;rsquo;t need to
+be 1.0.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-permutations_002dof&quot;&gt;&lt;/a&gt;&lt;code&gt;gpermutations&lt;/code&gt;&lt;i&gt; vector&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yields random permutations of &lt;var&gt;vector&lt;/var&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (permutations-of '(1 2 3)) 3)
+ &amp;rArr; ((1 2 3) (2 3 1) (3 2 1))
+
+(generator-&amp;gt;list (gpermutations &amp;quot;abc&amp;quot;) 3)
+ &amp;rArr; (&amp;quot;cba&amp;quot; &amp;quot;cba&amp;quot; &amp;quot;cab&amp;quot;)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-combinations_002dof&quot;&gt;&lt;/a&gt;&lt;code&gt;gcombinations&lt;/code&gt;&lt;i&gt; size vector&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a generator that yields a vector of &lt;var&gt;size&lt;/var&gt; elements
+randomly picked from &lt;var&gt;vector&lt;/var&gt;.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(generator-&amp;gt;list (gcombinations 2 #(a b c)) 5)
+ &amp;rArr; (#(a c) #(a b) #(a c) #(b a) #(a c))
+
+(generator-&amp;gt;list (combinations-of 2 '#(a b c)) 5)
+ &amp;rArr; (#(a c) #(b c) #(c b) #(b a) #(b c))
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+}}}</pre>
+    <h2>time</h2>
+    <pre>2014-11-23 10:40:42</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

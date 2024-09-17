@@ -1,0 +1,141 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #521</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #521</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Mikael More writes:
+
+  Problem:  The Library syntax requires all library content to be put within the `define-library` form (there in a `begin` or `include*`).  This means that to define a library, the programmer is reasonably required to either put all library code in a `define-library` and also indent accordingly, or maintain two files per library.
+
+  Rationale:  An incremental development situation makes use of any convenience as to increase the speed of experimentation.  In such a situation, creating two files per library would seem completely unjustified. Also, in general Scheme development, Scheme can be made to work reliably without need for separation of a library into anything like a separate header and code file. By this reason, I will not consider the two files per library use-case further here but focus on the other point:
+
+  I find a requirement that &gt;99% of the Scheme code in existence needing to be made within a particular form and indented accordingly peculiar indeed.  The way Scheme code traditionally is divided into files works so well that I believe a specific `define-library` form in addition to this to contain the library, to be superfluous. And, Scheme's traditional forms provide sufficient structure to perform indentation based on.
+
+  Suggestion:  Please find a way so that the library body in the library definition file is at the top level.
+
+  One way would be to allow a variant of `define-library` of 5.6.1. to be used as `(define-library (library name))` and then provide the library declarations subsequent to this one, with the exception of the `begin` library declaration whose contents are inlined by themselves.
+
+  I'd guess many times the Scheme file's filename would provide the information otherwise provided by `(define-library (library name))` , so that that line could be made optional generally also.
+
+In response to the last point only:  Both Chibi and most R6RS Schemes use the approach of having a library-path to specify the directories which are the roots of the library system.  Without an explicit name associated with the library, changing the root would implicitly change the name.</pre>
+    <h2>id</h2>
+    <pre>521</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Make library contents be at top level</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 16:26:43</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG decided by unanimous consent to take no action on this ticket.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>521</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>521</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>521</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-05-21 01:35:47</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>As was pointed out on the list, it's easy to change your identer not to ident the contents of `define-library` forms.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1369074947126607</pre>
+    <h2>ticket</h2>
+    <pre>521</pre>
+    <h2>time</h2>
+    <pre>2013-05-21 01:35:47</pre>
+    <h2>Change at time 2013-05-13 16:36:15</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>My experience (which as I said is still very limited) is that the modest discipline imposed by the two-file solution has surprising advantages.  For one thing, it provides superior delivery to the various kinds of Scheme implementations out there to have one or more files of code supplemented by a library-declaration file whose form depends on the system it is to be used for.
+
+Thus, I can deliver a library `foo` for both Chibi and Chicken (my two platforms of choice) by providing a `foo-impl.scm` file containing pure R5RS-ish code and two files that include it: a `foo.scm` file that takes the form of a Chicken module declaration, and a `foo.sld` file that takes the form of an R7RS library declaration.  I could easily add various `foo.*.sls` files for R6RS systems if I wanted to.  Furthermore, an  implementation of Scheme that lacks modules can just load `foo-impl.scm` and ignore all the library junk.  Note that no additional indentation exists within the `foo-impl.scm` file.
+
+In addition, while debugging I often want access to the private (non-exported) functions of the library: see my comment on #520 for why there often are such functions.  By using `load` at the REPL to load the `foo-impl.scm` file rather than some version of `import` (in Chicken, `use`), I get access to the private functions from the REPL without having to touch the export declarations.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1368437775578733</pre>
+    <h2>ticket</h2>
+    <pre>521</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 16:36:15</pre></body></html>

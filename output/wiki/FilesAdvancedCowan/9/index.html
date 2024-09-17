@@ -1,0 +1,67 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>FilesAdvancedCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/FilesAdvancedCowan.md">FilesAdvancedCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Files&shy;Advanced&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-12-11 13:45:53</div>
+      <div class="version">9<span class="comment"></span><a href="/wiki/FilesAdvancedCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/FilesAdvancedCowan/9/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a WG2 proposal for a <span class="monospace">(scheme files advanced)</span> library providing R6RS-equivalent file I/O operations in an upward compatible way, with the following exceptions:</p>
+      <ul>
+        <li>custom ports</li>
+        <li>the <span class="monospace">standard-*-port</span> procedures</li>
+        <li>the ability to change a binary port to textual after it has been used, though the <span class="monospace">binary</span> setting-list key allows mixed textual and binary operations on the same port, with limitations</li></ul>
+      <h2 id="Proceduresfromfileslibrary">Procedures from files library</h2>
+      <p>The procedures <span class="monospace">open-input-file</span>, <span class="monospace">open-binary-input-file</span>, <span class="monospace">open-output-file</span>, <span class="monospace">open-binary-output-file</span>, <span class="monospace">with-input-from-file</span>, <span class="monospace">with-output-from-file</span>, <span class="monospace">call-with-input-file</span>, and <span class="monospace">call-with-output-file</span> are the same as in the <span class="monospace">(scheme files)</span> library, except that they accept <i>settings lists</i> as well as filenames.  Settings lists allow various features of the port to be set when it is opened; see <a href="/wiki/SettingsListsCowan">SettingsListsCowan</a> for details.</p>
+      <p>The procedures <span class="monospace">file-exists?</span> and <span class="monospace">delete-file</span> are the same as in the <span class="monospace">(scheme files)</span> library.</p>
+      <h2 id="Portprocedures">Port procedures</h2>
+      <p><span class="monospace">(port-position </span><i>port</i><span class="monospace">)</span></p>
+      <p>Returns the current position of <i>port</i>.  For a binary port, returns the index of the position at which the next byte would be read from or written to the port as an non-negative exact integer. For a textual port, returns a value of some implementation-dependent type representing the port’s position; this value may be useful only as the <i>position</i> argument to <span class="monospace">set-port-position!</span>, if the latter is supported on the port.</p>
+      <p><span class="monospace">(can-get-port-position? </span><i>port</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if the port supports the <span class="monospace">port-position</span> operation, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(set-port-position! </span><i>port</i><span class="monospace"> </span><i>position</i><span class="monospace">)</span></p>
+      <p>Changes the current position of <i>port</i>.  If port is a binary port, and <i>position</i> is a non-negative exact integer object, it is used as the index of the position at which the next byte will be read from or written to the port. If port is a textual port, and <i>position</i> is the return value of a preceding call to <span class="monospace">port-position</span> on <i>port</i>, then the next character will be read or written from that position.  If <i>port</i> is a binary output port and the <i>position</i> is beyond the current end of the data, <span class="monospace">set-port-position!</span> will succeed, but the contents of any intervening positions are unspecified.</p>
+      <p>Calling this procedure on <i>port</i> resets the buffer state, allowing a binary operation to follow even if the previous operation was textual, an input operation to follow even if the previous operation was an output, or an output operation to follow even if the previous operation was an input.</p>
+      <p><span class="monospace">(can-set-port-position? </span><i>port</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if the port supports the <span class="monospace">set-port-position!</span> operation, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(port-settings  </span><i>port</i><span class="monospace">)</span></p>
+      <p>Returns an approximation to the settings list used to create <i>port</i>.  The order of keys may not be the same, some keys may be omitted if they have no effect on the implementation or if they explicitly specify the implementation default, and some values may be different if they have the same effect on the implementation.  If no settings list was used, the list <span class="monospace">(path </span><i>filename</i><span class="monospace">)</span> is returned.</p>
+      <h2 id="I/Oprocedures">I/O procedures</h2>
+      <p><span class="monospace">(binary-port-eof? </span><i>port</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if the next attempt to read a byte from <i>port</i> would return an eof-object, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(textual-port-eof? </span><i>port</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if the next attempt to read a character from <i>port</i> would return an eof-object, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(read-string! </span><i>string</i> [ <i>port</i> [ <i>start</i> [ <i>end</i> ] ] ] <span class="monospace">)</span></p>
+      <p>Reads the next <i>end</i> − <i>start</i> characters, or as many as are available before the end of file, from the binary input <i>port</i> into <i>string</i> in left-to-right order beginning at the <i>start</i> position. If <i>end</i> is not supplied, reads until the end of <i>string</i> has been reached. If <i>start</i> is not supplied, reads beginning at position 0. Returns the number of characters read.
+If no characters are available, an end-of-file object is returned.</p>
+      <p><span class="monospace">(read-lines </span> [ <i>input-port</i> ]<span class="monospace">)</span></p>
+      <p>Read all remaining characters in <i>input-port</i> as if by <span class="monospace">read-line</span>, and return a list of strings representing the lines.</p>
+      <p><span class="monospace">(read-all-bytes </span> [<i>port</i>]<span class="monospace">)</span></p>
+      <p>Returns a bytevector consisting of all the bytes that can be read from <i>port</i> before an eof-object is returned, or an eof-object if there are none.  The default port is the value of <span class="monospace">(current-input-port)</span>.</p>
+      <p><span class="monospace">(read-all-chars </span> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Returns a string consisting of all the characters that can be read from <i>port</i> before an eof-object is returned, or an eof-object if there are none.  The default port is the value of <span class="monospace">(current-input-port)</span>.</p>
+      <p><span class="monospace">(read-all </span> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Returns a list consisting of all the Scheme objects that can be read from <i>port</i> (as if by <span class="monospace">read</span>) before an eof-object is returned, or an eof-object if there are none.  The default port is the value of <span class="monospace">(current-input-port)</span>.</p>
+      <p><span class="monospace">(write-line </span><i>string</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Write <i>string</i> to <i>port</i> as if by <span class="monospace">write-string</span>, then write a newline to <i>port</i> as if by <i>newline</i>.</p>
+      <h2 id="Conversionprocedures">Conversion procedures</h2>
+      <p><span class="monospace">(string-&gt;bytevector </span><i>string</i> [ <i>settings-list</i> [ <i>start</i> [ <i>end</i> ] ] ] <span class="monospace">)</span></p>
+      <p>Converts <i>string</i> from <i>start</i> to <i>end</i> to a bytevector using the keys <span class="monospace">encoding</span>, <span class="monospace">newline</span>, <span class="monospace">encoding-error</span>, and possibly other implementation-specific keys in <i>settings-list</i>, and returns the string.</p>
+      <p><span class="monospace">(bytevector-&gt;string </span><i>bytevector</i> [ <i>settings-list</i> [ <i>start</i> [ <i>end</i> ] ] ] <span class="monospace">)</span></p>
+      <p>Converts <i>bytevector</i> from <i>start</i> to <i>end</i> to a string using the keys <span class="monospace">encoding</span>, <span class="monospace">newline</span>, <span class="monospace">encoding-error</span>, and possibly other implementation-specific keys in <i>settings-list</i>, and returns the bytevector.</p>
+      <h2 id="Fileprocedures">File procedures</h2>
+      <p><span class="monospace">(rename-file </span><i>oldname newname</i><span class="monospace">)</span></p>
+      <p>Renames a file named <i>oldname</i> to be named <i>newname</i>.  Returns an unspecified value if it succeeds; otherwise, an error satisfying <span class="monospace">file-error?</span> is raised.</p></div></body></html>

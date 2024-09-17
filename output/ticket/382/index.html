@@ -1,0 +1,84 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>382: Formal Comment: Allow &quot;if&quot; to accept arbitrarily many if-then pairs</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 382: <span class="summary">Formal Comment: Allow &quot;if&quot; to accept arbitrarily many if-then pairs</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 03:07:14</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/382/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-04-23 06:52:13</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Submitter's name: John Boyle</p>
+        <p>Submitter's email: johnthescavenger at gmail.com</p>
+        <p>Relevant draft: r7rs-small-current</p>
+        <p>Type: enhancement</p>
+        <p>Priority: major</p>
+        <p>Relevant section of draft: Conditionals</p>
+        <p>Summary: Allow <span class="monospace">if</span> to accept arbitrarily many if-then pairs.</p>
+        <p>Description:</p>
+        <p>The conditional operator <span class="monospace">if</span> should be made to accept arbitrarily many
+if-then pairs, so that:</p><span class="monospace">  (if (blip)
+      (blop)
+      (flip)
+      (flop)
+      (floop))
+</span>
+        <p>is equivalent to:</p><span class="monospace">  (cond ((blip)
+         (blop))
+        ((flip)
+         (flop))
+        (else (floop)))
+</span>
+        <p>This is more terse and provides for a better user experience.  (In the case of 3 arguments, one who writes <span class="monospace">if</span> and later discovers that he needs to add more cases must either write nested <span class="monospace">if</span>s or go back and rewrite the whole expression with <span class="monospace">cond</span>; either choice is unpleasant.  For precisely this reason, there are people who preempt it by always using <span class="monospace">cond</span> over <span class="monospace">if</span> in the first place; these people pay a cost in extra parentheses, letters typed, and indentation.)</p>
+        <p>I anticipate reluctance to alter the syntax of a primitive operator.  But this change is entirely backwards compatible with code that uses the previous <span class="monospace">if</span>, and skeptical people are free to continue only writing <span class="monospace">if</span>s with three arguments and using <span class="monospace">cond</span> otherwise.  The only thing they will lose is error-checking if they accidentally give four or more arguments to <span class="monospace">if</span>.  I point out that the same objection could be made to <span class="monospace">map</span>, <span class="monospace">+</span>, <span class="monospace">-</span>, <span class="monospace">*</span>, /, and other functions.  I add that the Arc language has used this form of <span class="monospace">if</span> without any <span class="monospace">cond</span> at all, and I didn't find anyone complaining in any of 14,000 posts on the Arc Forum that they wanted <span class="monospace">cond</span> back.</p>
+        <p>Here is an example implementation in terms of <span class="monospace">cond</span>.  (I see no reason not to allow <i>zero</i> or more arguments, rather than two or more, but I expect that is pushing it.)</p><span class="monospace">  (define-syntax my-if
+    (syntax-rules ()
+      ((my-if a b c ...) ;at least two arguments
+       (expand-if a b c ...))))
+
+  (define-syntax expand-if
+    (syntax-rules ()
+      ((expand-if) (cond (#f #f))) ;the unspecified fall-through result
+      ((expand-if x) x)
+      ((expand-if a b rest ...)
+       (cond (a b)
+             (else (expand-if rest ...))))))
+</span>
+        <p>This suggestion comes from the Arc language.  Further discussion may be found <a href="http://ycombinator.com/arc/tut.txt">here</a>, near the phrases &quot;An if&quot; and &quot;cond operator&quot;:</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-23 06:52:26</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 03:07:14</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

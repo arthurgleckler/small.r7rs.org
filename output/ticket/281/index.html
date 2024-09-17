@@ -1,0 +1,56 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>281: Make non-readable objects self-quoting in EVAL</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 281: <span class="summary">Make non-readable objects self-quoting in EVAL</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-09-29 22:11:03</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/281/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-09-22 19:07:00</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Currently, it's undefined what happens if the first argument to <span class="monospace">eval</span> is a list containing objects which have no datum representation, such as procedures, records, the end of file object, and so on.  I propose that we require <span class="monospace">eval</span> to treat all these objects as self-quoting.  In particular, that means that a list whose car is a procedure (as opposed to an expression which evaluates to a procedure) is evaluated as a function call.</p>
+        <p>I tested this last case on my usual battery of Schemes.  Racket, Bigloo, Guile, Kawa, SISC, Larceny, STklos, SigScheme, Elk, UMB, VX were able to evaluate a list with the <span class="monospace">cons</span> procedure in the car.  Gauche, Gambit, Chicken, Scheme48/scsh, Chibi, Chez, SCM, Ikarus, Ypsilon, Mosh, IronScheme rejected it; however, only Scheme48/scsh had a problem with <i>quoted</i> procedure objects.</p>
+        <p>I was not able to test MIT, KSi, Scheme 9, Scheme 7, Oaklisp due to difficulties with their <span class="monospace">eval</span> procedures (Scheme 9 has none).</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-29 17:23:11</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">Currently, it's undefined what happens if the first argument to `eval` is a list containing objects which have no datum representation, such as procedures, records, the end of file object, and so on.  I propose that we require `eval` to treat all these objects as self-quoting.  In particular, that means that a list whose car is a procedure (as opposed to an expression which evaluates to a procedure) is evaluated as a function call.
+
+I tested this last case on my usual battery of Schemes.  Racket, Bigloo, Guile, Kawa, SISC, Larceny, STklos, !SigScheme, Elk, VX were able to evaluate a list with the `cons` procedure in the car.  Gauche, Gambit, Chicken, Scheme48/scsh, Chibi, Chez, SCM, Ikarus,  !IronScheme, UMB rejected it.  I was not able to test MIT, KSi, Ypsilon, Mosh, Scheme 9, Scheme 7, Oaklisp due to various problems, typically the inability to specify a standard environment to `eval` in a standard way.</span><span class="new-value">Currently, it's undefined what happens if the first argument to `eval` is a list containing objects which have no datum representation, such as procedures, records, the end of file object, and so on.  I propose that we require `eval` to treat all these objects as self-quoting.  In particular, that means that a list whose car is a procedure (as opposed to an expression which evaluates to a procedure) is evaluated as a function call.
+
+I tested this last case on my usual battery of Schemes.  Racket, Bigloo, Guile, Kawa, SISC, Larceny, STklos, !SigScheme, Elk, UMB, VX were able to evaluate a list with the `cons` procedure in the car.  Gauche, Gambit, Chicken, Scheme48/scsh, Chibi, Chez, SCM, Ikarus, Ypsilon, Mosh, !IronScheme rejected it; however, only Scheme48/scsh had a problem with ''quoted'' procedure objects.
+
+I was not able to test MIT, KSi, Scheme 9, Scheme 7, Oaklisp due to difficulties with their `eval` procedures (Scheme 9 has none).</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-29 22:11:03</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Given the loud complaints about this, and the fact that the quoted version works in all Schemes but one, I am withdrawing this ticket.</p></div></div></div></div></div></body></html>

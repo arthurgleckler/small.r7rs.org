@@ -1,0 +1,126 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>R7RSSmallErrata</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/R7RSSmallErrata.md">R7RSSmallErrata</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">R7RSSmall&shy;Errata</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-06-18 01:33:29</div>
+      <div class="version">27<span class="comment"></span><a href="/wiki/R7RSSmallErrata/history">history</a></div>
+      <div class="source"><a href="/wiki/R7RSSmallErrata/27/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Errata from the <a href="/attachment/r7rs.pdf">final draft of R7RS</a>.  This list is unofficial.</p>
+      <ol class="number">
+        <li>In Section 3.1 (Variables, syntactic keywords, and regions), the claim in paragraph 2 that all variable binding constructs can be explained in terms of <span class="monospace">lambda</span> does not apply to top-level bindings.</li></ol>
+      <ol class="number" start="2">
+        <li>Section 7.1.5 (Transformers) doesn't make it clear that a top-level <span class="monospace">syntax-rules</span> pattern must be a list pattern, not a vector pattern or an identifier pattern.</li></ol>
+      <ol class="number" start="3">
+        <li>In Section 6.3 (Booleans), the procedure <span class="monospace">boolean=?</span> is defined to return <span class="monospace">#t</span> if the arguments are all booleans and are either all <span class="monospace">#t</span> or all <span class="monospace">#f</span>.  The words &quot;are all booleans and&quot; incorrectly suggest that the value is <span class="monospace">#f</span> if at least one argument is not a boolean.  In fact it is an error to apply <span class="monospace">boolean=?</span> to non-booleans.</li></ol>
+      <ol class="number" start="4">
+        <li>In Section 4.1.2 (Literal expressions), the examples <span class="monospace">'#</span> and <span class="monospace">#</span> should be <span class="monospace">'#\a</span> and <span class="monospace">#\a</span> respectively.</li></ol>
+      <ol class="number" start="5">
+        <li>In section 7.1.1 (Lexical structure), the escape sequence <span class="monospace">\|</span> is not shown as permitted in &lt;string element&gt;.  The list in Section 6.7 shows that it is equivalent to <span class="monospace">|</span>.  Similarly, the escape sequences <span class="monospace">\&quot;</span> and <span class="monospace">\\</span> should be allowed in &lt;symbol element&gt;.  This makes the same escape sequences valid in both strings and symbols.</li></ol>
+      <ol class="number" start="6">
+        <li>In Section 7.3 (Derived expression types), the syntax-rules definition of <span class="monospace">case</span> is incorrect; the fourth syntax rule must be moved after the fifth to avoid an improper match against the fourth rule when <span class="monospace">=&gt;</span> is present.  Here is the correct version:</li></ol><span class="monospace"> (define-syntax case
+   (syntax-rules (else =&gt;)
+     ((case (key ...)
+        clauses ...)
+      (let ((atom-key (key ...)))
+        (case atom-key clauses ...)))
+     ((case key
+        (else =&gt; result))
+      (result key))
+     ((case key
+        (else result1 result2 ...))
+      (begin result1 result2 ...))
+     ((case key
+        ((atoms ...) =&gt; result))
+      (if (memv key '(atoms ...))
+          (result key)))
+     ((case key
+        ((atoms ...) =&gt; result)
+        clause clauses ...)
+      (if (memv key '(atoms ...))
+          (result key)
+          (case key clause clauses ...)))
+     ((case key
+        ((atoms ...) result1 result2 ...))
+      (if (memv key '(atoms ...))
+          (begin result1 result2 ...)))
+     ((case key
+        ((atoms ...) result1 result2 ...)
+        clause clauses ...)
+      (if (memv key '(atoms ...))
+          (begin result1 result2 ...)
+          (case key clause clauses ...)))))
+</span>
+      <ol class="number" start="7">
+        <li>In Section 7.1.1, the lexical rule &lt;special initial&gt; incorrectly omits <span class="monospace">@</span>.</li></ol>
+      <ol class="number" start="8">
+        <li>Bibliographic reference ![13] should link to <a href="http://srfi.schemers.org/srfi-4/srfi-4.html">SRFI 4</a>.</li></ol>
+      <ol class="number" start="9">
+        <li>In section 4.2.2, add &quot;interleaving evaluations with assignments&quot; to the definition of <span class="monospace">letrec*</span>.  Replace the meaningless example with this:</li></ol><span class="monospace">;; Returns the arithmetic, geometric, and
+;; harmonic means of a nested list of numbers
+(define (means ton)
+  (letrec*
+     ((mean
+        (lambda (f g)
+          (f (/ (sum g ton) n))))
+      (sum
+        (lambda (g ton)
+          (if (null? ton)
+            (+)
+            (if (number? ton)
+                (g ton)
+                (+ (sum g (car ton))
+                   (sum g (cdr ton)))))))
+      (n (sum (lambda (x) 1) ton)))
+    (values (mean values values)
+            (mean exp log)
+            (mean / /))))
+</span>
+      <p>Note that evaluating <span class="monospace">(means '(3 (1 4)))</span> returns three values: 8/3, 2.28942848510666 (approximately), and 36/19.</p>
+      <ol class="number" start="10">
+        <li>In section 7.1.5, add &lt;bytevector&gt; to the alternatives for the &lt;pattern datum&gt; rule.</li></ol>
+      <ol class="number" start="11">
+        <li>Section 1.3.4 refers to &quot;the initial environment&quot; containing <span class="monospace">*</span>, which is not true for programs.  It should refer instead to &quot;an environment containing the base library&quot;.</li></ol>
+      <ol class="number" start="12">
+        <li>An example in section 5.3.3 refers to <span class="monospace">integer-sqrt</span> instead of <span class="monospace">exact-integer-sqrt</span>.</li></ol>
+      <ol class="number" start="13">
+        <li>In section 4.3.1, the body of a <span class="monospace">let-syntax</span> expression is said to contain &quot;one or more definitions&quot;; it should be &quot;zero or more definitions&quot;.</li></ol>
+      <ol class="number" start="14">
+        <li>In section 6.6 for <span class="monospace">char-upcase/downcase/foldcase</span> and 6.7 for <span class="monospace">string-upcase/downcase/foldcase</span> the reader is referred to UAX <a href="/ticket/29">#29</a>, but it should be TR <a href="/ticket/44">#44</a>.</li></ol>
+      <ol class="number" start="15">
+        <li>In section 7.3, the definition of <span class="monospace">case-lambda</span> should use <span class="monospace">letrec-syntax</span>, not <span class="monospace">let-syntax</span>.</li></ol>
+      <ol class="number" start="16">
+        <li>In section 4.3.2 (but not in 7.1.3), change &lt;literal&gt; to &lt;pattern literal&gt; to avoid confusion.</li></ol>
+      <ol class="number" start="17">
+        <li>In section 4.2.7 in the definition of <span class="monospace">guard</span>, change the first reference to <span class="monospace">raise-continuable</span> to <span class="monospace">raise</span>.  This was an editorial error that introduced an unwanted incompatibility with the R6RS definition.  See ticket <a href="/ticket/431">#431</a>, which should have fixed this but didn't (mea culpa).</li></ol>
+      <ol class="number" start="18">
+        <li>In the first bullet of the &quot;Incompatibilities with R6RS&quot; section, for &quot;have to be be&quot; read &quot;have to be&quot;.</li></ol>
+      <ol class="number" start="19">
+        <li>In numeric tower bullet of the &quot;Incompatibilities with R6RS&quot; section, for &quot;but the R6RS procedures <span class="monospace">real-valued?</span>, <span class="monospace">rational-valued?</span>, and <span class="monospace">integer-valued?</span> were not&quot; read &quot;but the semantics of the R6RS procedures <span class="monospace">real?</span>, <span class="monospace">rational?</span>, and <span class="monospace">integer?</span> were not adopted.  (Note that the R5RS/R7RS semantics are available in R6RS using <span class="monospace">real-valued?</span>, <span class="monospace">rational-valued?</span>, and <span class="monospace">integer-valued?</span>)&quot;.</li></ol>
+      <ol class="number" start="20">
+        <li>From <a href="http://www.mumble.net/~kelsey/r5rs-errata.html">Richard Kelsey's R5RS errata</a>: In the explanation of <span class="monospace">list-ref</span>, for &quot;fewer than <i>k</i> elements&quot;, read &quot;<i>k</i> or fewer elements&quot;. Thus, <span class="monospace">(list-ref '(x) 1)</span> is an error.</li></ol>
+      <ol class="number" start="21">
+        <li>In Appendix B, for &quot;All algebraic operations except <span class="monospace">/</span> produce exact values given exact inputs&quot; read &quot;The algebraic operations <span class="monospace">+</span>, <span class="monospace">-</span>, <span class="monospace">*</span>, and <span class="monospace">expt</span> where the second argument is a non-negative integer) all produce exact values given exact inputs&quot;.</li></ol>
+      <ol class="number" start="22">
+        <li>In Appendix A, the <span class="monospace">(scheme r5rs)</span> library should export <span class="monospace">syntax-rules</span>, <span class="monospace">else</span>, <span class="monospace">...</span>, <span class="monospace">=&gt;</span> and <span class="monospace">_</span>.</li></ol>
+      <ol class="number" start="23">
+        <li>In the definition of <span class="monospace">string-for-each</span>, for &quot;the elements of the <i>lists</i>&quot; read &quot;the elements of the <i>strings</i>&quot;.</li></ol>
+      <ol class="number" start="24">
+        <li>The value of the example <span class="monospace">(real? 2.5+0.0i)</span> in Section 6.2.6 is shown as <span class="monospace">#f</span>, as in R6RS.  This contradicts the prose explanation.  No resolution of the conflict has been reached as yet.</li></ol>
+      <ol class="number" start="25">
+        <li>In the definition of <span class="monospace">fold-char</span>, the sentence &quot;If the argument is an uppercase letter, the result will be either a lowercase letter or the same as the argument if the lowercase letter does not exist or is not supported by the implementation&quot; is no longer appropriate as of Unicode 8.0, when folding began to convert Cherokee lower-case letters to upper case.  Replace it with &quot;If the result of folding is not supported by the implementation, the argument is returned&quot;.</li></ol>
+      <ol class="number" start="26">
+        <li>In Section 5.5, the field names of records are incorrectly referred to as identifiers in the sentence &quot;It is an error for the same identifier to occur more than once as a field name.&quot;  However, they are not identifiers but symbols (that is, they are matched non-hygienically).  Replace &quot;identifier&quot; with &quot;symbol&quot;.</li></ol></div></body></html>

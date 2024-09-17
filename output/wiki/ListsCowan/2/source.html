@@ -1,0 +1,68 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ListsCowan version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ListsCowan version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>69.195.55.172</pre>
+    <h2>name</h2>
+    <pre>ListsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This proposal is a tiny extension to SRFI 1.  The procedures come from Common Lisp, with a little renaming.  Some Common Lisp procedures are already in SRFI 1 and don't appear here.
+
+== Association lists ==
+
+`(make-alist `''keys values''`)`
+
+Returns a newly allocated alist whose pairs are constructed from the elements of the lists ''keys'' and ''values''.  (Common Lisp PAIRLIS.)
+
+`Reverse-assq`, `reverse-assv`, and `reverse-assoc` are the same as `assq`, `assv`, and `assoc` respectively, except that the key is matched against the cdr rather than the car of the pairs in the alist.  (Common Lisp RASSOC.)
+
+== Predicates ==
+
+`(atom? `''obj''`)`
+
+Returns `#f` if ''obj'' is a pair, and `#t` otherwise.  (Common Lisp ATOM.)
+
+`(end? `''obj''`)`
+
+Returns `#t` if ''obj'' is the empty list, `#f` if ''obj'' is a pair.  It signals an error otherwise.  (Common Lisp ENDP.)
+
+== Substitution ==
+
+`(substitute `''newobj oldobj list''`)`
+
+`(substitute! `''newobj oldobj list''`)`
+
+`Substitute` returns a newly constructed list in which all elements of ''list'' that are the same (in the sense of `eqv?`) as ''oldobj'' have been replaced by ''newobj''.  `Substitute!` does the same thing, but may destructively modify ''list''.  (Common Lisp SUBSTITUTE, NSUBSTITUTE.)
+
+`(transform `''transformer predicate list''`)`
+
+`(transform! `''transformer predicate list''`)`
+
+`Transform` returns a newly constructed list in which all elements of ''list'' on which ''predicate'' returns `#t` have been replaced by the result of calling ''transformer'' on the element.  `Transform!` does the same, but may destructively modify ''list''.  (Closely related to Common Lisp SUBSTITUTE-IF, NSUBSTITUTE-IF.)
+
+== Issues ==
+
+Should these procedures, if accepted, be merged into the SRFI 1 package?
+</pre>
+    <h2>time</h2>
+    <pre>2012-11-23 15:40:45</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

@@ -1,0 +1,32 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>MetaArcfide</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/MetaArcfide.md">MetaArcfide</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Meta&shy;Arcfide</h1>
+    <div class="wiki metadata">
+      <div class="author">arcfide</div>
+      <div class="time">2010-02-21 08:34:40</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/MetaArcfide/history">history</a></div>
+      <div class="source"><a href="/wiki/MetaArcfide/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="MetaDefinitions">Meta Definitions</h1>
+      <p>By Aaron W. Hsu</p>
+      <h2 id="Introduction">Introduction</h2>
+      <p>It is useful to be able to explicitly indicate a phase or level for definitions. While this probably won't matter for WG1 and Thing One, for Thing Two, where you want to be able to import bindings into a specific phase, or any other  set of activities, it makes sense to enable such meta definitions generally.</p>
+      <h2 id="Proposal">Proposal</h2>
+      <p>Standardize two forms:</p>
+      <p><span class="monospace">(meta</span> <span class="monospace">.</span> <i>definition</i><span class="monospace">)</span><br>
+<span class="monospace">(at-meta</span> <i>levels</i> <span class="monospace">.</span> <i>definition</i><span class="monospace">)</span></p>
+      <p>The first <span class="monospace">meta</span> evaluates the <i>definition</i> one phase up from where the <span class="monospace">meta</span> call occurs. <span class="monospace">at-meta</span> allows the evaluation to be visible at a number of phases specified by <i>levels</i>. <i>Levels</i> is a list of exact non-negative integers or the keyword <span class="monospace">..</span>. The keyword <span class="monospace">..</span> should follow and come before integers. <span class="monospace">n .. m</span> is the same as spelling out all the integers from <i>n</i> to <i>m</i>.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>This is a more general mechanism for controlling the visibility of definitions, and allows you to introduce definitions inside of modules into different phases as well as control the visibility of imports, provided that <a href="/wiki/ModulesAndPackagesArcfide">ModulesAndPackagesArcfide</a> is standardized.</p></div></body></html>

@@ -1,0 +1,75 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>367: Inexact division by exact zero</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 367: <span class="summary">Inexact division by exact zero</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-08-27 07:15:45</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/367/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-03-28 00:38:17</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Draft 6 says that it's an error for an argument of <span class="monospace">/</span> (other than the first) to be an exact zero.  R6RS, however, says that it's an error only if <i>all</i> the arguments are exact.  In other words, <span class="monospace">(/ 2.0 0)</span> is an error according to the draft, but in R6RS it returns <span class="monospace">+inf.0</span> (assuming the implementation supports it).  The proposal is to adopt the R6RS wording.</p>
+        <p>I tested <span class="monospace">(/ 2.0 0)</span> in the usual set of Schemes:</p>
+        <ul>
+          <li>Racket, Gambit, Chicken (with the numbers egg), Guile, Chibi, Elk, Spark report an error.</li>
+          <li>Gauche, Bigloo, Scheme48/scsh, Kawa, SISC, Chez, SCM, Ikarus/Vicare, Larceny, Ypsilon, Mosh, IronScheme, NexJ, STklos, RScheme, BDC, UMB, VX return <span class="monospace">+inf.0</span>.</li>
+          <li>MIT, scsh, Shoe, TinyScheme, Scheme 7, XLisp, Rep, Schemik, Inlab always report an error when dividing by zero, exact or inexact.</li>
+          <li>KSi, Scheme 9 produce incorrect results.</li>
+          <li>SigScheme, Dream, Oaklisp, Owl Lisp don't support inexact numbers.</li></ul></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-30 00:42:36</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Here is a Galilean dialogue between Sixer, a proponent of the R6RS rule, and Fiver, a proponent of the R5RS rule, which is the same as that of R7RS draft 6.</p>
+              <p>Sixer:  Why shouldn't <span class="monospace">/</span> should do inexact contagion, just like the other arithmetic operations?</p>
+              <p>Fiver:  Because an inexact operation may return an exact result if it can prove that the inexactness can't affect the result, like <span class="monospace">(* 1.0 0)</span> returning <span class="monospace">0</span> rather than <span class="monospace">0.0</span>.</p>
+              <p>Sixer:  Certainly.  But what has that to do with it?</p>
+              <p>Fiver: Dividing by exact 0 doesn't care about the inexactness of the other arguments.  There is no exact infinity in Scheme, so it's more appropriate to report an error representing the non-existent value.  Since we don't require errors to be signalled except in a few circumstances, &quot;is an error&quot; is the appropriate phrase.</p>
+              <p>Sixer: The value <span class="monospace">+inf.0</span> can be understood as covering both overflow and positive affine infinity.  Surely that's the least surprising result when inexact numbers are involved?</p>
+              <p>Fiver: But why should the result of dividing by an exact 0 be positive rather than negative? <a href="/wiki/Zero">Zero</a>, after all, is neither.</p>
+              <p>Sixer: <a href="http://en.wikipedia.org/wiki/Discordianism#Philosophy">I don't know, man, I didn't do it</a>, but IEEE 754 says so.</p>
+              <p>Fiver: Well, anyway, &quot;is an error&quot; covers both raising an exception and returning <span class="monospace">+inf.0</span>.</p>
+              <p>Sixer: True, but numerical programmers expect to be able to rely on the IEEE rules, instead of the bad old days when division by zero always crashed your program.</p>
+              <p>Fiver: Then let them avoid exact numbers.</p>
+              <p>Sixer: Maybe. Is that realistic?  I don't know.</p>
+              <p>Fiver: Me either.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-25 00:33:29</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 decided to make no change, keeping the R5RS rules.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 07:15:45</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

@@ -1,0 +1,46 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>GuardBehavior</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/GuardBehavior.md">GuardBehavior</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Guard&shy;Behavior</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-06-09 08:38:56</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/GuardBehavior/history">history</a></div>
+      <div class="source"><a href="/wiki/GuardBehavior/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Helmut Eller asked what this example should return?</p><span class="monospace">(let ((events '()))
+   (guard (c 
+           (#t #f))
+     (guard (c
+             ((dynamic-wind 
+                  (lambda () (set! events (cons 'c events)))
+                  (lambda () #f)
+                  (lambda () (set! events (cons 'd events))))
+              #f))
+       (dynamic-wind 
+           (lambda () (set! events (cons 'a events)))
+           (lambda () (raise 'error))
+           (lambda () (set! events (cons 'b events))))))
+   (reverse events))
+</span>
+      <p>Is it <span class="monospace">(a b c d a b)</span> or <span class="monospace">(a c d b)</span> or <span class="monospace">(a b c d)</span> or unspecified?</p>
+      <p>Aaron Hsu replied:</p>
+      <p>The important parts here are the dynamic extent in which the cond-clauses are evaluated, and the dynamic extent of the implicit <span class="monospace">raise</span> that occurs if none of the clauses fire. The extent/continuation of the <span class="monospace">cond</span> evaluation is that of the whole <span class="monospace">guard</span>, whereas the re-raise is that of the original <span class="monospace">raise</span>.</p>
+      <p>This means that the first raise will trigger the A and B setters, and then the C and D setters will trigger. At this point, since the result is <span class="monospace">#f</span>, the implementation should re-rais the object from the original calling extent, thus triggering A and B setters again, before finally returning without re-entering again.</p>
+      <p>This gives <span class="monospace">(a b c d a b)</span> as the only valid result.</p>
+      <p>My tests:</p>
+      <p>We do indeed get <span class="monospace">(a b c d a b)</span> from Chez, Ikarus, Vicare, Larceny, Ypsilon, Mosh, Chibi.</p>
+      <p>However, IronScheme, Racket (in #lang r6rs mode), STklos all return <span class="monospace">(a b c d)</span>.  In the case of IronScheme at least, that is because it supports escape continuations only, and so the outer continuation in <span class="monospace">guard</span> cannot re-enter the dynamic extent of the body.</p>
+      <p>SigScheme returns <span class="monospace">(a c d b)</span>, apparently evaluating the test of the cond-clause in the dynamic environment of <span class="monospace">raise</span> and unwinding the stack only when the test returns true.  That's arguably &quot;better&quot; that <span class="monospace">(a b c d)</span> as this will call other handlers in the correct environment if the test returns <span class="monospace">#f</span>.</p>
+      <p>The other Schemes all report errors, typically about <span class="monospace">guard</span> or <span class="monospace">raise</span> being undefined, or that <span class="monospace">(#t #f)</span> is not a valid procedure call.</p></div></body></html>

@@ -1,0 +1,55 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ConsentDocket version 26</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ConsentDocket version 26</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>ConsentDocket</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== WG2 Consent Docket ==
+
+The following items will be approved without a formal vote unless someone objects, in which case they will be moved to another docket.  See [wiki:WG2Dockets WG2Dockets] for other dockets.
+
+Format combinators: Alex Shinn's [http://synthcode.com/scheme/fmt/ fmt library], with possibly a touch of renaming.  The C formatting library is excluded.
+
+Generalized getters and setters: [http://srfi.schemers.org/srfi-17/srfi-17.html SRFI 17].
+
+Getopt/args-fold:  [http://srfi.schemers.org/srfi-37/srfi-37.html SRFI 37].
+
+Pretty-printer: see Format combinators
+
+[http://srfi.schemers.org/srfi-1/srfi-1.html SRFI 1], list library: As written, but excluding  `cons`, `pair?`, `null?`, `car`, `cdr`, `caar` ... `cddddr`, `set-car!`, `set-cdr!`, `list`, `append`, `reverse`, `length`, `list-ref`, `map`, `for-each`, `memq`, `memv`, `member`, `assq`, `assv`, `assoc`, which are all in the `(scheme base)` and `(scheme cxr)` libraries in a SRFI-1-compatible way.  '''Specification bug in SRFI 1: `any`, `every`, and `list-index` should omit the words &quot;and returning a boolean result&quot;.'''  [Red]
+
+[http://srfi.schemers.org/srfi-2/srfi-2.html SRFI 2], `and-let*` macro: As written.
+
+[http://srfi.schemers.org/srfi-14/srfi-14.html SRFI 14], character set library: As written. [Red]
+
+[http://srfi.schemers.org/srfi-31/srfi-31.html SRFI 31], `rec` macro: As written.
+
+[http://srfi.schemers.org/srfi-115 SRFI 115], regular expressions.
+
+=== Obsolete items ===
+
+The following items formerly on this docket are now part of R7RS-small:  binary ports, the R6RS exception (not condition) system, datum labels (SRFI 38), `when` and `unless`.</pre>
+    <h2>time</h2>
+    <pre>2016-07-27 04:27:52</pre>
+    <h2>version</h2>
+    <pre>26</pre></body></html>

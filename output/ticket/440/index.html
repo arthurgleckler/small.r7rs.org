@@ -1,0 +1,82 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>440: Formal Comment: Write procedure is not backwards compatible</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 440: <span class="summary">Formal Comment: Write procedure is not backwards compatible</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 05:04:56</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/440/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-07-02 04:12:03</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Formal Comment</p>
+        <p>Submitter's name: Marc Feeley
+Submitter's email: feeley at iro.umontreal.ca
+Relevant draft: r7rs draft 6</p>
+        <p>Type: defect
+Priority: major
+Relevant section of draft: 6.13.3. Output</p>
+        <p>Summary: Write procedure is not backwards compatible</p>
+        <p>R7RS introduces a new output procedure called write-simple, which has
+the same semantics as the R5RS write procedure.  On the other hand,
+the R7RS write procedure handles shared structures differently than
+the R5RS.  For example :</p>
+        <p>(let ((x (list 1 2))) (write (list x x)))</p>
+        <p>displays ((1 2) (1 2)) in an R5RS system
+   and displays (<a href="/ticket/0">#0</a>=(1 2) <a href="/ticket/0">#0</a>#) in an R7RS system</p>
+        <p>To preserve backwards compatibility, it is the version of the write
+procedure which uses datum labels which should have a different name.
+In fact SRFI-38 has specified the name write-with-shared-structure for
+this output procedure.  This name should be maintained since it has
+been implemented with that name in some Scheme systems.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-02 09:44:59</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2012-07-03 02:17:55</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>After further discussion with Marc and evaluating Scheme implementations, I think that we have a valid problem here. On the one hand, we have the desire to be able to preserve datum equivalence across a read and a write, on the other the desire to make certain writes produce valid code. Finally, we have the third desire not to make <span class="monospace">write</span> unstable.</p>
+              <p>I propose that we can actually do this all with a single procedure <span class="monospace">write</span> and a parameter <span class="monospace">print-graph</span>. When <span class="monospace">print-graph</span> is <span class="monospace">#f</span> then <span class="monospace">write</span> has the traditional semantics, where the behavior on cycles is undefined -- particularly, Schemes may print cycles, or they may infinite loop, but in the non-cycle case, they print the simple structure, and do not preserve shared structure. When <span class="monospace">print-graph</span> is <span class="monospace">#t</span> then <span class="monospace">write</span> must print out the datum preserving shared structure.</p>
+              <p>The above allows <span class="monospace">write</span> to be backwards compatible, but still enables implementations to implement it safely if they wish to, to handle cycles, but still gives us a way to print shared structure.</p>
+              <p>I think it is important to provide a safe, default, backwards compatible version of <span class="monospace">write</span>. In that vein, I would want to require implementations that support shared structure to enable <span class="monospace">print-graph</span> implicitly when a cycle is detected.</p>
+              <p>Another option is to have <span class="monospace">write/shared</span> on the one hand, but then make <span class="monospace">write</span> use <span class="monospace">write/shared</span> whenever a cycle is detected if the implementation provides it. However, this creates some problems for folks who might want a <span class="monospace">write</span> that would infinite loop. The question is whether this is worth it at all?</p>
+              <p>Using the parameter is more flexible, as it allows us to add an additional switch, where we could say that if <span class="monospace">print-graph</span> is <span class="monospace">'cycle</span> then it will detect cycles, but if it is <span class="monospace">#f</span> it will not, and could infinite loop.</p>
+              <p>I think the question comes down to whether we want to require the handling of cycles or not.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 05:04:56</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to adopt <span class="monospace">write</span> (labels for cycles only), <span class="monospace">write-simple</span> (no labels), and <span class="monospace">write-shared</span> (full labels).</p></div></div></div></div></div></body></html>

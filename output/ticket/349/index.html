@@ -1,0 +1,65 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>349: Define exact integers to be at least 24 bits</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 349: <span class="summary">Define exact integers to be at least 24 bits</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-04-09 22:12:17</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/349/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-02-24 06:53:39</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Currently, R7RS (tracking R5RS) does not constrain the sizes of exact integers: in principle, the maximum exact integer supported by an implementation could be as small as 7 (though that would seriously limit the maximum sizes of strings, vectors, and bytevectors as well).  R6RS requires systems to support &quot;practically unlimited&quot; size exact integers.  It also requires that a subset of these exist, called <i>fixnums</i>, which must support at least the range -2<sup>23</sup> to 2<sup>23</sup>-1.  (Supposedly this range was chosen because it is the range of fixnums in MIT Scheme, and all other practical Schemes have larger ranges for their fixnums.)  I propose that we adopt this range as the minimum range of R7RS exact integers.</p>
+        <p>The immediate issue here is that a module name may contain (non-negative) exact integers as well as identifiers in R7RS.  For such names to be portable, there must be a portable range of exact integers.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">aag</div>
+            <div class="time">2012-02-24 07:27:29</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I understand the goal of this proposal, but it doesn't fit well with the idea that we support embedded Schemes, which often run on devices with CPUs of less than 32 bits.  Marc Feeley's group, I believe, has such an implementation.  Should they not be considered Scheme just because they run on such CPUs and don't support bignums?</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-01 05:42:29</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>See <a href="/wiki/FixnumInfo">FixnumInfo</a> for information on 39 Schemes.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-09 22:12:10</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>This proposal was rejected by the WG.  <a href="/ticket/359">#359</a>, which is not yet decided, attempts to accomplish the same result in a different way.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-09 22:12:17</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

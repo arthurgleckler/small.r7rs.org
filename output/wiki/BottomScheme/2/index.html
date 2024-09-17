@@ -1,0 +1,104 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BottomScheme</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BottomScheme.md">BottomScheme</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Bottom&shy;Scheme</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-04-17 03:24:58</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/BottomScheme/history">history</a></div>
+      <div class="source"><a href="/wiki/BottomScheme/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p><b>This is not an R7RS page; it's just John Cowan's notes on an idea that used to live on a scrap of paper.</b></p>
+      <p>Bottom Scheme is a tiny subset of R7RS-small.  It is not really a Scheme at all, because it omits assignment, macros, modules, proper tail calls except in named <span class="monospace">let</span>, multiple values, <span class="monospace">call/cc</span>, <span class="monospace">dynamic-wind</span>, mutable pairs and strings, I/O (except for <span class="monospace">read-char</span> and <span class="monospace">write-char</span>), and essentially all non-primitive procedures.</p>
+      <h2 id="Specification">Specification</h2>
+      <p>This list is organized according to the R7RS-small report.</p>
+      <ol class="number" start="2">
+        <li>1 Identifiers</li></ol>
+      <p>No case-folding directives.</p>
+      <ol class="number" start="2">
+        <li>2 Whitespace</li></ol>
+      <p>Only <span class="monospace">;</span> comments.</p>
+      <ol class="number" start="2">
+        <li>3 Other notations</li></ol>
+      <p>Parens, apostrophe, quoted strings, <span class="monospace">#t</span> and <span class="monospace">#f</span>, and number, vector, and bytevector constants.  No backquoting, character constants, number bases, or labels.</p>
+      <ol class="number" start="4">
+        <li>1 Primitive expression types</li></ol>
+      <p>Variables, constants, procedure calls, <span class="monospace">lambda</span> without improper formals, <span class="monospace">if</span>.</p>
+      <ol class="number" start="4">
+        <li>2 Derived expression types</li></ol>
+      <p>Only <span class="monospace">cond</span> without <span class="monospace">=&gt;</span>, <span class="monospace">and</span>, <span class="monospace">or</span>, <span class="monospace">let</span>, <span class="monospace">letrec</span>, <span class="monospace">begin</span>, and named <span class="monospace">let</span> (with the restriction that the bound procedure can only be invoked in tail positions within the lexical scope of the <span class="monospace">let</span>).</p>
+      <ol class="number" start="5">
+        <li>5 Record-type definitions</li></ol>
+      <p>Full support for <span class="monospace">define-record-type</span>.</p>
+      <ol class="number" start="6">
+        <li>1 Equivalence predicates</li></ol>
+      <p>Only <span class="monospace">eqv?</span> (for which <span class="monospace">eq?</span> is a synonym).  Programmers are encouraged to provide their own definition of <span class="monospace">equal?</span>.</p>
+      <ol class="number" start="6">
+        <li>2.1 Numerical types</li></ol>
+      <p>All types are supported.</p>
+      <ol class="number" start="6">
+        <li>2.2 Exactness</li></ol>
+      <p>The only exact numbers are integers within a fixed range.</p>
+      <ol class="number" start="6">
+        <li>2.4 Implementation extensions</li></ol>
+      <p>Inexact real numbers are IEEE doubles; inexact complex numbers are pairs of IEEE doubles in the rectangular representation.</p>
+      <ol class="number" start="6">
+        <li>2.5 Syntax of numerical constants</li></ol>
+      <p><span class="monospace">/</span> is not supported, because all exact numbers are integers.  Base and exactness prefixes are not supported.  The notations <span class="monospace">-0.0</span>, <span class="monospace">+inf.0</span>, <span class="monospace">-inf.0</span>, and <span class="monospace">+nan.0</span> are supported.</p>
+      <ol class="number" start="6">
+        <li>2.6 Numerical operations</li></ol>
+      <p>Predicates:  <span class="monospace">number?</span>, <span class="monospace">real?</span>, <span class="monospace">exact?</span>, <span class="monospace">inexact?</span>.  Arithmetic:  <span class="monospace">+</span>, <span class="monospace">-</span>, <span class="monospace">*</span>, <span class="monospace">/</span> with two arguments only; <span class="monospace">/</span> always returns an inexact value.  Transcendental functions:  <span class="monospace">exp</span>, <span class="monospace">log</span> (one argument), <span class="monospace">sin</span>, <span class="monospace">cos</span>, <span class="monospace">tan</span>, <span class="monospace">asin</span>, <span class="monospace">acos</span>, <span class="monospace">atan</span> (one argument), <span class="monospace">sqrt</span>, <span class="monospace">expt</span> always return complex numbers.  Complex: <span class="monospace">make-rectangular</span>, <span class="monospace">real-part</span>, <span class="monospace">imag-part</span>.  Conversion: <span class="monospace">exact</span>, <span class="monospace">inexact</span>.</p>
+      <p>As an enhancement to R7RS-small, the non-generic arithmetic functions <span class="monospace">fx+</span>, <span class="monospace">fx-</span>, <span class="monospace">fx*</span>, <span class="monospace">fl+</span>, <span class="monospace">fl-</span>, <span class="monospace">fl*</span>, <span class="monospace">fl/</span>, <span class="monospace">cx+</span>, <span class="monospace">cx-</span>, <span class="monospace">cx*</span>, <span class="monospace">cx/</span> are provided.</p>
+      <ol class="number" start="6">
+        <li>3 Booleans</li></ol>
+      <p>Only <span class="monospace">#t</span> and <span class="monospace">#f</span> notations, <span class="monospace">not</span>, <span class="monospace">boolean?</span>.</p>
+      <ol class="number" start="6">
+        <li>4 Pairs and lists</li></ol>
+      <p>Pairs are immutable.  Only <span class="monospace">pair?</span>, <span class="monospace">cons</span>, <span class="monospace">car</span>, <span class="monospace">cdr</span>, <span class="monospace">null?</span></p>
+      <ol class="number" start="6">
+        <li>5 Symbols</li></ol>
+      <p>Only <span class="monospace">symbol?</span>, <span class="monospace">symbol-&gt;string</span>, <span class="monospace">string-&gt;symbol</span>.</p>
+      <ol class="number" start="6">
+        <li>6 Characters</li></ol>
+      <p>Not supported; use single-character strings instead.</p>
+      <ol class="number" start="6">
+        <li>7 Strings</li></ol>
+      <p>Full support for string literals.  Strings are immutable.  All Unicode characters are supported except U+0000 (NUL).  Only <span class="monospace">string?</span>, <span class="monospace">string-length</span>, <span class="monospace">string=?</span>, <span class="monospace">string&lt;?</span>, <span class="monospace">string&gt;?</span>, <span class="monospace">substring</span>, <span class="monospace">list-&gt;string</span>.</p>
+      <ol class="number" start="6">
+        <li>8 Vectors</li></ol>
+      <p>Full support for vector literals.  Only <span class="monospace">vector?</span>, <span class="monospace">make-vector</span> (one argument), <span class="monospace">vector-length</span>, <span class="monospace">vector-ref</span>, <span class="monospace">vector-set!</span>.</p>
+      <ol class="number" start="6">
+        <li>9 Bytevectors</li></ol>
+      <p>Full support for bytevector literals.  Only <span class="monospace">bytevector?</span>, <span class="monospace">make-bytevector</span> (one argument), <span class="monospace">bytevector-length</span>, <span class="monospace">bytevector-u8-ref</span>, <span class="monospace">bytevector-u8-set!</span>.</p>
+      <ol class="number" start="6">
+        <li>10 Control features</li></ol>
+      <p>Only <span class="monospace">procedure?</span>, <span class="monospace">apply</span>.</p>
+      <ol class="number" start="6">
+        <li>11 Exceptions</li></ol>
+      <p>Only <span class="monospace">error</span>.</p>
+      <ol class="number" start="6">
+        <li>13 Input and output</li></ol>
+      <p>Only <span class="monospace">read-char</span> (no arguments), <span class="monospace">eof-object</span>, <span class="monospace">eof-object?</span>, <span class="monospace">write-char</span> (no arguments), <span class="monospace">display</span> (mostly for debugging).</p>
+      <h2 id="Implementation">Implementation</h2>
+      <p>These notes assume a 64-bit system.</p>
+      <p>With the basic object 64 bits in size, NaN-boxing is a plausible technique.  In this scheme, IEEE doubles are represented as immediates, and all other objects are stuffed into the signaling NaN space (high-order bit is 0, next 11 bits are 1, next bit is 1).  This limits them to 52 bits in size, which is enough to hold 64-bit pointers in current architectures, since they are only 47 bits in size (excluding the kernel area).  Because a pointer to a 64-bit value always has the low-order three bits zero, they can be used for the following tagging scheme:</p>
+      <ul>
+        <li>000 - 48-bit fixnum</li>
+        <li>001 - pointer to compnum</li>
+        <li>010 - immediate <span class="monospace">#t</span>, <span class="monospace">#f</span>, end of file object, and undefined-value pseudo-object</li>
+        <li>011 - pointer to vector (the -1 element is a 48-bit fixnum length)</li>
+        <li>100 - pointer to Scheme pair (direct dereference gets the cdr)</li>
+        <li>101 - pointer to bytevector (padded to multiple of 64 bits, preceded by a 48-bit fixnum length)</li>
+        <li>110 - pointer to string (padded to multiple of 64 bits, preceded by a 48-bit fixnum length)</li>
+        <li>111 - pointer to procedure, symbol, or record (first word points to a type object)</li></ul></div></body></html>

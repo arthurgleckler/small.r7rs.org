@@ -1,0 +1,69 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki GeneralizedEqualCowan version 9</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki GeneralizedEqualCowan version 9</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>74.68.121.27</pre>
+    <h2>name</h2>
+    <pre>GeneralizedEqualCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Generalized `equal?` predicate ==
+
+`(generalized-equal? `''obj1 obj2''` . `''comparator-list''`)`
+
+Compares ''obj1'' and ''obj2'' for equality.  A ''comparator'' is a procedure that is given two arguments to compare.  It returns `#t` if its arguments are to be considered equal, `#f` if they are to be considered unequal, and any other value if it cannot decide.  The third argument passed to a comparator is a list of comparators to be used in recursive calls to `generalized-equal?`.
+
+First, each element of ''comparator-list''  is invoked on ''obj1'' and ''obj2'', passing ''comparator-list'' as its third argument.  If the comparator returns `#t` or `#f`, that is the result.
+
+If all comparators in the list have been invoked without a `#t` or `#f` result, then `generalized-equal?` determines if both ''obj1'' and ''obj2'' are ordered containers of the same type.  This determination is partly implementation-dependent, but pairs, strings, vectors, and bytevectors must be treated as ordered containers of distinct types.  If they are not both ordered containers of the same type, then `generalized-equal?` returns what `eqv?` returns on ''obj1'' and ''obj2''.
+
+Otherwise, if the containers have different numbers of elements, the result is `#f`.  Otherwise, `generalized-equal?` invokes itself recursively on each corresponding element of the containers, passing itself the same comparators.  If a recursive call returns `#f`, that is the result; if all recursive calls return `#t`, that is the result.
+
+`(predicates-&gt;comparator `''type-predicate compare-predicate''`)`
+
+Returns a comparator that invokes ''type-predicate'' on its first and its second arguments.  If they both return `#t`, then they are assumed to be of the same type, and ''compare-predicate'' is invoked on the first and second arguments together.  If the result is `#t` or `#f`, then the comparator returns `#t` or `#f` respectively.  If they are not of the same type, a third value is returned.  The comparator always ignores its third argument.
+
+== Sample comparators ==
+
+These comparators may or may not be part of this package.
+
+`(numeric-comparator `''obj1 obj2 comparators-list''`)`
+
+A comparator that returns `#t` if ''obj1'' and ''obj2'' are numbers that are equal by `=`, `#f` if they are not equal by `=`, and a third value otherwise.  The ''comparators-list'' argument is ignored.
+
+`(char-ci-comparator `''obj1'' ''obj2 comparators-list''`)`
+
+A comparator that returns `#t` if ''obj1'' and ''obj2'' are both characters that are equal by `char-ci=?`, `#f` if they are not equal by `char-ci=?`, and a third value otherwise.  The ''comparators-list'' argument is ignored.
+
+`(string-ci-comparator `''obj1 obj2 comparators-list''`)`
+
+A comparator that returns `#t` if ''obj1'' and ''obj2'' are both strings that are equal by `string-ci=?`, `#f` if they are not equal by `string-ci=?`, and a third value otherwise.  The ''comparators-list'' argument is ignored.
+
+`(hash-table-comparator `''obj1 obj2 comparators-list''`)`
+
+A comparator that returns `#t` if ''obj1'' and ''obj2'' are both hash tables using the same comparison key, contain the same keys (in the sense of that comparison key), and map each key to the same value (in the sense of `generalized-equal?`, using the comparators in ''comparators-list''); returns `#f` if ''obj1'' and ''obj2'' are both hash tables but are distinct in the above sense; and returns a third value in all other cases.
+
+== Issues ==
+
+Should the third value be specified?  As designed, if a badly written comparator returns nonsense, it's just ignored rather than giving the implementation of `generalized-equal?` a chance to report an error.  The symbol `pass` has been suggested.  My implementation uses 0.</pre>
+    <h2>time</h2>
+    <pre>2012-12-24 08:06:38</pre>
+    <h2>version</h2>
+    <pre>9</pre></body></html>

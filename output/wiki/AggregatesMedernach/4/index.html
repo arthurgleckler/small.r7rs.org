@@ -1,0 +1,158 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>AggregatesMedernach</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/AggregatesMedernach.md">AggregatesMedernach</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Aggregates&shy;Medernach</h1>
+    <div class="wiki metadata">
+      <div class="author">medernac</div>
+      <div class="time">2010-12-13 00:23:38</div>
+      <div class="version">4<span class="comment">Thanks to all reviewers for their valuable comments</span><a href="/wiki/AggregatesMedernach/history">history</a></div>
+      <div class="source"><a href="/wiki/AggregatesMedernach/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="AggregatesMedernach"><a href="/wiki/AggregatesMedernach">AggregatesMedernach</a></h1>
+      <h2 id="Rationale[see1]">Rationale [see 1]</h2>
+      <p>Declaring and generating fixed sized data type disjoint from all other types, called AGGREGATES.</p>
+      <p>General other record or object features may be build on top of these aggregates.</p>
+      <h2 id="Datatypeandassociatedfunctions[see3]">Datatype and associated functions [see 3]</h2>
+      <p>(make-datatype designation fieldname ...)</p>
+      <p>Returns a new datatype. fieldname must be symbols. This is not a functional call in order to avoid potential collisions between similar aggregates but of different kind.</p>
+      <p>(datatype-&gt;designation &lt;my-datatype&gt;)</p>
+      <p>If &lt;my-datatype&gt; is of datatype kind, then returns its designation.</p>
+      <p>(datatype-&gt;fields &lt;my-datatype&gt;)</p>
+      <p>If &lt;my-datatype&gt; is of datatype kind, then returns corresponding list of fields.</p>
+      <h2 id="Aggregates(constructor/accessor)constructor">Aggregates ( constructor / accessor ) constructor</h2>
+      <p><span class="monospace">(create-aggregate </span><i>&lt;datatype&gt;</i><span class="monospace">)</span></p>
+      <p>If <i>&lt;datatype&gt;</i> is of datatype kind, then returns corresponding constructor and switch function (see below). <i>&lt;datatype&gt;</i> ensures that the call to create-aggregate is functional, the same aggregate functions are generated if applied to the same <i>&lt;datatype&gt;</i>.</p>
+      <p><i>create-aggregate</i> returns 2 functions as values:</p>
+      <p><i>make-&lt;aggregate&gt;</i> is a function taking a fixed number of arguments as specified by the <i>&lt;datatype&gt;</i> and returning a new aggregate containing these arguments as aggregate components.</p>
+      <p><i>&lt;aggregate&gt;-switch</i> is explained below.</p>
+      <p>The data created by make-&lt;aggregate&gt; and selected by &lt;aggregate&gt;-switch are required to conform to &lt;my-datatype&gt; properties (currently only arity).</p>
+      <h2 id="Accessingaggregatecomponents">Accessing aggregate components</h2>
+      <p>Either</p>
+      <ol class="number">
+        <li>Unsafe access procedures must be invoked after a predicate checking data type</li>
+        <li>Or safe access procedure, then a check is performed before accessing and an error is signalled if the data type is not what is expected.</li></ol>
+      <p>However data are aggregated in order to retrieve many part of it and not only one. Solution 2 requires to perform redundant check for each accessed field and moreover the error in general is fatal to the program execution. Solution 1 alone is unsatisfactory as if an unsafe access procedure is applied to not of the correct kind data then random and unwanted behaviors may appear.</p>
+      <p>Another solution is to group together data type checking with accessing in a case analysis function (per aggregate types) :</p>
+      <p><span class="monospace">(&lt;aggregate&gt;-switch </span><i>&lt;aggregate-case&gt;</i><span class="monospace"> </span><i>&lt;else-case&gt;</i><span class="monospace">) = (lambda (</span><i>&lt;obj&gt;</i><span class="monospace">) ...)</span></p>
+      <p>Two cases are possible: if the data <i>&lt;obj&gt;</i> is of <i>&lt;aggregate&gt;</i> corresponding datatype kind then <i>&lt;aggregate-case&gt;</i> function is called with the components of the <i>&lt;obj&gt;</i> data, else <i>&lt;else-case&gt;</i> is called with <i>&lt;obj&gt;</i>.</p>
+      <p>The idea behind my-datatype-switch function is to open an environment with bindings for corresponding aggregate components.</p>
+      <h2 id="Variants">Variants</h2>
+      <p>A data is a variant if it is one kind of a list of aggregates.</p>
+      <p>For instance, one could view the following classic types as variant:</p>
+      <ul>
+        <li>List as variant of NULL or CONS</li></ul>
+      <ul>
+        <li>Tree as variant of LEAF or NODE</li></ul>
+      <p>Convenience macro for variants may be provided as in [see 2]:</p><span class="monospace">(define-syntax variant-case
+  (syntax-rules (else)
+    ((variant-case &lt;obj&gt;)
+     (error &quot;variant-case: all case exhausted &quot; &lt;obj&gt;))
+    
+    ((variant-case &lt;obj&gt;
+        (else &lt;body&gt; ...))
+     (begin &lt;body&gt; ...))
+    
+    ((variant-case &lt;obj&gt;
+        (&lt;aggregate-switch&gt; (&lt;var&gt; ...) &lt;body&gt; ...)
+        rest ...)
+     ((&lt;aggregate-switch&gt;
+       (lambda (&lt;var&gt; ...) &lt;body&gt; ...)
+       (lambda (&lt;obj&gt;) (variant-case &lt;obj&gt; rest ...)))
+      &lt;obj&gt;))))
+</span>
+      <h2 id="Variousexamples">Various examples</h2><span class="monospace">(define-values (make-null null-switch)
+  (create-aggregate (make-datatype &quot;NULL&quot;)))
+
+(define-values (make-pair pair-switch)
+  (create-aggregate (make-datatype &quot;PAIR&quot; 'first 'second)))
+
+;; With my-car, my-cdr for instance:
+
+  (define (my-car obj)
+    ((pair-switch (lambda (first second) first) error)
+     obj))
+  
+  (define (my-cdr obj)
+    ((pair-switch (lambda (first second) second) error)
+     obj))
+</span><span class="monospace">;; MAYBE data kind maker: either empty or containing some data.
+(define-values (make-empty maybe-switch)
+  (create-aggregate (make-datatype &quot;Empty&quot;)))
+
+(maybe-switch &lt;empty-case&gt; &lt;not-empty-case&gt;)
+</span><span class="monospace">;; 3d point example
+(define-values (make-point3d point3d-switch)
+  (create-aggregate (make-datatype &quot;3d point&quot; 'X 'Y 'Z)))
+
+(define (point3d-length x y z)
+  (sqrt (+ (* x x) (* y y) (* z z))))
+
+(define (point3d-scale alpha)
+  (lambda (x y z)
+    (make-point3d (* alpha x) (* alpha y) (* alpha z))))
+
+(define p3d (make-point3d 3 4 5))
+
+((point3d-switch point3d-length error) p3d) ;; 7.07...
+((point3d-switch (point3d-scale -2) error) p3d) ;; [-6 -8 -10]
+</span><span class="monospace">;; Binary tree example
+(define-values (make-bin-leaf bin-leaf-switch)
+  (create-aggregate (make-datatype &quot;Binary tree leaf&quot; 'Data)))
+
+(define-values (make-bin-node bin-node-switch)
+  (create-aggregate (make-datatype &quot;Binary tree node&quot; 'Data 'Left 'Right)))
+
+; variant-case example
+(define (map-tree fun bin-tree)
+  (variant-case bin-tree
+    (bin-node-switch (data left right)
+      (make-bin-node (fun data)
+                     (map-tree fun left)
+                     (map-tree fun right)))
+    (bin-leaf-switch (data)
+      (make-bin-leaf (fun data)))
+    (else (error &quot;Not a bin-tree: &quot; bin-tree))))
+</span><span class="monospace">;; aggregate copy
+(define my-aggregate-copy
+  (&lt;my-aggregate-switch&gt; &lt;make-my-aggregate&gt; error))
+</span><span class="monospace">;; aggregate to association list converter
+(define my-aggregate-&gt;alist
+  (&lt;my-aggregate-switch&gt;
+     (lambda l (map list (datatype-&gt;fields &lt;datatype&gt;) l))
+     error))
+</span><span class="monospace">;; Unforgeable aggregate with built-in assertion checking.
+(define-syntax create-aggregate-with-assertion
+  (syntax-rules ()
+    ((create-aggregate-with-assertion (&lt;datatype-designation&gt; '&lt;field&gt; ...) &lt;assertion&gt;)
+     (let-values ((maker switch)
+                  (create-aggregate (make-datatype (list &lt;datatype-designation&gt;) '&lt;field&gt; ...)))
+       (values (lambda (&lt;field&gt; ...)
+                 (if (&lt;assertion&gt; &lt;field&gt; ...)
+                     (maker &lt;field&gt; ...)
+                     (error &quot;Assertion failed: &quot;
+                            (list &lt;datatype-designation&gt; &lt;field&gt; ...))))
+               switch)))))
+</span>
+      <h2 id="Issues">Issues</h2>
+      <ul>
+        <li>Maybe it is better to have instead of create-aggregate a syntactic construct to bind the created functions name ?</li></ul>
+      <ul>
+        <li>An orthogonal mechanism is foreseen to allow securing data (like a lock mechanism with capabilities) but this is not the subject of this page.</li></ul>
+      <h2 id="References">References</h2>
+      <p>Disjointness issue raised and proposal:</p>
+      <p>[1]  Jonathan A. Rees. &quot;User-defined data types&quot;. Lisp Pointers. 'The Scheme of Things' (column). 1993</p>
+      <p>For variant-case to destructure records:</p>
+      <p>[2]  Daniel P. Friedman, Mitchell Wand, and Christopher T. Haynes. Essentials of Programming Languages. MIT Press and McGraw-Hill, 1991.</p>
+      <p>RTD (datatype) functions:</p>
+      <p>[3]  Jonathan A. Rees, Norman I. Adams IV and James R. Meehan. &quot;The T manual&quot;. Yale University Computer Science Department. 1984.</p></div></body></html>

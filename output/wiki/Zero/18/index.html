@@ -1,0 +1,126 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Zero</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/Zero.md">Zero</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Zero</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-12-22 02:33:46</div>
+      <div class="version">18<span class="comment"></span><a href="/wiki/Zero/history">history</a></div>
+      <div class="source"><a href="/wiki/Zero/18/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This page talks about how implementations handle various aspects of zero.  Thanks to Alexey Radul for the ideas here; the research is mine.</p>
+      <h3 id="Exactdivisionbyzero">Exact division by zero</h3>
+      <p>Racket, MIT, Gambit, Chicken, Bigloo, Scheme48/scsh, Chibi, Guile, SISC, Chez, Ikarus/Vicare, Larceny, Ypsilon, Mosh, IronScheme, NexJ, STklos, Shoe, Scheme 7, BDC, XLisp, Rep, Schemik, Elk, UMB, SigScheme, SXM, Sizzle, Spark, Dfsch, Inlab, VSCM report an error.</p>
+      <p>Gauche, SCM, KSi, VX return an inexact infinity.</p>
+      <p>Kawa returns one of two <i>exact</i> infinities depending on the sign of the numerator.  These are notated <span class="monospace">1/0</span> and <span class="monospace">-1/0</span>.  They are the same in the sense of <span class="monospace">eqv?</span>, anomalously so since they are not operationally equivalent.  They are also distinct in the sense of <span class="monospace">eqv?</span> from <span class="monospace">+inf.0</span> and <span class="monospace">-inf.0</span>, but <span class="monospace">1/0</span> and <span class="monospace">+inf.0</span> are the same in the sense of <span class="monospace">=</span>, as are <span class="monospace">-1/0</span> and <span class="monospace">-inf.0</span>.</p>
+      <p>Scheme 9 returns +nan.0.</p>
+      <p>Femtolisp return an incorrect result.</p>
+      <h3 id="Inexactdivisionbyexactzero">Inexact division by exact zero</h3>
+      <p>Racket, Gambit, Chicken, scsh, Chibi, Guile, Shoe, Scheme 7, BDC, XLisp, Rep, Schemik, Elk, SXM, Sizzle, Spark, Dfsch, Inlab, VSCM report an error.</p>
+      <p>MIT (with floating traps ignored), Gauche, Bigloo, Scheme48, Kawa, SISC, SCM, Chez, Ikarus/Vicare, Larceny, Ypsilon, Mosh, IronScheme, NexJ, STklos, UMB, VX return an inexact infinity.</p>
+      <p>SigScheme, Dream, Oaklisp, Owl Lisp do not support inexact numbers.</p>
+      <p>Scheme 9 returns +nan.0.</p>
+      <p>KSi, Femtolisp return an incorrect result.</p>
+      <h3 id="Divisionbyinexactzero">Division by inexact zero</h3>
+      <p>Plain Chicken, scsh, Shoe, TinyScheme, XLisp, Rep, Schemik, Scheme 7, SXM, Sizzle, Dfsch, Inlab, VSCM report an error.</p>
+      <p>Racket, Gauche, MIT (with floating traps ignored), Gambit, Chicken with the numbers egg, Bigloo, Scheme48, Guile, Kawa, SISC, Chibi, SCM, Chez, SCM, Ikarus/Vicare, Larceny, Ypsilon, Mosh, IronScheme, NexJ, STklos, BDC, Elk, UMB, VX, Spark, Femtolisp return an inexact infinity.</p>
+      <p>SigScheme, Dream, Oaklisp, Owl Lisp do not support inexact numbers.</p>
+      <p>Scheme 9 returns +nan.0</p>
+      <p>KSi return an incorrect result.</p>
+      <h3 id="Inexactmultiplicationbyexactzero">Inexact multiplication by exact zero</h3>
+      <p>Racket, MIT, Gambit, Chez, Ypsilon, TinyScheme, XLisp, Elk, SXM, Sizzle, Spark, Inlab return exact <span class="monospace">0</span>.</p>
+      <p>Gauche, Chicken, Bigloo, Scheme48/scsh, Guile, Kawa, SISC, Chibi, SCM, Ikarus/Vicare, Larceny, Mosh, IronScheme, NexJ, STklos, KSi, Shoe, Scheme 9, Scheme 7, BDC, Rep, Schemik, UMB, VX, Femtolisp, Dfsch, VSCM return inexact <span class="monospace">0.0</span>.</p>
+      <p>SigScheme, Dream, Oaklisp, Owl Lisp do not support inexact numbers.</p>
+      <h3 id="MultiplyingNaNbyexact0">Multiplying NaN by exact 0</h3>
+      <p>Racket, MIT, Chez, Ypsilon, Elk, SXM, Sizzle, Spark, Inlab return exact <span class="monospace">0</span>.</p>
+      <p>Gauche, Gambit, Chicken, Bigloo, Scheme48/scsh, Guile, Kawa, SISC, Chibi, SCM, Vicare, Larceny, IronScheme, NexJ, STklos, KSi, Shoe, TinyScheme, RScheme, Scheme 7, BDC, XLisp, Rep, Schemik, UMB, VX, Llava, FemtoLisp, Dfsch return <span class="monospace">+nan.0</span>.</p>
+      <p>Scheme 9 does not have any form of NaN.</p>
+      <p>SigScheme, Dream, Oaklisp, Owl Lisp do not support inexact numbers.</p>
+      <h3 id="Dividingexactzerobyaninexactnumber">Dividing exact zero by an inexact number</h3>
+      <p>Racket, Gambit, TinyScheme, Sizzle, Spark return exact <span class="monospace">0</span>.</p>
+      <p>Gauche, Chicken (with or without the numbers egg), Bigloo, Scheme48/scsh, Guile, Kawa, SISC, Chibi, Vicare, Larceny, Ypsilon, Mosh, IronScheme, STklos, KSi, Shoe, Scheme 7, BDC, XLisp, Rep, Schemik, UMB, VX, Llava, SXM, Dfsch, Inlab return inexact <span class="monospace">0.0</span>.</p>
+      <p>SigScheme, Dream, Oaklisp, Owl Lisp do not support inexact numbers.</p>
+      <p>Femtolisp returns the wrong answer.</p>
+      <h3 id="Complexnumberswith0.0imaginarypart.">Complex numbers with 0.0 imaginary part.</h3>
+      <p>Gauche, MIT, Chicken with the numbers egg, Scheme48/scsh, Kawa, SISC, SCM, STklos, KSi, Scheme 7, UMB, Spark, Dfsch, VSCM consider <span class="monospace">3.0+0.0i</span> to be a real number.</p>
+      <p>Racket, Gambit, Guile, Chibi, Chez, Vicare, Larceny, Ypsilon, Mosh, IronScheme do not.</p>
+      <p>Plain Chicken, Bigloo, Ikarus, NexJ, SigScheme, Shoe, TinyScheme, Dream, Scheme 9, BDC, XLisp, Rep, Schemik, Elk, VX, Oaklisp, SXM, Sizzle, Femtolisp, Inlab, Owl Lisp do not implement non-real numbers.</p>
+      <h3 id="Negativezero">Negative zero</h3>
+      <p>I did a test of:</p><span class="monospace">(let* ((minf (* 1.0e200 -1.0e200))
+       (mzero (/ 1.0 minf)))
+  (list minf mzero (eqv? mzero 0.0)))
+</span>
+      <p>Gauche, Chicken, Bigloo,  Scheme48/scsh, SISC, Chibi, SCM, Ikarus,
+Ypsilon, Mosh, IronScheme, NexJ, STklos, Shoe, TinyScheme, RScheme,
+Scheme 7, BDC, XLisp, Schemik, Elk, UMB, VX return some variant of
+<span class="monospace">(-inf.0 -0.0 #t)</span>.</p>
+      <p>Racket, Gambit, Guile, Kawa, Chez, Vicare, Larceny,
+Rep return some variant of <span class="monospace">(-inf.0 -0.0 #f)</span>.</p>
+      <p>I wasn't able to generate <span class="monospace">-0.0</span> on MIT, KSi, SigScheme, Scheme 9, Dream, Oaklisp, Owl Lisp.</p>
+      <p>These are the R6RS examples involving -0.0 (already accounted for verbally in the &quot;Implementation extensions&quot; section of R7RS):</p><span class="monospace">(zero? -0.0)  =&gt; #t                ; -0.0 is a Scheme zero
+
+(+ 0.0 0.0)   =&gt; 0.0               ; Sum is -0.0 only if all arguments are -0.0
+(+ 0.0 -0.0)  =&gt; 0.0
+(+ -0.0 0.0)  =&gt; 0.0
+(+ -0.0 -0.0) =&gt; -0.0
+
+(- 0.0)       =&gt; -0.0             ; Negation flips the sign of zero
+(- -0.0)      =&gt; 0.0
+
+(- 0.0 -0.0)  =&gt; 0.0              ; Negate all arguments but the last and then add
+(- -0.0 0.0)  =&gt; -0.0
+(- 0.0 0.0)   =&gt; 0.0
+(- -0.0 -0.0) =&gt; 0.0
+
+(log -1.0+0.0i) =&gt; 0.0+3.141592653589793i ; approximately
+(log -1.0-0.0i) =&gt; 0.0-3.141592653589793i ; approximately
+
+(angle -1.0+0.0i) =&gt; 3.141592653589793    ; approximately
+(angle -1.0-0.0i) =&gt; -3.141592653589793   ; approximately
+</span>
+      <h3 id="Angleofnegativezero">Angle of negative zero</h3>
+      <p>Because of the branch cut of <span class="monospace">atan</span>, the values of <span class="monospace">(angle 0.0)</span> and <span class="monospace">(angle -0.0)</span> should be 0 and pi respectively.  Furthermore, by R5RS and R6RS, <span class="monospace">(atan y x)</span> is equivalent to <span class="monospace">(angle (make-rectangular x y))</span> even on systems that don't support non-real numbers, so <span class="monospace">(atan 0.0 -0.0)</span> should also be pi.  On many implementations, these turn out not to be the case.</p>
+      <p>Gambit, Chicken with the numbers egg, Guile, Chez, Vicare, Larceny, IronScheme, STklos, Sizzle return pi to both <span class="monospace">angle</span> and <span class="monospace">atan</span>.</p>
+      <p>Gauche, plain Chicken, SISC return <span class="monospace">0.0</span> to <span class="monospace">angle</span>, pi to <span class="monospace">atan</span>.</p>
+      <p>Scheme48 returns <span class="monospace">-0.0</span> to <span class="monospace">angle</span>, pi to <span class="monospace">atan</span>.</p>
+      <p>scsh returns an error to <span class="monospace">angle</span>, pi to <span class="monospace">atan</span>.</p>
+      <p>KSi returns NaN to <span class="monospace">angle</span>, an error to <span class="monospace">atan</span>.</p>
+      <p>Racket, Spark return pi to <span class="monospace">angle</span>, <span class="monospace">0.0</span> to <span class="monospace">atan</span>.</p>
+      <p>SISC, Mosh, Scheme 7 return <span class="monospace">0.0</span> to both expressions.</p>
+      <p>MIT does not support <span class="monospace">-0.0</span>.</p>
+      <p>NexJ, RScheme, BDC, XLisp, Rep, Elk, Inlab do not support <span class="monospace">angle</span>, but returns pi to <span class="monospace">atan</span>.</p>
+      <p>Bigloo, Scheme 9, SXM do not support <span class="monospace">angle</span>, but raise an error to <span class="monospace">atan</span>.</p>
+      <p>VX does not support <span class="monospace">angle</span>, but returns <span class="monospace">-0.0</span> to <span class="monospace">atan</span>.</p>
+      <p>UMB does not support <span class="monospace">angle</span>, but returns <span class="monospace">0.0</span> to atan.</p>
+      <p>Shoe, TinyScheme, Schemik, Llava, FemtoLisp do not support either <span class="monospace">angle</span> or <span class="monospace">atan</span>.</p>
+      <p>SigScheme, Dream, Oaklisp, Owl Lisp do not support inexact numbers.</p>
+      <h3 id="Inexactzeroraisedtoanegativerealpower">Inexact zero raised to a negative real power</h3>
+      <p>This situation involves the log of 0, and R6RS and R7RS permit implementations to either raise an exception or return an arbitrary number.</p>
+      <p>Racket, Gauche, Gambit, Chicken, Bigloo, scsh, Kawa, Chibi, SCM, Chez, Ypsilon, Mosh, NexJ, STklos, XLisp, Rep, UMB, SXM, Spark, Dfsch, Inlab return <span class="monospace">inf.0</span>.</p>
+      <p>Guile, Larceny, Scheme 9 return <span class="monospace">+nan.0</span>.</p>
+      <p>SISC, IronScheme return <span class="monospace">0.0</span>.</p>
+      <p>Elk returns <span class="monospace">0</span>.</p>
+      <p>Sizzle returns its smallest representable integer (-2<sup>32</sup>).</p>
+      <p>MIT (even ignoring floating point traps), Scheme48, KSi, Scheme 7 raise an exception.</p>
+      <p>SigScheme, Dream, Oaklisp, Owl Lisp do not support inexact numbers.</p>
+      <p>TinyScheme, Schemik, Femtolisp, BDC either don't provide <span class="monospace">expt</span> or don't provide <span class="monospace">log</span>.</p>
+      <h3 id="Inexactzeroraisedtoacomplexpowerwhoserealpartisnegative">Inexact zero raised to a complex power whose real part is negative</h3>
+      <p>Racket, Gauche, Gambit, Chicken with the numbers egg, Kawa, Chibi, Ypsilon, Spark return <span class="monospace">+nan.0+nan.0i</span>.</p>
+      <p>Guile returns <span class="monospace">+nan.0+nan.0i</span> or <span class="monospace">+inf.0+nan.0i</span> depending on the platform.</p>
+      <p>SISC, Chez, Vicare, IronScheme return <span class="monospace">0.0</span>.</p>
+      <p>SCM, Dfsch return <span class="monospace">+inf.0</span>.</p>
+      <p>Larceny returns <span class="monospace">+nan.0</span>.</p>
+      <p>MIT (even when ignoring floating point traps), Scheme48/scsh, STklos, UMB raise an exception.</p>
+      <p>Mosh returns its implementation-specific &quot;undefined&quot; value.</p>
+      <p>Plain Chicken, Bigloo, Ikarus, NexJ, SigScheme, Shoe, TinyScheme, Scheme 9, Dream, RScheme, BDC, XLisp, Rep, Schemik, Elk, VX, Oaklisp, Femtolisp, Inlab, Owl Lisp do not support non-real numbers.</p></div></body></html>

@@ -1,0 +1,101 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #538</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #538</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2013-07-07 03:18:46</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Jussi Piitulainen writes in a private email to John Cowan:
+
+  `(cond-expand ...)` entry (page 15): &quot;Otherwise, the `cond-expand` has no effect.&quot; I think it would be better for it to &quot;expand to nothing&quot;, except the sample implementation seems to be a syntax error, which surely is an effect.
+
+[http://srfi.schemers.org/srfi-0/srfi-0.html SRFI 0] clearly requires that an error be signaled if the cond-expand falls off the end.  Unfortunately, when I created CondExpandCowan, on which people actually voted, I forgot to specify anything for this case.  In Chibi it has no effect.  Changed editorially to &quot;the behavior is unspecified&quot;.
+
+  Also, &quot;spliced into the current context as if by `begin`&quot; -&gt; &quot;expanded to a `begin`&quot; and let that `begin` have the splicing semantics if the context is appropriate.
+
+Changed editorially.</pre>
+    <h2>id</h2>
+    <pre>538</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Falling off a cond-expand should be unspecified behavior</pre>
+    <h2>time</h2>
+    <pre>2013-05-23 21:32:28</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2013-07-07 03:18:46</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1373141926861532</pre>
+    <h2>ticket</h2>
+    <pre>538</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:18:46</pre>
+    <h2>Change at time 2013-07-07 03:18:46</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1373141926861532</pre>
+    <h2>ticket</h2>
+    <pre>538</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:18:46</pre>
+    <h2>Change at time 2013-07-07 03:18:46</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1373141926861532</pre>
+    <h2>ticket</h2>
+    <pre>538</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:18:46</pre></body></html>

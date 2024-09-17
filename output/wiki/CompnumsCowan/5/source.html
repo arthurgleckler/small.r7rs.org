@@ -1,0 +1,289 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki CompnumsCowan version 5</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki CompnumsCowan version 5</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>CompnumsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>The compnums are the subset of the inexact complex numbers whose real part and imaginary part are both flonums.
+This library is based on parts of FlonumsCowan lifted to compnums.  A few procedures have been added from the C99 `&lt;complex.h&gt;` library.
+
+== Specification ==
+
+{{{
+#!html
+&lt;p&gt;
+This section uses &lt;i&gt;cx&lt;/i&gt;, &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;, &lt;i&gt;cx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;, etc., as
+parameter names for compnum arguments.&lt;/p&gt;
+&lt;p&gt;
+}}}
+
+
+=== Constructors ===
+
+{{{
+#!html
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_952&quot;&gt;&lt;/a&gt;compnum&lt;i&gt; x&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+The value returned is the compnum that is numerically closest to
+&lt;i&gt;x&lt;/i&gt;.  This procedure can be used to transform any complex number,
+exact or inexact, to a compnum.
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_982&quot;&gt;&lt;/a&gt;cxmake-rectangular&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;/i&gt;)&lt;/tt&gt;/div&gt;
+&lt;p&gt;
+The value returned is the compnum whose real part is the flonum &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; and whose imaginary part is the flonum &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_982&quot;&gt;&lt;/a&gt;cxmake-polar&lt;i&gt; &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;fl
+&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+The value returned is the compnum that is numerically closest to the complex number whose magnitude is the flonum &lt;i&gt;fl&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;
+and whose angle is the flonum &lt;i&gt;fl&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+}}}
+
+=== Predicates ===
+
+{{{
+#!html
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_950&quot;&gt;&lt;/a&gt;compnum?&lt;i&gt; obj&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+Returns &lt;tt&gt;#t&lt;/tt&gt; if &lt;i&gt;obj&lt;/i&gt; is a compnum, &lt;tt&gt;#f&lt;/tt&gt; otherwise.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_954&quot;&gt;&lt;/a&gt;cx=?&lt;i&gt; &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;cx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;cx&lt;sub&gt;3&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;p&gt;
+This procedure returns &lt;tt&gt;#t&lt;/tt&gt; if its arguments are numerically equal.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_966&quot;&gt;&lt;/a&gt;cxzero?&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_976&quot;&gt;&lt;/a&gt;cxfinite?&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_978&quot;&gt;&lt;/a&gt;cxinfinite?&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_980&quot;&gt;&lt;/a&gt;cxnan?&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+These numerical predicates test a compnum for a particular property,
+returning &lt;tt&gt;#t&lt;/tt&gt; or &lt;tt&gt;#f&lt;/tt&gt;.
+The &lt;tt&gt;cxzero?&lt;/tt&gt; procedure tests whether
+it is &lt;tt&gt;cx=?&lt;/tt&gt; to &lt;tt&gt;0.0+0.0i&lt;/tt&gt;,
+&lt;tt&gt;cxfinite?&lt;/tt&gt; tests whether both the real and the imaginary parts
+are not an infinity and not a NaN,
+&lt;tt&gt;cxinfinite?&lt;/tt&gt; tests whether either the real part or the imaginary part or both is an infinity, and
+&lt;tt&gt;cxnan?&lt;/tt&gt; tests whether either the real part or the imaginary part or both is a NaN.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+}}}
+
+=== Arithmetic operations ===
+
+{{{
+#!html
+
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_986&quot;&gt;&lt;/a&gt;cx+&lt;i&gt; &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_988&quot;&gt;&lt;/a&gt;cx*&lt;i&gt; &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+These procedures return the compnum sum or product of their compnum
+arguments.  In general, they should return the compnum that best
+approximates the mathematical sum or product.  (For implementations
+that represent compnums using IEEE binary floating point, the
+meaning of &amp;ldquo;best&amp;rdquo; is defined by the IEEE standards.)&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_994&quot;&gt;&lt;/a&gt;cx/&lt;i&gt; &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;cx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; &lt;tt&gt;...&lt;/tt&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_996&quot;&gt;&lt;/a&gt;cx/&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+With two or more arguments, these procedures return the compnum
+difference or quotient of their compnum arguments, associating to the
+left.  With one argument, however, they return the additive or
+multiplicative compnum inverse of their argument.  In general, they
+should return the compnum that best approximates the mathematical
+difference or quotient.  (For implementations that represent compnums
+using IEEE binary floating point, the meaning of &amp;ldquo;best&amp;rdquo; is
+reasonably well-defined by the IEEE standards.)&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+For undefined quotients, &lt;tt&gt;cx/&lt;/tt&gt; behaves as specified by the
+IEEE standards.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_998&quot;&gt;&lt;/a&gt;cxreal-part&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+This procedure returns the real part of &lt;i&gt;cx&lt;/i&gt; as a flonum.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_998&quot;&gt;&lt;/a&gt;cximag-part&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+This procedure returns the imaginary part of &lt;i&gt;cx&lt;/i&gt; as a flonum.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_998&quot;&gt;&lt;/a&gt;cxangle&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+This procedure returns the flonum that is the nearest approximation to the angle of &lt;i&gt;cx&lt;/i&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_998&quot;&gt;&lt;/a&gt;cxabs&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_998&quot;&gt;&lt;/a&gt;cxmagnitude&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+These procedures return the flonum that is the nearest approximation to the absolute value (magnitude)
+of &lt;i&gt;cx&lt;/i&gt;.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_998c&quot;&gt;&lt;/a&gt;cxconj&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+This procedure returns the complex conjugate
+of &lt;i&gt;cx&lt;/i&gt;. The result has the same real part as the real part of &lt;i&gt;cx&lt;/i&gt;; its imaginary part
+is the negation of the imaginary part of &lt;i&gt;cx&lt;/i&gt;.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_998p&quot;&gt;&lt;/a&gt;cxproj&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+This procedure returns the Riemann projection
+of &lt;i&gt;cx&lt;/i&gt;. This is the same as &lt;i&gt;cx&lt;/i&gt; unless &lt;i&gt;cx&lt;/i&gt; has an infinite real part
+or imaginary part.  In this case, the result is a compnum whose real part is 0.0 and whose
+imaginary part is either 0.0 or -0.0, depending on the sign of the imaginary part of &lt;i&gt;cx&lt;/i&gt;.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_998g&quot;&gt;&lt;/a&gt;cxsignum&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+This procedure returns a complex number whose phase is the same as &lt;i&gt;z&lt;/i&gt; but whose magnitude is 1,
+unless &lt;i&gt;z&lt;/i&gt; is zero, in which case it returns &lt;i&gt;z&lt;/i&gt;.
+&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;
+
+}}}
+
+=== Transcendental functions ===
+
+{{{
+#!html
+
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1024&quot;&gt;&lt;/a&gt;cxexp&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1026&quot;&gt;&lt;/a&gt;cxlog&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1028&quot;&gt;&lt;/a&gt;cxlog&lt;i&gt; &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;cx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1030&quot;&gt;&lt;/a&gt;cxsin&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1032&quot;&gt;&lt;/a&gt;cxcos&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1032i&quot;&gt;&lt;/a&gt;cxcis&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1034&quot;&gt;&lt;/a&gt;cxtan&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1036&quot;&gt;&lt;/a&gt;cxasin&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1038&quot;&gt;&lt;/a&gt;cxacos&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1040&quot;&gt;&lt;/a&gt;cxatan&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1030h&quot;&gt;&lt;/a&gt;cxsinh&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1032h&quot;&gt;&lt;/a&gt;cxcosh&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1034h&quot;&gt;&lt;/a&gt;cxtanh&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1036h&quot;&gt;&lt;/a&gt;cxasinh&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1038h&quot;&gt;&lt;/a&gt;cxacosh&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1040h&quot;&gt;&lt;/a&gt;cxatanh&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1040c&quot;&gt;&lt;/a&gt;cxcis&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+
+&lt;p&gt;These procedures compute the usual transcendental functions.  
+The &lt;tt&gt;cxexp&lt;/tt&gt; procedure computes the base-&lt;em&gt;e&lt;/em&gt; exponential of &lt;i&gt;cx&lt;/i&gt;.
+The &lt;tt&gt;cxlog&lt;/tt&gt; procedure with a single argument computes the natural logarithm of
+&lt;i&gt;cx&lt;/i&gt; (not the base ten logarithm); &lt;tt&gt;(cxlog &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;
+&lt;i&gt;cx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;)&lt;/tt&gt; computes the base-&lt;i&gt;cx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; logarithm of &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt;.
+The &lt;tt&gt;cxsin&lt;/tt&gt;, &lt;tt&gt;cxcos&lt;/tt&gt;, &lt;tt&gt;cxtan&lt;/tt&gt;,
+&lt;tt&gt;cxasin&lt;/tt&gt;, &lt;tt&gt;cxacos&lt;/tt&gt;, &lt;tt&gt;cxatan&lt;/tt&gt;,
+The &lt;tt&gt;cxsin&lt;/tt&gt;, &lt;tt&gt;cxcosh&lt;/tt&gt;, &lt;tt&gt;cxtanh&lt;/tt&gt;,
+&lt;tt&gt;cxasinh&lt;/tt&gt;, &lt;tt&gt;cxacosh&lt;/tt&gt;, and &lt;tt&gt;cxatanh&lt;/tt&gt; procedures compute
+the sine, cosine, tangent, arcsine,
+arccosine, arctangent, and their hyperbolic analogues respectively.
+Finally, the &lt;tt&gt;cxcis&lt;/tt&gt; function computes the compnum whose real part is the cosine of &lt;i&gt;cx&lt;/i&gt;
+and whose imaginary part is the sine of &lt;i&gt;cx&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;
+See the corresponding section of R&lt;sup&gt;7&lt;/sup&gt;RS-small for the underlying
+mathematical operations.&lt;/p&gt;
+&lt;p&gt;
+Implementations that use IEEE binary floating-point arithmetic 
+should follow the relevant standards for these procedures.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1044&quot;&gt;&lt;/a&gt;cxsqrt&lt;i&gt; cx&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+Returns the principal square root of &lt;i&gt;cx&lt;/i&gt;.&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+&lt;div align=left&gt;&lt;tt&gt;(&lt;a name=&quot;node_idx_1046&quot;&gt;&lt;/a&gt;cxexpt&lt;i&gt; &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; &lt;i&gt;cx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;&lt;/i&gt;)&lt;/tt&gt;&lt;/div&gt;
+&lt;p&gt;
+The &lt;tt&gt;cxexpt&lt;/tt&gt; procedure returns &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; raised to the power &lt;i&gt;cx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt;.  If &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; is
+negative and &lt;i&gt;cx&lt;sub&gt;2&lt;/sub&gt;&lt;/i&gt; is not an integer, the result may be a
+NaN, or may be some unspecified compnum.  If &lt;i&gt;cx&lt;sub&gt;1&lt;/sub&gt;&lt;/i&gt; is zero, then
+the result is zero.
+&lt;/p&gt;
+}}}
+
+
+ </pre>
+    <h2>time</h2>
+    <pre>2016-08-06 23:15:24</pre>
+    <h2>version</h2>
+    <pre>5</pre></body></html>

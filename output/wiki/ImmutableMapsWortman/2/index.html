@@ -1,0 +1,173 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImmutableMapsWortman</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImmutableMapsWortman.md">ImmutableMapsWortman</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Immutable&shy;Maps&shy;Wortman</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-12-12 22:36:47</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/ImmutableMapsWortman/history">history</a></div>
+      <div class="source"><a href="/wiki/ImmutableMapsWortman/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Introduction">Introduction</h2>
+      <p>This proposal defines immutable maps. A structure is immutable when all its operations leave the structure unchanged and still available to any procedure that holds a pointer to it. Note that none of the procedures specified here ends with a <span class="monospace">!</span>.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>Immutable maps are the analogue of hash tables, and have a similar API.  However, hash tables are changed by mutating them directly, whereas immutable map procedures return modified versions of the map, leaving the original version undisturbed.  In addition, whereas the keys of a hash table requires a hash function either explicitly or as part of a comparator, the keys of an immutable map require an ordering function and may be retrieved from the map in key order.</p>
+      <p>Immutable maps are also an alternative to association lists, which also store key-value associations, but with different key constraints (none) and efficiency guarantees (linear).</p>
+      <p>In the same way that a list of key-value dotted pairs can implement an association list, a set of key-value dotted pairs can implement a map. Implementations may use this approach, or may implement a distinct data structure specific to maps.</p>
+      <p>The following conditions are errors:</p>
+      <ul>
+        <li>if the comparator does not provide an ordering procedure</li></ul>
+      <ul>
+        <li>if a procedure defined in this SRFI is invoked on maps with distinct comparators (in the sense of <span class="monospace">eq?</span>)</li></ul>
+      <ul>
+        <li>if an object is mutated while it is contained in a map</li></ul>
+      <ul>
+        <li>if an object is added to a map which does not satisfy the type test predicate of the comparator</li></ul>
+      <ul>
+        <li>if an object is added to or removed from a map while iterating over it</li></ul>
+      <p>These requirements can be satisfied by many flavors of <i>self-balancing binary trees.</i> Red-black trees, 1-2 brother trees, and labeled 2-3 finger trees are particularly convenient in an immutable context.</p>
+      <h2 id="Specification">Specification</h2>
+      <p>Immutable maps (also known as imaps) are disjoint from all other Scheme types with the possible exception of immutable sets and bags.</p>
+      <p>We specify required time efficiency upper bounds using big-O notation. We note when, in some cases, there is &quot;slack&quot; between the required bound and the theoretically optimal bound for an operation. Implementations may use data structures with amortized time bounds, but should document which bounds hold in only an amortized sense. The use of randomized data structures with expected time bounds is discouraged.</p>
+      <h3 id="Constructors">Constructors</h3>
+      <p>If two associations are to be inserted into a map that are equal in the sense of the map's comparator but are not <span class="monospace">eqv?</span>, the first to be specified or generated prevails.</p>
+      <p><span class="monospace">(imap </span><i>comparator</i> ( <i>key value</i> ...]<span class="monospace">)</span></p>
+      <p>Returns a map using <i>comparator</i>.  For each pair of arguments, an association is added to the map with <i>key</i> as its key and <i>value</i> as its value.  Takes O(n log n) time.</p>
+      <p><span class="monospace">(imap-unfold </span><i>stop? mapper successor seed</i><span class="monospace">)</span></p>
+      <p>Invokes the predicate <i>stop?</i> on <i>seed</i>.  If it returns false, generate the next result by applying <i>mapper</i> to <i>seed</i>, generate the next seed by applying <i>successor</i> to <i>seed</i>, and repeat this algorithm with the new seed.  If <i>stop?</i> returns true, return a map containing the results.  Takes O(n log n) time.</p>
+      <h3 id="Predicates">Predicates</h3>
+      <p><span class="monospace">(imap? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a map, and <span class="monospace">#f</span> otherwise.  Takes O(1) time.</p>
+      <p><span class="monospace">(imap-empty? </span><i>map</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>map</i> contains zero associations, and <span class="monospace">#f</span> otherwise.  Takes O(1) time.</p>
+      <p><span class="monospace">(imap-contains? </span><i>map obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>map</i> contains <i>obj</i> as a key, and <span class="monospace">#f</span> otherwise.  Takes O(log n) time.</p>
+      <h3 id="Accessors">Accessors</h3>
+      <p><span class="monospace">(imap-ref </span><i>map key</i> [ <i>failure</i> [ <i>success</i> ] ]<span class="monospace">)</span></p>
+      <p>Extracts the value associated to <i>key</i> in <i>map</i>, invokes the procedure <i>success</i> on it, and returns its result; if <i>success</i> is not provided, then the value itself is returned.  Otherwise, <span class="monospace">imap-ref</span> invokes the procedure <i>failure</i> on no arguments and returns its result, but if <i>failure</i> is not provided, it is an error.  Takes O(log n) time.</p>
+      <p><span class="monospace">(imap-ref/default </span><i>imap key default</i><span class="monospace">)</span></p>
+      <p>Semantically equivalent to, but may be more efficient than, <span class="monospace">(imap-ref </span><i>map key</i> <span class="monospace">(lambda () </span><i>default</i><span class="monospace">))</span>.</p>
+      <p><span class="monospace">(imap-min-key </span><i>map</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-max-key </span><i>map</i><span class="monospace">)</span></p>
+      <p>Returns the least/greatest key of <i>map</i>.  It is an error for <i>map</i> to be empty. Takes O(log n) time; O(1) is optimal.</p>
+      <p><span class="monospace">(imap-min-value </span><i>map</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-max-value</span><i>map</i><span class="monospace">)</span></p>
+      <p>Returns the value associated with the least/greatest key of <i>map</i> (<i>not</i> the least/greatest value).  It is an error for <i>map</i> to be empty. Takes O(log n) time; O(1) is optimal.</p>
+      <p><span class="monospace">(imap-comparator </span><i>map</i><span class="monospace">)</span></p>
+      <p>Returns the comparator of <i>map</i>.  Takes O(1) time.</p>
+      <p><span class="monospace">(imap-key-predecessor </span><i>map obj failure</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-key-successor </span><i>map obj failure</i><span class="monospace">)</span></p>
+      <p>Returns the key that immediately precedes/succeeds <span class="monospace">obj</span> in <span class="monospace">map</span>'s ordering. If no such association exists because <i>obj</i> is the minimum/maximum key, or because <i>map</i> is empty, returns the result of invoking the thunk <i>failure</i>. Takes O(log n) time.</p>
+      <h3 id="Functionalupdate">Functional update</h3>
+      <p><span class="monospace">(imap-add </span><i>map key value</i><span class="monospace">)</span></p>
+      <p>Returns a map which contains the associations of <i>map</i> and an association with <i>key</i> and <i>value</i> as well.  If there is already an association of <i>map</i> whose key is equal (in the sense of the comparator) to <i>key</i>, the existing key prevails.  Takes O(log n) time.</p>
+      <p><span class="monospace">(imap-add-all </span><i>map key-list value-list</i><span class="monospace">)</span></p>
+      <p>Returns a map which contains the associations of <i>map</i> and associations constructed from the corresponding associations of <i>key-list</i> and <i>value-list</i> as well.  It is an error if the associations of <i>key-list</i> are not distinct and increasing in the sense of the comparator of <i>map</i>.  If there is already an association of <i>map</i> which is equal (in the sense of the comparator) to an association of <i>list</i>, the key of <i>map</i> prevails.  Takes O(k log n) time, where <i>k</i> is the length of <i>list</i>.</p>
+      <p><span class="monospace">(imap-replace </span><i>map key value</i><span class="monospace">)</span></p>
+      <p>Returns a map which contains the associations of <i>map</i> and an association with <i>key</i> and <i>value</i> as well.  If there is already an association of <i>map</i> whose key is equal (in the sense of the comparator) to <i>key</i>, <i>key</i> prevails.  Takes O(log n) time.</p>
+      <p><span class="monospace">(imap-delete </span><i>map key</i><span class="monospace">)</span></p>
+      <p>Returns a map which contains the associations of <i>map</i> with the exception of any association whose key is <i>key</i>.  If there is already an association of <i>map</i> whose key is equal (in the sense of the comparator) to <i>key</i>, the existing key prevails.  Takes O(log n) time.</p>
+      <p><span class="monospace">(imap-delete-keys </span><i>map key-list</i><span class="monospace">)</span></p>
+      <p>Returns a map which contains the associations of <i>map</i>, excluding any associations whose keys appear in <i>key-list</i>.  It is an error if the associations of <i>list</i> are not distinct and increasing in the sense of the comparator of <i>map</i>. Takes O(k log n) time, where <i>k</i> is the length of <i>key-list</i>.</p>
+      <p><span class="monospace">(imap-push </span><i>map key value</i><span class="monospace">)</span></p>
+      <p>If an association with <i>key</i> is found in <i>map</i>, then return a map with the value of <i>key</i> updated to the result of invoking <span class="monospace">cons</span> on <i>value</i> and  the original value.  If the value is not found, an error satisfied by <span class="monospace">imap-key-not-found?</span> is signaled.  It is an error if the value is not a pair.  Takes O(log n) time.</p>
+      <p><span class="monospace">(imap-pop </span><i>map key</i><span class="monospace">)</span></p>
+      <p>If an association with <i>key</i> is found in <i>map</i>, then return two values, <i>map</i> with the value of <i>key</i> updated to the cdr of the original value, and the car of the original value.  If the value is not found, an error satisfied by <span class="monospace">imap-key-not-found?</span> is signaled.  It is an error if the value is not a pair.  Takes O(log n) time.</p>
+      <p><span class="monospace">(imap-search </span><i>map obj failure success</i><span class="monospace">)</span></p>
+      <p>A continuation-based universal update procedure. Attempts to find an association in <i>map</i> whose key is equal (in the sense of the comparator) to <i>obj</i>.  When such an association is found, <span class="monospace">imap-search</span> calls <i>(success key update remove)</i>.  The <i>success</i> procedure either tail-calls <i> (update new-value ret)</i> to return a map that associates the matched key with <i>new-value</i>, or else tail-calls <i>(remove ret)</i> to remove the matched association  from <i>map</i>.</p>
+      <p>When no such association is found, <span class="monospace">imap-search</span> calls <i>(failure insert ignore)</i>, which either tail-calls <i>(insert new-value ret)</i> to insert an association whose key is <i>obj</i> and whose value is <i>new-value</i> into <i>map</i>, or else tail-calls <i>(ignore ret)</i> .`</p>
+      <p>In all cases, <span class="monospace">imap-search</span> returns two values, a map reflecting the indicated modification (if any) and the value <i>ret</i> produced by one of the continuations. It runs in O(log n) time.</p>
+      <p>(This procedure is based on an analogous procedure for hash tables suggested by Alexey Radul and attributed to Taylor Campbell.)</p>
+      <h3 id="Thewholemap">The whole map</h3>
+      <p><span class="monospace">(imap-size </span><i>map</i><span class="monospace">)</span></p>
+      <p>Returns the size of <i>map</i> as an exact integer.  May take O(n) time, though O(1) is optimal.</p>
+      <p><span class="monospace">(imap-find </span><i>map pred failure</i><span class="monospace">)</span></p>
+      <p>For each association of <i>map</i>, invoke <i>proc</i> on its key and value. If <i>proc</i> returns true on a value, then return that value. If all the calls to <i>proc</i> return <span class="monospace">#f</span>, return the result of invoking the thunk <i>failure</i>.  Takes O(log n) time.</p>
+      <p><span class="monospace">(imap-count </span><i>pred map</i><span class="monospace">)</span></p>
+      <p>Returns the number of associations in <i>map</i> which satisfy <i>pred</i> as an exact integer.  Takes O(n) time.</p>
+      <p><span class="monospace">(imap-any </span><i>pred map</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-every </span><i>pred map</i><span class="monospace">)</span></p>
+      <p>Invokes <i>pred</i> in order on the keys and values of <i>map</i>, passing a key and a value to each invocation, until one of them returns a true/false value, which is then returned.  If there are no such associations, returns <span class="monospace">#f</span>/<span class="monospace">#t</span>.  Takes O(n) time.</p>
+      <h3 id="Filtering">Filtering</h3>
+      <p><span class="monospace">(imap-range= </span><i>map obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-range&lt; </span><i>map obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-range&gt; </span><i>map obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-range&lt;= </span><i>map obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-range&gt;= </span><i>map obj</i><span class="monospace">)</span></p>
+      <p>Returns a map containing only the associations of <span class="monospace">map</span> whose keys are equal to / less than / greater than / less than or equal to / greater than or equal to <i>obj</i>.  Takes O(log n) time, where <i>n</i> is the number of associations in the map .</p>
+      <p>Note that since map keys are unique, <span class="monospace">imap-range=</span> returns a map of at most one association.</p>
+      <p><span class="monospace">(imap-filter </span><i>pred map</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-remove </span><i>pred map</i><span class="monospace">)</span></p>
+      <p>Returns a map containing only those associations on whose keys <i>pred</i> returns true/false. Takes O(n log n) time; O(n) is optimal.</p>
+      <p><span class="monospace">(imap-partition</span><i>pred map</i><span class="monospace">)</span></p>
+      <p>Returns two values, <span class="monospace">(imap-filter </span><i>pred map</i><span class="monospace">)</span> and <span class="monospace">(imap-remove </span><i>pred map</i><span class="monospace">)</span> respectively, but may be more efficient.</p>
+      <h3 id="Mappingandfolding">Mapping and folding</h3>
+      <p><span class="monospace">(imap-map/monotone </span><i>proc map</i> [ <i>comparator</i> ]<span class="monospace">)</span></p>
+      <p>Returns a map containing the result of invoking <i>proc</i> on every association in <i>map</i>.  It is an error unless <i>proc</i> is a <i>monotone</i> unary procedure that preserves the order of map associations. Observe that mapping a map of unique associations with a monotone function yields a map of unique associations, so association uniqueness follows from the monotonicity assumption. If <i>comparator</i> is given, it is the comparator of the result; otherwise the result uses the same comparator as <i>map</i>. Takes O(n) time.</p>
+      <p><span class="monospace">(imap-map</span><i>proc map</i> [ <i>comparator</i> [ <i>merger</i> ] ]<span class="monospace">)</span></p>
+      <p>Like <span class="monospace">imap-map/monotone</span>, except that <i>proc</i> is not required to be monotone. The <span class="monospace">merger</span> procedure is used to select among any duplicate associations (in the sense of the comparator of <i>map</i>) that might be created; it returns the value to be used; if absent, the association chosen is implementation-specific.  Takes O(n log n) time.</p>
+      <p><span class="monospace">(imap-map-values </span><i>proc map</i><span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> on the key and value of every <i>association</i> in <i>map</i>.  The result is a map which associates each key with the result of the corresponding invocation.  Takes O(n) time.</p>
+      <p><span class="monospace">(imap-for-each </span><i>proc map</i><span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> on the key and value of every <i>association</i> in <i>map</i>.  The result is unspecified. Takes O(n) time.</p>
+      <p><span class="monospace">(imap-collect </span><i>proc map</i><span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> on the key and value of every <i>association</i> in <i>map</i>.  The results are collected into a list in order, which is returned. Takes O(n) time.</p>
+      <p><span class="monospace">(imap-fold </span><i>proc nil map</i><span class="monospace">)</span></p>
+      <p>The fundamental map iterator. Equivalent to, but may be more efficient than, <span class="monospace">(fold </span><i>proc base</i> <span class="monospace"> (imap-&gt;increasing-list </span><i>map</i><span class="monospace">))</span>.  Takes O(n) time.</p>
+      <p><span class="monospace">(imap-fold </span><i>proc nil map</i><span class="monospace">)</span></p>
+      <p>The fundamental map iterator. Equivalent to, but may be more efficient than, <span class="monospace">(fold-right </span><i>proc base</i> <span class="monospace"> (imap-&gt;increasing-list </span><i>map</i><span class="monospace">))</span>.  Takes O(n) time.</p>
+      <h3 id="Subsets">Subsets</h3>
+      <p>Note: The following three predicates do not obey the trichotomy law and therefore do not constitute a total order on sets.</p>
+      <p><span class="monospace">(imap=? </span><i>set1 set2</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>map</i> contains the same associations, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(imap&lt;? ''set1 set2'' ...</span>)`</p>
+      <p>Returns <span class="monospace">#t</span> if each <i>map</i> other than the last is a proper subset of the following map, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(imap&gt;? ''set1 set2'' ...</span>)`</p>
+      <p>Returns <span class="monospace">#t</span> if each <i>map</i> other than the last is a proper superset of the following map, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(imap&lt;=? ''set1 set2'' ...</span>)`</p>
+      <p>Returns <span class="monospace">#t</span> if each <i>map</i> other than the last is a subset of the following map, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(imap&gt;=? ''set1 set2'' ...</span>)`</p>
+      <p>Returns <span class="monospace">#t</span> if each <i>map</i> other than the last is a superset of the following map, and <span class="monospace">#f</span> otherwise.</p>
+      <h3 id="Conversion">Conversion</h3>
+      <p><span class="monospace">(imap-keys </span><i>imap</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-values </span><i>imap</i><span class="monospace">)</span></p>
+      <p>Returns a list of the keys/values of <i>imap</i> in increasing order. Takes O(n) time.</p>
+      <p><span class="monospace">(imap-entries </span><i>imap</i><span class="monospace">)</span></p>
+      <p>Returns two values, lists of the keys and values of <i>imap</i> in increasing order, but may be more efficient. Takes O(n) time.</p>
+      <p><span class="monospace">(imap-&gt;alist </span><i>map</i><span class="monospace">)</span></p>
+      <p>Returns an association list containing the associations of <span class="monospace">map</span> in increasing order. Takes O(n) time.</p>
+      <p><span class="monospace">(ordered-alist-&gt;imap comparator list)</span></p>
+      <p>Returns a map containing the associations of <i>list</i> and using <i>comparator</i>. It is an error for <i>alist</i> to be anything other than an alist in increasing order. Takes O(n log n) time; O(n) is optimal.</p>
+      <p><span class="monospace">(alist-&gt;imap </span><i>comparator list [ </i>merger'' ]<span class="monospace">)</span></p>
+      <p>Returns a map containing the associations of <i>alist</i> and using <i>comparator</i>.It is an error unless <i>alist</i> is a proper association list, but it may contain duplicates and need not be in order.  The <i>merger</i> procedure is used to select among any duplicate keys (in the sense of the comparator of <i>map</i>) that might be created; it accepts the existing and new keys and returns the key to be used.  Takes O(n log n) time.</p>
+      <p><span class="monospace">(generator-&gt;imap </span><i>generator</i>`)</p>
+      <p><span class="monospace">(imap-&gt;generator </span><i>imap</i><span class="monospace">)</span></p>
+      <p>Converts a <a href="http://srfi.schemers.org/srfi-121/srfi-121.html">SRFI 121</a> generator to and from a map.  The generator produces pairs containing
+the keys in the cars and the values in the cdrs.</p>
+      <h3 id="Mapsasfunctions">Maps as functions</h3>
+      <p>The following procedures provide functions based on maps.  In this way, for example, lists can be processed by <span class="monospace">map</span> using the procedure returned from a map by <span class="monospace">imap-accessor</span>.</p>
+      <p><span class="monospace">(imap-accessor </span><i>map</i> [ <i>failure</i> [ <i>success</i> ] ]<span class="monospace">)</span></p>
+      <p>Curried version of <span class="monospace">imap-ref</span>.  Returns a procedure of one argument, a key, which returns what <span class="monospace">imap-ref</span> returns when invoked with the the passed arguments.</p>
+      <p><span class="monospace">(imap-accessor/default </span><i>map default</i><span class="monospace">)</span></p>
+      <p>Curried version of <span class="monospace">imap-ref/default</span>.  Returns a procedure of one argument, a key, which returns what <span class="monospace">imap-ref/default</span> returns when invoked with the passed arguments.</p>
+      <h3 id="Mapsassets">Maps as sets</h3>
+      <p><span class="monospace">(imap-union </span><i>map</i> ... <span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-intersection </span><i>map</i> ... <span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-difference </span><i>map</i> ... <span class="monospace">)</span></p>
+      <p><span class="monospace">(imap-xor </span><i>map<sub>1</sub> map<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Returns a map containing the union/intersection/difference/symmetric difference of the arguments. All the arguments must be sets sharing an equivalent comparator. The map operator is applied in a left-associative order. If an association is found in more than one set, the first map in the argument list prevails.  May take O(kn log n) time, where k is the number of sets and n is the number of associations involved, though O(kn) time is optimal.</p>
+      <h2 id="Exceptions">Exceptions</h2>
+      <h3 id="Exceptions">Exceptions</h3>
+      <p><span class="monospace">(imap-key-not-found? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an object raised by the <span class="monospace">imap-ref</span> procedure or any other procedure that accesses maps when the key is not found and there is no failure procedure, and <span class="monospace">#f</span> otherwise.</p></div></body></html>

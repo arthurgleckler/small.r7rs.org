@@ -1,0 +1,50 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>329: Add IEEE compatibility library</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 329: <span class="summary">Add IEEE compatibility library</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-04-05 09:37:59</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/329/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-01-12 23:48:00</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>The <span class="monospace">(scheme ieee)</span> library exports the standard identifiers of IEEE 1178-1990.  By my current reckoning, those identifiers are as follows:</p>
+        <p><span class="monospace">- * / + &lt; &lt;= = &gt; &gt;= abs acos and angle append apply asin assoc assq assv atan begin boolean? call-with-current-continuation car case cdr ceiling char-&gt;integer char-alphabetic? char-ci&lt;? char-ci&lt;=? char-ci=? char-ci&gt;? char-ci&gt;=? char-downcase char-lower-case? char-numeric? char-upcase char-upper-case? char-whitespace? char? char&lt;? char&lt;=? char=? char&gt;? char&gt;=? close-input-port close-output-port complex? cond cons cos current-input-port current-output-port define denominator display do eof-object? eq? equal? eqv? even? exact-&gt;inexact exact? exp expt floor for-each gcd if imag-part inexact-&gt;exact inexact? input-port? integer-&gt;char integer? lambda lcm length let let* letrec list list-ref list? log magnitude make-polar make-rectangular make-string make-vector map max member memq memv min modulo negative? newline not null? number-&gt;string number? numerator odd? open-input-file open-output-file or output-port? pair? peek-char positive? procedure? quasiquote quote quotient rational? rationalize read read-char real-part real? remainder reverse round set-car! set-cdr! set! sin sqrt string string-&gt;number string-&gt;symbol string-append string-ci&lt;? string-ci&lt;=? string-ci=? string-ci&gt;? string-ci&gt;=? string-length string-ref string-set! string? string&lt;? string&lt;=? string=? string&gt;? string&gt;=? substring symbol-&gt;string symbol? tan truncate vector vector-length vector-ref vector-set! vector? write write-char zero?</span></p>
+        <p>As with any library other than <span class="monospace">(scheme base)</span>, implementations SHOULD (rather than MUST) provide this.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-05 09:00:03</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to reject this proposal.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-05 09:37:59</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

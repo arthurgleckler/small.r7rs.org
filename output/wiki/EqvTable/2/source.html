@@ -1,0 +1,57 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki EqvTable version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki EqvTable version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>EqvTable</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This table contains some facts about how `eqv?` works in R5RS, R6RS, and R7RS draft 6, and a '''currently incomplete''' proposal about what we should do for R7RS.
+
+`eqv?` always returns false when two objects have different types, so the rows of this table indicate what it does when both arguments are of the stated type.  Note that &quot;unspecified&quot; means either `#t` or `#f`, but no other value.
+
+||Type||R5RS||R6RS||R7RS draft||Proposal||
+||Booleans||True iff both `#t` or both `#f`||True iff both `#t` or both `#f` (via `boolean=?`)||True iff both `#t` or both `#f`||True iff both `#t` or both `#f` (via `boolean=?`)||
+||Symbols||True iff names are spelled the same||True iff names are spelled the same (via `symbol=?`)||True iff names are spelled the same||True iff names are spelled the same (via `symbol=?`)||
+||Characters||True iff `char=?` is true||True iff `char=?` is true||True iff `char=?` is true||True iff `char=?` is true||
+||Mutable pairs||True iff contain the same locations||True iff contain the same locations||True iff contain the same locations||True iff contain the same locations||
+||Immutable pairs||True iff contain the same locations||True iff contain different locations and/or return same values to `car` or `cdr`||True iff contain the same locations||True iff contain different locations and/or return same values to `car` or `cdr`||
+||Mutable strings||True iff contain the same locations||True iff contain the same locations||True iff contain the same locations||True iff contain the same locations||
+||Immutable strings||True iff contain the same locations||True iff contain the same locations and/or all elements are the same||True iff contain the same locations||True iff contain the same locations and/or all elements are the same||
+||Mutable vectors||True iff contain the same locations||True iff contain the same locations||True iff contain the same locations||True iff contain the same locations||
+||Immutable vectors||True iff contain the same locations||True iff contain the same locations and/or all elements are the same||True iff contain the same locations||True iff contain the same locations and/or all elements are the same||
+||Mutable bytevectors||True iff contain the same locations||True iff contain the same locations||True iff contain the same locations||True iff contain the same locations||
+||Immutable bytevectors||True iff contain the same locations||True iff contain the same locations and/or all elements are the same||True iff contain the same locations||True iff contain the same locations and/or all elements are the same||
+||Mutable records||Unspecified||True iff contain the same locations||True iff contain the same locations||True iff contain the same locations||
+||Immutable records||Unspecified||True iff contain the same locations and/or all elements are the same||True iff contain the same locations||True iff contain the same locations||
+||Procedures with distinct behaviors||False||False||False||False||
+||All other procedures||True iff are the same locations||Unspecified||Unspecified||???||
+||Exact rationals||True iff `=` is true||True iff `=` is true||True iff `=` is true||True iff `=` is true||
+||Exact non-rationals||True iff `=` is true||True iff `=` and not distinguishable by Scheme arithmetic||True iff `=` is true||True iff `=` is true||
+||Inexact numbers except !NaNs||True iff `=` is true||True iff `=` and not distinguishable by Scheme arithmetic||True iff `=` is true||
+||!NaNs||Unspecified||False||Unspecified||???||
+||Ports||Unspecified||True iff contain the same locations||Unspecified||True iff contain the same locations||
+||Empty list||True (only one exists)||True (only one exists)||True (only one exists)||
+||Eof-objects||Unspecified||True (only one exists)||Unspecified||Unspecified||</pre>
+    <h2>time</h2>
+    <pre>2012-06-16 02:02:27</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

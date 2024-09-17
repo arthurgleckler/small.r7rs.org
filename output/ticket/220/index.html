@@ -1,0 +1,304 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>220: New DIGIT-VALUE procedure</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 220: <span class="summary">New DIGIT-VALUE procedure</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-07-15 01:43:38</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">duplicate</div>
+      <div class="source"><a href="/ticket/220/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-06-17 09:22:20</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>This accepts a character which is a numeric digit and returns its value as a digit, or <span class="monospace">#f</span> if it's not a digit:</p><span class="monospace">(digit-value #\3) =&gt; 3
+(digit-value #\x0664) =&gt; 4
+(digit-value #\x0EA6) =&gt; 0
+</span>
+        <p>You need the following list of zero-value characters to implement this for all of Unicode (currently); implementations that support only a subset of Unicode need only a subset of the list, of course:</p><span class="monospace">(define zeros '(
+  #\x0030 ;DIGIT ZERO
+  #\x0660 ;ARABIC-INDIC DIGIT ZERO
+  #\x06F0 ;EXTENDED ARABIC-INDIC DIGIT ZERO
+  #\x07C0 ;NKO DIGIT ZERO
+  #\x0966 ;DEVANAGARI DIGIT ZERO
+  #\x09E6 ;BENGALI DIGIT ZERO
+  #\x0A66 ;GURMUKHI DIGIT ZERO
+  #\x0AE6 ;GUJARATI DIGIT ZERO
+  #\x0B66 ;ORIYA DIGIT ZERO
+  #\x0BE6 ;TAMIL DIGIT ZERO
+  #\x0C66 ;TELUGU DIGIT ZERO
+  #\x0CE6 ;KANNADA DIGIT ZERO
+  #\x0D66 ;MALAYALAM DIGIT ZERO
+  #\x0E50 ;THAI DIGIT ZERO
+  #\x0ED0 ;LAO DIGIT ZERO
+  #\x0F20 ;TIBETAN DIGIT ZERO
+  #\x1040 ;MYANMAR DIGIT ZERO
+  #\x1090 ;MYANMAR SHAN DIGIT ZERO
+  #\x17E0 ;KHMER DIGIT ZERO
+  #\x1810 ;MONGOLIAN DIGIT ZERO
+  #\x1946 ;LIMBU DIGIT ZERO
+  #\x19D0 ;NEW TAI LUE DIGIT ZERO
+  #\x1A80 ;TAI THAM HORA DIGIT ZERO
+  #\x1A90 ;TAI THAM THAM DIGIT ZERO
+  #\x1B50 ;BALINESE DIGIT ZERO
+  #\x1BB0 ;SUNDANESE DIGIT ZERO
+  #\x1C40 ;LEPCHA DIGIT ZERO
+  #\x1C50 ;OL CHIKI DIGIT ZERO
+  #\xA620 ;VAI DIGIT ZERO
+  #\xA8D0 ;SAURASHTRA DIGIT ZERO
+  #\xA900 ;KAYAH LI DIGIT ZERO
+  #\xA9D0 ;JAVANESE DIGIT ZERO
+  #\xAA50 ;CHAM DIGIT ZERO
+  #\xABF0 ;MEETEI MAYEK DIGIT ZERO
+  #\xFF10 ;FULLWIDTH DIGIT ZERO
+  #\x104A0 ;OSMANYA DIGIT ZERO
+  #\x11066 ;BRAHMI DIGIT ZERO
+  #\x1D7CE ;MATHEMATICAL BOLD DIGIT ZERO
+  #\x1D7D8 ;MATHEMATICAL DOUBLE-STRUCK DIGIT ZERO
+  #\x1D7E2 ;MATHEMATICAL SANS-SERIF DIGIT ZERO
+  #\x1D7EC ;MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO
+  #\x1D7F6 ;MATHEMATICAL MONOSPACE DIGIT ZERO
+))
+
+(define (digit-value ch) (digit-value* ch zeros))
+
+(define (digit-value* ch zeros)
+  (if
+    (null? zeros)
+    #f
+    (let*
+      ((val (char-&gt;integer ch))
+       (val0 (char-&gt;integer (car zeros)))
+       (val9 (+ val0 9)))
+        (if
+          (&lt;= val0 val val9)
+          (- val val0)
+          (digit-value* ch (cdr zeros))))))
+
+</span>
+        <p>CL provides this as <span class="monospace">digit-char-p</span>, which is its substitute for <span class="monospace">char-numeric?</span>.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-07-23 11:39:19</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>This is particularly important now that <span class="monospace">char-numeric?</span> has been defined to return <span class="monospace">#t</span> on any Unicode numeric digit.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-11 07:44:45</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 accepted this proposal.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-12 00:51:46</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-04 11:18:36</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">This accepts a character which is a numeric digit and returns its value as a digit, or `#f` if it's not a digit:
+
+{{{
+(digit-value #\3) =&gt; 3
+(digit-value #\x0664) =&gt; 4
+(digit-value #\x0EA6) =&gt; 0
+}}}
+
+You need the following list of zero-value characters to implement this for all of Unicode (currently); implementations that support only a subset of Unicode need only a subset of the list, of course:
+
+{{{
+(define zeros '(
+  #\x0030 ;DIGIT ZERO
+  #\x0660 ;ARABIC-INDIC DIGIT ZERO
+  #\x06F0 ;EXTENDED ARABIC-INDIC DIGIT ZERO
+  #\x07C0 ;NKO DIGIT ZERO
+  #\x0966 ;DEVANAGARI DIGIT ZERO
+  #\x09E6 ;BENGALI DIGIT ZERO
+  #\x0A66 ;GURMUKHI DIGIT ZERO
+  #\x0AE6 ;GUJARATI DIGIT ZERO
+  #\x0B66 ;ORIYA DIGIT ZERO
+  #\x0BE6 ;TAMIL DIGIT ZERO
+  #\x0C66 ;TELUGU DIGIT ZERO
+  #\x0CE6 ;KANNADA DIGIT ZERO
+  #\x0D66 ;MALAYALAM DIGIT ZERO
+  #\x0E50 ;THAI DIGIT ZERO
+  #\x0ED0 ;LAO DIGIT ZERO
+  #\x0F20 ;TIBETAN DIGIT ZERO
+  #\x1040 ;MYANMAR DIGIT ZERO
+  #\x1090 ;MYANMAR SHAN DIGIT ZERO
+  #\x17E0 ;KHMER DIGIT ZERO
+  #\x1810 ;MONGOLIAN DIGIT ZERO
+  #\x1946 ;LIMBU DIGIT ZERO
+  #\x19D0 ;NEW TAI LUE DIGIT ZERO
+  #\x1A80 ;TAI THAM HORA DIGIT ZERO
+  #\x1A90 ;TAI THAM THAM DIGIT ZERO
+  #\x1B50 ;BALINESE DIGIT ZERO
+  #\x1BB0 ;SUNDANESE DIGIT ZERO
+  #\x1C40 ;LEPCHA DIGIT ZERO
+  #\x1C50 ;OL CHIKI DIGIT ZERO
+  #\xA620 ;VAI DIGIT ZERO
+  #\xA8D0 ;SAURASHTRA DIGIT ZERO
+  #\xA900 ;KAYAH LI DIGIT ZERO
+  #\xA9D0 ;JAVANESE DIGIT ZERO
+  #\xAA50 ;CHAM DIGIT ZERO
+  #\xABF0 ;MEETEI MAYEK DIGIT ZERO
+  #\xFF10 ;FULLWIDTH DIGIT ZERO
+  #\x104A0 ;OSMANYA DIGIT ZERO
+  #\x11066 ;BRAHMI DIGIT ZERO
+  #\x1D7CE ;MATHEMATICAL BOLD DIGIT ZERO
+  #\x1D7D8 ;MATHEMATICAL DOUBLE-STRUCK DIGIT ZERO
+  #\x1D7E2 ;MATHEMATICAL SANS-SERIF DIGIT ZERO
+  #\x1D7EC ;MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO
+  #\x1D7F6 ;MATHEMATICAL MONOSPACE DIGIT ZERO
+))
+
+(define (digit-value ch) (digit-value* ch zeros))
+
+(define (digit-value* ch zeros)
+  (if
+    (null? zeros)
+    #f
+    (let*
+      ((val (char-&gt;integer ch))
+       (val0 (char-&gt;integer (car zeros)))
+       (val9 (+ val0 9)))
+        (if
+          (and (&lt;= val0 val) (&lt;= val val9))
+          (- val val0)
+          (digit-value* ch (cdr zeros))))))
+
+}}}
+
+CL provides this as `digit-char-p`, which is its substitute for `char-numeric?`.</span><span class="new-value">This accepts a character which is a numeric digit and returns its value as a digit, or `#f` if it's not a digit:
+
+{{{
+(digit-value #\3) =&gt; 3
+(digit-value #\x0664) =&gt; 4
+(digit-value #\x0EA6) =&gt; 0
+}}}
+
+You need the following list of zero-value characters to implement this for all of Unicode (currently); implementations that support only a subset of Unicode need only a subset of the list, of course:
+
+{{{
+(define zeros '(
+  #\x0030 ;DIGIT ZERO
+  #\x0660 ;ARABIC-INDIC DIGIT ZERO
+  #\x06F0 ;EXTENDED ARABIC-INDIC DIGIT ZERO
+  #\x07C0 ;NKO DIGIT ZERO
+  #\x0966 ;DEVANAGARI DIGIT ZERO
+  #\x09E6 ;BENGALI DIGIT ZERO
+  #\x0A66 ;GURMUKHI DIGIT ZERO
+  #\x0AE6 ;GUJARATI DIGIT ZERO
+  #\x0B66 ;ORIYA DIGIT ZERO
+  #\x0BE6 ;TAMIL DIGIT ZERO
+  #\x0C66 ;TELUGU DIGIT ZERO
+  #\x0CE6 ;KANNADA DIGIT ZERO
+  #\x0D66 ;MALAYALAM DIGIT ZERO
+  #\x0E50 ;THAI DIGIT ZERO
+  #\x0ED0 ;LAO DIGIT ZERO
+  #\x0F20 ;TIBETAN DIGIT ZERO
+  #\x1040 ;MYANMAR DIGIT ZERO
+  #\x1090 ;MYANMAR SHAN DIGIT ZERO
+  #\x17E0 ;KHMER DIGIT ZERO
+  #\x1810 ;MONGOLIAN DIGIT ZERO
+  #\x1946 ;LIMBU DIGIT ZERO
+  #\x19D0 ;NEW TAI LUE DIGIT ZERO
+  #\x1A80 ;TAI THAM HORA DIGIT ZERO
+  #\x1A90 ;TAI THAM THAM DIGIT ZERO
+  #\x1B50 ;BALINESE DIGIT ZERO
+  #\x1BB0 ;SUNDANESE DIGIT ZERO
+  #\x1C40 ;LEPCHA DIGIT ZERO
+  #\x1C50 ;OL CHIKI DIGIT ZERO
+  #\xA620 ;VAI DIGIT ZERO
+  #\xA8D0 ;SAURASHTRA DIGIT ZERO
+  #\xA900 ;KAYAH LI DIGIT ZERO
+  #\xA9D0 ;JAVANESE DIGIT ZERO
+  #\xAA50 ;CHAM DIGIT ZERO
+  #\xABF0 ;MEETEI MAYEK DIGIT ZERO
+  #\xFF10 ;FULLWIDTH DIGIT ZERO
+  #\x104A0 ;OSMANYA DIGIT ZERO
+  #\x11066 ;BRAHMI DIGIT ZERO
+  #\x1D7CE ;MATHEMATICAL BOLD DIGIT ZERO
+  #\x1D7D8 ;MATHEMATICAL DOUBLE-STRUCK DIGIT ZERO
+  #\x1D7E2 ;MATHEMATICAL SANS-SERIF DIGIT ZERO
+  #\x1D7EC ;MATHEMATICAL SANS-SERIF BOLD DIGIT ZERO
+  #\x1D7F6 ;MATHEMATICAL MONOSPACE DIGIT ZERO
+))
+
+(define (digit-value ch) (digit-value* ch zeros))
+
+(define (digit-value* ch zeros)
+  (if
+    (null? zeros)
+    #f
+    (let*
+      ((val (char-&gt;integer ch))
+       (val0 (char-&gt;integer (car zeros)))
+       (val9 (+ val0 9)))
+        (if
+          (&lt;= val0 val val9)
+          (- val val0)
+          (digit-value* ch (cdr zeros))))))
+
+}}}
+
+CL provides this as `digit-char-p`, which is its substitute for `char-numeric?`.</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-07-09 21:22:45</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-07-09 21:22:52</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-15 01:43:38</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">duplicate</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Being balloted as part of <a href="/ticket/452">#452</a>.</p></div></div></div></div></div></body></html>

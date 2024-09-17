@@ -1,0 +1,33 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ExtendedRationalsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ExtendedRationalsCowan.md">ExtendedRationalsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Extended&shy;Rationals&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-22 10:15:17</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ExtendedRationalsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ExtendedRationalsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a WG2 proposal to extend Scheme's exact number system with exact equivalents of  <span class="monospace">+inf.0</span>, <span class="monospace">-inf.0</span>, <span class="monospace">+nan.0</span>, and <span class="monospace">-0.0</span>.</p>
+      <h2 id="Proposal">Proposal</h2>
+      <p>Implementations may distinguish special exact numbers called <i>exact positive infinity, exact negative infinity, exact NaN</i>, and <i>exact negative zero</i>.</p>
+      <p>Exact positive infinity is regarded as an real (but not rational) number written <span class="monospace">1/0</span> that represents a value greater than the numbers represented by all rational numbers.   Exact negative infinity is regarded as an exact real (but not rational) number written <span class="monospace">-1/0</span> that represents a value less than the numbers represented by all rational numbers.  Forms such as <span class="monospace">2/0</span> and <span class="monospace">-3/0</span> are accepted on input but are not produced on output.</p>
+      <p>Adding or multiplying an exact infinite value by any finite real value results in an appropriately signed exact infinity; however, the sum of positive and negative exact infinities is an exact NaN.  Exact positive infinity is the reciprocal of exact zero, and exact negative infinity is the reciprocal of exact negative zero.</p>
+      <p>An exact NaN is regarded as an inexact real (but not rational) number written <span class="monospace">0/0</span> that is so indeterminate that it might represent any real value, including positive or negative infinity.</p>
+      <p>An exact NaN always compares false to any number, including a NaN.  An exact arithmetic operation where one operand is an exact NaN returns an exact NaN, unless the implementation can prove that the result would be the same if the exact NaN were replaced by any rational number.  Dividing exact zero by exact zero results in exact NaN.</p>
+      <p>Exact negative zero is an inexact real value written <span class="monospace">-0/1</span> and is normally distinct (in the sense of <span class="monospace">eqv?</span>) from <span class="monospace">0</span>.  However, a Scheme implementation that implements this proposal is <i>not</i> required to distinguish exact negative zero.  Forms such as <span class="monospace">-0/4</span> are accepted on input but are not produced on output.</p>
+      <p>The negation of exact negative zero is ordinary exact zero and vice versa.  This implies that the sum of two or more exact negative zeros is negative, and the result of subtracting (positive) exact zero from an exact negative zero is likewise negative.  However, numerical comparisons treat exact negative zero as equal to zero.</p>
+      <p>Note that both the real and the imaginary parts of an exact complex number can be exact infinities, NaNs, or negative zero.</p>
+      <h2 id="Implementations">Implementations</h2>
+      <p>Kawa Scheme implements this proposal, but does not support exact negative zero.</p></div></body></html>

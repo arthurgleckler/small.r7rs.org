@@ -1,0 +1,28 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StringSymbolConversion</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StringSymbolConversion.md">StringSymbolConversion</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">String&shy;Symbol&shy;Conversion</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-06-09 07:55:44</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/StringSymbolConversion/history">history</a></div>
+      <div class="source"><a href="/wiki/StringSymbolConversion/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>I tested how Schemes deal with <span class="monospace">string-&gt;symbol</span> when the string contains characters that can only appear in an escaped symbol.  All Schemes in my test suite (except Rep, Schemik, and Oaklisp, which don't support <span class="monospace">string-&gt;symbol</span>) return a symbol from <span class="monospace">(string-&gt;symbol &quot;foo)(bar&quot;)</span> rather than a syntax error.</p>
+      <p>An interesting difference was the way in which the resulting symbol was printed by the REPL.</p>
+      <p>Racket, Gauche, MIT, Gambit, Chicken, SISC, Chibi, STklos printed the symbol name as <span class="monospace">|foo)(bar</span>.</p>
+      <p>Guile, Chez, Icarus/Vicare, Larceny, Ypsilon, KSi printed it as <span class="monospace">foo\x29;\x28;bar</span>, R6RS-style.</p>
+      <p>SCM, Shoe, Elk printed it as <span class="monospace">foo\)\(bar</span>.</p>
+      <p>Bigloo, Scheme48/scsh, Kawa, Mosh, IronScheme, NexJ, SigScheme, TinyScheme, Scheme 9, Dream, RScheme, Scheme 7, BDC, XLisp, UMB, VX, Owl Lisp displayed the symbol as <span class="monospace">foo)(bar</span> (this is arguably a bug in Mosh and IronScheme, which are R6RS implementations).</p>
+      <p>Note that this list does not match the list of implementations which <i>accept</i> vertical bars, hex escapes, and backslashes.</p></div></body></html>

@@ -1,0 +1,138 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StandardConditionPredicatesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StandardConditionPredicatesCowan.md">StandardConditionPredicatesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Standard&shy;Condition&shy;Predicates&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-07-09 20:07:42</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/StandardConditionPredicatesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/StandardConditionPredicatesCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Standardpredicatesandaccessors">Standard predicates and accessors</h1>
+      <p>Conditions created by the implementations are opaque objects as far as
+this standard is concerned.  However, a variety of predicates and accessors
+are provided in order to help programs 
+examine implementation-specific conditions.
+If a predicate returns #t on a particular condition, the related accessor(s)
+will return information, hopefully meaningful and useful.  Otherwise, calling the accessors
+has undefined effect.
+It is common for more than one predicate to return <span class="monospace">#t</span> on a particular condition.</p>
+      <ul>
+        <li><span class="monospace">(message-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> contains a string message describing the condition to humans.</p>
+      <ul>
+        <li><span class="monospace">(condition-message </span><i>message-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns the message associated with <i>message-condition</i>.</p>
+      <ul>
+        <li><span class="monospace">(who-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> contains a string or symbol describing the object which is the
+source of the exception.</p>
+      <ul>
+        <li><span class="monospace">(condition-who </span><i>who-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns the <i>who</i> object associated with <i>who-condition</i>.</p>
+      <ul>
+        <li><span class="monospace">(irritants-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> contains a list of objects providing additional information
+about the condition.</p>
+      <ul>
+        <li><span class="monospace">(condition-irritants </span><i>message-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns the list of irritants (possibly empty) associated with <i>message-condition</i>.</p>
+      <ul>
+        <li><span class="monospace">(warning-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes an exceptional situation that does not,
+in principle, prohibit immediate continued execution of the program,
+but may interfere with the program’s execution later.</p>
+      <ul>
+        <li><span class="monospace">(serious-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes an exceptional situation that is
+serious enough that it cannot safely be ignored.</p>
+      <ul>
+        <li><span class="monospace">(external-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes an exceptional situation that is
+caused by something that has gone wrong in the interaction
+of the program with the external world or the user.</p>
+      <ul>
+        <li><span class="monospace">(violation-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes an exceptional situation that is
+a violation of the language standard or a library standard,
+typically caused by a programming error.</p>
+      <ul>
+        <li><span class="monospace">(invocation-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes an invalid call to a procedure,
+such as passing an invalid number of arguments or passing an argument of the wrong type.</p>
+      <ul>
+        <li><span class="monospace">(implementation-restriction-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes a violation of an implementation restriction
+that is allowed by the specification.</p>
+      <ul>
+        <li><span class="monospace">(storage-exhausted-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> is reporting that storage is exhausted.</p>
+      <ul>
+        <li><span class="monospace">(parse-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes a lexical syntax error or an error in parsing a datum.</p>
+      <ul>
+        <li><span class="monospace">(condition-parse-string </span><i>parse-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns the string which could not be parsed.</p>
+      <ul>
+        <li><span class="monospace">(syntax-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes a syntax error.</p>
+      <ul>
+        <li><span class="monospace">(condition-form </span><i>syntax-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns the form containing a syntax error.</p>
+      <ul>
+        <li><span class="monospace">(condition-subform </span><i>syntax-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns the subform which more precisely locates the syntax error.</p>
+      <ul>
+        <li><span class="monospace">(identifier-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes an undefined identifier.</p>
+      <ul>
+        <li><span class="monospace">(identifier-condition-identifier </span><i>identifier-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns the identifier which is undefined as a symbol.</p>
+      <ul>
+        <li><span class="monospace">(port-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes a problem with a port.</p>
+      <ul>
+        <li><span class="monospace">(condition-port </span><i>port-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns the port associated with <i>port-condition</i>.</p>
+      <ul>
+        <li><span class="monospace">(i/o-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes an exceptional situation with I/O.</p>
+      <ul>
+        <li><span class="monospace">(read-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes an exceptional situation with input.</p>
+      <ul>
+        <li><span class="monospace">(write-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes an exceptional situation with output.</p>
+      <ul>
+        <li><span class="monospace">(position-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes an invalid position of a port.</p>
+      <ul>
+        <li><span class="monospace">(condition-position </span><i>identifier-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns the position specified by the user.</p>
+      <ul>
+        <li><span class="monospace">(filename-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> has a filename associated with it.</p>
+      <ul>
+        <li><span class="monospace">(condition-filename </span><i>filename-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns the filename associated with <i>filename-condition</i> as a string.</p>
+      <ul>
+        <li><span class="monospace">(file-protection-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes a file protection violation.</p>
+      <ul>
+        <li><span class="monospace">(file-existence-condition? </span><i>condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns <span class="monospace">#t</span> iff <i>condition</i> describes the existence or nonexistence of a file.</p>
+      <ul>
+        <li><span class="monospace">(condition-file-exists? </span><i>file-existence-condition</i><span class="monospace">)</span></li></ul>
+      <p>Returns #t the filename associated with <i>filename-condition</i> exists but should not,
+or #f if it does not exist but should.</p></div></body></html>

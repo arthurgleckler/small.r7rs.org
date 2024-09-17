@@ -1,0 +1,58 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>AssociationListsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/AssociationListsCowan.md">AssociationListsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Association&shy;Lists&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-07-10 22:43:53</div>
+      <div class="version">5<span class="comment">Reverted to version 3.  More  will be added later.</span><a href="/wiki/AssociationListsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/AssociationListsCowan/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This proposal supersedes the <a href="http://srfi.schemers.org/srfi-1/srfi-1.html#AssociationLists">association-list section of SRFI 1</a>, maintaining compatibility but bringing it to parity with Common Lisp.</p>
+      <p>FIXME: More will be added later.</p>
+      <h2 id="Associationlists">Association lists</h2>
+      <p>An &quot;association list&quot; (or &quot;alist&quot;) is a list of pairs. The car of each pair contains a key value, and the cdr contains the associated data value. They can be used to construct simple look-up tables in Scheme. Note that association lists are probably inappropriate for performance-critical use on large data; in these cases, hash tables or some other alternative should be employed.</p>
+      <p><span class="monospace">(assoc </span><i>key alist</i> [ <i>=</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(assq </span><i>key alist</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(assv </span><i>key alist</i><span class="monospace">)</span></p>
+      <p>The <i>alist</i> argument must be an association list -- a list of pairs. These procedures find the first pair in <i>alist</i> whose car field is <i>key</i>, and returns that pair. If no pair in <i>alist</i> has <i>key</i> as its car, then <span class="monospace">#f</span> is returned. <span class="monospace">assq</span> uses <span class="monospace">eq?</span> to compare <i>key</i> with the car fields of the pairs in <i>alist</i>, while <span class="monospace">assv</span> uses <span class="monospace">eqv?</span> and <span class="monospace">assoc</span> uses <i>=</i> if given and <span class="monospace">equal?</span> otherwise.  (R5RS, SRFI 1, Common Lisp ASSOC.)</p><span class="monospace">(define e '((a 1) (b 2) (c 3)))
+(assq 'a e)                            =&gt;  (a 1)
+(assq 'b e)                            =&gt;  (b 2)
+(assq 'd e)                            =&gt;  #f
+(assq (list 'a) '(((a)) ((b)) ((c))))  =&gt;  #f
+(assoc (list 'a) '(((a)) ((b)) ((c)))) =&gt;  ((a))
+(assq 5 '((2 3) (5 7) (11 13)))	       =&gt;  *unspecified*
+(assv 5 '((2 3) (5 7) (11 13)))	       =&gt;  (5 7)
+</span>
+      <p><span class="monospace">(reverse-assoc </span><i>obj alist</i> [ <i>=</i> ] <span class="monospace">)</span></p>
+      <p><span class="monospace">(reverse-assq </span><i>obj alist</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(reverse-assv </span><i>obj alist</i><span class="monospace">)</span></p>
+      <p>The <i>alist</i> argument must be an association list -- a list of pairs. These procedures find the first pair in <i>alist</i> whose cdr (rather than car) field is <i>key</i> , and return that pair. If no pair in <i>alist</i> has <i>obj</i> as its cdr, then <span class="monospace">#f</span> (not the empty list) is returned. The <span class="monospace">assq</span> procedure uses <span class="monospace">eq?</span> to compare obj with the cdr fields of the pairs in <i>alist</i>, while <span class="monospace">assv</span> uses <span class="monospace">eqv?</span> and <span class="monospace">assoc</span> uses <i>=</i> if given and <span class="monospace">equal?</span> otherwise.  (Common Lisp RASSOC.)</p><span class="monospace">(define e '((a 1) (b 2) (c 3)))
+(reverse-assq 1 e)                            =&gt;  (a 1)
+(reverse-assq 2 e)                            =&gt;  (b 2)
+(reverse-assq 4 e)                            =&gt;  #f
+(reverse-assq 7 '((2 3) (5 7) (11 13)))	      =&gt;  *unspecified*
+(reverse-assv 7 '((2 3) (5 7) (11 13)))	      =&gt;  (5 7)
+</span>
+      <p>The comparison procedure of <span class="monospace">assoc</span> and <span class="monospace">reverse-assoc</span> is used to compare the elements of <i>alist</i> to <i>key</i> in this way:  The first argument is always <i>key</i>, and the second argument is one of the elements of <i>list</i>. Thus one can reliably find the first entry of <i>alist</i> whose key is greater than five with <span class="monospace">(assoc 5 alist &lt;)</span>.</p>
+      <p><span class="monospace">(make-alist </span><i>keys values</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated alist whose pairs are constructed from the elements of the lists <i>keys</i> and <i>values</i>.  (Common Lisp PAIRLIS.)</p>
+      <p><span class="monospace">(alist-cons </span><i>key datum alist</i><span class="monospace">)</span></p>
+      <p>Cons a new alist entry that maps <i>key</i> to <i>datum</i> onto the beginning of <i>alist</i>.  (SRFI 1, Common Lisp ACONS.)</p>
+      <p><span class="monospace">(alist-copy </span><i>alist</i><span class="monospace">)</span></p>
+      <p>Make a newly allocated copy of <i>alist</i>. This means copying each pair that forms an association as well as the spine of the list.  (SRFI 1, Common Lisp COPY-ALIST.)</p>
+      <p><span class="monospace">(alist-delete </span><i>key alist</i> [ <i>=</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(alist-delete! </span><i>key alist</i> [ <i>=</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">alist-delete</span> deletes all associations from <i>alist</i> with the given <i>key</i>, using the key-comparison procedure <i>=</i>, which defaults to <span class="monospace">equal?</span>. The dynamic order in which the various applications of <i>= </i>are made is not specified.  Return values may share common tails with the <i>alist</i> argument. The <i>alist </i>is not disordered -- elements that appear in the result occur in the same order as they occur in <i>alist</i>.  The comparison procedure is used in the same way as by <span class="monospace">assoc</span>. (SRFI 1.)</p>
+      <p><span class="monospace">alist-delete!</span> is the linear-update variant of <span class="monospace">alist-delete</span>. It is allowed, but not required, to alter cons cells from the <i>alist</i> parameter to construct the result.  (SRFI 1.)</p></div></body></html>

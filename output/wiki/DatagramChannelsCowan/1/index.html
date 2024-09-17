@@ -1,0 +1,53 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>DatagramChannelsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/DatagramChannelsCowan.md">DatagramChannelsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Datagram&shy;Channels&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-09-23 22:06:19</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/DatagramChannelsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/DatagramChannelsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Datagramchannels">Datagram channels</h2>
+      <p>Datagram channels are a mild abstraction of UDP sockets.  They are a disjoint type.</p>
+      <p>In the following descriptions, <i>interface</i> and <i>host</i> are strings, which may be IPv4 dotted-decimal addresses, IPv6 colon-hexadecimal addresses if supported by the operating system, or host names to be looked up according to whatever operating system conventions exist, if any.  Appropriate strings may refer to broadcast or multicast addresses.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(make-datagram-channel </span>[[<i>interface</i>] <i>port</i>]<span class="monospace">)</span></p>
+      <p>Returns a new datagram channel suitable for sending and receiving datagrams.  If <i>port</i> is omitted, the channel will receive datagrams that are sent to a unused port assigned by the operating system over any local interface.  If <i>port</i> is present but <i>interface</i> is omitted, the channel will receive datagrams that are sent to <i>port</i> over any local interface.  Otherwise, the channel will only receive datagrams sent to the specified interface and port.  (Note that if there is exactly one argument, it is <i>port</i>, as this is the more common case.)</p>
+      <p><span class="monospace">(make-output-only-datagram-channel)</span></p>
+      <p>Returns a new datagram channel only suitable for sending datagrams.  It is not bound to any port.</p>
+      <p><span class="monospace">(datagram-channel? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a datagram channel and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(datagram-channel-interface </span><i>channel</i><span class="monospace">)</span></p>
+      <p>Returns the interface on which <i>channel</i> receives datagrams, or <span class="monospace">#f</span> if there is none.  The value returned need not be the same as the value passed to <span class="monospace">make-i/o-datagram-channel</span>.</p>
+      <p><span class="monospace">(datagram-channel-port </span><i>channel</i><span class="monospace">)</span></p>
+      <p>Returns the port number on which <i>channel</i> receives datagrams, or <span class="monospace">#f</span> if there is none.</p>
+      <p><span class="monospace">(datagram-channel-send-to </span><i>channel</i><span class="monospace"> </span><i>host</i><span class="monospace"> </span><i>port</i><span class="monospace"> </span><i>blob</i><span class="monospace"> </span>[<i>start</i> [<i>end</i>]]<span class="monospace">)</span></p>
+      <p>Send the portion of <i>blob</i> defined by <i>start</i> (inclusive) and <i>end</i> (exclusive) to the endpoint specified by <i>host</i> and <i>port</i> using <i>channel</i>.  If <i>end</i> is omitted, it is the length of <i>blob</i> plus one; if <i>start</i> is omitted, it is 0.  Returns undefined values.</p>
+      <p><span class="monospace">(datagram-channel-receive-from </span><i>channel</i><span class="monospace"> </span><i>blob</i><span class="monospace"> </span>[<i>start</i> [<i>end</i>]]<span class="monospace">)</span></p>
+      <p>Receives a datagram from <i>channel</i> into the portion of <i>blob</i> defined by <i>start</i> (inclusive) and <i>end</i> (exclusive).  If <i>end</i> is omitted, it is the length of <i>blob</i> plus one; if <i>start</i> is omitted, it is 0.  Returns three values: the sending host, the sending port, and <span class="monospace">#t</span> if the datagram was complete or <span class="monospace">#f</span> if it was truncated.  It is an error to invoke this procedure on an output-only datagram channel.</p>
+      <p><span class="monospace">(datagram-channel-connect! </span><i>channel</i><span class="monospace"> </span><i>host</i><span class="monospace"> </span><i>port</i><span class="monospace">)</span></p>
+      <p>Connects <i>channel</i> to a remote endpoint specified by <i>host</i> and <i>port</i>.  Datagrams can be sent to this endpoint using <span class="monospace">datagram-channel-send</span>, but it is still possible to send datagrams to other endpoints using <span class="monospace">datagram-channel-send-to</span>.  When connected, a datagram channel will receive datagrams only from the specified remote endpoint.  Returns undefined values.</p>
+      <p><span class="monospace">(datagram-channel-disconnect! </span><i>channel</i><span class="monospace">)</span></p>
+      <p>Disconnects <i>channel</i>.  Returns undefined values.</p>
+      <p><span class="monospace">(datagram-channel-connected-host </span><i>channel</i><span class="monospace">)</span></p>
+      <p>Returns the host to which <i>channel</i> is connected, or <span class="monospace">#f</span> if there is none.  The value returned need not be the same as the value passed to <span class="monospace">datagram-channel-connect!</span>.</p>
+      <p><span class="monospace">(datagram-channel-connected-port </span><i>channel</i><span class="monospace">)</span></p>
+      <p>Returns the port to which <i>channel</i> is connected, or <span class="monospace">#f</span> if there is none.</p>
+      <p><span class="monospace">(datagram-channel-send </span><i>channel</i><span class="monospace"> </span><i>blob</i><span class="monospace"> </span>[<i>start</i> [<i>end</i>]]<span class="monospace">)</span></p>
+      <p>Send the portion of <i>blob</i> defined by <i>start</i> (inclusive) and <i>end</i> (exclusive) to the connected endpoint of <i>channel</i>.  If <i>end</i> is omitted, it is the length of <i>blob</i> plus one; if <i>start</i> is omitted, it is 0.  It is an error if <i>channel</i> is not connected.  Returns undefined values.</p>
+      <h2 id="Issues">Issues</h2>
+      <p>These names are very verbose, but I couldn't think of a better term than <span class="monospace">datagram-channel</span>, which is borrowed from <span class="monospace">java.nio.channels.DatagramChannel</span>.  This API is more powerful than Java's, though.</p>
+      <p>Should the <i>end</i> arguments be replaced by <i>length</i> arguments?</p>
+      <p>The name &quot;blob&quot; is subject to change.</p></div></body></html>

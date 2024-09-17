@@ -1,0 +1,71 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>353: No use before import in libraries</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 353: <span class="summary">No use before import in libraries</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-07 04:35:07</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/353/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-02-26 18:25:44</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>For ease of implementation, I think we should make it an error for an imported identifier to be referenced or defined in a library before the library declaration that imports it.  This allows strict left-to-right processing of library declarations, with no need to delay processing till the end of the library.</p>
+        <p>Therefore, this would be an error (but still permitted as an extension in Schemes that can easily provide it):</p><span class="monospace">(module
+  (begin (define x y))
+  (import (library defining y))
+</span>
+        <p>This would necessitate replacing the penultimate paragraph of section 5.5.1 with:</p>
+        <p>One possible implementation of libraries is as follows:  After all <span class="monospace">cond-expand</span> library declarations are expanded, a new environment is constructed for the library consisting of all imported bindings. The expressions and declarations from all <span class="monospace">begin</span>, <span class="monospace">include</span>, and <span class="monospace">include-ci</span> declarations are expanded in that environment in the order in which they occur in the library declaration.  Alternatively, <span class="monospace">cond-expand</span> and <span class="monospace">import</span> declarations may be processed in left to right order interspersed with the processing of expressions and declarations, with the environment growing as imported bindings are added to it by each <span class="monospace">import</span> declaration.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-06-12 00:19:26</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Incremental processing is the way Chicken modules (which are just name scopes) work today, and it seems a plausible approach to allow.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-26 23:00:57</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 decided to adopt this limitation.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 06:52:48</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-07 04:35:07</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

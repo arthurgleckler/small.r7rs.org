@@ -1,0 +1,65 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>SymbolsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Symbols&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-28 14:01:22</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/SymbolsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/SymbolsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This WG2 proposal extends Scheme symbols in a variety of traditional Lisp ways: it provides uninterned symbols, symbol values, and property lists.  It can be implemented portably on top of ordinary symbols, provided that the four standard procedures given here are redefined to deal with uninterned symbols as well as ordinary symbols.  For a high-quality implementation, a record facility is needed for uninterned symbols, and a hash table or similar lookup table to associated ordinary symbols with their values and property lists.</p>
+      <h2 id="Uninternedsymbols">Uninterned symbols</h2>
+      <p>Uninterned symbols are like symbols, except that they have two names, a unique name and a human-readable name (which need not be unique).  Implementations need not guarantee that the unique name is truly unique, but should make a best effort to do so, such as by using a large pseudo-random string of characters as the name.</p>
+      <p><span class="monospace">(symbol? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is either an ordinary symbol or an uninterned symbol, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(ordinary-symbol? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an ordinary symbol, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(uninterned-symbol? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an uninterned symbol, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(symbol=? </span><i>symbol1 symbol2</i> ... <span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if all the <i>symbol</i>s have the same unique name in the sense of <span class="monospace">string=?</span>.</p>
+      <p><span class="monospace">(symbol-&gt;string </span><i>symbol</i><span class="monospace">)</span></p>
+      <p>Returns the name of <i>symbol</i> as a string if it is an ordinary symbol, or its human-readable name if it is an uninterned symbol.  It is an error to mutate this string.</p>
+      <p><span class="monospace">(string-&gt;symbol </span><i>string</i><span class="monospace">)</span></p>
+      <p>Returns an ordinary symbol whose name is <i>string</i>.</p>
+      <p><span class="monospace">(string-&gt;uninterned-symbol </span><i>string</i><span class="monospace">)</span></p>
+      <p>Returns an uninterned symbol whose human-readable name is <i>string</i>, and whose unique name is chosen by the implementation.</p>
+      <p><span class="monospace">(symbol-unique-name </span><i>symbol</i><span class="monospace">)</span></p>
+      <p>Return the name of <i>symbol</i> if it is an ordinary symbol, or its unique name if it is an uninterned symbol.</p>
+      <p><span class="monospace">(gensym </span> [ <i>string</i> ] <span class="monospace">)</span></p>
+      <p>Returns an uninterned symbol whose human-readable name is distinct from that of any symbol returned by a previous call to <span class="monospace">gensym</span>.  If <i>string</i> is present, it is used as a prefix of the human-readable name.</p>
+      <h2 id="Symbolvalues">Symbol values</h2>
+      <p><span class="monospace">(symbol-ref </span><i>symbol</i><span class="monospace">)</span></p>
+      <p>Returns an object which is the value of <i>symbol</i>.  The value may or may not have anything to do with the global binding of the identifier corresponding to <i>symbol</i>.</p>
+      <p><span class="monospace">(symbol-set! </span><i>symbol obj</i><span class="monospace">)</span></p>
+      <p>Changes the value of <i>symbol</i> to <i>obj</i>.  This may or may not affect the global binding of the identifier corresponding to <i>symbol</i>.  An unspecified value is returned.</p>
+      <h2 id="Propertylists">Property lists</h2>
+      <p>A property list is a list that can be bound to a symbol.  The original value of a symbol's property list is implementation-dependent.  The structure of a property list is a sequence of symbols known as <i>indicators</i>, some of which may be followed by an arbitrary object known as the indicator's <i>value</i>.  Note that property lists are a list of objects, unlike alists which are a list of pairs.</p>
+      <p><span class="monospace">(get-property </span><i>symbol indicator</i> [ <i>obj</i> ] <span class="monospace">)</span></p>
+      <p>Searches the property list of <i>symbol</i> for <i>indicator</i>.  If a symbol that is <span class="monospace">symbol=?</span> to <i>indicator</i> is found on the list, the next object on the list is returned; it is an error if there is no next object.  If there is not, <i>obj</i> is returned if it is present, and if absent, <span class="monospace">#f</span> is returned.</p>
+      <p><span class="monospace">(get-property-list </span><i>symbol indicator</i><span class="monospace">)</span></p>
+      <p>If a symbol that is <span class="monospace">symbol=?</span> to <i>indicator</i> is found on the list, the rest of the list is returned.  If there is not, <span class="monospace">#f</span> is returned.</p>
+      <p><span class="monospace">(set-property! </span><i>symbol indicator obj</i><span class="monospace">)</span></p>
+      <p>Searches the property list of <i>symbol</i> for <i>indicator</i>.  If a symbol that is <span class="monospace">symbol=?</span> to <i>indicator</i> is found on the list, the next object on the list is destructively replaced with <i>obj</i>; it is an error if there is no next object.  If there is not, <i>indicator</i> and <i>obj</i> are consed on to the beginning of the property list.   An unspecified value is returned.</p>
+      <p><span class="monospace">(remove-property! </span><i>symbol indicator</i><span class="monospace">)</span></p>
+      <p>Searches the property list of <i>symbol</i> for <i>indicator</i>.  If a symbol that is <span class="monospace">symbol=?</span> to <i>indicator</i> is found on the list, the indicator and the next object on the list are destructively removed from the list and <span class="monospace">#t</span> is returned; it is an error if there is no next object.  If there is not, nothing is done, and <span class="monospace">#f</span> is returned.</p>
+      <p><span class="monospace">(symbol-property-list </span><i>symbol</i><span class="monospace">)</span></p>
+      <p>Returns the property list associated with <i>symbol</i> without copying it.  The caller is free to mutate the list.</p>
+      <p><span class="monospace">(symbol-property-list-set! </span><i>symbol list</i><span class="monospace">)</span></p>
+      <p>Replaces the property list associated with <i>symbol</i> with <i>list</i>, which is not copied.  An unspecified value is returned.</p>
+      <p><span class="monospace">(symbol-add-indicators! </span><i>symbol-list indicator</i><span class="monospace">)</span></p>
+      <p><i>Symbol-list</i> is a list of symbols.  The property list of each symbol is searched for <i>indicator</i>.  If a symbol that is <span class="monospace">symbol=?</span> to <i>indicator</i> is found on the list, nothing is done.  If not, <i>indicator</i> is consed on to the beginning of the property list.  An unspecified value is returned.</p>
+      <p><span class="monospace">(symbol-remove-indicators! </span><i>symbol-list indicator</i><span class="monospace">)</span></p>
+      <p><i>Symbol-list</i> is a list of symbols.  The property list of each symbol is searched for <i>indicator</i>.  If a symbol that is <span class="monospace">symbol=?</span> to <i>indicator</i> is found on the list, the indicator is destructively removed from the list.  If not, <i>indicator</i> is consed on to the beginning of the property list.  An unspecified value is returned.</p></div></body></html>

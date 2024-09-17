@@ -1,0 +1,84 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki InexactEqvWeaver version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki InexactEqvWeaver version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>69.195.55.172</pre>
+    <h2>name</h2>
+    <pre>InexactEqvWeaver</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Proposed R7RS definition for `eqv?` on numbers ==
+
+[See #477 for detailed background]
+
+Objects ''obj,,1,,'' and ''obj,,2,,'' are ''substantially different'' if and only if one of the following holds:
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are both numbers, at least one is numerically equal to itself (see `=`), and they are not numerically equal (see `=`) to each other.
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are not both numbers, and they are different (in the sense of `eqv?`).
+
+Inexact numbers ''z,,1,,'' and ''z,,2,,'' are ''operationally equivalent'' if and only if for all procedures ''f'' that can be defined as a finite composition of the standard numerical operations specified in section 6.2.6, `(f z1)` and `(f z2)` either both raise exceptions or yield results that are not substantially different.
+
+The `eqv?` procedure returns `#t` if one of the following holds:
+
+[...]
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are both exact numbers and are numerically equal (see `=`).
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are both inexact numbers, at least one is numerically equal to itself (see `=`), and the implementation is able to prove that ''obj,,1,,'' and ''obj,,2,,'' are operationally equivalent.  Implementations must be able to prove that two inexact numbers with the same internal representation are operationally equivalent.
+
+The `eqv?` procedure returns `#f` if one of the following holds:
+
+[...]
+
+* One of ''obj,,1,,'' and ''obj,,2,,'' is an exact number but the other is an inexact number.
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are exact numbers for which the `=` procedure returns `#f`.
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are inexact numbers, at least one is numerically equal to itself (see `=`), and the implementation is unable to prove that ''obj,,1,,'' and ''obj,,2,,'' are operationally equivalent.
+
+== Rationale for the above definition ==
+
+The novel feature of this definition is the auxiliary predicate ''substantially different'', which is needed to gracefully avoid circularities and the problems associated with !NaNs, both of which plagued the R6RS definition.
+
+The circularity problem is addressed by defining substantially different on numbers in terms of `=` instead of `eqv?`.  The NaN problem (see below) is addressed by making sure that two numbers can only be substantially different from each other if at least one of them is `=` to itself.
+
+Note that there is considerable freedom in how &quot;substantially different&quot; is defined.  As long as it is capable of making the most coarse distinctions between numbers, that's good enough, because it should always be possible to choose a procedure ''f'' that amplifies even the finest distinction between any two inexact numbers that are not operationally equivalent.
+
+For example, suppose that in addition to the usual `+0.0` and `-0.0`, an experimental numeric representation was able to distinguish (x/y+0.0) from (x/y-0.0) for any exact rational x/y.  It would still be possible to amplify that distinction to an infinite difference by subtracting x/y and then taking the reciprocal.
+
+Note also that there is considerable freedom in the choice of procedures to allow in the construction of ''f''.  The main requirements are that they are sufficient to amplify arbitrary fine distinctions into coarse ones that are substantially different, and that the procedures are pure functions, i.e. they must not use `eqv?` or `eq?` (directly or indirectly), they must not cause visible side effects, and their return values must depend only on their arguments.  It needn't be a comprehensive set.
+
+== Differences between this proposal and R6RS ==
+
+1. The R6RS implicitly requires that the implementation will be able to   prove operational equivalence in ''all'' cases where there is no counterexample (which I suspect is not always possible), whereas my definition does not.  My definition strictly requires `#t` for inexacts only when they have the &quot;same internal representation&quot;.  Therefore, my definition allows `#f` to be returned in some cases where R6RS would strictly require `#t`.
+
+2. The R6RS has a circular definition, comparing the results of `(f z1)` and `(f z2)` using 'eqv?', whereas my formulation uses `=` when the results are both numbers (and not both !NaNs).  I would conjecture that this results in the same requirements as those ''intended'' by the R6RS authors.
+
+3. The set of numerical procedures that can be composed to form ''f'' is different.  I would conjecture that this makes no difference in the resulting requirements.
+
+4. In the R6RS, the clause requiring `eqv?` to return `#t` for inexacts explicitly requires that `=` return `#t` as a prerequisite.  My formulation does not explicitly require this, but it requires the same prerequisite indirectly (unless both are !NaNs), because if ''z,,1,,'' and ''z,,2,,'' are not `=`, then `(+ z1)` and `(+ z2)` are substantially different.
+
+In summary, I would conjecture that the only difference in the resulting requirements (comparing with those ''intended'' by the R6RS and likely implemented in practice) has to do with change #1 above.
+</pre>
+    <h2>time</h2>
+    <pre>2012-11-26 00:31:47</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

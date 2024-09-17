@@ -1,0 +1,82 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>LazySequencesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/LazySequencesCowan.md">LazySequencesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Lazy&shy;Sequences&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-11-05 00:34:49</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/LazySequencesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/LazySequencesCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Lazysequences">Lazy sequences</h2>
+      <p>Preliminary list of procedures for lazy sequences.  Lazy sequences are based on <a href="/wiki/GeneratorsGauche">GeneratorsGauche</a>, so there are only a few constructors.</p><span class="monospace">Constructors
+
+list-&gt;lseq            list-&gt;vector          list-&gt;string          list-&gt;generator
+lseq                  lseq*                 lseq-unfold           lseq-unfold-right
+
+Predicates
+
+lseq?                 null-lseq?            lseq=?
+
+Selectors
+
+lseq-first ... tenth  lseq-rest             lseq-last
+lseq-ref
+lseq-drop             lseq-drop-right       lseq-take             lseq-take-right
+lseq-split-at
+
+The whole lazy sequence
+
+lseq-length           lseq-reverse
+lseq-append           lseq-concatenate
+lseq-zip              lseq-unzip            lseq-unzip2           lseq-unzip3
+lseq-unzip4           lseq-unzip5
+lseq-count
+
+Mapping and folding
+
+lseq-map              lseq-for-each         lseq-for-each-subseq  lseq-filter-map
+lseq-fold             lseq-fold-right       lseq-fold-subseq      lseq-fold-subseq-right
+lseq-reduce           lseq-reduce-right
+
+Filtering
+
+lseq-filter           lseq-remove           lseq-partition
+
+Searching
+
+lseq-find             lseq-find-rest        lseq-drop-while       lseq-take-while
+lseq-any              lseq-every
+lseq-index 
+lseq-member           lseq-memq             lseq-memv
+
+Deleting
+
+lseq-delete           lseq-delete-neighbor-dups
+
+Lazy alists
+
+lseq-assoc            lseq-assq             lseq-assv
+lseq-alist-cons       lseq-alist-delete
+
+Conversion
+
+lseq-&gt;list            lseq-&gt;vector          lseq-&gt;string          lseq-&gt;generator
+
+Realization
+
+lseq-realize!         lseq-realize-once!    lseq-realize-steps!   lseq-realize-while!      
+</span>
+      <h2 id="Implementationnotes">Implementation notes</h2>
+      <p>An lseq is a <a href="/wiki/QueuesCowan">QueuesCowan</a> queue plus a generator.  Queues can be shared between lseqs, which means that you are not allowed to remove anything from them, and the only addition operation is <span class="monospace">lseq-realize-once!</span>, which realizes one value and adds it to the back of the queue.</p></div></body></html>

@@ -1,0 +1,1047 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>LazySequencesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/LazySequencesCowan.md">LazySequencesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Lazy&shy;Sequences&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-02-12 03:39:36</div>
+      <div class="version">17<span class="comment"></span><a href="/wiki/LazySequencesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/LazySequencesCowan/17/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>`</p><h1>Table of contents</h1>
+
+<ul id="toc-table">
+<li><a href="#Abstract">Abstract</a>
+</li><li><a href="#Rationale">Rationale</a>
+</li><li><a href="#ProcedureIndex">Procedure index</a>
+<li><a href="#Specification">Specification</a>
+  <ul>
+  <li><a href="#Constructors">Constructors</a>
+  </li><li><a href="#Predicates">Predicates</a>
+  </li><li><a href="#Selectors">Selectors</a>
+  </li><li><a href="#Whole">The whole lazy sequence</a>
+  </li><li><a href="#FoldingMapping">Folding and mapping</a>
+  </li><li><a href="#Searching">Searching</a>
+  </li><li><a href="#LazyAssociationLists">Lazy association lists</a>
+  </li><li><a href="#Comparators">Comparators</a>
+  </li></ul>
+</li><li><a href="#SampleImplementation">Sample Implementation</a>
+</li><li><a href="#Acknowledgements">Acknowledgements</a>
+</li><li><a href="#ReferencesLinks">References &amp; links</a>
+</li><li><a href="#Copyright">Copyright</a>
+</li></ul>
+
+
+<!--========================================================================-->
+<h1><a name="Abstract">Abstract</a></h1>
+<p>
+Lazy sequences (or lseqs) are a generalization of lists.
+In particular, an lseq is either a proper list or a dotted list
+whose last cdr is
+a <a href="http://srfi.schemers.org/srfi-121/srfi-121.html">SRFI 121</a> generator.
+A generator is a procedure that can be invoked with no arguments
+in order to lazily supply additional elements of the lseq.
+When a generator has no more elements to return, it returns an
+end-of-file object.  Consequently, lazy sequences cannot contain
+end-of-file objects.</p> 
+<p>This proposal provides a set of procedures
+suitable for operating on lazy sequences based
+on <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a>.</p>
+
+<h1><a name="Rationale">Rationale</a></h1>
+<p>Lazy sequences are more heavyweight than generators, on which they
+are based, but they are more lightweight
+than <a href="http://srfi.schemers.org/srfi-41/srfi-41.html">SRFI 41</a> streams.
+However, streams are <i>even</i>, as explained in the SRFI 41 rationale;
+that is, the initial state of a stream does not have any elements that
+have already been realized.  By contrast, lazy sequences are <i>odd</i>,
+meaning that at least one element is realized at all times unless the lseq
+is empty.  Therefore, when you construct an lseq in an iterative lazy algorithm,
+only the cdr side of the lazy pair is lazily evaluated; the car side is evaluated 
+immediately, even if you don’t use it.</p>
+
+<p>In most cases this doesn't matter,
+because calculating one additional item is a negligible overhead.
+However, when you create a self-referential lazy structure,
+in which the earlier elements of a sequence are used to caculate
+the latter elements of itself, a bit of caution is needed;
+code that is valid for circular streams may not terminate
+if it is mechanically converted to use lazy sequences.
+This eagerness is also visible when side effects are involved;
+for example, a lazy character sequence reading from a port
+may read one character ahead.</p>
+ 
+<p>This proposal is less comprehensive than SRFI 1, because it omits
+most procedures that process every element of the list (at least,
+when used in the absence of <code>call/cc</code>).  For example, there
+are left folds but no right folds, since it's just as efficient to
+use <code>lazy-realize</i> and then ordinary SRFI 1 <code>fold-right</code>.  The
+linear-update procedures of SRFI 1 are also left out, as lazy lists are
+not intended to be mutated.</p> 
+<!--========================================================================-->
+<h1><a name="ProcedureIndex">Procedure Index</a></h1>
+<p>
+Here is a short list of the procedures provided by this SRFI.
+
+</p><div class="indent">
+<dl>
+<dt class="proc-index"> Constructors
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#generator->lseq">generator->lseq</a> 
+</pre>
+
+</dd><dt class="proc-index"> Predicates
+</dt><dd class="proc-index">
+<pre class="proc-index">
+<a href="#lazy-p">lseq?</a>         <a href="#lseq=">lseq=</a>
+</pre>
+
+</dd><dt class="proc-index"> Selectors
+</dt><dd class="proc-index">
+<pre class="proc-index">
+<a href="#lazy-car">lazy-car</a>     <a href="#lazy-cdr">lazy-cdr</a>
+<a href="#lazy-first">lazy-first</a>   <a href="#lazy-second">lazy-second</a>  <a href="#lazy-third">lazy-third</a>  <a href="#lazy-fourth">lazy-fourth</a> <a href="#lazy-fifth">lazy-fifth</a>
+<a href="#lazy-sixth">lazy-sixth</a>   <a href="#lazy-seventh">lazy-seventh</a> <a href="#lazy-eighth">lazy-eighth</a> <a href="#lazy-ninth">lazy-ninth</a>  <a href="#lazy-tenth">lazy-tenth</a>
+<a href="#lazy-rest">lazy-rest</a>    <a href="#lazy-ref">lazy-ref</a>
+<a href="#lazy-take">lazy-take</a>    <a href="#lazy-drop">lazy-drop</a> <a href="#lazy-split-at">lazy-split-at</a>   
+</pre>
+
+</dd><dt class="proc-index"> The whole lazy sequence
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#lazy-realize">lazy-realize</a> <a href="#lazy-length">lazy-length</a> 
+<a href="#lazy-zip">lazy-zip</a>     <a href="#lazy-unzip1">lazy-unzip1</a>       <a href="#lazy-unzip2">lazy-unzip2</a>
+<a href="#lazy-unzip3">lazy-unzip3</a>  <a href="#lazy-unzip4">lazy-unzip4</a>       <a href="#lazy-unzip5">lazy-unzip5</a>
+</pre>
+
+</dd><dt class="proc-index"> Folding and mapping
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#lazy-map">lazy-map</a>
+<a href="#lazy-fold">lazy-fold</a>       <a href="#lazy-reduce">lazy-reduce</a> 
+<a href="#lazy-for-each">lazy-for-each</a>   <a href="#lazy-pair-for-each">lazy-pair-for-each</a>
+</pre>
+
+</dd><dt class="proc-index"> Searching
+</dt><dd class="proc-index"><pre class="proc-index">
+<a href="#lazy-member">lazy-member</a>       <a href="#lazy-memq">lazy-memq</a>     <a href="#lazy-memv">lazy-memv</a>
+<a href="#lazy-find">lazy-find</a>         <a href="#lazy-find-rest">lazy-find-rest</a> 
+<a href="#lazy-any">lazy-any</a>          <a href="#lazy-every">lazy-every</a>
+<a href="#lazy-index">lazy-index</a>
+<a href="#lazy-take-while">lazy-take-while</a>   <a href="#lazy-drop-while">lazy-drop-while</a>
+<a href="#lazy-span">lazy-span</a>         <a href="#lazy-break">lazy-break</a>
+</pre>
+
+</dd><dt class="proc-index"> Lazy association lists
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#lazy-assoc">lazy-assoc</a>        <a href="#lazy-assq">lazy-assq</a>       <a href="#lazy-assv">lazy-assv</a>
+</pre>
+
+</dd><dt class="proc-index"> Comparators
+</dt><dd class="proc-index">
+<pre class="proc-index"><a href="#lazy-comparator">lazy-comparator</a>   <a href="#make-lazy-comparator">make-lazy-comparator</a>
+</pre>
+
+</dd></dl>
+<!--========================================================================-->
+<h1><a name="Specification">Specification</a></h1>
+<p>
+The templates given below obey the following conventions for procedure formals:
+</p><table>
+<tbody><tr valign="baseline"><th align="left"> <var>lseq</var>	
+    </th><td> A lazy sequence
+</td></tr><tr valign="baseline">
+    <th align="left"> <var>x</var>, <var>y</var>, <var>a</var>, <var>b</var>
+    </th><td> Any value
+</td></tr><tr valign="baseline"><th align="left"> <var>object</var>, <var>value</var>
+    </th><td> Any value
+</td></tr><tr valign="baseline"><th align="left"> <var>n</var>, <var>i</var>
+    </th><td> A natural number (an integer &gt;= 0)
+</td></tr><tr valign="baseline"><th align="left"> <var>proc</var>
+    </th><td> A procedure
+</td></tr><tr valign="baseline"><th align="left"> <var>pred</var>
+    </th><td> A procedure whose return value is treated as a boolean
+</td></tr><tr valign="baseline"><th align="left"> <var>generator</var>
+    </th><td> A procedure with no arguments that returns a sequence of values
+</td></tr><tr valign="baseline"><th align="left"> <var>=</var>
+    </th><td> A boolean procedure taking two arguments
+</td></tr></tbody></table>
+
+<p>To interpret the examples, pretend that they are executed on a Scheme that prints lazy sequences with the syntax of lists.
+
+<!--========================================================================-->
+</p><h2><a name="Constructors">Constructors</a></h2>
+<p>
+Every list constructor procedure is also an lseq constructor procedure.
+The procedure <code>generator->lseq</code> constructs an lseq based on the
+values of a generator.  In order to prepend a realized value to a generator,
+simply use <code>cons</i>; to prepend more than one value, use SRFI 1's
+<code>cons*</code>.
+</p><dl>
+
+<a name="generator->lseq"></a>
+</dd><dt class="proc-def"> <code class="proc-def">generator->lseq</code> <var>generator -&gt; lseq</var>
+</dt><dd class="proc-def">
+    <p>Returns an lseq
+    whose elements are the values generated by <var>generator</var>.  The exact behavior is as follows:</p>
+
+<ul><li><var>Generator</var> is invoked with no arguments to produce an object <code>obj</code>.</li>
+<li>If <var>obj</var> is an end-of-file object, the empty list is returned.</li>
+<li>Otherwise, a newly allocated pair whose car is <var>obj</var> and whose
+cdr is <var>generator</var> is returned.</li>
+</ul>
+<pre class="code-example">
+(generator->lseq (make-circular-generator 'c)) =&gt; (c c c ...)
+</pre></dd></dl>
+
+<!--========================================================================-->
+<h2><a name="Predicates">Predicates</a></h2>
+<dl>
+<!--
+==== lseq?
+============================================================================-->
+<dt class="proc-def">
+<code class="proc-def">lseq?</code><var> x -&gt; boolean</var>
+<a name="lazy-p"></a>
+</dt><dd class="proc-def">
+    <p>Returns <code>#t</code> iff <var>x</var> is an lseq, otherwise <code>#f</code>.
+       This procedure may return <code>#t</code> if <var>x</var> is an improper list
+       whose last car is a procedure that requires arguments, since there is no
+       portable way to examine a procedure to determine how many arguments it requires.
+    </p>
+
+
+<!--
+==== lseq=
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="list="></a>
+<code class="proc-def">lseq=</code><var> elt= lseq<sub>1</sub> ... -&gt; boolean</var>
+</dt><dd class="proc-def">
+    <p>Determines lseq equality, given an element-equality procedure.
+    The lseq <var>A</var> equals the lseq <var>B</var> 
+    if they are of the same length,
+    and their corresponding elements are equal, 
+    as determined by <var>elt=</var>. 
+    If the element-comparison procedure's first argument is
+    from <var>lseq<sub>i</sub></var>, 
+    then its second argument is from <var>lseq<sub>i+1</sub></var>, 
+    <em>i.e.</em> it is always called as
+        <code>(<var>elt=</var> <var>a</var> <var>b</var>)</code>
+    for <var>a</var> an element of lseq <var>A</var>, 
+    and <var>b</var> an element of lseq <var>B</var>.</p>
+<p>
+    In the <var>n</var>-ary case, 
+    every <var>lseq<sub>i</sub></var> is compared to 
+    <var>lseq<sub>i+1</sub></var> 
+    (as opposed, for example, to comparing 
+    <var>lseq<sub>1</sub></var> to    <var>lseq<sub>i</sub></var>, 
+    for <var>i</var>&gt;1). 
+    If there are no lseq arguments at all, 
+    <code>lseq=</code> simply returns true.
+</p><p>
+    The dynamic order in which the <var>elt=</var> procedure is
+    applied to pairs of elements is not specified. 
+    For example, if <code>lseq=</code> is applied
+    to three lseqs, <var>A</var>, <var>B</var>, and <var>C</var>, 
+    it may first completely compare <var>A</var> to <var>B</var>,
+    then compare <var>B</var> to <var>C</var>, 
+    or it may compare the first elements of <var>A</var> and <var>B</var>,
+    then the first elements of <var>B</var> and <var>C</var>, 
+    then the second elements of <var>A</var> and <var>B</var>, and so forth.
+</p><p>
+    The equality procedure must be consistent with <code>eq?</code>. 
+    That is, it must be the case that
+</p><div class="indent">
+        <code>(eq? <var>x</var> <var>y</var>)</code> =&gt; <code>(<var>elt=</var> <var>x</var> <var>y</var>)</code>.
+</div>
+    <p>Note that this implies that two lseqs which are <code>eq?</code> 
+    are always <code>lseq=</code>, as well; implementations may exploit this
+    fact to "short-cut" the element-by-element comparisons.</p>
+<pre class="code-example">(lseq= eq?) =&gt; #t       ; Trivial cases
+(lseq= eq? '(a)) =&gt; #t
+</pre>
+
+</dd></dl>
+
+
+<!--========================================================================-->
+<h2><a name="Selectors">Selectors</a></h2>
+<dl>
+
+<!--
+==== lazy-first
+============================================================================-->
+<dt class="proc-defi">
+<a name="lazy-car"></a>
+<code class="proc-def">lazy-car&nbsp;&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt><dt class="proc-defn">
+<a name="lazy-first"></a>
+<code class="proc-def">lazy-rest&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt>   
+    <p>These procedures are synonymous.
+       They return the first element of <var>lseq</i> except for the
+    first element.  They are included for completeness, as they are
+    the same as <code>car</code>.
+    It is an error to apply them to an empty lseq.</p>
+
+<!--
+==== lazy-rest
+============================================================================-->
+<dt class="proc-defi">
+<a name="lazy-cdr"></a>
+<code class="proc-def">lazy-cdr&nbsp;&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt><dt class="proc-defn">
+<a name="lazy-rest"></a>
+<code class="proc-def">lazy-rest&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt>    
+    <p>These procedures are synonymous.
+       They return an lseq with the contents of <var>lseq</i> except for the
+    first element.  The exact behavior is as follows:</p>
+
+<ul><li>If <var>lseq</i> is a pair whose cdr is a procedure, then the procedure
+is invoked with no arguments to produce an object <var>obj</i>.</li>
+<li>If <var>obj</var> is an end-of-file object, then the cdr of <var>lseq</var> is
+set to the empty list, which is returned.</li>
+<li>If <var>obj</var> is any other object, then a new pair is allocated whose car
+is <i>obj</i> and whose cdr is the cdr of <var>lseq</var> (i.e. the procedure).
+The cdr of <var>lseq</var> is set to the newly allocated pair, which is returned.</li>
+<li>If <var>lseq</var> is a pair whose cdr is not a procedure, then the cdr is returned.</li>
+<li>If <var>lseq</var> is not a pair, it is an error.</li>
+<ul>
+
+<p>Implementations that inline <code>cdr</code> are advised to inline <code>lazy-cdr</code> if
+possible.</p>
+<!--
+==== lazy-tenth
+==== lazy-ninth
+==== lazy-eighth
+==== lazy-seventh
+==== lazy-sixth
+==== lazy-fifth
+==== lazy-fourth
+==== lazy-third
+==== lazy-second
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="lazy-second"></a>
+<code class="proc-def">lazy-second&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="lazy-third"></a>
+<code class="proc-def">lazy-third&nbsp;&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="lazy-fourth"></a>
+<code class="proc-def">lazy-fourth&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="lazy-fifth"></a>
+<code class="proc-def">lazy-fifth&nbsp;&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="lazy-sixth"></a>
+<code class="proc-def">lazy-sixth&nbsp;&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="lazy-seventh"></a>
+<code class="proc-def">lazy-seventh&nbsp;</code><var>lseq -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="lazy-eighth"></a>
+<code class="proc-def">lazy-eighth&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="lazy-ninth"></a>
+<code class="proc-def">lazy-ninth&nbsp;&nbsp;&nbsp;</code><var>lseq -&gt; object </var>
+</dt><dt class="proc-defi">
+<a name="lazy-tenth"></a>
+<code class="proc-def">lazy-tenth&nbsp;&nbsp;&nbsp;</code><var>lseq -&gt; object  </var>
+</dt><dt class="proc-defn">
+</dt><dd class="proc-def">
+    <p>Returns the second, third, ..., or tenth element of <var>lseq</var>.</p> 
+
+<pre class="code-example">(lazy-third '(a b c d e)) =&gt; c
+</pre>
+
+
+<!--
+==== lazy-ref
+============================================================================-->
+<a name="lazy-ref"></a>
+</dd><dt class="proc-def"><code class="proc-def">lazy-ref</code><var> lseq i -&gt; value</var>
+</dt><dd class="proc-def">
+    
+    <p>Returns the <var>i</var>th element of <var>lseq</var>.  
+    (This is the same as 
+        <code>(lazy-first (lazy-drop <var>lseq</var> <var>i</var>))</code>.)
+    It is an error if <var>i</var> &gt;= <var>n</var>, 
+    where <var>n</var> is the length of <var>lseq</var>.</p>
+<pre class="code-example">    
+(lazy-ref '(a b c d) 2) =&gt; c
+</pre>    
+
+<!--
+==== lazy-drop
+==== lazy-take
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="lazy-take"></a>
+<code class="proc-def">lazy-take</code><var> lseq i -&gt; list</var>
+</dt><dt class="proc-defi">
+<a name="lazy-drop"></a>
+<code class="proc-def">lazy-drop</code><var> lseq i -&gt; lseq</var>
+</dt><dt class="proc-def">
+</dt><dd class="proc-def">
+    <p><code>lazy-take</code> returns the first <var>i</var> elements of <var>lseq</var> as a proper list.<br/>
+    <code>lazy-drop</code> returns all but the first <var>i</var> elements of <var>lseq</var>.<br/></p>
+<pre class="code-example">(lazy-take '(a b c d e)  2) =&gt; (a b)
+(lazy-drop '(a b c d e)  2) =&gt; (c d e)
+</pre>
+    <p><code>lazy-drop</code> is exactly equivalent to performing <var>i</var> <code>lazy-rest</code> operations on <var>lseq</var>.</p>
+
+
+<!--
+==== lazy-split-at
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="lazy-split-at"></a>
+<code class="proc-def">lazy-split-at&nbsp;</code><var> lseq i -&gt; [lseq object]</var>
+</dt><dd class="proc-def">
+    <p>Splits the lseq <var>lseq</var> 
+    at index <var>i</var>, returning two values, a list of the 
+    first <var>i</var> elements, and an lseq of the remaining elements. It is equivalent
+    to</p>
+<pre class="code-example">(values (lazy-take lseq i) (lazy-drop lseq i))
+</pre>
+</dd></dl>
+
+<!--========================================================================-->
+<h2><a name="Whole">The whole lazy sequence</a></h2>
+
+<dl>
+
+<dt class="proc-def">
+<a name="lazy-realize"></a>
+<code class="proc-def">lazy-realize</code><var> lseq</var>
+</dt><dd class="proc-def">
+     
+     <p>Repeatedly applies <code>lazy-cdr</code> to <var>lseq</var>
+        until its generator (if there is one) has been exhausted,
+        and returns <var>lseq</var>, which is now a proper list.  This
+        procedure can be called on an arbitrary lseq before passing
+        it to a procedure which only accepts lists.  However, if the
+        generator never returns an end-of-file
+        object, <code>lazy-realize</code> will never return.</p>
+</dd></dl>
+ 
+<!--
+==== lazy-length
+============================================================================-->
+<dt class="proc-def">
+<a name="lazy-length"></a>
+<code class="proc-def">lazy-length&nbsp;&nbsp;</code><var>lseq -&gt; integer</var>
+</dt><dd class="proc-def">
+    <p>Returns the length of its argument, which is the non-negative integer <var>n</var> such that <code>lazy-rest</code> 
+    applied <var>n</var> times to the lseq produces an empty lseq.</p>
+
+
+<!--
+==== lazy-zip
+============================================================================-->
+<a name="lazy-zip"></a>
+</dd><dt class="proc-def"><code class="proc-def">lazy-zip</code> <var>lseq<sub>1</sub> lseq<sub>2</sub> ... -&gt; lseq</var>
+</dt><dd class="proc-def">
+    <p>If <code>lazy-zip</code> is passed <var>n</var> lseqs, it returns an lseq as long as the shortest
+    of these lseqs, each element of which is an <var>n</var>-element list comprised
+    of the corresponding elements from the arguments.</p>
+
+<pre class="code-example">(lazy-zip '(one two three) 
+     '(1 2 3)
+     '(odd even odd even odd even odd even))
+    =&gt; ((one 1 odd) (two 2 even) (three 3 odd))
+
+(lazy-zip '(1 2 3)) =&gt; ((1) (2) (3))
+</pre>
+    
+<!--
+==== lazy-unzip5
+==== lazy-unzip4
+==== lazy-unzip3
+==== lazy-unzip2
+==== lazy-unzip1
+============================================================================-->
+<a name="lazy-unzip1"></a>
+</dd><dt class="proc-def1">  <code class="proc-def">lazy-unzip1</code><var> list-of-lseqs -&gt; lseq</var>
+<a name="lazy-unzip2"></a>
+</dt><dt class="proc-defi"> <code class="proc-def">lazy-unzip2</code><var> list-of-lseqs -&gt; [lseq lseq]</var>
+<a name="lazy-unzip3"></a>
+</dt><dt class="proc-defi"> <code class="proc-def">lazy-unzip3</code><var> list-of-lseqs -&gt; [lseq lseq lseq]</var>
+<a name="lazy-unzip4"></a>
+</dt><dt class="proc-defi"> <code class="proc-def">lazy-unzip4</code><var> list-of-lseqs -&gt; [lseq lseq lseq lseq]</var>
+<a name="lazy-unzip5"></a>
+</dt><dt class="proc-defn"> <code class="proc-def">lazy-unzip5</code><var> lslist-of-lseqs eq -&gt; [lseq lseq lseq lseq lseq]</var>
+</dt><dd class="proc-def">
+    <p><code>lazy-unzip1</code> takes a list of lseqs, 
+    where every lseq must contain at least one element, 
+    and returns an lseq containing the initial element of each such lseq. 
+    That is, it returns <code>(lazy-map lazy-first lseqs)</code>.  
+    <code>lazy-unzip2</code> takes a list of lseqs, where every lseq must contain at least
+    two elements, and returns two values: an lseq of the first elements,
+    and an lseq of the second elements. <code>lazy-unzip3</code> does the same for the first
+    three elements of the lseqs, and so forth.</p>
+
+<pre class="code-example">(lazy-unzip2 (list '(1 one) '(2 two) '(3 three))) =&gt;
+    (1 2 3) 
+    (one two three)
+</pre>
+</dd></dl>
+<!--========================================================================-->
+<h2><a name="FoldingMapping">Folding and mapping</a></h2>
+
+<p>It is an error if all the lseq arguments to these procedures can be indefinitely
+expanded: for example, if they are built from circular generators or procedures that
+never return an end-of-file object.
+<dl>
+<!--
+==== lazy-fold
+============================================================================-->
+<dt class="proc-def">
+<a name="lazy-fold"></a>
+<code class="proc-def">lazy-fold</code><var> kons knil lseq<sub>1</sub> lseq<sub>2</sub> ... -&gt; value</var>
+</dt><dd class="proc-def">
+    <p>The fundamental lseq iterator. 
+</p><p>
+    First, consider the single lazy-parameter case. If <var>lseq<sub>1</sub></var> = (<var>e<sub>1</sub></var> <var>e<sub>2</sub></var> ... <var>e<sub>n</sub></var>),
+    then this procedure returns
+</p><div class="indent">
+<code>(<var>kons</var> <var>e<sub>n</sub></var> ... (<var>kons</var> <var>e<sub>2</sub></var> (<var>kons</var> <var>e<sub>1</sub></var> <var>knil</var>)) ... )</code>
+</div>
+    <p>That is, it obeys the (tail) recursion</p>
+<pre class="code-example">(lazy-fold <var>kons</var> <var>knil</var> <var>lis</var>) = (lazy-fold <var>kons</var> (<var>kons</var> (lazy-first <var>lis</var>) <var>knil</var>) (lazy-last <var>lis</var>))
+(lazy-fold <var>kons</var> <var>knil</var> '()) = <var>knil</var>
+</pre>
+
+    Examples:
+<pre class="code-example">(lazy-fold + 0 lis)			; Add up the elements of LIS.
+
+(lazy-fold lseq* (lseq) lseq)		; Reverse lseq.
+
+(lazy-fold lseq* tail rev-head)	; See append-reverse.
+
+;; How many symbols in LIS?
+(lazy-fold (lambda (x count) (if (symbol? x) (+ count 1) count))
+      0
+      lseq)
+
+;; Length of the longest string in lseq:
+(lazy-fold (lambda (s max-len) (max max-len (string-length s)))
+      0
+      lseq)
+</pre>
+
+    <p>If <var>n</var> lseq arguments are provided, then the <var>kons</var> function must take
+    <var>n</var>+1 parameters: one element from each lseq, and the "seed" or fold
+    state, which is initially <var>knil</var>. The fold operation terminates when
+    the shortest lseq runs out of values:</p>
+<pre class="code-example">(lazy-fold lseq* '() '(a b c) '(1 2 3 4 5)) =&gt; (c 3 b 2 a 1)
+</pre>
+   
+<!--
+==== lazy-reduce
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="lazy-reduce"></a>
+<code class="proc-def">lazy-reduce</code><var> f ridentity lseq -&gt; value</var>
+</dt><dd class="proc-def">
+    <p><code>lazy-reduce</code> is a variant of <code>lazy-fold</code>. 
+</p><p>
+    <var>ridentity</var> should be a "right identity" of the procedure <var>f</var> — that is, 
+    for any value <var>x</var> acceptable to <var>f</var>,
+</p><pre class="code-example">(<var>f</var> <var>x</var> <var>ridentity</var>) = <var>x</var>
+</pre>
+    
+    <p><code>lazy-reduce</code> has the following definition:
+<div class="indent">
+If <var>lseq</var> = (),  return <var>ridentity</var>;<br/>
+Otherwise,    return <code>(lazy-fold <var>f</var> (lazy-first <var>lseq</var>) (lazy-last <var>lseq</var>))</code>.
+</div>
+    ...in other words, we compute 
+    <code>(lazy-fold <var>f</var> <var>ridentity</var> <var>lseq</var>)</code>.</p>
+<p>
+    Note that <var>ridentity</var> is used <em>only</em> in an empty-lseq case.
+    You typically use <code>lazy-reduce</code> when applying <var>f</var> is expensive and you'd
+    like to avoid the extra application incurred when <code>lazy-fold</code> applies
+    <var>f</var> to the head of <var>lseq</var> and the identity value,
+    redundantly producing the same value passed in to <var>f</var>. 
+    For example, if <var>f</var> involves searching a file directory or 
+    performing a database query, this can be significant. 
+    In general, however, <code>lazy-fold</code> is useful
+    in many contexts where <code>lazy-reduce</code> is not
+    (consider the examples given in the <code>lazy-fold</code> definition — only one of the
+    folds uses a function with a right identity. 
+    The other four may not be performed with <code>lazy-reduce</code>).
+
+</p><pre class="code-example">;; take the max of an lseq of non-negative integers.
+(lazy-reduce max 0 nums)
+</pre>
+
+
+<!--
+==== lazy-map
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="lazy-map"></a>
+<code class="proc-def">lazy-map</code><var> proc lseq<sub>1</sub> lseq<sub>2</sub> ... -&gt; lseq</var>
+</dt><dd class="proc-def">
+    
+
+     <p><var>proc</var> is a procedure taking as many arguments 
+     as there are lseq arguments and returning a single value.  
+     <code>lazy-map</code> applies <var>proc</var> element-wise to the elements
+     of the lseqs and returns an lseq of the results, 
+     in order.  
+     The dynamic order in which <var>proc</var> 
+     is applied to the elements of the lseqs is unspecified.</p>
+    
+<pre class="code-example">(lazy-map icadr '((a b) (d e) (g h))) =&gt;  (b e h)
+
+(lazy-map (lambda (n) (expt n n))
+     '(1 2 3 4 5))
+    =&gt;  (1 4 27 256 3125)
+
+(lazy-map + '(1 2 3) '(4 5 6)) =&gt;  (5 7 9)
+
+(let ((count 0))
+  (lazy-map (lambda (lazy-gnored)
+         (set! count (+ count 1))
+         count)
+       '(a b))) =&gt;  (1 2) <em>or</em> (2 1)
+</pre>
+
+ <p>
+    
+<!--
+==== lazy-for-each
+==== lazy-pair-for-each
+============================================================================-->
+</p></dd><dt class="proc-def1">
+<a name="lazy-for-each"></a>
+<code class="proc-def">lazy-for-each</code><var> proc lseq<sub>1</sub> lseq<sub>2</sub> ... -&gt; unspecified</var>
+</dt><dt class="proc-defn">
+<a name="lazy-pair-for-each"></a>
+<code class="proc-def">lazy-pair-for-each</code><var> proc lseq<sub>1</sub> lseq<sub>2</sub> ... -&gt; unspecified</var>
+</dt><dd class="proc-def">
+     
+
+     <p>The arguments to <code>lazy-for-each</code> are like the arguments to 
+     <code>lazy-map</code>, but
+     <code>lazy-for-each</code> calls <var>proc</var> for its side effects rather
+     than for its values.  
+     Unlike <code>lazy-map</code>, <code>lazy-for-each</code> is guaranteed to call 
+     <var>proc</var> on the elements of the lseqs in order from the first
+     element(s) to the last, 
+     and the value returned by <code>lazy-for-each</code> is unspecified.</p>
+     <p>The procedure <code>lazy-pair-for-each</code> is the same as
+     <code>lazy-for-each</code>, except that it
+     calls <var>proc</var> on each pair rather than
+     each element.</p>
+
+<pre class="code-example">(let ((v (make-vector 5)))
+  (lazy-for-each (lambda (lazy-)
+              (vector-set! v i (* i i)))
+            '(0 1 2 3 4))
+  v)  =&gt;  #(0 1 4 9 16)
+</pre>
+  
+ <p>
+  
+</dd></dl>
+
+<!--========================================================================-->
+</dd></dl><h2><a name="Searching">Searching</a></h2>
+<p>
+
+The following procedures all search lseqs for the leftmost element satisfying
+some criteria. 
+
+<!--
+==== lazy-find
+============================================================================-->
+<dt class="proc-def">
+<a name="lazy-find"></a>
+<code class="proc-def">lazy-find</code><var> pred lseq -&gt; value</var>
+</dt><dd class="proc-def">
+    <p>Return the first element of <var>lseq</var> that satisfies predicate <var>pred</var>;
+    false if no element does.</p>
+
+<pre class="code-example">(lazy-find even? '(3 1 4 1 5 9)) =&gt; 4
+</pre>
+
+    <p>Note that <code>lazy-find</code> has an ambiguity in its lookup semantics — if <code>lazy-find</code>
+    returns <code>#f</code>, you cannot tell (in general) if it found a <code>#f</code> element
+    that satisfied <var>pred</var>, or if it did not find any element at all. In
+    many situations, this ambiguity cannot arise — either the lseq being
+    searched is known not to contain any <code>#f</code> elements, or the lseq is
+    guaranteed to have an element satisfying <var>pred</var>. However, in cases
+    where this ambiguity can arise, you should use <code>lazy-find-tail</code> instead of
+    <code>lazy-find</code> — <code>lazy-find-tail</code> has no such ambiguity:</p>
+<pre class="code-example">(cond ((lazy-find-tail pred lseq) =&gt; (lambda (lseq) ...))
+      (else ...)) ; Search failed.
+</pre>
+
+<!--
+==== lazy-find-tail
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="lazy-find-tail"></a>
+<code class="proc-def">lazy-find-tail</code><var> pred lseq -&gt; lseq or false</var>
+</dt><dd class="proc-def">
+    <p>Return the longest tail of <var>lseq</var> whose first element satisfies <var>pred</var>. If no element does,
+    return false.
+</p><p>
+    <code>lazy-find-tail</code> can be viewed as a general-predicate variant of the <code>lazy-member</code>
+    function.
+</p><p>
+    Examples: 
+</p><pre class="code-example">(lazy-find-tail even? '(3 1 37 -8 -5 0 0)) =&gt; (-8 -5 0 0)
+(lazy-find-tail even? '(3 1 37 -5)) =&gt; #f
+
+;; imember x lseq:
+(lazy-find-tail (lambda (elt) (equal? x elt)) lseq)
+</pre>
+
+<p>
+    <code>lazy-find-tail</code> is essentially <code>lazy-drop-while</code>, 
+    where the sense of the predicate is inverted: 
+    <code>lazy-find-tail</code> searches until it finds an element satisfying
+    the predicate; <code>lazy-drop-while</code> searches until it finds an 
+    element that <em>doesn't</em> satisfy the predicate.
+
+<!--
+==== lazy-take-while
+============================================================================-->
+</p></dd><dt class="proc-def">
+<a name="lazy-take-while"></a>
+<code class="proc-def">lazy-take-while&nbsp;</code><var> pred lseq -&gt; lseq</var>
+</dt><dd class="proc-def">
+
+<p>Returns the longest initial prefix of <var>lseq</var> whose elements all
+satisfy the predicate <var>pred</var>.</p>
+
+<pre class="code-example">(lazy-take-while even? '(2 18 3 10 22 9)) =&gt; (2 18)
+</pre>
+
+<!--
+==== lazy-drop-while
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="lazy-drop-while"></a>
+<code class="proc-def">lazy-drop-while</code><var> pred lseq -&gt; lseq</var>
+</dt><dd class="proc-def">
+<p>Drops the longest initial prefix of <var>lseq</var> whose elements all
+satisfy the predicate <var>pred</var>, and returns the rest of the lseq.</p>
+
+<pre class="code-example">(lazy-drop-while even? '(2 18 3 10 22 9)) =&gt; (3 10 22 9)
+</pre>
+
+<!--
+==== lazy-span lazy-break
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="lazy-span"></a>
+<code class="proc-def">lazy-span&nbsp;&nbsp;</code><var> pred lseq -&gt; [lseq lseq]</var>
+</dt><dt class="proc-defn">
+<a name="lazy-break"></a>
+<code class="proc-def">lazy-break&nbsp;</code><var> pred lseq -&gt; [lseq lseq]</var>
+</dt><dd class="proc-def">
+
+<p><code>lazy-span</code> splits the lseq into the longest initial prefix whose
+elements all satisfy <var>pred</var>, and the remaining tail. 
+<code>lazy-break</code> inverts the sense of the predicate: 
+the tail commences with the first element of the input lseq
+that satisfies the predicate.</p>
+
+<p>
+In other words: 
+<code>lazy-span</code> finds the initial span of elements 
+satisfying <var>pred</var>, 
+and <code>lazy-break</code> breaks the lseq at the first element
+satisfying <var>pred</var>.
+
+</p><p>
+<code>lazy-span</code> is equivalent to 
+</p><pre class="code-example">(values (lazy-take-while <var>pred</var> <var>lseq</var>) 
+        (lazy-drop-while <var>pred</var> <var>lseq</var>))
+</pre>
+
+<p>
+</p><pre class="code-example">(lazy-span even? '(2 18 3 10 22 9)) =&gt;
+  (2 18)
+  (3 10 22 9)
+
+(lazy-break even? '(3 1 4 1 5 9)) =&gt;
+  (3 1)
+  (4 1 5 9)
+</pre>
+
+
+<!--
+==== lazy-any
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="lazy-any"></a>
+<code class="proc-def">lazy-any</code><var> pred lseq<sub>1</sub> lseq<sub>2</sub> ... -&gt; value</var>
+</dt><dd class="proc-def">
+    <p>Applies the predicate across the lseqs, returning true if the predicate
+    returns true on any application.
+</p><p>
+    If there are <var>n</var> lseq arguments <var>lseq<sub>1</sub></var> ... <var>lseq<sub>n</sub></var>, then <var>pred</var> must be a
+    procedure taking <var>n</var> arguments and returning a boolean result.
+</p><p>
+    <code>lazy-any</code> applies <var>pred</var> to the first elements of the <var>lseq<sub>i</sub></var> parameters.
+    If this application returns a true value, <code>lazy-any</code> immediately returns
+    that value. Otherwise, it iterates, applying <var>pred</var> to the second
+    elements of the <var>lseq<sub>i</sub></var> parameters, then the third, and so forth.
+    The iteration stops when a true value is produced or one of the lseqs runs
+    out of values; in
+    the latter case, <code>lazy-any</code> returns <code>#f</code>. 
+    The application of <var>pred</var> to the last element of the
+    lseqs is a tail call.
+</p><p>
+    Note the difference between <code>lazy-find</code> and <code>lazy-any</code> — <code>lazy-find</code> returns the element
+    that satisfied the predicate; <code>lazy-any</code> returns the true value that the
+    predicate produced.
+</p><p>
+    Like <code>lazy-every</code>, <code>lazy-any</code>'s name does not end with a question mark — this is to
+    indicate that it does not return a simple boolean (<code>#t</code> or <code>#f</code>), but a
+    general value.
+
+</p><pre class="code-example">(lazy-any integer? '(a 3 b 2.7))   =&gt; #t
+(lazy-any integer? '(a 3.1 b 2.7)) =&gt; #f
+(lazy-any &lt; '(3 1 4 1 5)
+       '(2 7 1 8 2)) =&gt; #t
+</pre>
+
+<!--
+==== lazy-every
+============================================================================-->
+</dd><dt class="proc-def">
+<a name="lazy-every"></a>
+<code class="proc-def">lazy-every</code><var> pred lseq<sub>1</sub> lseq<sub>2</sub> ... -&gt; value</var>
+</dt><dd class="proc-def">
+    <p>Applies the predicate across the lseqs, returning true if the predicate
+    returns true on every application.
+</p><p>
+    If there are <var>n</var> lseq arguments <var>lseq<sub>1</sub></var> ... <var>lseq<sub>n</sub></var>, then <var>pred</var> must be a
+    procedure taking <var>n</var> arguments and returning a boolean result.
+</p><p>
+    <code>lazy-every</code> applies <var>pred</var> to the first elements of the <var>lseq<sub>i</sub></var> parameters.
+    If this application returns false, <code>lazy-every</code> immediately returns false.
+    Otherwise, it iterates, applying <var>pred</var> to the second elements of the
+    <var>lseq<sub>i</sub></var> parameters, then the third, and so forth. The iteration stops
+    when a false value is produced or one of the lseqs runs out of values.
+    In the latter case, <code>lazy-every</code> returns
+    the true value produced by its final application of <var>pred</var>. 
+    The application of <var>pred</var> to the last element of the lseqs 
+    is a tail call.
+</p><p>
+    If one of the <var>lseq<sub>i</sub></var> has no elements, <code>lazy-every</code> simply returns <code>#t</code>.
+</p><p>
+    Like <code>lazy-any</code>, <code>lazy-every</code>'s name does not end with a question mark — this is to
+    indicate that it does not return a simple boolean (<code>#t</code> or <code>#f</code>), but a
+    general value.
+
+<!--
+==== lazy-index
+============================================================================-->
+</p></dd><dt class="proc-def">
+<a name="lazy-index"></a>
+<code class="proc-def">lazy-index</code><var> pred lseq<sub>1</sub> lseq<sub>2</sub> ... -&gt; integer or false</var>
+</dt><dd class="proc-def">
+    <p>Return the index of the leftmost element that satisfies <var>pred</var>.
+</p><p>
+    If there are <var>n</var> lseq arguments <var>lseq<sub>1</sub></var> ... <var>lseq<sub>n</sub></var>, then <var>pred</var> must be a
+    function taking <var>n</var> arguments and returning a boolean result.
+</p><p>
+    <code>lazy-index</code> applies <var>pred</var> to the first elements of the <var>lseq<sub>i</sub></var> parameters.
+    If this application returns true, <code>lazy-index</code> immediately returns zero.
+    Otherwise, it iterates, applying <var>pred</var> to the second elements of the
+    <var>lseq<sub>i</sub></var> parameters, then the third, and so forth. When it finds a tuple of
+    lseq elements that cause <var>pred</var> to return true, it stops and returns the
+    zero-based index of that position in the lseqs.
+</p><p>
+    The iteration stops when one of the lseqs runs out of values; in this
+    case, <code>lazy-index</code> returns <code>#f</code>.
+
+</p><pre class="code-example">(lazy-index even? '(3 1 4 1 5 9)) =&gt; 2
+(lazy-index &lt; '(3 1 4 1 5 9 2 5 6) '(2 7 1 8 2)) =&gt; 1
+(lazy-index = '(3 1 4 1 5 9 2 5 6) '(2 7 1 8 2)) =&gt; #f
+</pre>
+
+<!--
+==== lazy-member lazy-memq lazy-memv
+============================================================================-->
+</dd><dt class="proc-def1">
+<a name="lazy-member"></a>
+<code class="proc-def">lazy-member</code><var> x lseq [=] -&gt; lseq</var>
+</dt><dt class="proc-defi">
+<a name="lazy-memq"></a>
+<code class="proc-def">lazy-memq</code><var> x lseq -&gt; lseq</var>
+</dt><dt class="proc-defn">
+<a name="lazy-memv"></a>
+<code class="proc-def">lazy-memv</code><var> x lseq -&gt; lseq</var>
+</dt><dd class="proc-def">
+     
+
+    <p>These procedures return the longest tail of <var>lseq</var> whose first element is
+    <var>x</var>, where the tails of <var>lseq</var> are the 
+    non-empty lseqs returned by 
+        <code>(lazy-drop <var>lseq</var> <var>i</var>)</code>
+    for <var>i</var> less than the length of <var>lseq</var>.  
+    If <var>x</var> does
+    not occur in <var>lseq</var>, then <code>#f</code> is returned.  
+    <code>lazy-memq</code> uses <code>eq?</code> to compare <var>x</var>
+    with the elements of <var>lseq</var>, 
+    while <code>lazy-memv</code> uses <code>eqv?</code>, and
+    <code>lazy-member</code> uses <var>=</var>, which defaults to <code>equal?</code>.</p>
+
+<pre class="code-example">    (lazy-memq 'a '(a b c))           =&gt;  (a b c)
+    (lazy-memq 'b '(a b c))           =&gt;  (b c)
+    (lazy-memq 'a '(b c d))           =&gt;  #f
+    (lazy-memq (lseq 'a) '(b (a) c)) =&gt;  #f
+    (lazy-member (lseq 'a)
+            '(b (a) c))           =&gt;  ((a) c)
+    (lazy-memq 101 '(100 101 102))    =&gt;  *unspecified*
+    (lazy-memv 101 '(100 101 102))    =&gt;  (101 102)
+</pre>
+
+    
+<p>
+    The comparison procedure is used to compare the elements <var>e<sub>i</sub></var> of <var>lseq</var>
+    to the key <var>x</var> in this way:
+</p><div class="indent"><code>
+(= <var>x</var> <var>e<sub>i</sub></var>)		; lseq is (E1 ... En)
+</code></div>
+    <p>That is, the first argument is always <var>x</var>, and the second argument is
+    one of the lseq elements. Thus one can reliably find the first element
+    of <var>lseq</var> that is greater than five with
+	<code>(lazy-member 5 <var>lseq</var> &lt;)</code>
+
+</p><p>
+    Note that fully general lseq searching may be performed with
+    the <code>lazy-find-tail</code> and <code>lazy-find</code> procedures, <em>e.g.</em>
+</p><pre class="code-example">(lazy-find-tail even? lseq) ; Find the first elt with an even key.
+</pre>
+
+</dd></dl>
+
+<!--========================================================================-->
+<h2><a name="LazyAssociationLists">Lazy association lists</a></h2>
+<p>
+An "lazy association list" (or "lazy alist") is an lseq of pairs. The car of each pair
+contains a key value, and the cdr contains the associated data value. They can
+be used to construct simple look-up tables in Scheme.
+Note that lazy alists are probably inappropriate for performance-critical use on large data;
+in these cases, immutable maps or some other alternative should be employed.
+
+</p><dl>
+<!--
+==== lazy-assoc lazy-assq lazy-assv
+============================================================================-->
+<dt class="proc-def1">
+<a name="lazy-assoc"></a>
+<code class="proc-def">lazy-assoc</code><var> key lazy-alist [=] -&gt; lseq or #f</var>
+</dt><dt class="proc-defi">
+<a name="lazy-assq"></a>
+<code class="proc-def">lazy-assq</code><var> key lazy-alist -&gt; lseq or #f</var>
+</dt><dt class="proc-defn">
+<a name="lazy-assv"></a>
+<code class="proc-def">lazy-assv</code><var> key lazy-alist -&gt; lseq or #f</var>
+</dt><dd class="proc-def">
+
+  
+    <p>These procedures
+    find the first pair in <var>lazy-alist</var> whose car field is <var>key</var>, 
+    and returns that pair.  
+    If no pair in <var>lazy-alist</var> has <var>key</var> as its car, 
+    then <code>#f</code> is returned.  
+    <code>lazy-assq</code> uses <code>eq?</code> to compare <var>key</var> 
+    with the car fields of the ipairs in <var>lazy-alist</var>, 
+    while <code>lazy-assv</code> uses <code>eqv?</code> 
+    and <code>lazy-assoc</code> uses <var>=</var>, which defaults to <code>equal?</code>.</p>
+
+<pre class="code-example">(define e '((a 1) (b 2) (c 3)))
+(lazy-assq 'a e)                              =&gt;  (a 1)
+(lazy-assq 'b e)                              =&gt;  (b 2)
+(lazy-assq 'd e)                              =&gt;  #f
+(lazy-assq (lseq 'a) '(((a)) ((b)) ((c))))  =&gt;  #f
+(lazy-assoc (lseq 'a) '(((a)) ((b)) ((c)))) =&gt;  ((a))
+(lazy-assq 5 '((2 3) (5 7) (11 13)))	      =&gt;  *unspecified*
+(lazy-assv 5 '((2 3) (5 7) (11 13)))	      =&gt;  (5 7)
+</pre>
+<p>
+    The comparison procedure is used to compare the elements <var>e<sub>i</sub></var> of <var>lseq</var>
+    to the <var>key</var> parameter in this way:
+</p><div class="indent"><code>
+(= <var>key</var> (lazy-first <var>e<sub>i</sub></var>))	; lseq is (E1 ... En)
+</code></div>
+    That is, the first argument is always <var>key</var>, 
+    and the second argument is one of the lseq elements. 
+    Thus one can reliably find the first entry
+    of <var>lazy-alist</var> whose key is greater than five with
+	<code>(lazy-assoc 5 <var>lazy-alist</var> &lt;)</code>
+     
+</p><p>
+    Note that fully general lazy alist searching may be performed with
+    the <code>lazy-find-tail</code> and <code>lazy-find</code> procedures, <em>e.g.</em>
+</p><pre class="code-example">;; Look up the first association in <var>lazy alist</var> with an even key:
+(lazy-find (lambda (a) (even? (lazy-first a))) lazy alist)
+</pre>
+
+
+<!--========================================================================-->
+<h2><a name="Comparators">Comparators</a></h2>
+
+<dl>
+<dt class="proc-def">
+<a name="lazy-comparator"></a>
+<code class="proc-def">lazy-pair-comparator</code>
+</dt><dd class="proc-def">
+     
+     <p>The <code>lazy-comparator</code> object is a SRFI-114 comparator suitable for comparing lseqs.
+     Note that it is <em>not</em> a procedure.
+     It compares lseqs using <code>default-comparator</code> on their first elements.  If they are not equal, that value is returned.  If they are equal, <code>lazy-comparator</code> is used on the <code>lazy-rest</code> of the lseqs and that value is returned.</p>
+</dd>
+ 
+<dt class="proc-def">
+<a name="make-lazy-comparator"></a>
+<code class="proc-def">make-lazy-comparator</code><var> comparator -&gt; comparator</var>
+</dt><dd class="proc-def">
+     
+     <p>The <code>make-lazy-comparator</code> procedure returns a comparator suitable for comparing lseqs
+     using <var>element-comparator</var> to compare the elements.</p>
+</dd>
+ 
+</dl>
+ 
+<!--========================================================================-->
+<h1><a name="SampleImplementation">Sample Implementation</a></h1>
+<p>The files in the implementation are as follows:</p>
+
+<p>FIXME</p>
+
+
+
+<!--========================================================================-->
+<h1><a name="Acknowledgements">Acknowledgements</a></h1>
+<p>
+Without the work of Olin Shivers on <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a>,
+this SRFI would not exist. Everyone acknowledged there is transitively acknowledged here.
+This is not to imply that either Olin or anyone else necessarily endorses the final
+results, of course. 
+
+
+</div></body></html>

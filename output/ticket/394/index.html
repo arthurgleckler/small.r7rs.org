@@ -1,0 +1,60 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>394: Ditching SCHEME-REPORT-ENVIRONMENT and NULL-ENVIRONMENT</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 394: <span class="summary">Ditching SCHEME-REPORT-ENVIRONMENT and NULL-ENVIRONMENT</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-07 04:34:47</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/394/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-05-29 01:22:51</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>I have reluctantly come to the same conclusion as the R6RS editors: that in a Scheme with libraries, <span class="monospace">scheme-report-environment</span> and <span class="monospace">null-environment</span> don't make much sense.  They are not in IEEE Scheme or R4RS, so there is no formal barrier to removing them.</p>
+        <p>Semantically, <span class="monospace">scheme-report-environment</span> holds all the identifiers in R5RS, excepting any which the implementation doesn't provide, like <span class="monospace">make-rectangular</span> if it does not have complex numbers.  <span class="monospace">Null-environment</span>, on the other hand, contains only the syntax keywords with none of the standard procedures: it is not an empty environment.  R6RS preserves these procedures only in the R5RS compatibility library, where they expose only R5RS content.</p>
+        <p>When adapting the definition to R7RS, I changed <span class="monospace">scheme-report-environment</span> to contain all the identifiers in all the standard libraries that the implementation provides, and <span class="monospace">null-environment</span> all the syntax keywords in those libraries.  This was the best I thought I could do, but now I think that it provides very little utility.</p>
+        <p>It's possible to construct any specific environment you want by using the <span class="monospace">environment</span> procedure, which turns a sequence of import-specs into an environment.  In particular, we now have the <span class="monospace">(scheme r5rs)</span> library, which essentially provides what <span class="monospace">(scheme-environment-procedure 5)</span> should provide, and there is no portable use of any argument other than 5.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-26 23:18:09</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to migrate these procedures to the <span class="monospace">(scheme r5rs)</span> library only.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 04:02:49</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-07 04:34:47</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

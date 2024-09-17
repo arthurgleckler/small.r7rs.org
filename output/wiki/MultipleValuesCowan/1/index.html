@@ -1,0 +1,44 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>MultipleValuesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/MultipleValuesCowan.md">MultipleValuesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Multiple&shy;Values&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-10-18 11:56:33</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/MultipleValuesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/MultipleValuesCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Multiplevaluesmacros">Multiple values macros</h2>
+      <p><span class="monospace">(call-with-values </span><i>producer</i> ...<span class="monospace"> </span><i>consumer</i><span class="monospace">)</span></p>
+      <p>Invoke the <i>producers</i> and pass all values returned by them in order to <i>consumer</i>.  Equivalent to Common Lisp's <span class="monospace">multiple-value-call</span>.  See <a href="/ticket/87">#87</a>.</p>
+      <p><span class="monospace">(let-values ((</span><i>lambda-list</i><span class="monospace"> </span><i>expression</i><span class="monospace">)</span> ...<span class="monospace">) </span><i>body</i><span class="monospace">)</span></p>
+      <p>Each <i>lambda-list</i> should be a formal arguments list as for a <span class="monospace">lambda</span> expression, cf. section 4.1.4 of the R5RS.</p>
+      <p>The <i>expressions</i> are evaluated in the current environment, the variables of the <i>lambda-list</i> are bound to fresh locations, the return values of the <i>expressions</i> are stored in the variables, the <i>body</i> is evaluated in the extended environment, and the values of the last expression of <i>body</i> are returned. The <i>body</i> is a tail body, cf. section 3.5 of the R5RS.</p>
+      <p>The matching of each <i>lambda-list</i> to values is done in the same way as in a <span class="monospace">lambda</span> expression, and it is an error for an <i>expression</i> to return a number of values that does not match its corresponding <i>lambda-list</i>.</p><span class="monospace">             (let-values (((a b . c) (values 1 2 3 4)))
+               (list a b c))            --&gt; (1 2 (3 4))
+
+             (let ((a 'a) (b 'b) (x 'x) (y 'y))
+               (let-values (((a b) (values x y))
+                            ((x y) (values a b)))
+                 (list a b x y)))       --&gt; (x y a b)
+</span>
+      <p><span class="monospace">(let*-values ((</span><i>lambda-list</i><span class="monospace"> </span><i>expression</i><span class="monospace">)</span> ...<span class="monospace">) </span><i>body</i><span class="monospace">)</span></p>
+      <p><span class="monospace">let*-values</span> is similar to <span class="monospace">let-values</span>, but the bindings are performed sequentially from left to right, and the region of a binding indicated by (&lt;formals&gt; &lt;expression&gt;) is the part of the <span class="monospace">let*-values</span> expression to the right of the binding. Thus the second binding is done in an environment in which the first binding is visible, and so on.</p><span class="monospace">             (let ((a 'a) (b 'b) (x 'x) (y 'y))
+               (let*-values (((a b) (values x y))
+                             ((x y) (values a b)))
+                 (list a b x y)))       --&gt; (x y x y)
+</span>
+      <p><span class="monospace">(set!-values (</span><i>lambda-list</i><span class="monospace">) </span><i>expression</i><span class="monospace">)</span></p>
+      <p>Assigns the values returned by <i>expression</i> to the variables in <i>lambda-list</i>.
+Returns undefined values.  Equivalent to Common Lisp's <span class="monospace">multiple-variable-setq</span>.</p></div></body></html>

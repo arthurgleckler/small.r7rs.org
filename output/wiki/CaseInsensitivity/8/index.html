@@ -1,0 +1,33 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CaseInsensitivity</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CaseInsensitivity.md">CaseInsensitivity</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Case&shy;Insensitivity</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-08-22 08:26:21</div>
+      <div class="version">8<span class="comment"></span><a href="/wiki/CaseInsensitivity/history">history</a></div>
+      <div class="source"><a href="/wiki/CaseInsensitivity/8/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Symbolcase-sensitivity">Symbol case-sensitivity</h2>
+      <p>Racket, Gauche, Gambit, Chicken, Bigloo, scsh, Guile, Kawa, Chibi, Chez, Vicare, Larceny, Ypsilon, Mosh, IronScheme, NexJ, KSi, SigScheme, Shoe, RScheme, Scheme 7, BDC, Rep, Schemik, Llava, Sizzle, Spark, Femtolisp, Dfsch, Owl Lisp return <span class="monospace">#f</span> to <span class="monospace">(eq? 't 'T)</span>.</p>
+      <p>MIT, Scheme48, SISC, SCM, STklos, TinyScheme, Scheme 9, Dream, XLisp, Elk, UMB, VX, Oaklisp, SXM, Inlab return <span class="monospace">#t</span>.</p>
+      <h2 id="Preferredcaseisuppercase">Preferred case is upper case</h2>
+      <p>I also decided to check the case-insensitive implementations using <span class="monospace">(string=? (symbol-&gt;string 't) &quot;T&quot;)</span> to see which ones converted symbols to upper case internally.  Only XLisp (which is not really Scheme-compliant) and Oaklisp (which is somewhat R3RS-compliant) did so.</p>
+      <h2 id="Characternamecase-sensitivity">Character name case-sensitivity</h2>
+      <p>Is <span class="monospace">#\Space</span> a valid constant?</p>
+      <p>Racket, Gauche, MIT, Bigloo, Scheme48, Guile, Kawa, Chibi, Chez, NexJ, STklos, KSi, SigScheme, TinyScheme, Scheme 9, Dream, RScheme, Rep, Elk, Oaklisp, Llava, SXM, Spark, Dfsch, Inlab accept <span class="monospace">#\Space</span>.</p>
+      <p>Gambit, Chicken, scsh, Vicare, Ypsilon, Mosh, IronScheme, Shoe, Scheme 7, Schemik, UMB, Sizzle, FemtoLisp, Owl Lisp reject <span class="monospace">#\Space</span>.</p>
+      <h2 id="Booleanconstantcase-sensitivity">Boolean constant case-sensitivity</h2>
+      <p>Gambit, TinyScheme, Scheme 7, VX, Sizzle, Owl Lisp do not accept <span class="monospace">#T</span> as equivalent to <span class="monospace">#t</span>.</p>
+      <p>The other Schemes in the test suite do.</p></div></body></html>

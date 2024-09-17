@@ -1,0 +1,25 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImmediateStringsCoalesced</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImmediateStringsCoalesced.md">ImmediateStringsCoalesced</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Immediate&shy;Strings&shy;Coalesced</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-05-24 13:06:51</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/ImmediateStringsCoalesced/history">history</a></div>
+      <div class="source"><a href="/wiki/ImmediateStringsCoalesced/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Areimmediatestringscoalesced?">Are immediate strings coalesced?</h2>
+      <p>Asked to evaluate <span class="monospace">(let ((a &quot;hello&quot;) (b &quot;hello&quot;) (eq? a b))</span>, Racket, Gauche, MIT, Gambit, Chicken, Bigloo, SISC, Chibi, Chez, SCM, Ikarus/Vicare, Mosh, KSi, SigScheme, TinyScheme, Scheme 9, Dream, S7, BDC, XLisp, Rep, Schemik, Elk, UMB, Oaklisp, and Owl Lisp all return <span class="monospace">#f</span>.</p>
+      <p>Scheme48/scsh, Guile, Kawa, Larceny, Ypsilon, IronScheme, NexJ, STklos, Shoe, RScheme, JScheme, VX return <span class="monospace">#t</span>.</p>
+      <p>There may be some false negatives here, because an implementation might coalesce literals in the compiler but not at the REPL.</p></div></body></html>

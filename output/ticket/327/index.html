@@ -1,0 +1,87 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>327: Specify that read, the program reader, and string-&gt;number accept the same syntax</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 327: <span class="summary">Specify that read, the program reader, and string-&gt;number accept the same syntax</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-09 10:47:35</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/327/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-01-11 14:50:45</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Currently there is no guarantee of this.</p>
+        <p>Possibilities:</p>
+        <p><i>All the same</i>: The lexical syntax for numbers accepted by <span class="monospace">string-&gt;number</span> and <span class="monospace">read</span>, as well as the corresponding syntax of literal numbers in programs, must be the same.</p>
+        <p><i>All the same at run time</i>: The lexical syntax for numbers accepted by <span class="monospace">string-&gt;number</span> and <span class="monospace">read</span> must be the same, but the relationship with the the corresponding syntax of literal numbers in programs is unspecified.</p>
+        <p><i>All potentially different</i>: The relationships between lexical syntax for numbers accepted by <span class="monospace">string-&gt;number</span> and <span class="monospace">read</span>, as well as the corresponding syntax of literal numbers in programs, is unspecified.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-01-15 17:32:36</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">Currently there is no guarantee of this.
+
+Proposed language (from Vincent Manis):
+
+The lexical syntax for numbers accepted by string-&gt;number and read, and the corresponding syntax in programs must be the same.
+
+In the alternative, we should at least say the relationship is unspecified.</span><span class="new-value">Currently there is no guarantee of this.
+
+Possibilities:
+
+''All the same'': The lexical syntax for numbers accepted by `string-&gt;number` and `read`, as well as the corresponding syntax of literal numbers in programs, must be the same.
+
+''All the same at run time'': The lexical syntax for numbers accepted by `string-&gt;number` and `read` must be the same, but the relationship with the the corresponding syntax of literal numbers in programs is unspecified.
+
+''All potentially different'': The relationships between lexical syntax for numbers accepted by `string-&gt;number` and `read`, as well as the corresponding syntax of literal numbers in programs, is unspecified.</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>More from Vincent:</p>
+              <p>The syntactic issues relate to such things as whether S, F, D, and L are valid (&quot;the implementation <i>may</i> accept...&quot;, p. 32). Pragmatic issues include whether integer or other literals might overflow (on a bignum-less implementation), whether or not the implementation applies the same restrictions, described at the bottom of p. 37) to <span class="monospace">string-&gt;number</span>, <span class="monospace">read</span>, and literals in source programs; the default precision if the E exponent marker is used; and numerical roundoff on input conversion (whether, e.g., <span class="monospace">(= (string-&gt;number? 0.1) 0.1)</span> is defined to be true).</p>
+              <p>Vincent formerly supported the <i>All the same</i> choice, but now supports <i>All the same at run time</i>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-05 08:58:56</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to adopt this proposal.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-23 11:22:59</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-09 10:47:35</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>That is, we adopted the proposal that all three support the same syntax.</p></div></div></div></div></div></body></html>

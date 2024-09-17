@@ -1,0 +1,295 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>365: Editorial: Add examples for transcendental functions</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 365: <span class="summary">Editorial: Add examples for transcendental functions</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-11 23:27:13</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">aag</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/365/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-03-27 21:43:56</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>The range of tan<sup>-1</sup> x y is as in the following table. The asterisk (*) indicates that the entry applies to implementations that distinguish minus zero.</p>
+        <table><tr><td class="default"></td><td class="default">
+              <p>y condition</p></td><td class="default">
+              <p>x condition</p></td><td class="default">
+              <p>range of result r</p></td></tr><tr><td class="default"></td><td class="default">
+              <p>y = 0.0</p></td><td class="default">
+              <p>x &gt; 0.0</p></td><td class="default">
+              <ol class="number" start="0">
+                <li>0</li></ol></td></tr><tr><td class="default">
+              <p>∗</p></td><td class="default">
+              <p>y = + 0.0</p></td><td class="default">
+              <p>x &gt; 0.0</p></td><td class="default">
+              <p>+0.0</p></td></tr><tr><td class="default">
+              <p>∗</p></td><td class="default">
+              <p>y = - 0.0</p></td><td class="default">
+              <p>x &gt; 0.0</p></td><td class="default">
+              <p>-0.0</p></td></tr><tr><td class="default"></td><td class="default">
+              <p>y &gt; 0.0</p></td><td class="default">
+              <p>x &gt; 0.0</p></td><td class="default">
+              <ol class="number" start="0">
+                <li>0 &lt; r &lt; (π/2)</li></ol></td></tr><tr><td class="default"></td><td class="default">
+              <p>y &gt; 0.0</p></td><td class="default">
+              <p>x = 0.0</p></td><td class="default">
+              <p>(π/2)</p></td></tr><tr><td class="default"></td><td class="default">
+              <p>y &gt; 0.0</p></td><td class="default">
+              <p>x &lt; 0.0</p></td><td class="default">
+              <p>(π/2) &lt; r &lt; π</p></td></tr><tr><td class="default"></td><td class="default">
+              <p>y = 0.0</p></td><td class="default">
+              <p>x &lt; 0</p></td><td class="default">
+              <p>π</p></td></tr><tr><td class="default">
+              <p>∗</p></td><td class="default">
+              <p>y = + 0.0</p></td><td class="default">
+              <p>x &lt; 0.0</p></td><td class="default">
+              <p>π</p></td></tr><tr><td class="default">
+              <p>∗</p></td><td class="default">
+              <p>y = - 0.0</p></td><td class="default">
+              <p>x &lt; 0.0</p></td><td class="default">
+              <p>-π</p></td></tr><tr><td class="default"></td><td class="default">
+              <p>y &lt; 0.0</p></td><td class="default">
+              <p>x &lt; 0.0</p></td><td class="default">
+              <p>-π &lt; r &lt; - (π/2)</p></td></tr><tr><td class="default"></td><td class="default">
+              <p>y &lt; 0.0</p></td><td class="default">
+              <p>x = 0.0</p></td><td class="default">
+              <p>-(π/2)</p></td></tr><tr><td class="default"></td><td class="default">
+              <p>y &lt; 0.0</p></td><td class="default">
+              <p>x &gt; 0.0</p></td><td class="default">
+              <p>-(π/2) &lt; r&lt; 0.0</p></td></tr><tr><td class="default"></td><td class="default">
+              <p>y = 0.0</p></td><td class="default">
+              <p>x = 0.0</p></td><td class="default">
+              <p>undefined</p></td></tr><tr><td class="default">
+              <p>∗</p></td><td class="default">
+              <p>y = + 0.0</p></td><td class="default">
+              <p>x = +0.0</p></td><td class="default">
+              <p>+0.0</p></td></tr><tr><td class="default">
+              <p>∗</p></td><td class="default">
+              <p>y = - 0.0</p></td><td class="default">
+              <p>x = + 0.0</p></td><td class="default">
+              <ul>
+                <li>0.0</li></ul></td></tr><tr><td class="default">
+              <p>∗</p></td><td class="default">
+              <p>y = + 0.0</p></td><td class="default">
+              <p>x = - 0.0</p></td><td class="default">
+              <p>π</p></td></tr><tr><td class="default">
+              <p>∗</p></td><td class="default">
+              <p>y = - 0.0</p></td><td class="default">
+              <p>x = - 0.0</p></td><td class="default">
+              <p>-π</p></td></tr><tr><td class="default">
+              <p>∗</p></td><td class="default">
+              <p>y = + 0.0</p></td><td class="default">
+              <p>x = 0</p></td><td class="default">
+              <p>(π/2)</p></td></tr><tr><td class="default">
+              <p>∗</p></td><td class="default">
+              <p>y = - 0.0</p></td><td class="default">
+              <p>x = 0</p></td><td class="default">
+              <p>-(π/2)</p></td></tr></table></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-27 21:52:38</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">In general, the transcendental functions log, sin^-1^ (arcsine), cos^-1^ (arccosine), and tan^-1^ are multiply defined. The value of log z is defined to be the one whose imaginary part lies in the range from -π  (inclusive if -0.0 is distinguished, exclusive otherwise) to π (inclusive). log 0 is undefined.
+
+The value of log z for non-real z is defined in terms of log on real numbers as 
+
+log z = log |z| + (angle z)i
+
+where angle z is the angle of z = a · e^ib^ specified as: 
+
+angle z = b + 2πn 
+
+with -π ≤ angle z ≤ π and angle z = b + 2πn for some integer n.
+
+With the one-argument version of log defined this way, the values of the two-argument-version of log, sin^-1^ z, cos^-1^ z, tan^-1^ z, and the two-argument version of tan^-1^ are according to the following formulæ: 
+
+log z b  =  (log z/log b) 
+sin^-1^ z  =  - i log (i z + (1 - z^2^)^1/2^) 
+cos^-1^ z  =  π / 2 - sin^-1^ z 
+tan^-1^ z  =  (log (1 + i z) - log (1 - i z)) / (2 i) 
+tan^-1^ x y  =  angle(x + yi)  
+
+The range of tan^-1^ x y is as in the following table. The asterisk (*) indicates that the entry applies to implementations that distinguish minus zero.
+
+|| ||y condition||x condition||range of result r||
+|| ||y = 0.0||x &gt; 0.0||0.0||
+||∗||y = + 0.0||x &gt; 0.0||+0.0||
+||∗||y = - 0.0||x &gt; 0.0||-0.0||
+|| ||y &gt; 0.0||x &gt; 0.0||0.0 &lt; r &lt; (π/2)||
+|| ||y &gt; 0.0||x = 0.0||(π/2)||
+|| ||y &gt; 0.0||x &lt; 0.0||(π/2) &lt; r &lt; π||
+|| ||y = 0.0||x &lt; 0||π||
+||∗||y = + 0.0||x &lt; 0.0||π||
+||∗||y = - 0.0||x &lt; 0.0||-π||
+|| ||y &lt; 0.0||x &lt; 0.0||-π &lt; r &lt; - (π/2)||
+|| ||y &lt; 0.0||x = 0.0||-(π/2)||
+|| ||y &lt; 0.0||x &gt; 0.0||-(π/2) &lt; r&lt; 0.0||
+|| ||y = 0.0  x = 0.0  undefined 
+||∗||y = + 0.0||x = +0.0||+0.0||
+||∗||y = - 0.0||x = + 0.0||- 0.0||
+||∗||y = + 0.0||x = - 0.0||π||
+||∗||y = - 0.0||x = - 0.0||-π||
+||∗||y = + 0.0||x = 0||(π/2)||
+||∗||y = - 0.0||x = 0||-(π/2)||
+</span><span class="new-value">In general, the transcendental functions log, sin^-1^ (arcsine), cos^-1^ (arccosine), and tan^-1^ are multiply defined. The value of log z is defined to be the one whose imaginary part lies in the range from -π  (inclusive if -0.0 is distinguished, exclusive otherwise) to π (inclusive). log 0 is undefined.
+
+The value of log z for non-real z is defined in terms of log on real numbers as 
+
+log z = log |z| + (angle z)i
+
+where angle z is the angle of z = a · e^ib^ specified as: 
+
+angle z = b + 2πn 
+
+with -π ≤ angle z ≤ π and angle z = b + 2πn for some integer n.
+
+With the one-argument version of log defined this way, the values of the two-argument-version of log, sin^-1^ z, cos^-1^ z, tan^-1^ z, and the two-argument version of tan^-1^ are according to the following formulæ: 
+
+log z b  =  (log z/log b) [only relevant if #366 passes]
+sin^-1^ z  =  - i log (i z + (1 - z^2^)^1/2^) 
+cos^-1^ z  =  π / 2 - sin^-1^ z 
+tan^-1^ z  =  (log (1 + i z) - log (1 - i z)) / (2 i) 
+tan^-1^ x y  =  angle(x + yi)  
+
+The range of tan^-1^ x y is as in the following table. The asterisk (*) indicates that the entry applies to implementations that distinguish minus zero.
+
+|| ||y condition||x condition||range of result r||
+|| ||y = 0.0||x &gt; 0.0||0.0||
+||∗||y = + 0.0||x &gt; 0.0||+0.0||
+||∗||y = - 0.0||x &gt; 0.0||-0.0||
+|| ||y &gt; 0.0||x &gt; 0.0||0.0 &lt; r &lt; (π/2)||
+|| ||y &gt; 0.0||x = 0.0||(π/2)||
+|| ||y &gt; 0.0||x &lt; 0.0||(π/2) &lt; r &lt; π||
+|| ||y = 0.0||x &lt; 0||π||
+||∗||y = + 0.0||x &lt; 0.0||π||
+||∗||y = - 0.0||x &lt; 0.0||-π||
+|| ||y &lt; 0.0||x &lt; 0.0||-π &lt; r &lt; - (π/2)||
+|| ||y &lt; 0.0||x = 0.0||-(π/2)||
+|| ||y &lt; 0.0||x &gt; 0.0||-(π/2) &lt; r&lt; 0.0||
+|| ||y = 0.0||x = 0.0||undefined||
+||∗||y = + 0.0||x = +0.0||+0.0||
+||∗||y = - 0.0||x = + 0.0||- 0.0||
+||∗||y = + 0.0||x = - 0.0||π||
+||∗||y = - 0.0||x = - 0.0||-π||
+||∗||y = + 0.0||x = 0||(π/2)||
+||∗||y = - 0.0||x = 0||-(π/2)||
+</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-29 03:59:26</div></div>
+          <div class="changes">
+            <div><span class="field">summary</span><span class="old-value">Adopt R6RS language for transcendental functions</span><span class="new-value">Editorial: Add examples for transcendental functions</span></div>
+            <div><span class="field">description</span><span class="old-value">In general, the transcendental functions log, sin^-1^ (arcsine), cos^-1^ (arccosine), and tan^-1^ are multiply defined. The value of log z is defined to be the one whose imaginary part lies in the range from -π  (inclusive if -0.0 is distinguished, exclusive otherwise) to π (inclusive). log 0 is undefined.
+
+The value of log z for non-real z is defined in terms of log on real numbers as 
+
+log z = log |z| + (angle z)i
+
+where angle z is the angle of z = a · e^ib^ specified as: 
+
+angle z = b + 2πn 
+
+with -π ≤ angle z ≤ π and angle z = b + 2πn for some integer n.
+
+With the one-argument version of log defined this way, the values of the two-argument-version of log, sin^-1^ z, cos^-1^ z, tan^-1^ z, and the two-argument version of tan^-1^ are according to the following formulæ: 
+
+log z b  =  (log z/log b) [only relevant if #366 passes]
+sin^-1^ z  =  - i log (i z + (1 - z^2^)^1/2^) 
+cos^-1^ z  =  π / 2 - sin^-1^ z 
+tan^-1^ z  =  (log (1 + i z) - log (1 - i z)) / (2 i) 
+tan^-1^ x y  =  angle(x + yi)  
+
+The range of tan^-1^ x y is as in the following table. The asterisk (*) indicates that the entry applies to implementations that distinguish minus zero.
+
+|| ||y condition||x condition||range of result r||
+|| ||y = 0.0||x &gt; 0.0||0.0||
+||∗||y = + 0.0||x &gt; 0.0||+0.0||
+||∗||y = - 0.0||x &gt; 0.0||-0.0||
+|| ||y &gt; 0.0||x &gt; 0.0||0.0 &lt; r &lt; (π/2)||
+|| ||y &gt; 0.0||x = 0.0||(π/2)||
+|| ||y &gt; 0.0||x &lt; 0.0||(π/2) &lt; r &lt; π||
+|| ||y = 0.0||x &lt; 0||π||
+||∗||y = + 0.0||x &lt; 0.0||π||
+||∗||y = - 0.0||x &lt; 0.0||-π||
+|| ||y &lt; 0.0||x &lt; 0.0||-π &lt; r &lt; - (π/2)||
+|| ||y &lt; 0.0||x = 0.0||-(π/2)||
+|| ||y &lt; 0.0||x &gt; 0.0||-(π/2) &lt; r&lt; 0.0||
+|| ||y = 0.0||x = 0.0||undefined||
+||∗||y = + 0.0||x = +0.0||+0.0||
+||∗||y = - 0.0||x = + 0.0||- 0.0||
+||∗||y = + 0.0||x = - 0.0||π||
+||∗||y = - 0.0||x = - 0.0||-π||
+||∗||y = + 0.0||x = 0||(π/2)||
+||∗||y = - 0.0||x = 0||-(π/2)||
+</span><span class="new-value">The range of tan^-1^ x y is as in the following table. The asterisk (*) indicates that the entry applies to implementations that distinguish minus zero.
+
+|| ||y condition||x condition||range of result r||
+|| ||y = 0.0||x &gt; 0.0||0.0||
+||∗||y = + 0.0||x &gt; 0.0||+0.0||
+||∗||y = - 0.0||x &gt; 0.0||-0.0||
+|| ||y &gt; 0.0||x &gt; 0.0||0.0 &lt; r &lt; (π/2)||
+|| ||y &gt; 0.0||x = 0.0||(π/2)||
+|| ||y &gt; 0.0||x &lt; 0.0||(π/2) &lt; r &lt; π||
+|| ||y = 0.0||x &lt; 0||π||
+||∗||y = + 0.0||x &lt; 0.0||π||
+||∗||y = - 0.0||x &lt; 0.0||-π||
+|| ||y &lt; 0.0||x &lt; 0.0||-π &lt; r &lt; - (π/2)||
+|| ||y &lt; 0.0||x = 0.0||-(π/2)||
+|| ||y &lt; 0.0||x &gt; 0.0||-(π/2) &lt; r&lt; 0.0||
+|| ||y = 0.0||x = 0.0||undefined||
+||∗||y = + 0.0||x = +0.0||+0.0||
+||∗||y = - 0.0||x = + 0.0||- 0.0||
+||∗||y = + 0.0||x = - 0.0||π||
+||∗||y = - 0.0||x = - 0.0||-π||
+||∗||y = + 0.0||x = 0||(π/2)||
+||∗||y = - 0.0||x = 0||-(π/2)||
+</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-29 03:59:38</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">aag</div>
+            <div class="time">2012-09-03 10:25:48</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">aag</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-11 23:27:13</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

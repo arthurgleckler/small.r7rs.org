@@ -1,0 +1,108 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PathnamesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PathnamesCowan.md">PathnamesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Pathnames&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2011-11-02 04:23:45</div>
+      <div class="version">8<span class="comment"></span><a href="/wiki/PathnamesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/PathnamesCowan/8/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Pathnames">Pathnames</h2>
+      <p>Pathnames are immutable record-style objects of a disjoint type that represent the natural components of (string) filenames in a way that is intended to be system-independent.  This design is mostly based on MIT Scheme, which is mostly based on Common Lisp.  However, it is extended to accept additional components which are required to represent URIs and IRIs as well as filenames.  In addition, given the pervasiveness of Windows and Posix filenames nowadays, specific provisions for them has been made.</p>
+      <h2 id="Componentsandtheiraccessors">Components and their accessors</h2>
+      <p>The components of a pathname are <i>scheme</i>, <i>host</i>, <i>port</i>, <i>username</i>, <i>password</i>, <i>device</i>, <i>directory</i>, <i>name</i>, <i>type</i>, <i>query</i>, and <i>fragment</i>.</p>
+      <p><i>Scheme</i> is the scheme part of a URI/IRI.  It is a string.</p>
+      <p><i>Username</i> is the username associated with a URI/IRI host.  It is a string.</p>
+      <p><i>Password</i> is the password associated with a <i>username</i>.  It is a string.</p>
+      <p><i>Host</i> is the host part of a URI/IRI.  It is a string.</p>
+      <p><i>Port</i> is the port part of a URI/IRI.  It is an exact integer.</p>
+      <p><i>Device</i> is a Windows-style device name without a trailing colon.  It is a string, typically but not always a single character.</p>
+      <p><i>Directory</i> is a directory path, which is represented as a list.  The first element is always a symbol, which can be <span class="monospace">absolute</span> or <span class="monospace">relative</span> or <span class="monospace">unc</span>, representing absolute, relative, and UNC directory paths respectively.  The root directory is represented by the list <span class="monospace">(absolute)</span>.  A null directory path is represented by the empty list.  The other elements are strings.</p>
+      <p><i>Name</i> is a simple file name without the associated file type or extension, if any.  It is a string.</p>
+      <p><i>Type</i> is the type or extension of the filename, without any leading period.  It is a string.</p>
+      <p><i>Query</i> is the query part of a URI/IRI.  It is a string.</p>
+      <p><i>Fragment</i> is the fragment part of an IRI/URI.  It is a string.</p>
+      <p>All of these components can also be <span class="monospace">#f</span> to indicate that the component is not present.  In particular, a filename or URI ending in <span class="monospace">/</span> or <span class="monospace">\</span> will result in the file and type components being <span class="monospace">#f</span>.</p>
+      <h2 id="Accessors">Accessors</h2>
+      <p>There are 11 accessors corresponding to the 11 components of a pathname, which take the form <span class="monospace">pathname-*</span> where <span class="monospace">*</span> is one of the components.</p>
+      <p>It is an error to mutate anything returned by any of these accessors.</p>
+      <h2 id="Constructorsandparsers">Constructors and parsers</h2>
+      <p><span class="monospace">(make-pathname </span><i>components</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a pathname.  <i>Components</i> is an a-list mapping component names (as symbols) to values.  Component names not defined in this specification are allowed, but the results are implementation-specific.  Any component names not appearing in <i>components</i> are set to <span class="monospace">#f</span>.</p>
+      <p>ISSUE: Should <span class="monospace">make-pathname</span> accept multiple arguments rather than a single argument which is an a-list?  Variable a-lists can be constructed by quasiquotation.</p>
+      <p>The following procedures accept a string and construct and return a pathname corresponding to that string.</p>
+      <p><span class="monospace">(posix-filename-&gt;pathname </span><i>filename</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a pathname.  <i>Filename</i> is a string representing a Posix filename.</p>
+      <p><i>Filename</i> is parsed using <span class="monospace">/</span> as the component separator.  The directory, name, and type components are potentially populated from it, and the device component is set to <span class="monospace">#f</span>.</p>
+      <p>The scheme component is set to <span class="monospace">&quot;file&quot;</span>, and the username, password, port, query, and fragment components are set to <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(posix-dirname-&gt;pathname </span><i>dirname</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a pathname.  <i>Dirname</i> is a string representing a Posix directory name.</p>
+      <p><i>Filename</i> is parsed using <span class="monospace">/</span> as the component separator.  The directory component is potentially populated from it.</p>
+      <p>The scheme component is set to <span class="monospace">&quot;file&quot;</span>, and the username, password, port, device, name, type, query, and fragment components are set to <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(windows-filename-&gt;pathname </span><i>filename</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a pathname.  <i>Filename</i> is a string representing a Windows filename.</p>
+      <p><i>Filename</i> is parsed using both <span class="monospace">\</span> and <span class="monospace">/</span> as component separators, and a leading <span class="monospace">//</span> or <span class="monospace">\\</span> results in a directory component whose <i>car</i> is <span class="monospace">unc</span>.  The device and directory, name, and type components are potentially populated from it.</p>
+      <p>The scheme component is set to <span class="monospace">&quot;file&quot;</span>, and the username, password, port, query, and fragment components are set to <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(windows-dirname-&gt;pathname </span><i>dirname</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a pathname.  <i>Dirname</i> is a string representing a Windows directory name.</p>
+      <p><i>Filename</i> is parsed using both <span class="monospace">\</span> and <span class="monospace">/</span> as component separators, and a leading <span class="monospace">//</span> or <span class="monospace">\\</span> results in a directory component whose <i>car</i> is <span class="monospace">unc</span>.  The device and directory components are potentially populated from it.</p>
+      <p>The scheme component is set to <span class="monospace">&quot;file&quot;</span>, and the username, password, port, name, type, query, and fragment components are set to <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(uri-&gt;pathname </span><i>uri</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a pathname.  <i>Uri</i> is a string to be converted to a pathname.  It is parsed according to IRI rules, which are the same as URI rules except that sequences of <span class="monospace">%</span>-hexdigit-hexdigit escapes that represent UTF-8 byte sequences are parsed into characters, provided the requisite characters are supported by the implementation.</p>
+      <p>The scheme, host, port, username, password, directory, name, type, query, and fragment components are potentially populated from <i>uri</i>.  The device component is set to <span class="monospace">#f</span>.</p>
+      <h2 id="Deconstructors">Deconstructors</h2>
+      <p>The following procedures accept a pathname and construct and return a string corresponding to that pathname.</p>
+      <p><span class="monospace">(pathname-&gt;posix-filename </span><i>pathname</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a filename string from <i>pathname</i>.</p>
+      <p>The result is constructed using <span class="monospace">/</span> as the component separator from the directory, name, and type components of <i>pathname</i>.</p>
+      <p>It is an error if the username, password, port, query, and fragment components are not <span class="monospace">#f</span>.  It is an error if the scheme component is not <span class="monospace">&quot;file&quot;</span> or <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(pathname-&gt;windows-filename </span><i>pathname</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a filename string from <i>pathname</i>.</p>
+      <p>The result is constructed using <span class="monospace">\</span> as the component separator from the device, directory, name, and type components.</p>
+      <p>It is an error if the username, password, port, query, and fragment components are not <span class="monospace">#f</span>.  It is an error if the scheme component is not <span class="monospace">&quot;file&quot;</span> or <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(pathname-&gt;iri </span><i>pathname</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a string according to RFC 3987 rules.  No escaping of non-ASCII characters is done.</p>
+      <p>The scheme, host, port, username, password, directory, name, type, query, and fragment components are used to construct the URI.  It is an error if the device component is not <span class="monospace">#f</span>, or if the first element of the directory component is not <span class="monospace">absolute</span>.</p>
+      <p><span class="monospace">(pathname-directory-&gt;posix-dirname </span><i>pathname</i><span class="monospace">)</span></p>
+      <p>Returns <i>pathname</i> as a Posix directory string.  The result consists of the strings in the <i>cdr</i> of the directory component joined using <span class="monospace">/</span> with another <span class="monospace">/</span> prepended if the <i>car</i> is <span class="monospace">absolute</span>.
+ 
+<span class="monospace">(pathname-directory-&gt;windows-dirname </span><i>pathname</i><span class="monospace">)</span></p>
+      <p>Returns the <i>pathname</i> as a Windows directory string.  The result consists of the strings in the <i>cdr</i> of the directory component joined using <span class="monospace">\</span>, prefixed by one of the following:</p>
+      <ul>
+        <li><span class="monospace">\</span> if the <i>car</i> of the directory component is <span class="monospace">absolute</span></li></ul>
+      <ul>
+        <li><span class="monospace">\\</span> followed by the host component followed by <span class="monospace">\</span> if the <i>car</i> of the directory component is <span class="monospace">unc</span></li></ul>
+      <ul>
+        <li>the device followed by <span class="monospace">:</span> if the device component is not <span class="monospace">#f</span></li></ul>
+      <ul>
+        <li>the empty string otherwise</li></ul>
+      <p><span class="monospace">(pathname-&gt;uri </span><i>pathname</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a string according to RFC 3986 rules.  In addition to required <span class="monospace">%</span>-escaping, non-ASCII characters are converted to UTF-8 byte sequences and <span class="monospace">%</span>-escaped.</p>
+      <p>The scheme, host, port, username, password, directory, name, type, query, and fragment components are used to construct the URI.  It is an error if the device component is not <span class="monospace">#f</span>, or if the <span class="monospace">car</span> of the directory component is not <span class="monospace">absolute</span>.</p>
+      <h2 id="Otherprocedures">Other procedures</h2>
+      <p><span class="monospace">(pathname? ''object''</span>)`</p>
+      <p>Returns <span class="monospace">#t</span> if <i>object</i> is a pathname, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(pathname=</span> <i>pathname1</i><span class="monospace"> </span><i>pathname2</i><span class="monospace">)</span></p>
+      <p>Compares <i>pathname1</i> and <i>pathname2</i> for equality, component-wise.  Note that two pathnames may be different according to <span class="monospace">pathname=?</span> but still access the same resource.  The host components are compared case-insensitively.</p>
+      <p><span class="monospace">(merge-pathnames </span><i>pathname1</i><span class="monospace"> </span><i>pathname2</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new pathname with the same components as <i>pathname1</i>.  However, if any component of <i>pathname1</i> is <span class="monospace">#f</span>, the corresponding component of <i>pathname2</i> is used instead.  The directory component is handled specially; if the <i>pathname1</i> component begins with <span class="monospace">relative</span>, the rest of it is appended to the <i>pathname2</i> component.</p>
+      <p><span class="monospace">(pathname-absolute-filename? </span><i>pathname</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>pathname</i> specifies an absolute or UNC filename.</p>
+      <p><span class="monospace">(pathname-absolute-uri? </span><i>pathname</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>pathname</i> specifies an absolute URI (the fragment component must be #f).</p>
+      <p><span class="monospace">(pathname-uri? </span><i>pathname</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>pathname</i> specifies a URI/IRI (that is, an absolute URI with a possible fragment).</p>
+      <p><span class="monospace">(pathname-query-&gt;alist </span><i>pathname</i><span class="monospace">)</span></p>
+      <p>Returns the query component of <i>pathname</i> as an a-list, where <span class="monospace">&amp;</span> and <span class="monospace">;</span> separate the entries in the alist, and <span class="monospace">=</span> separates the <span class="monospace">car</span> from the <span class="monospace">cdr</span>.</p></div></body></html>

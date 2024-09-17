@@ -1,0 +1,58 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>331: Add R6RS base compatibility library</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 331: <span class="summary">Add R6RS base compatibility library</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-04-09 22:10:01</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/331/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-01-12 23:58:13</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>The <span class="monospace">(scheme r6rs base)</span> library exports the standard identifiers of the base library of R6RS.  By my current reckoning, those identifiers are as follows:</p>
+        <p><span class="monospace">- * / + &lt; &lt;= = &gt; &gt;= abs acos and angle append apply asin atan begin boolean? call/cc call-with-current-continuation call-with-values car case cdr ceiling char? char&lt;? char&lt;=? char=? char&gt;? char&gt;=? char-&gt;integer complex? cond cons cos define define-syntax denominator dynamic-wind eq? equal? eqv? even? exact exact? exact-integer-sqrt exp expt finite? floor for-each gcd guard if imag-part import inexact inexact? integer? integer-&gt;char lambda lcm length let let* let*-values letrec letrec* letrec-syntax let-syntax let-values list list? list-&gt;string list-&gt;vector list-ref list-tail log magnitude make-polar make-rectangular make-string make-vector map max min nan? negative? not null? number? number-&gt;string numerator odd? or pair? positive? procedure? quasiquote quote rational? rationalize real? real-part reverse round set! sin sqrt string string? string&lt;? string&lt;=? string=? string&gt;? string&gt;=? string-&gt;list string-&gt;number string-&gt;symbol string-append string-copy string-for-each string-length string-ref substring symbol? symbol-&gt;string tan truncate values vector vector? vector-&gt;list vector-fill! vector-for-each vector-length vector-map vector-ref vector-set! zero?</span></p>
+        <p>As with any library other than <span class="monospace">(scheme base)</span>, implementations SHOULD (rather than MUST) provide this.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-02-03 03:03:43</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>This list may grow depending on <a href="/ticket/285">#285</a>, <a href="/ticket/286">#286</a>, <a href="/ticket/287">#287</a>, <a href="/ticket/288">#288</a>, <a href="/ticket/316">#316</a>, which incorporate R6RS base features into R7RS base.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-09 22:09:51</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to reject this feature.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-09 22:10:01</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

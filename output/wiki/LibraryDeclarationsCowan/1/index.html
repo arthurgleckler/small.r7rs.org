@@ -1,0 +1,80 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>LibraryDeclarationsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/LibraryDeclarationsCowan.md">LibraryDeclarationsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Library&shy;Declarations&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-01-02 02:50:06</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/LibraryDeclarationsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/LibraryDeclarationsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a proposal to add further library declarations and import-set types to the large language.</p>
+      <h2 id="Librarydeclarations">Library declarations</h2>
+      <p>Most of these declarations are specified with &quot;should&quot;, which means that implementations are allowed to ignore them if they are inappropriate.  Furthermore, implementations may (but should not) ignore any list of identifiers.  Conflicts between declarations are resolved in an implementation-specific way.</p>
+      <p>Exceptions:</p>
+      <ul>
+        <li>Support for <span class="monospace">reexport</span> and <span class="monospace">interface</span> is required.</li></ul>
+      <ul>
+        <li>Precise support for <span class="monospace">notinline</span> is required for implementations whose compilers decide to inline code.</li></ul>
+      <h3 id="Namecontrol">Name control</h3>
+      <p><span class="monospace">(reexport </span><i>import-set</i> ...<span class="monospace">)</span></p>
+      <p>Like <span class="monospace">import</span>, but also exports all identifiers that were imported.  This allows a library to easily extend one or more other libraries.</p>
+      <p><span class="monospace">(interface </span><i>interface-name</i> ...<span class="monospace">)</span></p>
+      <p>The identifiers named in the <i>interface-names</i> are exported; it is an error if any of them are not defined by the library.  See &quot;Interfaces&quot; below.</p>
+      <h3 id="Optimization">Optimization</h3>
+      <p>In the list below, <i>importance</i> represents a symbol, one of <span class="monospace">unimportant</span> (no importance), <span class="monospace">neutral</span> (some importance, the default), <span class="monospace">important</span> (substantial importance), or <span class="monospace">extreme</span> (extreme importance).  It is an error to specify anything else.</p>
+      <p>If no identifiers are named, then the library declaration applies to all defined identifiers.</p>
+      <p><span class="monospace">(speed </span><i>importance</i> <i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The named <i>identifiers</i> should be processed so as to maximize execution speed to the extent specified by <i>importance</i>.</p>
+      <p><span class="monospace">(space </span><i>importance</i> <i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The named <i>identifiers</i> should be processed so as to minimize the use of space at run time to the extent specified by <i>importance</i>.</p>
+      <p><span class="monospace">(safety </span><i>importance</i> <i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The named <i>identifiers</i> should be processed so as to maximize safety at execution time to the extent specified by <i>importance</i>.</p>
+      <p><span class="monospace">(compilation-speed </span><i>importance</i> <i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The named <i>identifiers</i> should be processed so as to maximize compilation speed to the extent specified by <i>importance</i>.</p>
+      <p><span class="monospace">(debuggability </span><i>importance</i> <i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The named <i>identifiers</i> should be processed so as to maximize ease of debugging to the extent specified by <i>importance</i>.</p>
+      <h3 id="Compilation">Compilation</h3>
+      <p><span class="monospace">(inline </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The procedures named by the <i>identifiers</i> should be inlined by the compiler, if there is one.</p>
+      <p><span class="monospace">(notinline </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The procedures named by the <i>identifiers</i> must not be inlined by the compiler, if there is one.</p>
+      <p><span class="monospace">(unused </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The implementation should not warn the user if the <i>identifiers</i> are defined but not used in the library.</p>
+      <p><span class="monospace">(undefined </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The implementation should not warn the user if the <i>identifiers</i> are used but not defined in the library.  Further errors may of course result if an attempt is made to actually make use of the undefined identifiers.</p>
+      <p><span class="monospace">(verbose </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The implementation should process the definitions of the named identifiers (if none are named, the whole library) verbosely.</p>
+      <p><span class="monospace">(terse </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The implementation should process the definitions of the named identifiers (if none are named, the whole library) as quietly as is reasonable.  The user should still be notified of errors and warnings.</p>
+      <p><span class="monospace">(silent </span><i>identifier</i> ...<span class="monospace">)</span></p>
+      <p>The implementation should process the definitions of the named identifiers (if none are named, the whole library) silently.  The user should still be notified of errors.</p>
+      <h2 id="Importsets">Import sets</h2>
+      <p><span class="monospace">(drop-prefix </span><i>import-set</i> <i>identifier</i><span class="monospace">)</span></p>
+      <p>This import set automatically renames identifiers in the given <i>import-set</i>: any of them which begin with the characters in <i>identifier</i> have those characters removed.</p>
+      <p>For example, if the library <span class="monospace">(foo)</span> exports identifiers <span class="monospace">foo-a</span>, <span class="monospace">foo-b</span>, and <span class="monospace">foo-c</span>, then
+<span class="monospace">(import (drop-prefix (foo) foo-)</span> will import them under the names of <span class="monospace">a</span>, <span class="monospace">b</span>, and <span class="monospace">c</span> respectively.  Chibi Scheme already supports this type of import set.</p>
+      <h2 id="Interfaces">Interfaces</h2>
+      <p><span class="monospace">(define-interface </span><i>interface-name identifier-or-interface-name</i> ...<span class="monospace">)</span></p>
+      <p>Interfaces are a new type of Scheme component distinct from programs, libraries, and REPL scripts.  They consist solely of a <span class="monospace">define-interface</span> declaration.  An interface specifies identifiers that will be exported from libraries as a group: the <span class="monospace">interface</span> library declaration specifies that the library exports the names mentioned in the named interface.  Interface names are syntactically like library names; it is not an error if a library and an interface have the same name.  The identifiers to be exported may be specified individually or by mentioning the name of another interface.</p>
+      <p>It is not an error to have loops in the interface graph.  They are simply flattened, so that:</p><span class="monospace">(define-interface (a) foo (b))
+(define-interface (b) bar (a))
+</span>
+      <p>simply causes the interfaces <span class="monospace">(a)</span> and <span class="monospace">(b)</span> to export both <span class="monospace">foo</span> and <span class="monospace">bar</span>.</p>
+      <h2 id="Macros?">Macros?</h2>
+      <p>Should the ability to define syntax-rules macros which expand into library declarations be added to the large language?  Since library declarations don't bind identifiers, this is simple pattern matching with no hygiene issues.  If so, we would need <span class="monospace">define-syntax</span> and some equivalent of declaration <span class="monospace">begin</span>, which I propose be called <span class="monospace">declarations</span>:</p>
+      <p><span class="monospace">(declarations </span>''declaration ...<span class="monospace">)</span></p>
+      <p>The <i>declarations</i> are spliced in.</p>
+      <p><span class="monospace">(define-syntax </span><i>identifier</i><span class="monospace"> (syntax-rules (</span><i>identifier</i> ...<span class="monospace">) </span><i>syntax-rule</i> ...<span class="monospace">)</span></p>
+      <p>Define <i>identifier</i> as a library declaration macro, where <i>syntax-rule</i> has the same syntax as in Scheme, but contains library declarations rather than Scheme declarations or expressions.</p></div></body></html>

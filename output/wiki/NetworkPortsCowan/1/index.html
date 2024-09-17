@@ -1,0 +1,42 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NetworkPortsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NetworkPortsCowan.md">NetworkPortsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Network&shy;Ports&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-10-22 10:33:59</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/NetworkPortsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/NetworkPortsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="NetworkPorts">Network Ports</h2>
+      <p>Network ports are a mild abstraction of TCP sockets. They are a disjoint type.</p>
+      <p>This module depends on the acceptance of <a href="/wiki/PortsCowan">PortsCowan</a> or something like it, as it uses the framework of that proposal.</p>
+      <h2 id="ClientProcedures">Client Procedures</h2>
+      <p>The procedures in this section take a specification for a TCP socket and return a binary input/output port (remember, binary ports can do character I/O as well) connected to the socket.</p>
+      <p><span class="monospace">(open-network-client </span><i>filename</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(call-with-network-client </span><i>filename</i><span class="monospace"> </span><i>proc</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(with-input/output-from-network-client </span><i>filename</i><span class="monospace"> </span><i>thunk</i><span class="monospace">)</span></p>
+      <p>All of these are equivalent to the corresponding R5RS functions on file ports.  If <i>filename</i> is a string, it consists of <span class="monospace">host</span> and <span class="monospace">port</span> values (see below) separated by a colon.  If <i>filename</i> is a list, it is a settings list as described in <a href="/wiki/PortsCowan">PortsCowan</a>.  Implementations MUST support the keys described in <a href="/wiki/PortsCowan">PortsCowan</a>, except for <span class="monospace">path</span>, plus the following additional keys:</p>
+      <dl>
+        <dt><span class="monospace">host</span></dt>
+        <dd>An IPv4 dotted-decimal address, an IPv6 colon-hexadecimal address if supported by the operating system, or a host name.  There is no default value.</dd>
+        <dt><span class="monospace">port</span></dt>
+        <dd>A port number (an exact integer) or service name.</dd></dl>
+      <h2 id="ServerProcedures">Server Procedures</h2>
+      <p><span class="monospace">(make-network-listener </span>[<i>interface</i>]<span class="monospace"> </span><i>port</i><span class="monospace">)</span></p>
+      <p>Returns an opaque <i>listener</i> that will accept connections to the specified <i>port</i> and <i>interface</i>.  If <i>interface</i> is omitted, the listener will accept connections that are made to <i>port</i> on any local interface.</p>
+      <p><span class="monospace">(open-network-server </span><i>listener</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(call-with-network-server </span><i>listener</i><span class="monospace"> </span><i>proc</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(with-input/output-from-network-server </span><i>listener</i><span class="monospace"> </span><i>thunk</i><span class="monospace">)</span></p>
+      <p>All of these are equivalent to the corresponding R5RS functions on file ports.  <i>Listener</i> is a listener returned by a call to <span class="monospace">make-network-listener</span>.</p></div></body></html>

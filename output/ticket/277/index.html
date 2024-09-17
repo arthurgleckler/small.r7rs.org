@@ -1,0 +1,66 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>277: Add another argument to load to be the evaluator</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 277: <span class="summary">Add another argument to load to be the evaluator</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-02-26 17:18:31</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">invalid</div>
+      <div class="source"><a href="/ticket/277/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-09-08 22:01:05</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>By allowing an evaluation function to be passed to <span class="monospace">load</span>, it becomes possible to use it for languages other than Scheme expressed in S-expression syntax.  The function would receive an S-expression read from the file and the environment passed to <span class="monospace">load</span>.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-12 04:35:44</div></div>
+          <div class="changes">
+            <div><span class="field">summary</span><span class="old-value">Add another argument to eval and load to be the evaluator</span><span class="new-value">Add another argument to load to be the evaluator</span></div>
+            <div><span class="field">description</span><span class="old-value">`eval` currently takes an environment, and we are voting on whether to allow `load` to take one.  By allowing an evaluation function to be passed as well, it becomes possible to use the eval/load infrastructure for languages other than Scheme expressed in S-expression syntax.  This is a Good Thing.</span><span class="new-value">By allowing an evaluation function to be passed to `load`, it becomes possible to use it for languages other than Scheme expressed in S-expression syntax.  The function would receive an S-expression read from the file and the environment passed to `load`.</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-23 23:43:40</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Possibilities:</p>
+              <p>env-only: status quo, default environment is <span class="monospace">(interaction-environment)</span></p>
+              <p>eval-only: eliminate the environment argument in favor of a evaluator argument, a one-argument procedure (by default, <span class="monospace">(lambda (x) (eval x (interaction-environment))</span></p>
+              <p>env-first: environment argument followed by evaluator argument, same defaults</p>
+              <p>eval-first: evaluator argument followed by environment argument, same defaults</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-02-26 17:18:31</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">invalid</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>This seems too random.  There is no clear motivation or examples,
+the status quo is widely implemented and sufficient for alternate
+languages by specifying the env, and yet both solutions are
+insufficient for languages with a different read syntax.</p>
+              <p>It's too late in the process to consider a change like this without
+any precedent.</p></div></div></div></div></div></body></html>

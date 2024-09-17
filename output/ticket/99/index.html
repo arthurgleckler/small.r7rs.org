@@ -1,0 +1,54 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>99: Allow top-level LET-SYNTAX</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 99: <span class="summary">Allow top-level LET-SYNTAX</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2010-11-18 14:14:34</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">duplicate</div>
+      <div class="source"><a href="/ticket/99/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-11-17 06:09:06</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Email from Thomas Bushnell:</p>
+        <p>Ah. The usage case is where I want to have a top-level macro which expands into a series of top-level forms. For example, suppose I want <span class="monospace">define-many</span> which looks like this:</p><span class="monospace">(define-many foo bar baz quux)
+</span>
+        <p>and expands into:</p><span class="monospace">(define foo #f)
+(define bar #f)
+(define baz #f)
+(define quux #f)
+</span>
+        <p>However, <span class="monospace">syntax-rules</span> doesn't permit a series of forms, so the R5RS solution is to put a <span class="monospace">begin</span> around it, and then specify that <span class="monospace">begin</span> doesn't change the top-level-ness of the forms inside it.  So this works:</p><span class="monospace">(define-syntax define-many
+  (syntax-rules ()
+    ((_ name names ...) (begin (define name #f) (define names #f) ...))))
+</span>
+        <p>So far so good. But suppose now that the forms inside all need to make use of some special bit of local syntax. That is, I want to define some syntax which will <i>not</i> be visible at top-level, but will be used by the forms that <span class="monospace">define-many</span> expands into. The solution should be to replace <span class="monospace">begin</span> with <span class="monospace">let-syntax</span> above, but you can't do it according to R5RS. Most Scheme folks that I know regard this as a bug, because a top-level <span class="monospace">let-syntax</span> really can't have any other use.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2010-11-18 14:14:34</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">duplicate</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p><span class="monospace">let-syntax</span> is allowed at top-level, as is any Scheme expression.
+Using <span class="monospace">let-syntax</span> to expand into definitions is a grey area,
+already brought up by <a href="/ticket/48">#48</a>.</p></div></div></div></div></div></body></html>

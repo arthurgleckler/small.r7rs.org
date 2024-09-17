@@ -1,0 +1,164 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>EfficiencyConcerns</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/EfficiencyConcerns.md">EfficiencyConcerns</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Efficiency&shy;Concerns</h1>
+    <div class="wiki metadata">
+      <div class="author">arcfide</div>
+      <div class="time">2010-04-06 07:31:13</div>
+      <div class="version">1<span class="comment">Add record analysis from Chez Scheme</span><a href="/wiki/EfficiencyConcerns/history">history</a></div>
+      <div class="source"><a href="/wiki/EfficiencyConcerns/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="EfficiencyConcernsandAnalysisforRecords">Efficiency Concerns and Analysis for Records</h1>
+      <h2 id="Syntacticvs.ProceduralInterfaces">Syntactic vs. Procedural Interfaces</h2>
+      <p>While procedural interfaces provide a low level, assembly-like basis for records, they have some performance considerations. SRFI-99 attempts to dispel these concerns. However, the arguments for SRFI-99 rely on compilers and code patterns to achieve its efficiency. Absent the presence of a compiler or a recognized/malleable code pattern for optimization, these benefits are not as readily available.</p>
+      <p>Below is a bit of an analysis concerning the efficiency of procedural records versus syntatic ones.</p>
+      <p>Using the R6RS record form, let's consider the following transcript:</p><span class="monospace">Chez Scheme Transcript [Mon Apr  5 20:12:47 2010]
+&gt; (library (parent)
+    (export p p-x rtd)
+    (import (chezscheme))
+    (define-record-type p (fields x))
+    (define rtd (make-record-type-descriptor 'b #f #f #f #f '#((immutable y)))))
+&gt; (expand/optimize '(let ()
+    (import (parent))
+    (define-record-type a (parent p) (fields y))
+    (define-record-type b (parent-rtd rtd (make-record-constructor-descriptor rtd #f #f)))
+    (p-x (make-a 1 2))
+    (a-y (make-a 2 3))
+    ((record-accessor rtd 0) (make-b 3))))
+(begin
+  (#3%$import-library '(parent) '() 'parent.54)
+  (#3%$invoke-library '(parent) '() 'parent.54)
+  (let ([rtd.55 (#3%$make-record-type-descriptor 'a '#&lt;record type p&gt; #f #f #f '#((immutable y))
+                  'define-record-type)])
+    (let ([rtd.56 (#3%$make-record-type-descriptor 'b (#3%$top-level-value 'rtd.57) #f #f #f '#()
+                    'define-record-type)])
+      (let ([rcd.58 (#3%$make-record-constructor-descriptor
+                      rtd.56
+                      (#3%make-record-constructor-descriptor
+                        (#3%$top-level-value 'rtd.57)
+                        #f
+                        #f)
+                      #f
+                      'define-record-type)])
+        (let ([make-b.59 (#3%r6rs:record-constructor rcd.58)])
+          ((#3%$top-level-value 'p-x.60) (#3%$record rtd.55 1 2))
+          (let ([g5.61 (#3%$record rtd.55 2 3)])
+            (#3%$object-ref 'scheme-object g5.61 17))
+          ((#3%record-accessor (#3%$top-level-value 'rtd.57) 0)
+            (make-b.59 3)))))))
+&gt; (let ()
+    (import (chezscheme) (parent))
+    (define-record-type a (parent p) (fields y))
+    (define-record-type b (parent-rtd rtd (make-record-constructor-descriptor rtd #f #f)))
+    (define (loop count thunk)
+      (do ([i 0 (fx1+ i)])
+          [(&gt;= i count)]
+        (thunk)))
+    (define count 90000000)
+    (collect (collect-maximum-generation))
+    (time
+      (loop count
+        (lambda ()
+         (p-x (make-a 1 2)))))
+    (collect (collect-maximum-generation))
+    (time
+      (loop count
+        (lambda ()
+          ((record-accessor rtd 0) (make-b 3))))))
+(time (loop count ...))
+    340 collections
+    1249 ms elapsed cpu time, including 29 ms collecting
+    1261 ms elapsed real time, including 39 ms collecting
+    2880087040 bytes allocated, including 2872405840 bytes reclaimed
+(time (loop count ...))
+    512 collections
+    6601 ms elapsed cpu time, including 52 ms collecting
+    6610 ms elapsed real time, including 47 ms collecting
+    4320131072 bytes allocated, including 4318493616 bytes reclaimed
+&gt; (expand '(let ()
+    (import (chezscheme) (parent))
+    (define-record-type a (parent p) (fields y))
+    (define-record-type b (parent-rtd rtd (make-record-constructor-descriptor rtd #f #f)))
+    (define (loop count thunk)
+      (do ([i 0 (fx1+ i)])
+          [(&gt;= i count)]
+        (thunk)))
+    (define count 90000000)
+    (time
+      (loop count
+        (lambda ()
+          (p-x (make-a 1 2)))))
+    (time
+      (loop count
+        (lambda ()
+          ((record-accessor rtd 0) (make-b 3)))))))
+(begin
+  (#3%$import-library '(chezscheme) '() 'scheme)
+  (#3%$import-library '(parent) '() 'parent.54)
+  (#3%$invoke-library '(parent) '() 'parent.54)
+  (letrec* ([rtd.62 (#3%$make-record-type-descriptor 'a '#&lt;record type p&gt; #f #f #f '#((immutable y))
+                      'define-record-type)]
+            [rcd.63 (#3%$make-record-constructor-descriptor
+                      rtd.62
+                      '#&lt;record constructor descriptor&gt;
+                      #f
+                      'define-record-type)]
+            [make-a.64 (#3%r6rs:record-constructor rcd.63)]
+            [a?.65 (#3%record-predicate rtd.62)]
+            [a-y.66 (#3%record-accessor rtd.62 0)]
+            [rtd.67 (#3%$make-record-type-descriptor 'b (#3%$top-level-value 'rtd.57) #f #f #f '#()
+                      'define-record-type)]
+            [rcd.68 (#3%$make-record-constructor-descriptor
+                      rtd.67
+                      (#3%make-record-constructor-descriptor
+                        (#3%$top-level-value 'rtd.57)
+                        #f
+                        #f)
+                      #f
+                      'define-record-type)]
+            [make-b.69 (#3%r6rs:record-constructor rcd.68)]
+            [b?.70 (#3%record-predicate rtd.67)]
+            [loop.71 (lambda (count.72 thunk.73)
+                       ((letrec ([do.74 (lambda (i.75)
+                                          (if (#3%not
+                                                (#3%&gt;= i.75 count.72))
+                                              (begin
+                                                (thunk.73)
+                                                (do.74 (#3%fx1+ i.75)))
+                                              (#2%void)))])
+                          do.74)
+                         0))]
+            [count.76 90000000])
+    (#3%$as-time-goes-by
+      '(loop count (lambda () (p-x (make-a 1 2))))
+      (lambda ()
+        (loop.71
+          count.76
+          (lambda ()
+            ((#3%$top-level-value 'p-x.60) (make-a.64 1 2))))))
+    (#3%$as-time-goes-by
+      '(loop
+         count
+         (lambda () ((record-accessor rtd 0) (make-b 3))))
+      (lambda ()
+        (loop.71
+          count.76
+          (lambda ()
+            ((#3%record-accessor (#3%$top-level-value 'rtd.57) 0)
+              (make-b.69 3))))))))
+&gt; (transcript-off)
+</span>
+      <p>Observe that the procedural interface must default into cross-library references that can't be resolved at expand time. On the other hand, the syntactic interface can be resolved and optimized more readily.</p>
+      <p>On the other hand, if we take advantage of the new, experimental <span class="monospace">library-group</span> form in Chez Scheme version 8.0, then wrapping a library group around the parent and the program code will result in the procedural and syntactic interface running at the same speed. Indeed, this reveals that you can optimize a procedural interface, but you have to have a number of factors in your favor to do so, and it requires more optimization than many Scheme interpreters will have. If you were to run that code on an interpreter or in a compiler that did not do as much optimization -- and Chez does go to some work to make these fast -- then you are struck with a possible 5 times performance hit.</p>
+      <p>I would appreciate results from other Scheme implementations to fill this out.</p></div></body></html>

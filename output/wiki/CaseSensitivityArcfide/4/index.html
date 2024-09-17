@@ -1,0 +1,54 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CaseSensitivityArcfide</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CaseSensitivityArcfide.md">CaseSensitivityArcfide</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Case&shy;Sensitivity&shy;Arcfide</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-02-13 19:06:02</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/CaseSensitivityArcfide/history">history</a></div>
+      <div class="source"><a href="/wiki/CaseSensitivityArcfide/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="AaronW.Hsu'sViewonCaseSensitivityinWorkingGroups1&amp;2">Aaron W. Hsu's View on Case Sensitivity in Working Groups 1 &amp; 2</h1>
+      <h2 id="Problems">Problems</h2>
+      <ul>
+        <li>Scheme implementations always take their own approach to case-folding in that they choose one or the other, and don't care about the standard</li>
+        <li>Case behavior is excessively religious and emotional</li>
+        <li>We have two precedences, one R6RS and one R5RS, in standards for doing different case behavior</li>
+        <li>In the presence of different character sets and traditions, certain case behaviors are more prevalent</li>
+        <li>The solution to the behavior must be compatible both in Scheme Core and Scheme 7</li></ul>
+      <h2 id="ProposedSolution">Proposed Solution</h2>
+      <ul>
+        <li>(Scheme Core) Case behavior by default is implementation dependent</li>
+        <li>(Scheme Core) Implementations must implement both case folding and case preserving modes</li>
+        <li>(Scheme Core) Implementations must recognize the flags #!case-fold and #!no-case-fold</li>
+        <li>(Scheme Core) Support the <span class="monospace">||</span> case-preserving reader syntax, but do not have them delimit atoms</li>
+        <li>(Scheme Core) Implementations must recognize the parameter <span class="monospace">case-sensitive</span> values <span class="monospace">#t</span> and <span class="monospace">#f</span></li>
+        <li>(Scheme Core) The module system should provide some means for controlling case sensitivity at a suitable level of granularity</li>
+        <li>(Scheme 7) Case is preserved by default</li>
+        <li>If the character set used by a Scheme implementation is Unicode, then the official Unicode case folding algorithm should be used</li></ul>
+      <h2 id="Clarifications">Clarifications</h2>
+      <p>The use of parameters in Scheme Core would affect any procedures called that make use of the reader. Specifically <span class="monospace">read</span> would be sensitive to such parameters.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>I would like to avoid creation of &quot;compatibility&quot; layers in Scheme implementations that intend to break the default case sensitivity defaults. Since most code that needs to run or most legacy code that is important can be counted on to still run under their same implementations in this proposal, this actually improves the conformance and maintains a large body of backwards compatible source code without requiring modification. Such source code can easily be moved to systems with different defaults by using flags or modules. This is no more difficult than requiring special encantations in the target Scheme implementation. It is also standardized, so the user can easily make a library entirely portable in this regard by either using a flag or providing a module. Doing so is superior to requiring each implementation to have a unique encantation for calling the code with the correct behavior.</p>
+      <p>The use of a parameter allows for much nicer interactions with the reader at a Scheme Core level without complicating the semantics. It also means that you have more control at run-time of the reader without making this more complex. It permits an acceptable level of control in Scheme Core, while scaling up to phasing levels and procedural macros in Scheme 7.</p>
+      <p>Because it makes sense to specify more exactly certain behaviors in Scheme 7 than it does in Scheme Core, Case sensitivity should be enabled by default there, as it provides a more general behavior and is easier to implement. Additionally, it is more suitable in the context of Scheme 7's target audience.</p>
+      <h2 id="Issues">Issues</h2>
+      <p>Should <span class="monospace">case-sensitive</span> interact with the flags? That is, if a reader or load call encounters a flag, should the parameter be altered? Should the parameter's value be altered only in the call or should it persist?</p>
+      <p>At the moment I am inclined to think that it is okay for the two to interact, and probably a good thing, provided that the extent of that interaction remains limited by the call. That is, the value of the parameter should be reset to the incoming value on return. This is because the scope of that flag should only extend to the end of the file, and should not have an effect on continuing computation in the environment that made the call.</p>
+      <h2 id="Endorsements">Endorsements</h2>
+      <p>John Cowan endorses this page, with the following exceptions:</p>
+      <ul>
+        <li>The proposal for Scheme 7 is premature</li>
+        <li>The parameter should be named &quot;fold-case&quot;</li>
+        <li>The Unicode folding algorithm should be used whether the Scheme is Unicode-based or not.</li></ul></div></body></html>

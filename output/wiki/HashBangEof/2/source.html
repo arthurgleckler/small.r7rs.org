@@ -1,0 +1,62 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki HashBangEof version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki HashBangEof version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>HashBangEof</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>I tested the REPLs of the usual Schemes to determine which ones terminated when they read `#!eof` from standard input.
+
+Terminated: Chicken, SISC, Detroit, Chez, Vicare, KSi
+
+Lexical syntax error: Racket, Gauche, Scheme48/scsh, Guile, Larceny, NexJ, !SigScheme, !MiniScheme, S7, Unlikely, SIOD, Rep, SXM, Sizzle, Foment, Chibi
+
+Self-quoting object:  MIT, Gambit, Kawa
+
+Special object: Llava, Owl Lisp
+
+Unknown identifier: !SigScheme, Shoe, BDC, XLisp, Schemik, UMB, Inlab
+
+Attempts to evaluate an eof-object: Mosh
+
+Apparently ignores it:  Bigloo, SCM, Ypsilon, !IronScheme, JScheme, STklos, !TinyScheme, Scheme 9, RScheme, Elk, !FemtoLisp, Dfsch, Sagittarius, Picrin
+
+I also tried evaluating `(eof-object? #!eof)` in the REPL for a subset of the above.  Schemes that report a lexical syntax error or treat `#!eof` as an identifier were not retested.  Schemes that ignore `#!eof` usually ignored the closing `)` as well; when one was supplied, they reported a missing argument to `eof-object?`.
+
+Reports premature EOF: MIT, Detroit, KSi, S7
+
+Attempts to evaluate an EOF object: Vicare (will return `#t` to `(eof-object? '#!eof)`)
+
+Lexical syntax error: Mosh
+
+Does not have `eof-object?`: Owl Lisp
+
+Returns `#t`: Gambit, Chicken, Kawa, SISC, Chez
+
+Returns `#f`: Llava
+
+
+</pre>
+    <h2>time</h2>
+    <pre>2016-04-27 02:42:00</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

@@ -1,0 +1,79 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>388: Specify what `display` does with circular lists</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 388: <span class="summary">Specify what `display` does with circular lists</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-07 12:18:45</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/388/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-05-03 07:08:32</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Currently we don't specify what <span class="monospace">display</span> does with circular lists.  Should it generate labels like <span class="monospace">write</span>, or loop like <span class="monospace">write-simple</span>, or leave it unspecified?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-05-06 17:24:35</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We don't specify anything wrt display for anything
+other than string and character inputs.  It would be
+very out of place to specify anything for circular
+structures without also specifying all structures,
+which would be very difficult to get implementations
+to agree to.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-05-06 22:50:14</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>If you compare <span class="monospace">write</span>, <span class="monospace">write-simple</span>, and <span class="monospace">display</span>, you'll see that <span class="monospace">write</span> defines behavior for strings, symbols, characters, and shared structure.  <span class="monospace">Write-simple</span> says it is the same as <span class="monospace">write</span> except on shared structure.  However, <span class="monospace">display</span> defines behavior for strings, symbols, and characters only.  Adding a definition for shared-list behavior is therefore appropriate.  We don't need to define behavior for everything else.</p>
+              <p>I haven't done a full test, but most Schemes seem to use <span class="monospace">write-simple</span> behavior.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-26 23:12:30</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 decided to adopt <span class="monospace">write</span> behavior, printing datum labels as required.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 06:23:30</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-07 12:18:45</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

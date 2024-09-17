@@ -1,0 +1,76 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>492: Assertions are not provided</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 492: <span class="summary">Assertions are not provided</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:09:25</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/492/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-12 23:10:29</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>John David Stone writes:</p>
+        <p>The R7RS proposal doesn't include assertions.  This creates a needless divergence from R6RS, where the <span class="monospace">assert</span> syntax is required in the base.  One could argue that assertions are an unsuitably blunt instrument for error detection and reporting.  Even so, they are useful enough as a teaching tool that I'd like the language to support them.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-12 23:11:35</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG felt that simple <span class="monospace">assert</span> is insufficient, and a more complex and useful assertion facility was beyond the scope of the small language.  In addition, it is trivial to supply a simple R6RS-compatible <span class="monospace">assert</span> portably, though non-portable versions may be able to provide better reporting.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-13 18:27:58</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">Jim Wise writes:
+
+  The R7RS proposal doesn't include assertions.  This creates a needless divergence from R6RS, where the `assert` syntax is required in the base.  One could argue that assertions are an unsuitably blunt instrument for error detection and reporting.  Even so, they are useful enough as a teaching tool that I'd like the language to support them.</span><span class="new-value">John David Stone writes:
+
+  The R7RS proposal doesn't include assertions.  This creates a needless divergence from R6RS, where the `assert` syntax is required in the base.  One could argue that assertions are an unsuitably blunt instrument for error detection and reporting.  Even so, they are useful enough as a teaching tool that I'd like the language to support them.</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-21 01:12:31</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p><span class="monospace">Assert</span> may yet return; the WG is considering the possibility of an accidental change to a member's ballot that caused ticket <a href="/ticket/287">#287</a> on the <a href="/wiki/WG1Ballot5Results">fifth ballot</a> to fail.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:09:07</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG decided not to take action on this, considering it to have been raised untimely.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:09:25</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

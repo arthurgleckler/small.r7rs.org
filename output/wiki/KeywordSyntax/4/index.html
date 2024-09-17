@@ -1,0 +1,39 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>KeywordSyntax</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/KeywordSyntax.md">KeywordSyntax</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Keyword&shy;Syntax</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-03-19 00:50:19</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/KeywordSyntax/history">history</a></div>
+      <div class="source"><a href="/wiki/KeywordSyntax/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p><a href="/wiki/Keywords">Keywords</a> look like <span class="monospace">:foo</span>, <span class="monospace">foo:</span>, or <span class="monospace">#:foo</span>, depending on the Scheme implementation:</p>
+      <ul>
+        <li>Gauche (and Common Lisp) support <span class="monospace">:foo</span>.</li></ul>
+      <ul>
+        <li>Gambit, Kawa (and DSSSL, SRFI 88) support <span class="monospace">foo:</span>.</li></ul>
+      <ul>
+        <li>Bigloo, STklos supports both <span class="monospace">foo:</span> and <span class="monospace">:foo</span> and treats them as the same (in the sense of <span class="monospace">eqv?</span>).</li></ul>
+      <ul>
+        <li>Scheme 7 supports both <span class="monospace">foo:</span> and <span class="monospace">:foo</span> and treats them as distinct (in the sense of <span class="monospace">eqv?</span>).</li></ul>
+      <ul>
+        <li>PLT supports <span class="monospace">#:foo</span>.</li></ul>
+      <ul>
+        <li>Chicken, Guile supports <span class="monospace">#:foo</span> always, and also allows either <span class="monospace">foo:</span> or <span class="monospace">:foo</span> depending on the setting of a parameter or a startup option.</li></ul>
+      <ul>
+        <li>MIT, Scheme48/scsh, SISC, Chez, SCM, Ikarus, Larceny, Mosh, Scheme 9, SSCM, SXM, VSCM, Chibi don't support any of them.</li></ul>
+      <p>If we adopt the :foo style, Gauche, Bigloo, Scheme 7, STklos will work out of the box, and Chicken and Guile will support it with an option.</p>
+      <p>If we adopt the foo: style, Gambit, Chicken, Kawa, STklos, Bigloo, Scheme 7 will work out of the box, and Guile will support it with an option.</p>
+      <p>If we adopt the #:foo style, PLT, Chicken, Bigloo, Guile, Scheme 7 will work out of the box.</p></div></body></html>

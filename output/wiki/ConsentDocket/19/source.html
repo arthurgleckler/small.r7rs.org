@@ -1,0 +1,70 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ConsentDocket version 19</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ConsentDocket version 19</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre>Typo</pre>
+    <h2>ipnr</h2>
+    <pre>173.13.139.236</pre>
+    <h2>name</h2>
+    <pre>ConsentDocket</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== WG2 Consent Docket ==
+
+The following items will be approved without a formal vote unless someone objects, in which case they will be moved to another docket.  See [wiki:WG2Dockets WG2Dockets] for other dockets.
+
+Note: &quot;Prefix stripping&quot; means that prefixes such as `fx`, `fl`, or `bitwise-` are removed from identifiers exported by this package.  That way, users can add back their own prefixes using the facilities of `import`.
+
+Explicit renaming macros: Uses the `er-macro-transformer` keyword (bare lambdas are unsupported).  Three arguments are provided to transformers: `form rename compare`.
+
+Fixnum arithmetic: The R6RS `arithmetic fixnum` library with prefix stripping.
+
+Format combinators: Alex Shinn's [http://synthcode.com/scheme/fmt/ fmt library], with possibly a touch of renaming.  The C formatting library is excluded.
+
+Pretty-printer: see Format combinators
+
+Generalized getters and setters: [http://http://srfi.schemers.org/srfi-17/srfi-17.html SRFI 17].
+
+Getopt/args-fold:  [http://http://srfi.schemers.org/srfi-37/srfi-37.html SRFI 37].
+
+Regex (S-exps and strings): Alex Shinn's [http://synthcode.com/scheme/irregex/ irregex library], possibly a touch of renaming.  Specify full PCRE compatibility even though the irregex implementation doesn't support all of it.
+
+[http://http://srfi.schemers.org/srfi-1/srfi-1.html SRFI 1], list library: As written, but excluding  `cons`, `pair?`, `null?`, `car`, `cdr`, `caar` ... `cddddr`, `set-car!`, `set-cdr!`, `list`, `append`, `reverse`, `length`, `list-ref`, `map`, `for-each`, `memq`, `memv`, `member`, `assq`, `assv`, `assoc`, which are all in the `(scheme base)` and `(scheme cxr)` libraries in a SRFI-1-compatible way.  '''Specification bug in SRFI 1: `any`, `every`, and `list-index` should omit the words &quot;and returning a boolean result&quot;.'''
+
+[http://http://srfi.schemers.org/srfi-2/srfi-2.html SRFI 2], `and-let*` macro: As written.
+
+[http://http://srfi.schemers.org/srfi-13/srfi-13.html SRFI 13], string library: As written, but excluding `string?`, `make-string`, `string`, `string-&gt;list`, `list-&gt;string`, `string-copy`, `string-fill!`, `string-length`, `string-ref`, `string-set!`, `string-append`, which are all in the `(scheme base)` library in a SRFI-13 compatible way.
+
+[http://http://srfi.schemers.org/srfi-14/srfi-14.html SRFI 14], character set library: As written.
+
+[http://http://srfi.schemers.org/srfi-31/srfi-31.html SRFI 31], `rec` macro: As written.
+
+[http://http://srfi.schemers.org/srfi-41/srfi-41.html SRFI 41], `(streams primitive)` and `(streams derived)` libraries: As written.
+
+[http://srfi.schemers.org/srfi-43/srfi-43.html SRFI 43], vector library: As written, but excluding `make-vector`, `vector`,`vector?`, `vector-ref`, `vector-length`, `vector-set!`, `vector-&gt;list`, `list-&gt;vector`, `vector-copy`, `vector-fill!`, which are all in the `(scheme base)` library.  
+
+SRFI 38, circular list read/write support: Already in WG1, so no package.
+
+When/unless: Already in WG1, so no package.
+
+ 
+</pre>
+    <h2>time</h2>
+    <pre>2012-11-22 11:23:52</pre>
+    <h2>version</h2>
+    <pre>19</pre></body></html>

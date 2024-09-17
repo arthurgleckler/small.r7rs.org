@@ -1,0 +1,206 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>371: Fix broken definition of expt</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 371: <span class="summary">Fix broken definition of expt</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-03-29 23:20:01</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">duplicate</div>
+      <div class="source"><a href="/ticket/371/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-03-29 04:47:47</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>R6RS says:</p>
+        <ol class="number" start="0">
+          <li>0<sup>z</sup> is 1.0 if z = 0.0, and 0.0 if (real-part z) is positive.  For other cases in which the first argument is zero, either an exception is raised with condition type &amp;implementation-restriction, or an unspecified number object is returned.</li></ol>
+        <p>R5RS specifies behavior that is simply incorrect for z with negative real part: 0<sup>z</sup> is 1 if z = 0 and 0 otherwise.</p>
+        <p>I tested the usual suite on <span class="monospace">(expt 0.0 0.0)</span> <span class="monospace">(expt 0.0 2)</span>, and <span class="monospace">(expt 0.0 -2)</span>:</p>
+        <p>Conforming implementations:</p>
+        <p>Racket, Gauche, Gambit, Chicken (with and without the numbers egg), Bigloo, Kawa, Chibi, Chez, SCM, Ikarus/Vicare, Ypsilon, Mosh, NexJ, STklos, KSi, RScheme, XLisp, Rep, VX, SXM, Spark, Inlab return <span class="monospace">1.0</span>, <span class="monospace">0.0</span>, and <span class="monospace">+inf.0</span>.</p>
+        <p>Guile, Larceny return <span class="monospace">1.0</span>, <span class="monospace">0.0</span>, and <span class="monospace">+nan.0</span>.</p>
+        <p>SISC, IronScheme, Elk return <span class="monospace">1.0</span>, <span class="monospace">0.0</span>, and <span class="monospace">0.0</span>.</p>
+        <p>UMB returns <span class="monospace">1.0</span>, <span class="monospace">0.0</span>, and an exception.</p>
+        <p>Non-conforming implementations:</p>
+        <p>Scheme48, BDC return an exception, <span class="monospace">0.0</span>, and <span class="monospace">+inf.0</span>.</p>
+        <p>Scsh returns <span class="monospace">-nan.0</span>, <span class="monospace">0.0</span>, and an exception.</p>
+        <p>Scheme 7 returns <span class="monospace">0.0</span>, <span class="monospace">0.0</span>, and an exception.</p>
+        <p>Scheme 9 returns exact <span class="monospace">0</span>, <span class="monospace">0.0</span>, and <span class="monospace">+nan.0</span>.</p>
+        <p>Elk returns exact <span class="monospace">1</span>, exact <span class="monospace">0</span>, and exact <span class="monospace">0</span>.</p>
+        <p>MIT returns an exception, <span class="monospace">0.0</span>, and another exception.</p>
+        <p>SigScheme, Shoe, TinyScheme, Dream, Schemik, Oaklisp, Owl Lisp don't support inexact <span class="monospace">expt</span>.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-29 04:48:43</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">R6RS says:
+
+0.0^z^ is 1.0 if z = 0.0, and 0.0 if (real-part z) is positive.  For other cases in which the first argument is zero, either an exception is raised with condition type &amp;implementation-restriction, or an unspecified number object is returned.
+
+R5RS specifies behavior that is simply incorrect for z with negative real part: 0^z is 1 if z = 0 and 0 otherwise.\
+
+I tested the usual suite on `(expt 0.0 0.0)` `(expt 0.0 2)`, and `(expt 0.0 -2)`:
+
+Conforming implementations:
+
+Racket, Gauche, Gambit, Chicken (with and without the numbers egg), Bigloo, Kawa, Chibi, Chez, SCM, !Ikarus/Vicare, Ypsilon, Mosh, NexJ, STklos, KSi, RScheme, XLisp, Rep, VX, SXM, Spark, Inlab return `1.0`, `0.0`, and `+inf.0`.
+
+Guile, Larceny return `1.0`, `0.0`, and `+nan.0`.
+
+SISC, !IronScheme, Elk return `1.0`, `0.0`, and `0.0`.
+
+UMB returns `1.0`, `0.0`, and an exception.
+
+Non-conforming implementations:
+
+Scheme48, BDC return an exception, `0.0`, and `+inf.0`.
+
+Scsh returns `-nan.0`, `0.0`, and an exception.
+
+Scheme 7 returns `0.0`, `0.0`, and an exception.
+
+Scheme 9 returns exact `0`, `0.0`, and `+nan.0`.
+
+Elk returns exact `1`, exact `0`, and exact `0`.
+
+!SigScheme, Shoe, !TinyScheme, Dream, Schemik, Oaklisp, Owl Lisp don't support inexact `expt`.
+
+I still don't know how to turn off floating-point traps in MIT.
+</span><span class="new-value">R6RS says:
+
+0.0^z^ is 1.0 if z = 0.0, and 0.0 if (real-part z) is positive.  For other cases in which the first argument is zero, either an exception is raised with condition type &amp;implementation-restriction, or an unspecified number object is returned.
+
+R5RS specifies behavior that is simply incorrect for z with negative real part: 0^z^ is 1 if z = 0 and 0 otherwise.
+
+I tested the usual suite on `(expt 0.0 0.0)` `(expt 0.0 2)`, and `(expt 0.0 -2)`:
+
+Conforming implementations:
+
+Racket, Gauche, Gambit, Chicken (with and without the numbers egg), Bigloo, Kawa, Chibi, Chez, SCM, !Ikarus/Vicare, Ypsilon, Mosh, NexJ, STklos, KSi, RScheme, XLisp, Rep, VX, SXM, Spark, Inlab return `1.0`, `0.0`, and `+inf.0`.
+
+Guile, Larceny return `1.0`, `0.0`, and `+nan.0`.
+
+SISC, !IronScheme, Elk return `1.0`, `0.0`, and `0.0`.
+
+UMB returns `1.0`, `0.0`, and an exception.
+
+Non-conforming implementations:
+
+Scheme48, BDC return an exception, `0.0`, and `+inf.0`.
+
+Scsh returns `-nan.0`, `0.0`, and an exception.
+
+Scheme 7 returns `0.0`, `0.0`, and an exception.
+
+Scheme 9 returns exact `0`, `0.0`, and `+nan.0`.
+
+Elk returns exact `1`, exact `0`, and exact `0`.
+
+!SigScheme, Shoe, !TinyScheme, Dream, Schemik, Oaklisp, Owl Lisp don't support inexact `expt`.
+
+I still don't know how to turn off floating-point traps in MIT.
+</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-29 05:09:40</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">R6RS says:
+
+0.0^z^ is 1.0 if z = 0.0, and 0.0 if (real-part z) is positive.  For other cases in which the first argument is zero, either an exception is raised with condition type &amp;implementation-restriction, or an unspecified number object is returned.
+
+R5RS specifies behavior that is simply incorrect for z with negative real part: 0^z^ is 1 if z = 0 and 0 otherwise.
+
+I tested the usual suite on `(expt 0.0 0.0)` `(expt 0.0 2)`, and `(expt 0.0 -2)`:
+
+Conforming implementations:
+
+Racket, Gauche, Gambit, Chicken (with and without the numbers egg), Bigloo, Kawa, Chibi, Chez, SCM, !Ikarus/Vicare, Ypsilon, Mosh, NexJ, STklos, KSi, RScheme, XLisp, Rep, VX, SXM, Spark, Inlab return `1.0`, `0.0`, and `+inf.0`.
+
+Guile, Larceny return `1.0`, `0.0`, and `+nan.0`.
+
+SISC, !IronScheme, Elk return `1.0`, `0.0`, and `0.0`.
+
+UMB returns `1.0`, `0.0`, and an exception.
+
+Non-conforming implementations:
+
+Scheme48, BDC return an exception, `0.0`, and `+inf.0`.
+
+Scsh returns `-nan.0`, `0.0`, and an exception.
+
+Scheme 7 returns `0.0`, `0.0`, and an exception.
+
+Scheme 9 returns exact `0`, `0.0`, and `+nan.0`.
+
+Elk returns exact `1`, exact `0`, and exact `0`.
+
+!SigScheme, Shoe, !TinyScheme, Dream, Schemik, Oaklisp, Owl Lisp don't support inexact `expt`.
+
+I still don't know how to turn off floating-point traps in MIT.
+</span><span class="new-value">R6RS says:
+
+0.0^z^ is 1.0 if z = 0.0, and 0.0 if (real-part z) is positive.  For other cases in which the first argument is zero, either an exception is raised with condition type &amp;implementation-restriction, or an unspecified number object is returned.
+
+R5RS specifies behavior that is simply incorrect for z with negative real part: 0^z^ is 1 if z = 0 and 0 otherwise.
+
+I tested the usual suite on `(expt 0.0 0.0)` `(expt 0.0 2)`, and `(expt 0.0 -2)`:
+
+Conforming implementations:
+
+Racket, Gauche, Gambit, Chicken (with and without the numbers egg), Bigloo, Kawa, Chibi, Chez, SCM, !Ikarus/Vicare, Ypsilon, Mosh, NexJ, STklos, KSi, RScheme, XLisp, Rep, VX, SXM, Spark, Inlab return `1.0`, `0.0`, and `+inf.0`.
+
+Guile, Larceny return `1.0`, `0.0`, and `+nan.0`.
+
+SISC, !IronScheme, Elk return `1.0`, `0.0`, and `0.0`.
+
+UMB returns `1.0`, `0.0`, and an exception.
+
+Non-conforming implementations:
+
+Scheme48, BDC return an exception, `0.0`, and `+inf.0`.
+
+Scsh returns `-nan.0`, `0.0`, and an exception.
+
+Scheme 7 returns `0.0`, `0.0`, and an exception.
+
+Scheme 9 returns exact `0`, `0.0`, and `+nan.0`.
+
+Elk returns exact `1`, exact `0`, and exact `0`.
+
+MIT returns an exception, `0.0`, and another exception.
+
+!SigScheme, Shoe, !TinyScheme, Dream, Schemik, Oaklisp, Owl Lisp don't support inexact `expt`.
+
+</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-29 23:20:01</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">duplicate</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I'm closing this ticket, because R7RS already has this change.</p></div></div></div></div></div></body></html>

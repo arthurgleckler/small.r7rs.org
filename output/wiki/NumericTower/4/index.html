@@ -1,0 +1,80 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NumericTower</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NumericTower.md">NumericTower</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Numeric&shy;Tower</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-12-24 15:46:17</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/NumericTower/history">history</a></div>
+      <div class="source"><a href="/wiki/NumericTower/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Thenumerictower">The numeric tower</h2>
+      <p>This is an analysis of the R5RS provision that the full numeric tower may be subsetted.  Four boolean feature settings characterize different kinds of numeric towers: <span class="monospace">exactness-preserving</span>, <span class="monospace">ratios</span>, <span class="monospace">inexact</span>, and <span class="monospace">complex</span>, which refer to the closure of exact numbers under rational operations (except <span class="monospace">/</span>), exact non-integer values, inexact rationals, and non-real numbers, respectively.  A priori, any combination of these features might be implemented, except that <span class="monospace">ratios</span> makes no sense without <span class="monospace">exactness-preserving</span>.  I also assume that <span class="monospace">complex</span> makes no sense without either <span class="monospace">ratios</span> or <span class="monospace">inexact</span>: Gaussian integers by themselves seem to be of little use.</p>
+      <p>So here are ten possible numeric towers.  I use <span class="monospace">+</span> if a feature is present and <span class="monospace">-</span> if it is absent, and give a general description of the resulting tower.</p>
+      <table><tr><td class="default">
+            <p>exactness-preserving</p></td><td class="default">
+            <p>ratios</p></td><td class="default">
+            <p>inexact</p></td><td class="default">
+            <p>complex</p></td><td class="default">
+            <p>Description</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>A &quot;toy&quot; tower with fixnums (bounded exact integers) only.  Possibly appropriate where no numerical work will be done.  SSCM, SigScheme provide this.</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>A Scheme where all numbers are real and all arithmetic happens in essentially constant time.  Chicken provides this unless you import the <span class="monospace">numbers</span> package.  Sixx, Sizzle provide this.  Most non-Lisp languages are like this, except that their fixnums wrap on overflow instead of switching to flonums, producing grossly incorrect results.</p></td></tr><tr><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>The complex-number equivalent of the preceding.  Non-real numbers are typically inexact/inexact. Stalin provides this.</p></td></tr><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>Unlimited-precision integers only.  Possibly usable for crypto work.  Fortunately, ratios are fairly cheap given bignums.</p></td></tr><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>A good all-round compromise, providing exact integers and inexact real numbers.  ISLisp requires this.  Bigloo, Chibi, SCM, Scheme 9 provide this.  Many people seem to like this tower.</p></td></tr><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>The same as the preceding, but with inexact/inexact non-real numbers as well.</p></td></tr><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>Exact rational numbers only.  Dream provides this.  Reasonable for some purposes, but will often run very slowly without inexact support, so unsuitable for scientific-type work.</p></td></tr><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>The same as the preceding, but with exact general complex numbers.  Even less suitable for scientific-type work, given that in practice non-real numbers are usually inexact/inexact.</p></td></tr><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>Full numeric tower for real numbers only.  Psyche provides this.</p></td></tr><tr><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>+</p></td><td class="default">
+            <p>Full numeric tower.  R6RS and CL require this.  Racket, Gauche, MIT, Gambit, Chicken with the <span class="monospace">numbers</span> package, Scheme48/scsh, Kawa, Chez, STklos provide this.  Guile, SISC provide this, but don't have exact complex numbers.  Many people seem to like this tower.</p></td></tr></table></div></body></html>

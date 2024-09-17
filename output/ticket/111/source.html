@@ -1,0 +1,202 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #111</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #111</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2011-01-24 07:06:44</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Shall we require `equal?` to return `#t` if `eqv?` does?  This would make it possible to compare potentially circular lists or trees for equality provided they are the same in the sense of `eqv?`.
+
+This is a common implementation hack in many Lisps, but has never been standardized.</pre>
+    <h2>id</h2>
+    <pre>111</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Require EQUAL? to return #t if EQV? does</pre>
+    <h2>time</h2>
+    <pre>2010-12-07 00:05:14</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2011-01-24 07:06:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Correction: WG1 voted to accept this, but it is redundant with its vote on #51.</pre>
+    <h2>oldvalue</h2>
+    <pre>8</pre>
+    <h2>raw-time</h2>
+    <pre>1295824004000000</pre>
+    <h2>ticket</h2>
+    <pre>111</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 07:06:44</pre>
+    <h2>Change at time 2011-01-24 06:55:28</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 voted to take no action.</pre>
+    <h2>oldvalue</h2>
+    <pre>7</pre>
+    <h2>raw-time</h2>
+    <pre>1295823328000000</pre>
+    <h2>ticket</h2>
+    <pre>111</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:55:28</pre>
+    <h2>Change at time 2011-01-24 06:55:28</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1295823328000000</pre>
+    <h2>ticket</h2>
+    <pre>111</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:55:28</pre>
+    <h2>Change at time 2011-01-24 06:55:28</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1295823328000000</pre>
+    <h2>ticket</h2>
+    <pre>111</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:55:28</pre>
+    <h2>Change at time 2010-12-17 16:00:57</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Per #51, we keep the R5RS definition of `equal?`, in which it &quot;may fail to terminate if its arguments are circular data structures&quot;.  You seem to be thinking of the R6RS definition, which did not pass WG1.</pre>
+    <h2>oldvalue</h2>
+    <pre>6</pre>
+    <h2>raw-time</h2>
+    <pre>1292572857000000</pre>
+    <h2>ticket</h2>
+    <pre>111</pre>
+    <h2>time</h2>
+    <pre>2010-12-17 16:00:57</pre>
+    <h2>Change at time 2010-12-17 15:55:06</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Since when is it non-terminating? Wait, I just saw the ticket, I feel like something is seriously wrong here.
+
+</pre>
+    <h2>oldvalue</h2>
+    <pre>5</pre>
+    <h2>raw-time</h2>
+    <pre>1292572506000000</pre>
+    <h2>ticket</h2>
+    <pre>111</pre>
+    <h2>time</h2>
+    <pre>2010-12-17 15:55:06</pre>
+    <h2>Change at time 2010-12-17 15:50:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The result is ''not'' the same.  Possible non-termination is not the same as being guaranteed to return `#t`.</pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1292572212000000</pre>
+    <h2>ticket</h2>
+    <pre>111</pre>
+    <h2>time</h2>
+    <pre>2010-12-17 15:50:12</pre>
+    <h2>Change at time 2010-12-17 15:40:57</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The result is the same however. They will return `#t` in either case. It cannot return `#f`.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1292571657000000</pre>
+    <h2>ticket</h2>
+    <pre>111</pre>
+    <h2>time</h2>
+    <pre>2010-12-17 15:40:57</pre>
+    <h2>Change at time 2010-12-17 15:33:50</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Yes, it will.  Given two circular lists as arguments, `equal?` will loop on them unless they are `eqv?`, in which case it will return `#t` under this proposal.  In R5RS it may do either.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1292571230000000</pre>
+    <h2>ticket</h2>
+    <pre>111</pre>
+    <h2>time</h2>
+    <pre>2010-12-17 15:33:50</pre>
+    <h2>Change at time 2010-12-17 15:25:56</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>It already is defined to use `eqv?` in most cases excepting pairs and vectors, so I do not really see a need to require this. There is no difference whether we require this or not as it won’t change any results.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1292570756000000</pre>
+    <h2>ticket</h2>
+    <pre>111</pre>
+    <h2>time</h2>
+    <pre>2010-12-17 15:25:56</pre></body></html>

@@ -1,0 +1,52 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CharacterConversionCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CharacterConversionCowan.md">CharacterConversionCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Character&shy;Conversion&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-09-21 10:13:53</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/CharacterConversionCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/CharacterConversionCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Characterconversion">Character conversion</h2>
+      <p>These routines are loosely based on the Gauche <a href="http://practical-scheme.net/gauche/man/gauche-refe_78.html">gauche.charconv</a> package, which in turn is based on <a href="https://www.gnu.org/savannah-checkouts/gnu/libiconv">GNU libiconv</a>.</p>
+      <h2 id="Characterencodingschemes">Character encoding schemes</h2>
+      <p>A <i>character encoding scheme</i> or <i>CES</i> is an algorithm for translating between a sequence of bytes and a sequence of characters and vice versa.  Converting bytes to characters is <i>decoding</i>; converting characters to bytes is <i>encoding</i>.  Typical CESes include ASCII, UTF-8, ISO-8859-1, and TIS-620; each one is named by a case-independent string.</p>
+      <p><span class="monospace">(ces-valid? </span><i>ces</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if it is possible to convert between <i>ces</i> and the implementation-dependent internal CES of Scheme strings and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(ces-conversion-supported? </span><i>ces<sub>1</sub> ces<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if it is possible to convert between <i>ces<sub>1</sub></i> and <i>ces<sub>2</sub></i> and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(ces-guess </span><i>bytevector</i> [ <i>hint</i> ]<span class="monospace">)</span></p>
+      <p>Returns a CES which might be the correct encoding of the bytes in <i>bytevector</i>.  If <i>hint</i> is provided, it is a possible CES which gives a possibly helpful indication of the correct CES.  For example, given a hint of &quot;UTF-8&quot;, this procedure might return &quot;UTF-8&quot; if <i>bytevector</i> contains well-formed UTF-8, or &quot;ISO-8859-1&quot; if it does not.</p>
+      <h2 id="Stringandbytevectorconversion">String and bytevector conversion</h2>
+      <p><span class="monospace">(string-&gt;bytevector </span><i>ces string</i><span class="monospace">)</span></p>
+      <p>Uses <i>ces</i> to encode<i>string</i> into a newly allocated bytevector, which is returned.</p>
+      <p><span class="monospace">(bytevector-&gt;string </span><i>ces bytevector</i><span class="monospace">)</span></p>
+      <p>Uses <i>ces</i> to decode <i>bytevector</i> into a newly allocated string, which is returned.</p>
+      <p><span class="monospace">(transcode-bytevector </span><i>ces<sub>1</sub> ces<sub>2</sub> bytevector</i><span class="monospace">)</span></p>
+      <p>Uses <i>ces<sub>1</sub></i> to decode <i>bytevector</i> into a string, which is then encoded into a newly allocated bytevector using <i>ces<sub>2</sub></i>.  However, the string need not actually be created.</p>
+      <h2 id="Conversionports">Conversion ports</h2>
+      <p>All of these procedures accept an optional <i>size</i> argument, specifying the size of an internal conversion buffer in characters (not bytes).  It is an error if <i>size</i> is not a non-negative exact integer.  If the size is 0, there is no internal buffer.</p>
+      <p><span class="monospace">(make-decoded-input-port </span><i>binary-port ces</i> [ <i>size</i> ]<span class="monospace">)</span></p>
+      <p>Returns a textual input port which, when read from, reads bytes from <i>binary-port</i>, decodes them as characters using <i>ces</i>, and provides the characters to the reader.</p>
+      <p><span class="monospace">(make-encoded-output-port </span><i>binary-port ces</i> [ <i>size</i> ]<span class="monospace">)</span></p>
+      <p>Returns a textual output port which, when characters are written to it, encodes them as characters using <i>ces</i>, and writes the bytes to <i>binary-port</i>.</p>
+      <p><span class="monospace">(make-encoded-binary-input-port </span><i>textual-port ces</i> [ <i>size</i> ]<span class="monospace">)</span></p>
+      <p>Returns a binary input port which, when read from, reads characters from <i>textual-port</i>, encodes them as characters using <i>ces</i>, and provides the bytes to the reader.</p>
+      <p><span class="monospace">(make-decoded-binary-output-port </span><i>textual-port ces</i> [ <i>size</i> ]<span class="monospace">)</span></p>
+      <p>Returns a binary output port which, when bytes are written to it, decodes them as characters using <i>ces</i>, and writes the characters to <i>textual-port</i>.</p>
+      <p><span class="monospace">(make-transcoded-binary-input-port </span><i>binary-port ces<sub>1</sub> ces<sub>2</sub></i> [ <i>size</i> ]<span class="monospace">)</span></p>
+      <p>Returns a binary input port which, when read from, reads bytes from <i>binary-port</i>, decodes them as characters using <i>ces<sub>1</sub></i>, encodes the resulting characters as bytes using <i>ces<sub>2</sub></i>, and provides the bytes to the reader.</p>
+      <p><span class="monospace">(make-transcoded-binary-output-port </span><i>binary-port ces<sub>1</sub> ces<sub>2</sub></i> [ <i>size</i> ]<span class="monospace">)</span></p>
+      <p>Returns a binary output port which, when bytes are written on it, decodes them as characters using <i>ces<sub>1</sub></i>, encodes the resulting characters as bytes using <i>ces<sub>2</sub></i>, and writes the bytes on <i>binary-port</i>.</p></div></body></html>

@@ -1,0 +1,63 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki BinaryPortsCowan version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki BinaryPortsCowan version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>74.68.112.189</pre>
+    <h2>name</h2>
+    <pre>BinaryPortsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Introduction ==
+
+This is my proposal for binary ports in small R7RS.  It assumes, but partly overrides, PortsCowan.  In particular, the version of the `buffering` key described there is replaced by the `buffer` key here.
+
+Under this proposal, it is no longer true that all binary ports are also character ports.  The user may create a file port that is either a character port, a binary port, or both.  String ports are character ports; blob ports are binary ports.
+
+== Opening file ports ==
+
+To open a binary file port, use any of the file-opening operations, passing the `binary` key with a true value.  To open a character file port, use any of the
+file-opening operations, passing the `character` key with a true value.  If either the `character` key or the `binary` key is not present, it is assumed to be false.  However, if the whole file spec takes the form of a string rather than a list, the `character` key is assumed to be true.
+
+If the `buffer` key is false, the port must not be buffered by the implementation.  If the key is true or is not present, the port may be buffered.  Buffered character ports that are ''not'' binary ports may have both a character buffer and a binary buffer, but buffered character ports that ''are'' binary ports must not have a character buffer.  This permits safe interleaving of character and binary operations.
+
+Here are the above rules in tabular form:
+
+||`character`||`binary`||`buffer`||returns:||
+||false||false||false||undefined, no buffering||
+||false||false||true||undefined||
+||false||true||false||binary port, no buffer||
+||false||true||true||binary port, may have buffer||
+||true||false||false||character port, no buffer||
+||true||false||true||character port, may have binary buffer and/or character buffer||
+||true||true||false||character and binary port, no buffering||
+||true||true||true||character and binary port, may have binary port, must not have character buffer||
+
+== Operations on character and binary ports ==
+
+ * Character ports allow the `read-char`, `peek-char`, `char-ready`, and the layered `read`, `write`, and `display` operations; they answer `#t` to `character-port?`.
+
+ * Binary ports allow the `read-u8`, `peek-u8`, and `u8-ready` operations; they answer `#t` to `binary-port?`.
+
+ * Both kinds of ports can be handed to `port?`, `input-port?`, `output-port?`, `character-port`, `binary-port`, `port-open?`, `close-input-port`, and `close-output-port`.
+</pre>
+    <h2>time</h2>
+    <pre>2011-06-21 08:56:41</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

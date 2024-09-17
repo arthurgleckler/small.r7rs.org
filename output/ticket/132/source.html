@@ -1,0 +1,323 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #132</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #132</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-07 12:12:08</pre>
+    <h2>component</h2>
+    <pre>WG1 - Modules</pre>
+    <h2>description</h2>
+    <pre>In R6RS and therefore in our current module system, you can't import the same name from two different places.  I think we should consider changing this so that you can `(import (foo))` and then `(import (override))`, where `(override)` contains a subset of the names defined in `(foo)`.  Otherwise you have to say `(import (except (foo) this that)`.  This is no doubt safer, but also more annoying.
+
+There are two sub-issues: allowing this at the REPL and/or allowing it in modules.
+</pre>
+    <h2>id</h2>
+    <pre>132</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Imports override previous imports?</pre>
+    <h2>time</h2>
+    <pre>2011-01-22 08:45:28</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-07 12:12:08</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Nothing to be done here.</pre>
+    <h2>oldvalue</h2>
+    <pre>12</pre>
+    <h2>raw-time</h2>
+    <pre>1349586728723981</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 12:12:08</pre>
+    <h2>Change at time 2012-10-07 12:12:08</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349586728723981</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 12:12:08</pre>
+    <h2>Change at time 2012-10-07 12:12:08</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349586728723981</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 12:12:08</pre>
+    <h2>Change at time 2011-07-10 20:34:20</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>11</pre>
+    <h2>raw-time</h2>
+    <pre>1310304860000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 20:34:20</pre>
+    <h2>Change at time 2011-07-10 20:34:20</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1310304860000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 20:34:20</pre>
+    <h2>Change at time 2011-07-10 18:04:33</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>We voted this is an error.</pre>
+    <h2>oldvalue</h2>
+    <pre>10</pre>
+    <h2>raw-time</h2>
+    <pre>1310295873000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:04:33</pre>
+    <h2>Change at time 2011-07-10 18:04:33</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1310295873000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:04:33</pre>
+    <h2>Change at time 2011-07-10 18:04:33</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1310295873000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:04:33</pre>
+    <h2>Change at time 2011-01-24 06:49:18</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>I object to making order appear to matter when it does not; I do not object to the use of ordering freedom to produce more readable code. Nonetheless, if you really want something like you say, then you ought to appreciate the full flexibility of a syntactic module language, which we do not have in WG1. In such a system, where `export` is just another form, implementing `define/exported`, which is a trivial macro, is better than the workaround you have suggested.</pre>
+    <h2>oldvalue</h2>
+    <pre>9</pre>
+    <h2>raw-time</h2>
+    <pre>1295822958000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:49:18</pre>
+    <h2>Change at time 2011-01-24 06:34:06</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>/me shrugs.
+
+As a matter of style, imports should be bubbled to the top even if the syntax doesn't demand it.  But interspersing exports with code bodies makes sense to me.  (Hey, I like the Java style of tagging every definition as public or private.)</pre>
+    <h2>oldvalue</h2>
+    <pre>8</pre>
+    <h2>raw-time</h2>
+    <pre>1295822046000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:34:06</pre>
+    <h2>Change at time 2011-01-24 06:21:30</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>We have not bettered R6RS here, we have merely changed the syntax. Consider the following:
+
+{{{
+(library
+  (code ...)
+  (import ...)
+  (include ...)
+  (import ...)
+  (code ...))
+}}}
+
+Assume the semantics you describe, then the above code contains some forms where order matters intermingled with some that do not. It matters in what order the `code` and `include` forms appear, but it does not matter where the `import` forms appear. I can see only one useful situation for this behavior: if we could expand into `library` forms, then it would be easier to write such macros, because we need not collect all the code before we insert some of it into the final expanded `library` form. We cannot expand into library forms; allowing this in WG1 gains us nothing but potential confusion.
+
+On the other hand, such independence and partial ordering might make sense in WG2, and I would like to consider it there.</pre>
+    <h2>oldvalue</h2>
+    <pre>7</pre>
+    <h2>raw-time</h2>
+    <pre>1295821290000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:21:30</pre>
+    <h2>Change at time 2011-01-23 12:19:59</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Not ordering the module declarations is fine; I'm now convinced that this ticket's proposal doesn't make sense in modules.  Only allowing one code ''body'', in the name of not having to concern yourself with how they are ordered, is absurd overkill.
+
+The definitions in the bodies are order-independent anyhow, since you are not allowed to define an identifier more than once in all the bodies.  So all that's left is the random expressions in the bodies, and ordering the bodies in the module controls how their execution is ordered.  Otherwise, you're no better off than with R6RS and its single implicit body.  </pre>
+    <h2>oldvalue</h2>
+    <pre>6</pre>
+    <h2>raw-time</h2>
+    <pre>1295756399000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-01-23 12:19:59</pre>
+    <h2>Change at time 2011-01-23 08:16:36</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Ignoring REPL interactions, ModulesShinn already makes implicit shadowing in modules illegal. Moreover, I believe it a mistake to imply any sort of ordering on the module declarations, which implies that we should not allow more than one body or include form.</pre>
+    <h2>oldvalue</h2>
+    <pre>5</pre>
+    <h2>raw-time</h2>
+    <pre>1295741796000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-01-23 08:16:36</pre>
+    <h2>Change at time 2011-01-23 02:51:14</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Au contraire.  We have already accepted imports overriding previous imports at the REPL per ModulesShinn.  The question now is whether to change ModulesShinn so that imports into a module can override previous imports into that module.  The case against it is that it makes the final result hard to predict; the case for it is improved convenience.</pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1295722274000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-01-23 02:51:14</pre>
+    <h2>Change at time 2011-01-22 14:37:18</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Okay, I see the section on the REPL interactions, but I also see: “It is a syntax error if the same identifier is imported twice, from any combination of modules or multiple import forms.” This is for the module form. Moreover, ModulesShinn does not define an import form that is accessible in code. It is purely an element of the library form itself, so this question cannot apply to anything but the REPL unless we wish to introduce local imports.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1295678238000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-01-22 14:37:18</pre>
+    <h2>Change at time 2011-01-22 14:07:51</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Actually it is specified there; see the section on REPL Interaction.  You'll note that it provides for overriding, so the remaining part of this ticket is whether the same can be done within a module.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1295676471000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-01-22 14:07:51</pre>
+    <h2>Change at time 2011-01-22 12:13:32</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>This requires that IMPORT be a normal form, which is not specified by ModulesShinn. What ticked deals with this issue? </pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1295669612000000</pre>
+    <h2>ticket</h2>
+    <pre>132</pre>
+    <h2>time</h2>
+    <pre>2011-01-22 12:13:32</pre></body></html>

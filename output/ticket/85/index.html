@@ -1,0 +1,110 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>85: Blobs, bytevectors, byte-vectors, octet-vectors, or something else?</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 85: <span class="summary">Blobs, bytevectors, byte-vectors, octet-vectors, or something else?</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-08-27 06:56:47</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/85/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-10-18 03:20:08</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Now that we have blobs, we have to decide what to call them.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-10-19 03:39:29</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I think that we should go with bytevectors, which is a fairly clear name, has precedent and is in widespread common use.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-10-19 23:37:53</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Outside R6RS, the most common name is <i>u8vector</i>, tracking SRFI 4.  However, <i>byte-vector</i>, <i>vector-b8</i>, <i>blob</i>, and other names are also in use.</p>
+              <p>I favor <i>blob</i> myself, because blobs can be analyzed in any number of ways, not just as vectors of bytes.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-10-20 06:10:48</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Blob doesn't really mean anything though, which is why I don't like it. It doesn't give you any suggestions about how you might interact with it, when in actuality, we are enforcing a certain basic idea: a vector of bytes. Whether we extract those bytes out and use them in various different ways doesn't detract from this. Blob just kind of sounds ugly to me, as well. A vector of bytes implies what I want in the interface, namely that you reference elements in that vector by byte offset, that you treat it like a contiguous set of bytes, and so forth. Blob could mean anything to me, and I have no intuition about its interface. u8vector is okay, as is byte-vector and vector-b8, but each of those is, IMO, less convenient or more obtuse than bytevector.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 17:54:06</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted to use the R6RS term <span class="monospace">bytevector</span>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 20:25:39</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-15 01:16:34</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Reopened due to public comments.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-15 01:16:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-25 00:30:54</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 decided to keep the name <span class="monospace">bytevector</span>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 06:56:47</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

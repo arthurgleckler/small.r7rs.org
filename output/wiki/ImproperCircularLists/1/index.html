@@ -1,0 +1,30 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImproperCircularLists</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImproperCircularLists.md">ImproperCircularLists</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Improper&shy;Circular&shy;Lists</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-08 07:51:07</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ImproperCircularLists/history">history</a></div>
+      <div class="source"><a href="/wiki/ImproperCircularLists/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Here are the valid uses of improper lists in R7RS-small in contexts where lists (as opposed to arbitrary objects) are expected:</p>
+      <ul>
+        <li>As a <span class="monospace">lambda</span>-list</li>
+        <li>As the last argument of <span class="monospace">append</span></li>
+        <li>As the argument to <span class="monospace">list-copy</span>, which then returns an improper list that is <span class="monospace">equal?</span> to the argument</li></ul>
+      <p>And of circular lists:</p>
+      <ul>
+        <li>As the list argument to <span class="monospace">list-ref</span></li>
+        <li>As the list arguments to <span class="monospace">map</span> and <span class="monospace">for-each</span> (though it is an error if all arguments are circular)</li></ul></div></body></html>

@@ -1,0 +1,78 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>InexactEqvWeaver</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/InexactEqvWeaver.md">InexactEqvWeaver</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Inexact&shy;Eqv&shy;Weaver</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-26 08:31:27</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/InexactEqvWeaver/history">history</a></div>
+      <div class="source"><a href="/wiki/InexactEqvWeaver/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="ProposedR7RSdefinitionfor`eqv?`onnumbers">Proposed R7RS definition for <span class="monospace">eqv?</span> on numbers</h2>
+      <p>[See <a href="/ticket/477">#477</a> for detailed background]</p>
+      <p>Objects <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are <i>substantially different</i> if and only if one of the following holds:</p>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are both numbers, at least one is numerically equal to itself (see <span class="monospace">=</span>), and they are not numerically equal (see <span class="monospace">=</span>) to each other.</li></ul>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are not both numbers, and they are different (in the sense of <span class="monospace">eqv?</span>).</li></ul>
+      <p>Inexact numbers <i>z<sub>1</sub></i> and <i>z<sub>2</sub></i> are <i>operationally equivalent</i> if and only if for all procedures <i>f</i> that can be defined as a finite composition of the standard numerical operations specified in section 6.2.6, <span class="monospace">(f z1)</span> and <span class="monospace">(f z2)</span> either both raise exceptions or yield results that are not substantially different.</p>
+      <p>The <span class="monospace">eqv?</span> procedure returns <span class="monospace">#t</span> if one of the following holds:</p>
+      <p>[...]</p>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are both exact numbers and are numerically equal (see <span class="monospace">=</span>).</li></ul>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are both inexact numbers, at least one is numerically equal to itself (see <span class="monospace">=</span>), and the implementation is able to prove that <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are operationally equivalent.  Implementations must be able to prove that two inexact numbers with the same internal representation are operationally equivalent.</li></ul>
+      <p>The <span class="monospace">eqv?</span> procedure returns <span class="monospace">#f</span> if one of the following holds:</p>
+      <p>[...]</p>
+      <ul>
+        <li>One of <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> is an exact number but the other is an inexact number.</li></ul>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are exact numbers for which the <span class="monospace">=</span> procedure returns <span class="monospace">#f</span>.</li></ul>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are inexact numbers, at least one is numerically equal to itself (see <span class="monospace">=</span>), and the implementation is unable to prove that <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are operationally equivalent.</li></ul>
+      <h2 id="Rationalefortheabovedefinition">Rationale for the above definition</h2>
+      <p>The novel feature of this definition is the auxiliary predicate <i>substantially different</i>, which is needed to gracefully avoid circularities and the problems associated with NaNs, both of which plagued the R6RS definition.</p>
+      <p>The circularity problem is addressed by defining substantially different on numbers in terms of <span class="monospace">=</span> instead of <span class="monospace">eqv?</span>.  The NaN problem (see below) is addressed by making sure that two numbers can only be substantially different from each other if at least one of them is <span class="monospace">=</span> to itself.</p>
+      <p>Note that there is considerable freedom in how &quot;substantially different&quot; is defined.  As long as it is capable of making the most coarse distinctions between numbers, that's good enough, because it should always be possible to choose a procedure <i>f</i> that amplifies even the finest distinction between any two inexact numbers that are not operationally equivalent.</p>
+      <p>For example, suppose that in addition to the usual <span class="monospace">+0.0</span> and <span class="monospace">-0.0</span>, an experimental numeric representation was able to distinguish (x/y+0.0) from (x/y-0.0) for any exact rational x/y.  It would still be possible to amplify that distinction to an infinite difference by subtracting x/y and then taking the reciprocal.</p>
+      <p>Note also that there is considerable freedom in the choice of procedures to allow in the construction of <i>f</i>.  The main requirements are that they are sufficient to amplify arbitrary fine distinctions into coarse ones that are substantially different, and that the procedures are pure functions, i.e. they must not use <span class="monospace">eqv?</span> or <span class="monospace">eq?</span> (directly or indirectly), they must not cause visible side effects, and their return values must depend only on their arguments.  It needn't be a comprehensive set.</p>
+      <h2 id="Nontrivialchangesintheformulationof`eqv?`sinceR6RS">Nontrivial changes in the formulation of <span class="monospace">eqv?</span> since R6RS</h2>
+      <ul>
+        <li>Nontrivial change: &quot;rational numbers&quot; to &quot;exact numbers&quot; in the clause requiring <span class="monospace">#f</span> if &quot;Obj<sub>1</sub> and obj<sub>2</sub> are rational numbers for which the <span class="monospace">=</span> procedure returns <span class="monospace">#f</span>.&quot;</li></ul>
+      <p>Note: This clause was redundant, but is kept for the case of exact numbers, so that we may restrict our definition of the predicate &quot;operationally equivalent&quot; to inexact numbers only.</p>
+      <ul>
+        <li>Stylistic change: Move the following language into the new
+  auxiliary predicate <i>operationally equivalent</i>:</li></ul>
+      <p>&quot;[...] yield {the same,different} results (in the sense of <span class="monospace">eqv?</span>) when passed as arguments to any other procedure that can be defined as a finite composition of Scheme's standard arithmetic procedures&quot;</p>
+      <ul>
+        <li>Nontrivial change: Restrict use of the predicate &quot;operationally equivalent&quot; to cases where both arguments are inexact.</li></ul>
+      <ul>
+        <li>Stylistic change: Move the &quot;same results (in the sense of <span class="monospace">eqv?</span>)&quot; language into the new auxiliary predicate <i>substantially different</i>.</li></ul>
+      <ul>
+        <li>Significant change: Eliminate the circularity by changing the definition of &quot;substantially different&quot; for two numbers to use <span class="monospace">=</span> instead of <span class="monospace">eqv?</span>.</li></ul>
+      <ul>
+        <li>Significant change: Fix the NaN problem by making sure that two numbers can only be substantially different if at least one of them is numerically equal to itself.</li></ul>
+      <ul>
+        <li>Significant change: Restrict the set of procedures that can be used to construct <i>f</i>, and use the R7RS terminology, changing &quot;Scheme's standard arithmetic procedures&quot; to &quot;the standard numerical operations specified in section 6.2.6&quot;</li></ul>
+      <ul>
+        <li>Significant change: Properly handle the case where <span class="monospace">(f z_1)</span> or <span class="monospace">(f z_2)</span> raise exception(s).  Change &quot;<span class="monospace">(f z_1)</span> and <span class="monospace">(f z_2</span>) yield results that are not substantially different&quot; to &quot;<span class="monospace">(f z_1)</span> and <span class="monospace">(f z_2)</span> either both raise exceptions or yield results that are not substantially different.&quot;</li></ul>
+      <ul>
+        <li>Significant change: Make sure that the case where both arguments are NaNs is left unspecified by requiring, in the inexact clauses, that at least one argument is numerically equal to itself.</li></ul>
+      <ul>
+        <li>Simplification: Remove the redundant check for numerical equality as a prerequisite for <span class="monospace">eqv?</span> returning <span class="monospace">#t</span>.</li></ul>
+      <p>Rationale: If <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are not numerically equal (and not both NaNs), it trivially follows that <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are not operationally equivalent, since <span class="monospace">(+ obj_1</span>) and <span class="monospace">(+ obj_2)</span>are substantially different.</p>
+      <ul>
+        <li>Significant change: Relax the requirements for returning <span class="monospace">#t</span> for <span class="monospace">eqv?</span> on inexacts to the cases where &quot;the implementation is able to prove&quot; operational equivalence.</li></ul>
+      <p>We now require only that the &quot;implementations must be able to prove that two inexact numbers with the same internal representation are operationally equivalent.</p>
+      <p>Rationale: It may be difficult or impossible for the implementation to prove that two inexact numbers are operationally equivalent.</p></div></body></html>

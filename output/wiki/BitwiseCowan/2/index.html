@@ -1,0 +1,38 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BitwiseCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BitwiseCowan.md">BitwiseCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Bitwise&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-04-12 11:50:29</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/BitwiseCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/BitwiseCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Bitwisearithmeticprocedures">Bitwise arithmetic procedures</h1>
+      <p>This proposal is based mainly on <a href="http://srfi.schemers.org/srfi-33/srfi-33.html">SRFI 33</a>, with some changes and additions from <a href="http://srfi.schemers.org/srfi-33/mail-archive/msg00023.html">Olin's late revisions to SRFI 33</a>, which were never consummated, and from <a href="http://srfi.schemers.org/srfi-60/srfi-60.html">SRFI 60</a>.  Until a full spec is written, see the final column of the table in <a href="/wiki/BitwiseComparison">BitwiseComparison</a>.</p>
+      <h2 id="Reasonsfornamechanges">Reasons for name changes</h2>
+      <p><a href="/wiki/BitwiseCowan">BitwiseCowan</a> retains SRFI 33 names for procedures adopted from SRFI 33, with these exceptions:</p>
+      <ul>
+        <li>The name <span class="monospace">bitwise-merge</span> is replaced by <span class="monospace">bitwise-if</span>, the name used in SRFI 60 and R6RS.</li></ul>
+      <ul>
+        <li>The name <span class="monospace">extract-bit-field</span> (<span class="monospace">bit-field-extract</span> in Olin's revisions) is replaced by <span class="monospace">bit-field</span>, the name used in SRFI 60 and R6RS.</li></ul>
+      <ul>
+        <li>The names <span class="monospace">any-bits-set?</span> and <span class="monospace">all-bits-set?</span> are replaced by <span class="monospace">any-bit-set?</span> and <span class="monospace">every-bit-set?</span>, in accordance with Olin's revisions.</li></ul>
+      <ul>
+        <li>Because  <span class="monospace">copy-bit-field</span> means different things in SRFI 33 and SRFI 60, I have replaced SRFI 33's names <span class="monospace">replace-bit-field</span> and <span class="monospace">copy-bit-field</span> (<span class="monospace">bit-field-replace</span> and <span class="monospace">bit-field-copy</span> in Olin's revisions) with <span class="monospace">bit-field-copy</span> and <span class="monospace">bit-field-copy-same</span>.</li></ul>
+      <p>The procedures that do not exist in SRFI 33 have their SRFI 60 names, with these exceptions.</p>
+      <ul>
+        <li>The procedure <span class="monospace">booleans-&gt;integer</span> is a convenient way to specify a bitwise integer in the absence of datum syntax: it accepts an arbitrary number of boolean arguments and returns a non-negative integer.  So I gave it the short name <span class="monospace">bits</span>, roughly analogous to <span class="monospace">list</span>, <span class="monospace">string</span>, and <span class="monospace">vector</span>.</li></ul>
+      <ul>
+        <li>The names <span class="monospace">rotate-bit-field</span> and <span class="monospace">reverse-bit-field</span> are replaced by <span class="monospace">bit-field-rotate</span> and <span class="monospace">bit-field-reverse</span>, in parallel with Olin's revisions.</li></ul></div></body></html>

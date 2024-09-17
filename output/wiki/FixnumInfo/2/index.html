@@ -1,0 +1,34 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>FixnumInfo</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/FixnumInfo.md">FixnumInfo</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Fixnum&shy;Info</h1>
+    <div class="wiki metadata">
+      <div class="author">aag</div>
+      <div class="time">2012-03-01 06:21:54</div>
+      <div class="version">2<span class="comment">Started a list of ranges for 64-bit Schemes by adding MIT Scheme.</span><a href="/wiki/FixnumInfo/history">history</a></div>
+      <div class="source"><a href="/wiki/FixnumInfo/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is the range of fixnums in bits for the 32-bit builds of 39 Schemes.   For this purpose, an exact integer <i>n</i> is a fixnum if <i>n</i> satisfies the implementation's <span class="monospace">fixnum?</span> procedure (marked by an asterisk) or if there is no such procedure, then if <span class="monospace">(eq </span><i>n</i><span class="monospace"> </span><i>n</i><span class="monospace">)</span> returns <span class="monospace">#t</span>.</p>
+      <p>31 bits: Racket*, Chicken*, Ypsilon*, Elk</p>
+      <p>30 bits: Gambit* , Scheme48/scsh, Guile, Chibi, Chez*, SCM, Ikarus*/Vicare*, Larceny*, Ypsilon*, Mosh*, IronScheme* (but see below), STklos*, RScheme*, Oaklisp*</p>
+      <p>29 bits: Gauche*, Bigloo*, SigScheme</p>
+      <p>26 bits: MIT*</p>
+      <p>16 bits: Owl Lisp*</p>
+      <p>9 bits: Scheme 7</p>
+      <p>No fixnums (even <span class="monospace">(eq? 0 0)</span> is <span class="monospace">#f</span>): SISC, KSi, TinyScheme, Scheme 9, Dream, BDC, UMB</p>
+      <p>Apparently unbounded fixnums: Shoe, Schemik, VX</p>
+      <p>Answer not easily determined: NexJ, XLisp, rep</p>
+      <p>In Kawa and IronScheme all exact integers are boxed, but a short range is preallocated, so that <span class="monospace">eq?</span> is satisfied: -100 to 1024 for Kawa, -100 to 999 for IronScheme.</p>
+      <p>For 64-bit Schemes:</p>
+      <p>55 bits: MIT*</p></div></body></html>

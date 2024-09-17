@@ -1,0 +1,31 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>GetFromClosedStringPort</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/GetFromClosedStringPort.md">GetFromClosedStringPort</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Get&shy;From&shy;Closed&shy;String&shy;Port</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-01-14 12:43:22</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/GetFromClosedStringPort/history">history</a></div>
+      <div class="source"><a href="/wiki/GetFromClosedStringPort/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This test examines whether the SRFI 6 procedure <span class="monospace">get-output-string</span> retrieves the value from a closed string output port.  The test code is:</p><span class="monospace">(define p (output-string-port))
+(write 32 p)
+(close-output-port p)
+(get-output-string p)
+</span>
+      <p>Returns 32:  Racket, Gauche, MIT, Gambit, Chicken, Kawa, Chez, IronScheme, STklos, Sizzle, Foment</p>
+      <p>Throws an exception saying the port is closed:  Bigloo, Guile, SCM, SigScheme, TinyScheme, RScheme, S7, Elk, SXM, Sagittarius, Picrin</p>
+      <p>Architecture-dependent: Chibi</p>
+      <p>Returns the empty string: Inlab</p>
+      <p>No built-in support for SRFI 6 (I did not attempt to load support from implementation libraries):  Scheme48/scsh, SISC, Vicare, Larceny, Ypsilon, Mosh, NexJ, JScheme, KSi, Shoe, Scheme 9, BDC, XLisp, Rep, Schemik, UMB, Llava, FemtoLisp, Dfsch, Oaklisp, Owl Lisp</p></div></body></html>

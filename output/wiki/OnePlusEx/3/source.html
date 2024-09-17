@@ -1,0 +1,46 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki OnePlusEx version 3</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki OnePlusEx version 3</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>OnePlusEx</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This experiment finds out whether `1+x` and `1+` are valid identifiers in the Scheme implementations.  They are invalid in all versions of the Scheme standard.  We also investigate whether `1+` and `add1` are known procedures.  (The name of this page is incorrect, but we are stuck with it.)
+
+`1+x` is valid, `1+` is defined, `add1` is defined:  Chez, Sizzle
+
+`1+x` is valid, `1+` is not defined, `add1` is defined:  Racket, Chicken, SISC
+
+`1+x` is valid, `1+` is defined, `add1` is not defined:  MIT, Guile, SCM, XLisp, Rep, Elk, !FemtoLisp, Inlab
+
+`1+x` is valid, `1+` is not defined, `add1` is not defined:  Gauche, Gambit, Bigloo, Kawa, JScheme, STklos, Shoe, !TinyScheme, Scheme 9, BDC, Schemik, Llava
+
+`1+x` and `1+` are syntax errors, `add1` is defined:  Vicare, !IronScheme, RScheme, SXM
+
+`1+x` and `1+` are syntax errors, `add1` is not defined:  Scheme48/scsh, Larceny, Ypsilon, Mosh, KSi, !SigScheme, UMB, Dfsch, Foment, Chibi
+
+`1+x` is read as `1 +x`, `1+` is read as `1 +`, `add1` is not defined:  NexJ, Picrin, Owl Lisp
+</pre>
+    <h2>time</h2>
+    <pre>2014-07-13 01:40:45</pre>
+    <h2>version</h2>
+    <pre>3</pre></body></html>

@@ -1,0 +1,89 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki WhatShinnDoesNotLike version 7</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki WhatShinnDoesNotLike version 7</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>74.68.121.27</pre>
+    <h2>name</h2>
+    <pre>WhatShinnDoesNotLike</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Alex Shinn is the only active member of WG1 who is also an implementer.  Here is a preliminary list of things he has to implement as part of R7RS-compliance in Chibi Scheme that he voted against.  However, he has said that he sometimes votes for R5RS choices in order to provide a conservative voice.
+
+{{{
+Shinn: I felt for various reasons that the WG was not taking
+enough of a conservative stance, and so in many cases voted
+for R5RS options reflexively, arguing devil's advocate even
+when I disagreed with it.
+
+But I really do hate multiple values.
+}}}
+
+ * the `call-cc` alias
+ * `_` in syntax-rules
+ * SRFI 46
+ * dotted-tail patterns in syntax rules
+ * block comments
+ * char folding
+ * `case-lambda`
+ * `=&gt;` in `case`
+ * case-folding dircctives
+ * `string-set!` in `(scheme base)`
+ * `begin` rather than `body` as a library declaration
+ * requiring `equal?` to return `#t` if `eqv?` does 
+ * making let-syntax introduce a lexical contour
+ * new integer division operators
+ * procedures not having locations
+ * `let-values` and `let*-values`
+ * allowing `cond-expand`, `include`, and `include-ci` at top level
+ * `error-object?`, `error-object-message`, and `error-object-irritants`
+ * everything to do with multiple values
+ * more than two arguments for char and string comparisons
+ * vertical bars around symbols
+ * `close-port`
+ * `make-promise`
+ * `(scheme ...)` instead of `(r7rs ...)`
+ * UAX 29 based string case conversion
+ * fundamental I/O in `(scheme base)`
+ * `interaction-environment` in `(scheme repl)`
+ * record types in `(scheme base)`
+ * semicolon-based rather than brace-based escape sequences
+ * R6RS rather than dotted-ratio syntax for non-rational reals
+ * `-nan.0`
+ * `make-promise`
+ * ''start'' and ''end'' arguments in various procedures
+ * `string-copy!` and `vector-copy!`
+ * numeric syntax in programs must agree with `string-&gt;number` and `read`
+ * support for undesirable characters and arbitrary numbers in library names
+ * location-free procedures
+ * complex numbers with `+nan.0` portions
+ * predicates for R5RS signaled conditions
+ * `emergency-exit`
+ * type-check rule for auto-forcing
+ * support for bare CR as newline
+ * `digit-value`
+ * singular library names
+ * multiple imports in program files
+
+See also WhatGambitWontSupport.
+</pre>
+    <h2>time</h2>
+    <pre>2012-12-27 01:39:48</pre>
+    <h2>version</h2>
+    <pre>7</pre></body></html>

@@ -1,0 +1,56 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BinaryHeapsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BinaryHeapsCowan.md">BinaryHeapsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Binary&shy;Heaps&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2011-05-12 02:13:26</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/BinaryHeapsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/BinaryHeapsCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Binaryheaps">Binary heaps</h2>
+      <p>Binary heaps are mutable collections that can contain any Scheme object provided there exists a total ordering on the objects expressed by an <i>ordering procedure</i>.  They are intended to be a thin veneer over arrays.  Binary heaps are disjoint from other types of Scheme objects.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(make-heap </span><i>&lt;</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new empty heap.  <i>Proc</i> is the less-than procedure for the heap.</p>
+      <p><span class="monospace">(heap </span><i>&lt;</i><span class="monospace"> </span><i>element</i><span class="monospace"> ...)</span></p>
+      <p>Constructs and returns a new heap using <i>&lt;</i> as the ordering procedure, and containing the <i>elements</i>.  This operation should be O(n) in the size of the heap.</p>
+      <p><span class="monospace">(copy-heap</span> <i>heap</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new heap containing the elements of <i>heap</i> with the same <i>&lt;</i> procedure.</p>
+      <p><span class="monospace">(heap? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a heap, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(heap-length? </span><i>heap</i><span class="monospace">)</span></p>
+      <p>Returns the number of elements in <i>heap</i>.</p>
+      <p><span class="monospace">(heap-member? </span><i>heap</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>element</i> is a member of <i>heap</i> and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(heap-add! </span><i>heap</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Adds <i>element</i> to <i>heap</i>.  Returns an unspecified value.  This operation should be O(log N) in the size of the heap.</p>
+      <p><span class="monospace">(heap-remove-smallest! </span><i>heap</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Removes the smallest element of the heap (according to the <i>&lt;</i> function) and returns it.  This operation should be O(log N) in the size of the heap.</p>
+      <p><span class="monospace">(heap-map </span><i>proc</i><span class="monospace"> </span><i>heap</i><span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to each element of <i>heap</i> in arbitrary order and constructs and returns a new heap containing the values of the applications.</p>
+      <p><span class="monospace">(heap-for-each </span><i>proc</i><span class="monospace"> </span><i>heap</i><span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to <i>heap</i> in arbitrary order, discarding the returned values.  Returns an unspecified value.</p>
+      <p><span class="monospace">(heap-&gt;list </span><i>heap</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new list containing the members of <i>heap</i> in arbitrary order.</p>
+      <p><span class="monospace">(heap-&gt;list! </span><i>&lt;</i><span class="monospace"> </span><i>heap</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new list containing the members of <i>heap</i> in increasing order.  <i>Heap</i> may be destroyed in the process.</p>
+      <p><span class="monospace">(list-&gt;heap </span><i>&lt;</i><span class="monospace"> </span><i>list</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new heap containing the elements of <i>list</i> and using <i>&lt;</i> as the ordering procedure.  This operation should be O(n) in the size of the heap.</p>
+      <p><span class="monospace">(heap-&gt;vector </span><i>heap</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new vector containing the elements of <i>heap</i> in arbitrary order.</p>
+      <p><span class="monospace">(heap-&gt;vector! </span><i>&lt;</i><span class="monospace"> </span><i>heap</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new vector containing the elements of <i>heap</i> in increasing order.  <i>Heap</i> may be destroyed in the process.</p>
+      <p><span class="monospace">(vector-&gt;heap </span><i>&lt;</i><span class="monospace"> </span><i>vector</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new heap containing the elements of <i>vector</i> and using <i>&lt;</i> as the ordering procedure.  This operation should be O(n) in the size of the heap.</p></div></body></html>

@@ -1,0 +1,53 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>DatagramChannelsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/DatagramChannelsCowan.md">DatagramChannelsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Datagram&shy;Channels&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-10-31 01:42:41</div>
+      <div class="version">13<span class="comment"></span><a href="/wiki/DatagramChannelsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/DatagramChannelsCowan/13/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Datagramchannels">Datagram channels</h2>
+      <p>Datagram channels are a mild abstraction of UDP sockets.  They are a disjoint type.</p>
+      <p>See <a href="/wiki/NetworkEndpointsCowan">NetworkEndpointsCowan</a> for network endpoints, an abstraction of a host or address plus a port number.  Several of the following procedures accept or return endpoints.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(make-datagram-channel </span>[<i>endpoint</i>]<span class="monospace">)</span></p>
+      <p>Returns a new datagram channel suitable for sending and receiving datagrams.  <i>Endpoint</i> specifies the local endpoint of the channel; if it is omitted, the endpoint will specify any local address and a port specified by the operating system, the equivalent of <span class="monospace">(make-network-endpoint #t 0)</span>. In Posix terms this is <span class="monospace">socket()</span> immediately followed by <span class="monospace">bind()</span>.</p>
+      <p><span class="monospace">(make-output-only-datagram-channel)</span></p>
+      <p>Returns a newly allocated datagram channel only suitable for sending datagrams.  It is not bound to any port.  In Posix terms this is <span class="monospace">socket()</span>.</p>
+      <p><span class="monospace">(datagram-channel? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a datagram channel and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(datagram-channel-local-endpoint</span><i>channel</i><span class="monospace">)</span></p>
+      <p>Returns the local endpoint or <span class="monospace">#f</span> if there is none.  The value returned may not be the same as the value passed to <span class="monospace">make-datagram-channel</span> (in particular, the port must not be 0), but it must be acceptable to another invocation of <span class="monospace">make-datagram-channel</span>.</p>
+      <p><span class="monospace">(datagram-channel-send-to </span><i>channel</i><span class="monospace"> </span><i>endpoint</i><span class="monospace"> </span><i>bytevector</i><span class="monospace"> </span>[<i>start</i> [<i>end</i>]]<span class="monospace">)</span></p>
+      <p>Send the portion of <i>bytevector</i> defined by <i>start</i> (inclusive) and <i>end</i> (exclusive) to <i>endpoint</i> using <i>channel</i>.  If <i>end</i> is omitted, it is the length of <i>bytevector</i> plus one; if <i>start</i> is omitted, it is 0.  Returns undefined values.  In Posix terms this is <span class="monospace">send()</span>.</p>
+      <p><span class="monospace">(datagram-channel-receive-from </span><i>channel</i><span class="monospace"> </span><i>bytevector</i><span class="monospace"> </span>[<i>start</i> [<i>end</i>]]<span class="monospace">)</span></p>
+      <p>Receives a datagram from <i>channel</i> into the portion of <i>bytevector</i> defined by <i>start</i> (inclusive) and <i>end</i> (exclusive).  If <i>end</i> is omitted, it is the length of <i>bytevector</i> plus one; if <i>start</i> is omitted, it is 0.  Returns two values: the sending endpoint and <span class="monospace">#t</span> if the datagram was complete or <span class="monospace">#f</span> if it was truncated.  It is an error to invoke this procedure on an output-only datagram channel.  In Posix terms this is <span class="monospace">recvfrom()</span>.</p>
+      <p><span class="monospace">(datagram-channel-connect! </span><i>channel</i><span class="monospace"> </span><i>endpoint</i><span class="monospace">)</span></p>
+      <p>Connects <i>channel</i> to a remote <i>endpoint</i>.  This endpoint may be on the local host, but it is an error for the port to be 0.  Datagrams can be sent to this endpoint using <span class="monospace">datagram-channel-send</span>, but it is still possible to send datagrams to other endpoints using <span class="monospace">datagram-channel-send-to</span>.  When connected, a datagram channel will ignore any arriving datagrams that do not come from the specified remote endpoint.  Returns undefined values.  In Posix terms this is <span class="monospace">connect()</span>.</p>
+      <p><span class="monospace">(datagram-channel-disconnect! </span><i>channel</i><span class="monospace">)</span></p>
+      <p>Disconnects <i>channel</i>.  Returns undefined values.  In Posix terms this is <span class="monospace">connect()</span> with an argument whose address family is <span class="monospace">AF_UNSPEC</span>.</p>
+      <p><span class="monospace">(datagram-channel-remote-endpoint </span><i>channel</i><span class="monospace">)</span></p>
+      <p>Returns the remote endpoint to which <i>channel</i> is connected, or <span class="monospace">#f</span> if it is not connected.  The value returned need not be the same as the value passed to <span class="monospace">datagram-channel-connect!</span>, but must be acceptable to another invocation of <span class="monospace">datagram-channel-connect!</span>.</p>
+      <p><span class="monospace">(datagram-channel-send </span><i>channel</i><span class="monospace"> </span><i>bytevector</i><span class="monospace"> </span>[<i>start</i> [<i>end</i>]]<span class="monospace">)</span></p>
+      <p>Send the portion of <i>bytevector</i> defined by <i>start</i> (inclusive) and <i>end</i> (exclusive) to the remote endpoint of <i>channel</i>.  If <i>end</i> is omitted, it is the length of <i>bytevector</i> plus one; if <i>start</i> is omitted, it is 0.  It is an error if <i>channel</i> is not connected.  Returns undefined values.  In Posix terms this is <span class="monospace">send()</span>.</p>
+      <p><span class="monospace">(datagram-channel-close </span><i>channel</i><span class="monospace">)</span></p>
+      <p>Close the underlying UDP port and abandon the channel.</p>
+      <h2 id="Example:TFTP">Example: TFTP</h2>
+      <p>TFTP is a simple UDP-based protocol documented in RFC 1350.  For our purposes, all that matters is that the client sends the first datagram and the server sends exactly one response to each datagram (assuming no loss of packets in transmission).</p>
+      <p>The server uses <span class="monospace">(make-datagram-channel (make-network-endpoint 69))</span> to create a datagram channel listening on the local UDP port 69 and then uses <span class="monospace">(datagram-channel-receive-from </span><i>chan</i><span class="monospace"> </span><i>bytevector</i><span class="monospace">)</span> to obtain an initial datagram.  The server then calls <span class="monospace">(make-datagram-channel)</span> to create a new datagram channel listening on a randomly chosen port.  This datagram channel is then connected with <span class="monospace">(datagram-channel-connect! </span><i>client-host</i><span class="monospace"> </span><i>client-port</i><span class="monospace">)</span> to the client's host and port, and the response to the initial datagram is sent on the new channel.  All further transactions with that client are performed over the newly created channel.</p>
+      <p>The client starts by using <span class="monospace">(make-datagram-channel)</span> and then <span class="monospace">(datagram-channel-connect! </span><i>chan</i><span class="monospace"> (make-network-endpoint </span><i>host</i><span class="monospace"> 69))</span> to connect to the server.  The initial datagram is sent with <span class="monospace">(datagram-channel-send </span><i>bytevector</i><span class="monospace">)</span>.  When the server replies, the channel is reconnected with <span class="monospace">(datagram-channel-connect! (make-network-endpoint </span><i>host</i><span class="monospace"> </span><i>server-port</i><span class="monospace">))</span> and the remaining datagrams are sent over the channel.</p>
+      <h2 id="Issues">Issues</h2>
+      <p>These names are very verbose, but I couldn't think of a better term than <span class="monospace">datagram-channel</span>, which is borrowed from <span class="monospace">java.nio.channels.DatagramChannel</span>.  This API is more powerful than Java's, though.</p></div></body></html>

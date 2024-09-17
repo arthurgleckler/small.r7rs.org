@@ -1,0 +1,57 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CombinatorsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CombinatorsCowan.md">CombinatorsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Combinators&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-06-04 17:13:11</div>
+      <div class="version">9<span class="comment"></span><a href="/wiki/CombinatorsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/CombinatorsCowan/9/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This proposal contains various procedures that return procedures and a few others, drawn from Chicken.  Common Lisp has a few of them too.</p>
+      <h2 id="Combinators">Combinators</h2>
+      <p><span class="monospace">(constantly </span><i>obj</i> ...<span class="monospace">)</span></p>
+      <p>Returns a procedure that always returns the <i>obj</i> objects as its values, regardless of the number and value of its arguments.</p>
+      <p><span class="monospace">(complement </span><i>proc</i><span class="monospace">)</span></p>
+      <p>Returns a procedure that returns the boolean inverse of <i>proc</i>.  That is, it returns <span class="monospace">#t</span> when <i>proc</i> returns <span class="monospace">#f</span>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(compose </span><i>proc</i> ... <span class="monospace">)</span></p>
+      <p>Returns a procedure that represents the composition of its arguments.  Any of the procedures may return multiple values, which are passed as arguments to its successor.  With zero arguments, <span class="monospace">(compose)</span> returns a procedure that is functionally equivalent to <span class="monospace">values</span>.</p>
+      <p><span class="monospace">(simple-compose </span><i>proc</i> ...<span class="monospace">)</span></p>
+      <p>A variant of <span class="monospace">compose</span> that handles only single-argument single-valued procedures. With zero arguments, returns a procedure that is functionally equivalent to <span class="monospace">identity</span>.</p>
+      <p><span class="monospace">(conjoin </span><i>predicate</i> ...<span class="monospace">)</span></p>
+      <p>Returns a procedure that returns <span class="monospace">#t</span> if its arguments satisfy all the <i>predicate</i>s.</p>
+      <p><span class="monospace">(disjoin </span><i>predicate</i> ...<span class="monospace">)</span></p>
+      <p>Returns a procedure that returns <span class="monospace">#t</span> if its arguments satisfy any of the <i>predicate</i>s.</p>
+      <p><span class="monospace">(each </span><i>proc</i> ... <span class="monospace">)</span></p>
+      <p>Returns a procedure that applies each of the <i>proc</i>s in turn to its arguments, discarding the results and returning an unspecified value.</p>
+      <p><span class="monospace">(flip </span><i>proc</i><span class="monospace">)</span></p>
+      <p>Returns a two-argument procedure that calls <i>proc</i>, a two-argument procedure, with its arguments swapped.</p>
+      <p><span class="monospace">(all-of? </span><i>predicate</i><span class="monospace">)</span></p>
+      <p>Returns a procedure of one argument that returns <span class="monospace">#t</span> when applied to a list of elements that all satisfy <i>predicate</i>, or <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(any-of? </span><i>predicate</i><span class="monospace">)</span></p>
+      <p>Returns a procedure of one argument that returns <span class="monospace">#t</span> when applied to a list of elements at least one of which satisfies <i>predicate</i>, or <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(map-reduce </span><i>mapper reducer</i><span class="monospace">)</span></p>
+      <p>Returns a procedure that maps <i>mapper</i> to each of its arguments, and then applies <i>reducer</i> to all the results and returns what it returns.</p>
+      <h2 id="Otherprocedures">Other procedures</h2>
+      <p><span class="monospace">(always </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Ignores its arguments and always returns <span class="monospace">#t</span>.</p>
+      <p><span class="monospace">(never </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Ignores its arguments and always returns <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(identity </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <i>obj</i>.</p>
+      <h2 id="Documentationstyle">Documentation style</h2>
+      <p>It's been suggested that the documentation of these combinators is too hard to understand, and should be documented
+like this:</p>
+      <p><span class="monospace">((constantly </span><i>obj</i> ...<span class="monospace">) </span><i>arg</i> ...<span class="monospace">)</span></p>
+      <p>Ignores <i>args</i> and returns <i>objs</i>.</p></div></body></html>

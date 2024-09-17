@@ -1,0 +1,62 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>31: custom ports</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 31: <span class="summary">custom ports</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-01-24 06:58:19</div>
+      <div class="component">WG1 - I/O</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/31/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-02-23 17:04:36</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Do we provide a mechanism for custom ports,
+on which for instance string ports could be
+created?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-03-01 10:08:40</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I wrestled with these a lot, but couldn't find anything satisfying.  If you treat a custom port as an object on which you can get/set procedures to do the work, you wind up with a getter/setter for every I/O procedure you have.  And you need to say what happens if the user provides only some of them.  It's a big mess.  You can make the procedures generic and use a symbol to indicate which property is being get/set, but all that does is clean up the page some, the implementation is still messy.  Having multiple kinds of ports (binary/textual, string/file, input/output) just makes the mess worse.</p>
+              <p>I am opposed to standardization here, and I think the R6RS effort was premature.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">kumoyuki</div>
+            <div class="time">2010-03-16 05:50:20</div></div>
+          <div class="changes">
+            <div><span class="field">milestone</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I am pretty conflicted over this issue as well, as Oleg Kiselyov &amp; I (and a few others) tried to work up an I/O SRFI many moons ago. Things got very complex, very quickly.</p>
+              <p>Arguably, all I/O should be moved out of the core language specification. C managed to get along with only &quot;library&quot; compliance in I/O for many long years. Additionally, I/O is the canonical example of where side-effects are unavoidable. Nevertheless, Scheme without a free system for reading s-expressions wouldn't feel like much of a lisp either, and the utility of the language would be significantly degraded.</p>
+              <p>The I/O library needs significant work, and I am more than half inclined to say it should be a WG2 job, except for the Lisp-y-ness issue.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 06:58:19</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted not to have custom ports.</p></div></div></div></div></div></body></html>

@@ -1,0 +1,173 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #426</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #426</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-12 10:15:25</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Submitter's name: Richard Kelsey
+
+Submitter's email: kelsey at s48.org
+
+Relevant draft: r7rs draft 6
+
+Type: clarification
+
+Priority: major
+
+Relevant section of draft: Derived expressions, control features, exceptions
+
+Summary: The descriptions of the dynamic features need to be clearer and more consistent.
+
+There are now three separate features that relate to the dynamic context: `dynamic-wind`, dynamic bindings, and exception handling.  These need to be defined in some unified way and their interaction described.
+
+For example, dynamic bindings are described using the term 'dynamic environment' which is itself not defined.  There is a paragraph on how dynamic bindings interact with threads, which are not mentioned anywhere else in the report, but nothing is said about how dynamic bindings interact with `call/cc` or `dynamic-wind`.
+
+Suggestion:
+
+ * Add a new section 3.6 that includes the definition of 'dynamic extent' currently in section 6.10 and a definition of 'dynamic environment'.  Mention that the dynamic environment is captured by `call/cc`.  Say something about threads, if necessary.
+
+ * Remove the paragraph about threads from the section on dynamic bindings.
+
+ * In the description of `dynamic-wind`, say that the dynamic environment that is in place when the ''before'' and ''after'' thunks are called is the the dynamic environment of the call to `dynamic-wind`.
+
+ * 6.11 paragraph 2; change &quot;The system implicitly maintains a current exception handler&quot; to &quot;The system implicitly maintains a current exception handler in the dynamic environment&quot;.
+
+ * Description of `with-exception-handler`: change &quot;''Handler'' is installed as the current exception handler for the dynamic extent (as determined by `dynamic-wind`) of the invocation of ''thunk''&quot; to &quot;''Handler'' is installed as the current exception handler in the dynamic environment used for the invocation of ''thunk''&quot;.
+
+ * The description of `raise `talks about the dynamic extent of continuations, but it is calls that have a dynamic extent, not continuations.  Rephrase it in terms of continuations and dynamic environments.
+
+ * The description of `raise-continuable` also needs to be rephrased in terms of continuations and dynamic environments.
+
+ * Ideally, the dynamic environment and `dynamic-wind` would be included in the formal semantics.
+</pre>
+    <h2>id</h2>
+    <pre>426</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Formal Comment: The descriptions of the dynamic features need to be clearer  and more consistent</pre>
+    <h2>time</h2>
+    <pre>2012-06-29 04:39:47</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-12 10:15:25</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Included detail changes, but no new section.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1350011725370785</pre>
+    <h2>ticket</h2>
+    <pre>426</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 10:15:25</pre>
+    <h2>Change at time 2012-10-12 10:15:25</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1350011725370785</pre>
+    <h2>ticket</h2>
+    <pre>426</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 10:15:25</pre>
+    <h2>Change at time 2012-10-12 10:15:25</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>accepted</pre>
+    <h2>raw-time</h2>
+    <pre>1350011725370785</pre>
+    <h2>ticket</h2>
+    <pre>426</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 10:15:25</pre>
+    <h2>Change at time 2012-07-02 09:46:11</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1341197171716044</pre>
+    <h2>ticket</h2>
+    <pre>426</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 09:46:11</pre>
+    <h2>Change at time 2012-07-02 09:46:11</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1341197171716044</pre>
+    <h2>ticket</h2>
+    <pre>426</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 09:46:11</pre>
+    <h2>Change at time 2012-07-02 09:46:11</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>accepted</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1341197171716044</pre>
+    <h2>ticket</h2>
+    <pre>426</pre>
+    <h2>time</h2>
+    <pre>2012-07-02 09:46:11</pre></body></html>

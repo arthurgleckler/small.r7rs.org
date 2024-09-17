@@ -1,0 +1,28 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>DisjointPromises</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/DisjointPromises.md">DisjointPromises</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Disjoint&shy;Promises</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-12-28 08:24:10</div>
+      <div class="version">6<span class="comment"></span><a href="/wiki/DisjointPromises/history">history</a></div>
+      <div class="source"><a href="/wiki/DisjointPromises/6/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Testing the usual suite of Schemes to see whether promises returned by <span class="monospace">delay</span> are disjoint from procedures.</p>
+      <p>Disjoint: Racket, Gauche, MIT, Gambit, Chicken, Guile, Kawa, Chibi, SCM, STklos, SigScheme, TinyScheme, RScheme, Dream, BDC, XLisp, Elk, UMB, VX, SXM, Sizzle, Spark, Sagittarius (note that in TinyScheme and Dream promises can be invoked)</p>
+      <p>Not disjoint: Bigloo, Scheme48/scsh, SISC, Chez, Vicare, Larceny, Ypsilon, Mosh, IronScheme, NexJ, Scheme 9, Schemik, Inlab, Owl Lisp</p>
+      <p><span class="monospace">delay</span> undefined: KSi, Shoe, S7, Rep, Llava, FemtoLisp, Dfsch</p>
+      <p>Buggy implementation: Oaklisp</p>
+      <p>Note:  In Owl Lisp, repeated forces re-evaluate the delayed expression, because Owl Lisp is immutable.</p>
+      <p>See also <a href="/wiki/ForceNonPromise">ForceNonPromise</a>.</p></div></body></html>

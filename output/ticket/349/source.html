@@ -1,0 +1,155 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #349</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #349</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-04-09 22:12:17</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Currently, R7RS (tracking R5RS) does not constrain the sizes of exact integers: in principle, the maximum exact integer supported by an implementation could be as small as 7 (though that would seriously limit the maximum sizes of strings, vectors, and bytevectors as well).  R6RS requires systems to support &quot;practically unlimited&quot; size exact integers.  It also requires that a subset of these exist, called ''fixnums'', which must support at least the range -2^23^ to 2^23^-1.  (Supposedly this range was chosen because it is the range of fixnums in MIT Scheme, and all other practical Schemes have larger ranges for their fixnums.)  I propose that we adopt this range as the minimum range of R7RS exact integers.
+
+The immediate issue here is that a module name may contain (non-negative) exact integers as well as identifiers in R7RS.  For such names to be portable, there must be a portable range of exact integers.</pre>
+    <h2>id</h2>
+    <pre>349</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Define exact integers to be at least 24 bits</pre>
+    <h2>time</h2>
+    <pre>2012-02-24 06:53:39</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-04-09 22:12:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1333984337804094</pre>
+    <h2>ticket</h2>
+    <pre>349</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:12:17</pre>
+    <h2>Change at time 2012-04-09 22:12:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1333984337804094</pre>
+    <h2>ticket</h2>
+    <pre>349</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:12:17</pre>
+    <h2>Change at time 2012-04-09 22:12:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1333984337804094</pre>
+    <h2>ticket</h2>
+    <pre>349</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:12:17</pre>
+    <h2>Change at time 2012-04-09 22:12:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>This proposal was rejected by the WG.  #359, which is not yet decided, attempts to accomplish the same result in a different way.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1333984330414010</pre>
+    <h2>ticket</h2>
+    <pre>349</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:12:10</pre>
+    <h2>Change at time 2012-04-09 22:12:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1333984330414010</pre>
+    <h2>ticket</h2>
+    <pre>349</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:12:10</pre>
+    <h2>Change at time 2012-03-01 05:42:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>See FixnumInfo for information on 39 Schemes.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1330551749374585</pre>
+    <h2>ticket</h2>
+    <pre>349</pre>
+    <h2>time</h2>
+    <pre>2012-03-01 05:42:29</pre>
+    <h2>Change at time 2012-02-24 07:27:29</h2>
+    <h2>author</h2>
+    <pre>aag</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>I understand the goal of this proposal, but it doesn't fit well with the idea that we support embedded Schemes, which often run on devices with CPUs of less than 32 bits.  Marc Feeley's group, I believe, has such an implementation.  Should they not be considered Scheme just because they run on such CPUs and don't support bignums?</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1330039649490030</pre>
+    <h2>ticket</h2>
+    <pre>349</pre>
+    <h2>time</h2>
+    <pre>2012-02-24 07:27:29</pre></body></html>

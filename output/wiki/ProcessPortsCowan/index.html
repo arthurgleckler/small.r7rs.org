@@ -1,0 +1,40 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ProcessPortsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ProcessPortsCowan.md">ProcessPortsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Process&shy;Ports&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-06-17 14:39:13</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/ProcessPortsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ProcessPortsCowan/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="ProcessPorts">Process Ports</h2>
+      <p>The procedures in this proposal start a new operating system process and returns a port connected to either the standard input (for <span class="monospace">open-output-process</span>) or the standard output (for <span class="monospace">open-input-process</span>) of the new process, or both (for <span class="monospace">open-input/output-process</span>).</p>
+      <p>This library depends on <a href="/wiki/SettingsListsCowan">SettingsListsCowan</a>.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(open-input-process </span><i>filename</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(open-output-process </span><i>filename</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(open-input/output-process </span><i>filename</i><span class="monospace">)</span></p>
+      <p>All of these are equivalent to the corresponding R5RS functions on file ports.  If <i>filename</i> is a string, it is a shell command suitable for passing to <span class="monospace">shell-command</span>.  If it is a list, it is a settings list as described in <a href="/wiki/SettingsListsCowan">SettingsListsCowan</a>.  Implementations MUST support the following keys:</p>
+      <dl>
+        <dt><span class="monospace">path</span></dt>
+        <dd>The system command to be executed.</dd>
+        <dt><span class="monospace">arguments</span></dt>
+        <dd>A list of strings to be passed as the arguments of the command.  If absent or <span class="monospace">()</span>, no arguments are passed.</dd>
+        <dt><span class="monospace">environment</span></dt>
+        <dd>An alist, mapping strings to strings, representing the environment variables to be passed to the new process and their values.  If the same environment variable appears more than once, all occurrences except the first are ignored, as is usual when processing alists.  If this key is absent, the current environment is passed.  If this key is <span class="monospace">()</span>, an empty environment is passed.</dd>
+        <dt><span class="monospace">stdin-redirection</span></dt>
+        <dd>A string representing the file to open and pass to the new process as its standard input, or a port (it is an error if the port has no OS-level underpinnings).  If this key is absent, no redirection is done.  It is an error to use this key in a call to <span class="monospace">open-output-process</span> or <span class="monospace">open-input/output-process</span>.</dd>
+        <dt><span class="monospace">stdout-redirection</span></dt>
+        <dd>A string representing the file to open and pass to the new process as its standard output, or a port (it is an error if the port has no OS-level underpinnings).  If this key is absent, no redirection is done.  It is an error to use this key in a call to <span class="monospace">open-input-process</span> or <span class="monospace">open-input/output-process</span>.</dd></dl></div></body></html>

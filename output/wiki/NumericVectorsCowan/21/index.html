@@ -1,0 +1,152 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NumericVectorsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NumericVectorsCowan.md">NumericVectorsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Numeric&shy;Vectors&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-05-18 04:28:46</div>
+      <div class="version">21<span class="comment"></span><a href="/wiki/NumericVectorsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/NumericVectorsCowan/21/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a proposal for a simple API for specialized numeric vectors distinguished by their <i>representation type</i>.  The <span class="monospace">u8</span> type is the same as the R7RS bytevector type, but the other types are all disjoint from all other Scheme types.  This API is more restricted than <a href="/wiki/BytevectorsCowan">BytevectorsCowan</a>, except that it is possible to dispatch on the different types of numeric vectors.  It may be useful for Schemes on the JVM or the CLR to use this API to provide access to the platform's native numeric vectors.</p>
+      <p>This design subsumes <a href="http://srfi.schemers.org/srfi-4/srfi-4.html">SRFI 4</a>.  There are many procedures, but many of them can be easily inlined by even a very dumb compiler, providing high efficiency.   The procedures provided in the present proposal are the numeric-vector analogues of the R7RS-small vector API.</p>
+      <h2 id="Representationtypes">Representation types</h2>
+      <p>The [type] values are:</p>
+      <dl>
+        <dt><span class="monospace">u8</span></dt>
+        <dd>unsigned 8-bit integer</dd>
+        <dt><span class="monospace">s8</span></dt>
+        <dd>signed 8-bit integer</dd>
+        <dt><span class="monospace">u16</span></dt>
+        <dd>unsigned 16-bit integer</dd>
+        <dt><span class="monospace">s16</span></dt>
+        <dd>signed 16-bit integer</dd>
+        <dt><span class="monospace">u32</span></dt>
+        <dd>unsigned 32-bit integer</dd>
+        <dt><span class="monospace">s32</span></dt>
+        <dd>signed 32-bit integer</dd>
+        <dt><span class="monospace">u64</span></dt>
+        <dd>unsigned 64-bit integer</dd>
+        <dt><span class="monospace">s64</span></dt>
+        <dd>signed 64-bit integer</dd>
+        <dt><span class="monospace">f32</span></dt>
+        <dd>32-bit float</dd>
+        <dt><span class="monospace">f64</span></dt>
+        <dd>64-bit float</dd>
+        <dt><span class="monospace">c64</span></dt>
+        <dd>64-bit complex number</dd>
+        <dt><span class="monospace">c128</span></dt>
+        <dd>128-bit complex number</dd></dl>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(make-[type]vector </span><i>k</i> [ <i>fill</i> ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated numeric vector of length <i>k</i>.  <i>Fill</i> is converted to a binary value according to [type] and used to fill the vector; if <i>fill</i> is not specified, the values of the elements are unspecified.  It is an error if <i>fill</i> cannot be converted to [type].</p>
+      <p><span class="monospace">([type]vector </span> <i>v</i> ... <span class="monospace">)</span></p>
+      <p>Returns a newly allocated numeric vector of length <i>k</i>, where <i>k</i> is the number of arguments to the procedure.  It is filled with the binary values resulting from encoding the <i>v</i> arguments according to [type].  It is an error if an argument cannot be converted to [type].</p>
+      <p><span class="monospace">([type]vector-unfold </span><i>proc length initial-seed</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated [type]vector whose length is <i>length</i> and iterates across each index <i>k</i> between 0 and <i>length</i>, applying <i>proc</i> at each iteration to the current index and current seed, in that order, to receive 2 values: first, the element to put in the <i>k</i>th slot of the new vector and a new seed for the next iteration.  Note that the termination condition is different from the unfold procedure of SRFI 1.</p>
+      <p>Examples:</p><span class="monospace">(s8vector-unfold (lambda (i x) (values x (- x 1))) 
+                 10 0) 
+=&gt; #s8(0 -1 -2 -3 -4 -5 -6 -7 -8 -9)
+</span>
+      <p>Construct a vector of the sequence of integers in the range [0,n).</p><span class="monospace">(u8vector-unfold values n) 
+=&gt; #u8(0 1 2 ... n-2 n-1)
+</span>
+      <p>Copy vector.</p><span class="monospace">(f64vector-unfold (λ (i) (vector-ref vector i)) 
+                 (vector-length vector))
+</span>
+      <p><span class="monospace">([type]vector-unfold-right </span><i>proc length initial-seed</i><span class="monospace">)</span></p>
+      <p>Like <span class="monospace">[type]vector-unfold</span>, but it uses <i>proc</i> to generate elements from right-to-left, rather than left-to-right. The first index used is <i>length</i> - 1. Note that the termination condition is different from the unfold-right procedure of SRFI 1.</p>
+      <p>Examples:</p>
+      <p>Construct a vector of pairs of non-negative integers whose values sum to 4.</p><span class="monospace">(u8vector-unfold-right (λ (i x) (values (cons i x) (+ x 1))) 5 0) 
+=&gt; #u8((0 . 4) (1 . 3) (2 . 2) (3 . 1) (4 . 0)) 
+</span>
+      <p>Reverse vector.</p><span class="monospace">(float64-vector-unfold-right (λ (i x) (values (f64vector-ref vector x) (+ x 1))) 
+                       (f64vector-length vector) 
+                       0)
+</span>
+      <p><span class="monospace">([type]vector-copy </span><i>[type]vec</i> [<i>start</i> [<i>end</i>]]<span class="monospace">)</span></p>
+      <p>Allocates a new [type]vector whose length is <i>end - start</i> and fills it with elements from <i>[type]vec</i>.
+Examples:</p>
+      <p><span class="monospace">([type]vector-reverse-copy [type]vec </span>[<i>start</i> [<i>end</i>]]<span class="monospace">)</span></p>
+      <p>Like <span class="monospace">[type]vector-copy</span>, but it copies the elements in the reverse order from <i>[type]vec</i>.</p>
+      <p><span class="monospace">([type]vector-append </span><i>[type]vec</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated vector that contains all elements in order from the locations in the <i>[type]vec</i>s.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">([type]vector? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a [type]vector, and <span class="monospace">#f</span> if it is not.</p>
+      <p><span class="monospace">([type]vector-empty? </span> <i>[type]vector</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>[type]vector</i> has length 0, and <span class="monospace">#f</span> otherwise.</p>
+      <h2 id="Selectors">Selectors</h2>
+      <p><span class="monospace">([type]vector-ref</span> <i>[type]vector k</i><span class="monospace">)</span></p>
+      <p>Returns a Scheme number corresponding to the <i>k</i>th element of <i>[type]vector</i>.  Note that <span class="monospace">u8vector-ref</span> is the same as the R7RS-small procedure <span class="monospace">bytevector-u8-ref</span>.</p>
+      <h2 id="Mutators">Mutators</h2>
+      <p><span class="monospace">([type]vector-set!</span> <i>[type]vector k v</i><span class="monospace">)</span></p>
+      <p>Converts <i>v</i> to a binary value encoded according to [type] and places it into the <i>k</i>th element of <i>[type]vector</i>.  It is an error if <i>v</i> cannot be converted to [type].  Note that <span class="monospace">u8vector-set!</span> is the same as the R7RS-small procedure <span class="monospace">bytevector-u8-set!</span>.</p>
+      <h2 id="Conversionstonumericvectors">Conversions to numeric vectors</h2>
+      <p>It is an error if a value being used to fill an element of a [type]vector cannot be converted to [type].</p>
+      <p><span class="monospace">(vector-&gt;[type]vector </span><i>vector</i> [<i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated [type]vector of length <i>end - start</i>, filled with the corresponding elements of <i>vector</i>.</p>
+      <p><span class="monospace">(list-&gt;[type]vector </span><i>list</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated [type]vector whose length is the length of <i>list</i>, filled with the elements of <i>list</i>.</p>
+      <p><span class="monospace">(vector-&gt;[type]vector! </span><i>[type]vector at vector</i> [<i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Writes the elements of <i>vector</i> from <i>start</i> to <i>end</i> into <i>[type]vector</i> starting at <i>at</i>.</p>
+      <p><span class="monospace">(list-&gt;[type]vector! </span><i>list [type]vector at</i><span class="monospace">)</span></p>
+      <p>Writes the elements of <i>list</i> into <i>[type]vector</i> starting at <i>at</i>.</p>
+      <h2 id="Conversionsfromnumericvectors">Conversions from numeric vectors</h2>
+      <p><span class="monospace">([type]vector-&gt;vector </span><i>[type]vector</i> [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p><span class="monospace">([type]vector-&gt;list </span><i>[type]vector</i> [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated vector or list of length <i>end - start</i> with the elements of <i>[type]vector</i> from <i>start</i> to <i>end</i>.</p>
+      <p><span class="monospace">([type]vector-&gt;vector! </span><i>vector at [type]vector</i> [<i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Writes the elements of <i>[type]vector</i> from <i>start</i> to <i>end</i> into <i>vector</i> starting at <i>at</i>.</p>
+      <p>== The whole numeric vector ==</p>
+      <p><span class="monospace">([type]vector-length </span> <i>[type]vector</i><span class="monospace">)</span></p>
+      <p>Returns the length of <i>[type]vector</i>.</p>
+      <p><span class="monospace">([type]vector-copy </span> <i>[type]vector</i> [ [ <i>start</i> ] <i>end</i> ] <span class="monospace">)</span></p>
+      <p>Copies the elements of <i>[type]vector</i> from <i>start</i> to <i>end</i> into a newly allocated [type]vector.</p>
+      <p><span class="monospace">([type]vector-copy! </span><i>to at from</i> [ [ <i>start</i> ] <i>end</i> ] <span class="monospace">)</span></p>
+      <p>Copies the elements of <i>from</i> from <i>start</i> to <i>end</i> into <i>to</i> starting at <i>at</i>.</p>
+      <p><span class="monospace">[type]vector-append </span> <i>[type]vector</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated [type]vector whose elements are the concatenation of the elements in <i>[type]vectors</i>.  It is an error if the <i>[type]vectors</i> are not all of the same type.</p>
+      <p><span class="monospace">([type]vector-fill! </span><i>[type]vector fill</i> [ [ <i>start</i> ] <i>end</i> ] <span class="monospace">)</span></p>
+      <p>Stores <i>fill</i> in the elements of <i>[type]vector</i>. An error is signaled if <i>fill</i> cannot be converted to [type].</p>
+      <h2 id="Mapping">Mapping</h2>
+      <p><span class="monospace">([type]vector-map </span><i>proc [type]vector</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated [type]vector which contains the results of applying <i>proc</i> to the elements of the <i>[type]vectors</i> in an unspecified order.</p>
+      <p><span class="monospace">([type]vector-map! </span><i>proc output-[type]vector [type]vector</i> ...<span class="monospace">)</span></p>
+      <p>Writes the results of applying <i>proc</i> to the elements of the <i>[type]vectors</i> into the corresponding elements of <i>output-[type]vector</i> in an unspecified order.  It is not an error for <i>output-[type]vector</i> to be the same as one of the <i>[type]vectors</i>.  Returns an unspecified value.</p>
+      <p><span class="monospace">([type]vector-for-each </span><i>proc [type]vector</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to the elements of the <i>[type]vectors</i> in order from first to last and discards the results.  Returns an unspecified value.</p>
+      <h2 id="Inputandoutput">Input and output</h2>
+      <p><span class="monospace">(read-[type]vector </span><i>k</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Read <i>k</i> * <i>b</i> bytes from <i>port</i> into a newly allocated [type]vector and returns it.</p>
+      <p><span class="monospace">(read-[type]vector! </span><i>[type]vector</i> [ <i>port</i> [ <i>start</i> [ <i>end</i> ] ] ]<span class="monospace">)</span></p>
+      <p>Read <i>end * b - start * b</i> bytes from <i>port</i> into <i>[type]vector</i> starting at <i>start</i>.  Returns the number of bytes read divided by <i>b</i>, or an eof object if no bytes are available.  If the number of bytes available is not a multiple of <i>b</i>, the value of the element of <i>[type]vector</i> for which <i>b</i> bytes are not available is unspecified.</p>
+      <p><span class="monospace">(write-[type]vector </span><i>[type]vector [ </i>port<i> [ </i>start<i> [ </i>end'' ] ] ]<span class="monospace">)</span></p>
+      <p>Write <i>end * b - start * b</i> bytes to <i>port</i> from <i>[type]vector</i> starting at <i>start</i>.  Returns an unspecified value.</p>
+      <h2 id="TODO">TODO</h2><span class="monospace">[type]vector-fold, [type]vector-fold-right
+[type]vector-unfold, [type]vector-unfold-right, [type]vector-unfold!
+[type]vector-index, [type]vector-index-right
+[type]vector-skip, [type]vector-skip-right
+[type]vector-binary-search
+[type]vector-any, [type]vector-every, [type]vector-partition
+[type]vector-reverse-copy, [type]vector-reverse-copy!
+[type]vector-count, [type]vector-cumulate
+[type]vector-swap!, [type]vector-fill!
+[type]vector-reverse!, [type]vector-copy!, [type]vector-reverse-copy!
+[type]vector-unfold!, [type]vector-unfold-right!
+</span>
+      <h2 id="Packaging">Packaging</h2>
+      <p>Since there are many procedures, it makes sense to factor this into separate libraries.  Most programs won't require all the representation types, so factoring horizontally into 12 libraries based on that is a simple approach.  If the result is still too large, then we can factor vertically based on expected uses for the function.  SRFI 4 provides just 8 procedures per type: the basic and multi-argument constructors, the predicate, the basic accessor, the basic mutator, length, and conversion to and from lists.</p>
+      <h2 id="Implementation">Implementation</h2>
+      <p><a href="https://gist.github.com/ijp/1e0e67ff93c486f66fc8">This syntax-rules macro by Ian Price</a> will be helpful in implementing lots of similar but not identical procedures for the 12 types.</p></div></body></html>

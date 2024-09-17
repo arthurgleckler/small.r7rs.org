@@ -1,0 +1,49 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NetworkEndpointsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NetworkEndpointsCowan.md">NetworkEndpointsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Network&shy;Endpoints&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-10-31 01:33:16</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/NetworkEndpointsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/NetworkEndpointsCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Network endpoints are a disjoint type representing a network host name or address plus a port.</p>
+      <h2 id="Definitions">Definitions</h2>
+      <p>In the following descriptions, <i>host</i> can be:</p>
+      <ul>
+        <li>a string in the form of an IPv4 dotted-decimal address</li></ul>
+      <ul>
+        <li>a string in the form of an IPv6 colon-hexadecimal address (if supported by the operating system)</li></ul>
+      <ul>
+        <li>a string representing  host name to be looked up according to whatever operating system conventions exist, if any</li></ul>
+      <ul>
+        <li>a bytevector of the appropriate length, such as 4 for IPv4 or 16 for IPv6, representing a host address in binary format.</li></ul>
+      <ul>
+        <li><span class="monospace">#t</span>, which means &quot;any of the IP addresses of the local host&quot;</li></ul>
+      <p>Note that appropriate values may refer to broadcast or multicast addresses.</p>
+      <p><i>Network-port</i> can be a positive exact integer or a string.  The meaning of a string is implementation-dependent, but is intended to be a standardized service name.  Note that these ports are not Scheme ports.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(make-network-endpoint </span>[<i>host</i>]<span class="monospace"> </span>[<i>network-port</i>]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated network endpoint.  If <i>network-port</i> is omitted or 0, then it is an error unless <i>host</i> refers to the local host, and the endpoint specifies an unused port to be assigned by the operating system.  If <i>network-port</i> is present but <i>local-address</i> is omitted or has the value <span class="monospace">#t</span>, the endpoint specifies the given port on the local host accessed by any address.  Otherwise, the endpoint specifies a particular host and port.  If there is just one argument, it is <i>network-port</i>, as this is the more common case.</p>
+      <p><span class="monospace">(network-endpoint? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a network endpoint and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(network-endpoint-bytevector-address </span><i>endpoint</i><span class="monospace">)</span></p>
+      <p>Returns the host specified by <i>endpoint</i> in bytevector format.  The value returned need not be the same as the value passed to <span class="monospace">make-network-endpoint</span>, but must be acceptable to another invocation of <span class="monospace">make-network-endpoint</span>.  If the host was specified as <span class="monospace">#t</span>, returns <span class="monospace">#t</span>.</p>
+      <p><span class="monospace">(network-endpoint-string-address </span><i>endpoint</i><span class="monospace">)</span></p>
+      <p>Returns the host specified by <i>endpoint</i> in dotted-decimal or dotted-hexadecimal format.  The value returned need not be the same as the value passed to <span class="monospace">make-network-endpoint</span>, but must be acceptable to another invocation of <span class="monospace">make-network-endpoint</span>.  If the host was specified as <span class="monospace">#t</span>, returns <span class="monospace">#t</span>.</p>
+      <p><span class="monospace">(network-endpoint-host </span><i>endpoint</i><span class="monospace">)</span></p>
+      <p>Returns the host specified by <i>endpoint</i> as a host name, or if the host name is not known or does not exist, in dotted-decimal or dotted-hexadecimal format.  The value returned need not be the same as the value passed to <span class="monospace">make-network-endpoint</span>, but must be acceptable to another invocation of <span class="monospace">make-network-endpoint</span>.  If the host was specified as <span class="monospace">#t</span>, returns <span class="monospace">#t</span>.</p>
+      <p><span class="monospace">(network-endpoint-port </span><i>endpoint</i><span class="monospace">)</span></p>
+      <p>Returns the network port specified by <i>endpoint</i> as a number.  The value returned need not be the same as the value passed to <span class="monospace">make-network-endpoint</span>, but must be acceptable to another invocation of <span class="monospace">make-network-endpoint</span>.</p></div></body></html>

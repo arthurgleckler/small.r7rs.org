@@ -1,0 +1,72 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>159: base environments</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 159: <span class="summary">base environments</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-07 09:06:45</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/159/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-04-19 20:40:26</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>What is the base environment provided by the repl,
+scripts, and the result of (scheme-report-environment 7)?</p>
+        <p>The intention was the base script environment was empty,
+scheme-report-environment was (scheme base), and repls
+were an implementation-defined superset thereof, but there
+are other options and we need to clarify this.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-04-20 02:19:43</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I'm thinking that scheme-report-environment just doesn't make sense any more.  I think that scripts and the REPL should both be implementation-dependent supersets of (scheme base) -- indeed, I don't see any point in distinguishing between the two.  Both scripting and interaction are environments in which convenience should trump bureaucracy.</p>
+              <p>R6RS has a procedure <span class="monospace">environment</span> which accepts multiple arguments which look like import specs, and returns an environment containing the specified names.  So <span class="monospace">(environment)</span> is equivalent to R5RS <span class="monospace">(empty-environment)</span>, <span class="monospace">(environment '(scheme base))</span> returns a base environment, and so on.  That makes a lot of sense to me.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 18:15:34</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted for the original intent as described above.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 20:47:56</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-07 09:06:45</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We now talk of programs rather than scripts, and <span class="monospace">(scheme-report-environment 5)</span> returns the same as <span class="monospace">(environment '(scheme r5rs))</span>, but the basic intent is preserved: programs start with an empty environment, REPLs don't.</p></div></div></div></div></div></body></html>

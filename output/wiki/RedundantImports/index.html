@@ -1,0 +1,147 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RedundantImports</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RedundantImports.md">RedundantImports</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Redundant&shy;Imports</h1>
+    <div class="wiki metadata">
+      <div class="author">WillClinger</div>
+      <div class="time">2015-06-05 17:51:18</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/RedundantImports/history">history</a></div>
+      <div class="source"><a href="/wiki/RedundantImports/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Importing two or more different libraries that export the same identifier with the same binding is okay in both R7RS and R6RS libraries and programs.  Importing the same identifier with different bindings is an error in R7RS and signals an error in R6RS systems, but should be permitted by an R7RS REPL (R7RS section 5.2).  This is tested by the following program:</p><span class="monospace">(define-library (local xy)
+  (export list car cdr x y)
+  (import (scheme base))
+  (begin
+   (define x 101)
+   (define y 202)))
+(define-library (local x)
+  (export car x)
+  (import (scheme base) (local xy)))
+(define-library (local y)
+  (export cdr y)
+  (import (scheme base) (local xy)))
+(import (scheme base) (scheme write) (local x) (local y))
+(begin
+ (write (list x (car (cdr (list x y)))))
+ (newline))
+</span>
+      <p>For R6RS, change <span class="monospace">define-library</span> to <span class="monospace">library</span>, <span class="monospace">(scheme base)</span> to <span class="monospace">(rnrs base)</span>, and <span class="monospace">(scheme write)</span> to <span class="monospace">(rnrs io simple)</span>.  To test different bindings, add new definitions of <span class="monospace">x</span> and <span class="monospace">y</span> to <span class="monospace">(local x)</span> and <span class="monospace">(local y)</span> respectively.</p>
+      <table><tr><td class="default">
+            <p><b>system</b></p></td><td class="default">
+            <p><b>version</b></p></td><td class="default">
+            <p><b>mode</b></p></td><td class="default">
+            <p><b>same binding</b></p></td><td class="default">
+            <p><b>different binding</b></p></td><td class="default">
+            <p><b>different binding in REPL</b></p></td></tr><tr><td class="default">
+            <p>Chibi</p></td><td class="default">
+            <ol class="number" start="0">
+              <li>7</li></ol></td><td class="default">
+            <p>r7rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>bug?</p></td><td class="default">
+            <p>bug?</p></td></tr><tr><td class="default">
+            <p>Chicken</p></td><td class="default">
+            <ol class="number" start="4">
+              <li>9.0.1</li></ol></td><td class="default">
+            <p>r7rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>warned</p></td><td class="default">
+            <p>okay</p></td></tr><tr><td class="default">
+            <p>Foment</p></td><td class="default">
+            <ol class="number" start="0">
+              <li>4 (debug)</li></ol></td><td class="default">
+            <p>r7rs</p></td><td class="default">
+            <p>bug?</p></td><td class="default">
+            <p>bug?</p></td><td class="default">
+            <p>bug?</p></td></tr><tr><td class="default">
+            <p>Gauche</p></td><td class="default">
+            <ol class="number" start="0">
+              <li>9.4</li></ol></td><td class="default">
+            <p>r7rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>accepted</p></td><td class="default">
+            <p>okay</p></td></tr><tr><td class="default">
+            <p>Kawa</p></td><td class="default">
+            <ol class="number" start="2">
+              <li>0</li></ol></td><td class="default">
+            <p>r7rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>rejected</p></td><td class="default">
+            <p>okay</p></td></tr><tr><td class="default">
+            <p>Larceny</p></td><td class="default">
+            <ol class="number" start="0">
+              <li>98</li></ol></td><td class="default">
+            <p>r7rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>rejected</p></td><td class="default">
+            <p>okay</p></td></tr><tr><td class="default">
+            <p>Petit Larceny</p></td><td class="default">
+            <ol class="number" start="0">
+              <li>98</li></ol></td><td class="default">
+            <p>r7rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>rejected</p></td><td class="default">
+            <p>okay</p></td></tr><tr><td class="default">
+            <p>Sagittarius</p></td><td class="default">
+            <ol class="number" start="0">
+              <li>6.4</li></ol></td><td class="default">
+            <p>r7rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>rejected</p></td><td class="default">
+            <p>rejected</p></td></tr><tr><td class="default">
+            <p>Larceny</p></td><td class="default">
+            <ol class="number" start="0">
+              <li>98</li></ol></td><td class="default">
+            <p>r6rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>rejected</p></td><td class="default">
+            <p>n/a</p></td></tr><tr><td class="default">
+            <p>Petit Larceny</p></td><td class="default">
+            <ol class="number" start="0">
+              <li>98</li></ol></td><td class="default">
+            <p>r6rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>rejected</p></td><td class="default">
+            <p>n/a</p></td></tr><tr><td class="default">
+            <p>Petite Chez</p></td><td class="default">
+            <ol class="number" start="8">
+              <li>4</li></ol></td><td class="default">
+            <p>r6rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>rejected</p></td><td class="default">
+            <p>n/a</p></td></tr><tr><td class="default">
+            <p>Racket</p></td><td class="default">
+            <ol class="number" start="6">
+              <li>1.1</li></ol></td><td class="default">
+            <p>r6rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>rejected ?</p></td><td class="default">
+            <p>n/a</p></td></tr><tr><td class="default">
+            <p>Sagittarius</p></td><td class="default">
+            <ol class="number" start="0">
+              <li>6.4</li></ol></td><td class="default">
+            <p>r6rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>rejected</p></td><td class="default">
+            <p>n/a</p></td></tr><tr><td class="default">
+            <p>Vicare</p></td><td class="default">
+            <ol class="number" start="0">
+              <li>3d7</li></ol></td><td class="default">
+            <p>r6rs</p></td><td class="default">
+            <p>okay</p></td><td class="default">
+            <p>rejected</p></td><td class="default">
+            <p>n/a</p></td></tr></table>
+      <p>The R6RS effectively forbids REPLs.</p>
+      <p>In some cases, indicated by &quot;bug?&quot;, the observed behavior appears to indicate a bug that's unrelated to the issue tested here.</p>
+      <p>See also the list of real and potential <a href="/wiki/SrfiInteroperability">conflicts between SRFIs</a>.</p></div></body></html>

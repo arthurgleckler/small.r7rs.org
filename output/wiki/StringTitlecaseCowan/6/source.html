@@ -1,0 +1,52 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki StringTitlecaseCowan version 6</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki StringTitlecaseCowan version 6</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>StringTitlecaseCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Rationale ==
+
+This SRFI defines R7RS-style Unicodely correct `char-titlecase?`, `char-titlecase`, and `string-titlecase` procedures similar to those specified in [http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-2.html#node_sec_1.2 R6RS] and [http://srfi.schemers.org/srfi-13/srfi-13.html SRFI 13].  These didn't seem useful enough to include in the small language, but are a useful building block for future SRFIs.  The algorithm does not depend on the availability of full Unicode, however, and will work just as well with a partial or even purely ASCII repertoire.
+
+Consider the string `ﬂoo bar`, which begins with a ligature of the characters `fl`.  The Unicode way of titlecasing this string is to treat the ligature the same as the two characters `fl`, in which case the result is `Floo Bar`.  However, by the strict letter of R6RS, the `ﬂ` character must be passed to `char-titlecase`, which in this case will return its argument unchanged, and the result is `ﬂoo Bar`.  What is more, if the `ﬂ` character is not even seen as a casing letter, then the result will be `ﬂOo Bar`.  Different Schemes show all of these behaviors.
+
+== Specification ==
+
+`(char-titlecase? `''char''`)`
+
+Returns `#t` if ''char'' is a character with the Unicode property Titlecase, and `#f` otherwise.  (Not in R6RS.)
+
+`(char-titlecase `''char''`)`
+
+Returns the titlecase equivalent of ''char'', if that character exists in the implementation, and ''char'' otherwise.  Note that the titlecase equivalent is not typically a titlecase character: for most values of ''char'', it is either the uppercase equivalent of ''char'' or else ''char'' itself.  Note that language-sensitive mappings are not used.  (The same as the R6RS equivalent.)
+
+`(string-titlecase `''string''`)`
+
+This procedure applies the Unicode full string lowercasing algorithm to its argument.  However, any character preceded by a non-cased character, or whose index is ''start'', is processed by a different algorithm.  If such a character has a multi-character titlecase mapping specified by Unicode, and all the characters of the mapping are supported by the implementation, then it is replaced by that mapping.  Otherwise, it is replaced by its single-character titlecase mapping as if by `char-titlecase`.  The result of the application of these algorithms is returned.
+
+In certain cases, the result differs in length from the argument. If the result is equal to the argument in the sense of `string=?`, the argument may be returned. Note that language-sensitive mappings are not used.  (The R6RS version does not make use of multi-character titlecase mappings.)
+</pre>
+    <h2>time</h2>
+    <pre>2015-11-19 08:04:24</pre>
+    <h2>version</h2>
+    <pre>6</pre></body></html>

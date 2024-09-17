@@ -1,0 +1,70 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ApplyArgsLimit version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ApplyArgsLimit version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>ApplyArgsLimit</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>These tests try to find out the practical limits of the length of ''list'' in `(apply + `''list''`)`.  I used `make-list` to construct a list of one million zeros and invoked the above `apply`.  If it worked, I tested no further; if it crashed, I read the error messages and when necessary tested with shorter lists.
+
+These tests were done on a 64-bit Linux system.
+
+1000000 arguments works correctly:  Racket, Gauche, Bigloo, Kawa, SISC, SCM, Larceny, !IronScheme, NexJ, JScheme, !SigScheme, Scheme 9, KSi, Shoe, Rep, Schemik, !FemtoLisp, Dfsch, Inlab, Oaklisp, Sagittarius, Chibi
+
+500000 arguments works correctly: Scheme48/scsh
+
+100000 arguments works correctly: S7
+
+60000 arguments works correctly: Guile
+
+48000 arguments works correctly: !TinyScheme
+
+32750 arguments works correctly: STklos
+
+16000 arguments works correctly: SXM
+
+14800 arguments works correctly: Llava
+
+12000 arguments works correctly: Mosh
+
+10000 arguments works correctly: XLisp, Elk
+
+6500 arguments works correctly: Sizzle
+
+1000 arguments works correctly: BDC
+
+Hard limit is 126937 arguments: MIT
+
+Hard limit is 8192 arguments: Gambit, Vicare
+
+Hard limit is 2048 arguments: Chicken
+
+Hard limit is 2026 arguments: Foment
+
+Hard limit is 998 arguments: RScheme
+
+Cannot run test: UMB, Owl Lisp
+</pre>
+    <h2>time</h2>
+    <pre>2014-12-05 09:44:01</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

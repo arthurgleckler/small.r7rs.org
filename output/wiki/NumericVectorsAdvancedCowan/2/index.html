@@ -1,0 +1,49 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NumericVectorsAdvancedCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NumericVectorsAdvancedCowan.md">NumericVectorsAdvancedCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Numeric&shy;Vectors&shy;Advanced&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-23 05:01:16</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/NumericVectorsAdvancedCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/NumericVectorsAdvancedCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This page is an extension of <a href="/wiki/NumericVectorsCowan">NumericVectorsCowan</a> that adds numeric vector versions of the following <a href="http://srfi.schemers.org/srfi-43/srfi-43.html">SRFI 43</a> procedures:</p>
+      <h2 id="Foldsandunfolds">Folds and unfolds</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-fold </span><i>kons knil bytevector1 bytevector2</i> ...<span class="monospace">)</span> -&gt; value</p>
+      <p><span class="monospace">(&lt;type&gt;vector-fold </span><i>kons knil bytevector1 bytevector2</i> ...<span class="monospace">)</span> -&gt; value</p>
+      <p><span class="monospace">(&lt;type&gt;vector-unfold </span><i>proc length initial-seed</i> ...<span class="monospace">)</span> -&gt; bytevector</p>
+      <p><span class="monospace">(&lt;type&gt;vector-unfold-right </span><i>proc length initial-seed</i> ...<span class="monospace">)</span> -&gt; bytevector</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(&lt;type&gt;vector= </span><i>= bytevector1 bytevector2</i> ...<span class="monospace">)</span> -&gt; boolean</p>
+      <h2 id="Iteration">Iteration</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-map! </span><i>proc bytevector1 bytevector2</i> ...<span class="monospace">)</span></p>
+      <p>Similar to <span class="monospace">&lt;type&gt;vector-map</span>, but rather than mapping the new elements into a newly allocated bytevector, the results are destructively inserted into `<span class="monospace">bytevector1</span>`.  Returns an unspecified value.  Returns an unspecified value.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-count </span><i>predicate bytevector1 bytevector2</i> ...<span class="monospace">)</span></p>
+      <p>Counts the number of parallel elements in the bytevectors, when viewed as &lt;type&gt;vectors&lt;/i&gt;, that satisfy <i>predicate</i>, and returns the count as an exact non-negative integer.  The procedure is applied for each index <i>i</i> in the range from 0 (inclusive) to <i>length</i> (exclusive), where <i>length</i> is the length of the smallest bytevector argument, to <i>i</i> and the <i>i</i>th element in each bytevector when viewed as a &lt;type&gt;vector, in order.</p>
+      <h2 id="Searching">Searching</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-index </span><i>predicate bytevector1 bytevector2</i> ...<span class="monospace">)</span> -&gt; exact nonnegative integer or <span class="monospace">#f</span></p>
+      <p><span class="monospace">(&lt;type&gt;vector-index-right </span><i>predicate bytevector1 bytevector2</i> ...<span class="monospace">)</span> -&gt; exact nonnegative integer or <span class="monospace">#f</span></p>
+      <p><span class="monospace">(&lt;type&gt;vector-skip </span>predicate bytevector1 bytevector2'' ...<span class="monospace">)</span> -&gt; exact nonnegative integer or <span class="monospace">#f</span></p>
+      <p><span class="monospace">(&lt;type&gt;vector-skip-right </span><i>predicate bytevector1 bytevector2</i> ...<span class="monospace">)</span> -&gt; exact nonnegative integer or #f</p>
+      <p><span class="monospace">(&lt;type&gt;vector-binary-search </span><i>bytevector value cmp</i><span class="monospace">)</span> -&gt; exact nonnegative integer or <span class="monospace">#f</span></p>
+      <p><span class="monospace">(&lt;type&gt;vector-any predicate </span><i>bytevector1 bytevector2</i> ...<span class="monospace">)</span> -&gt; value or <span class="monospace">#f</span></p>
+      <p><span class="monospace">(&lt;type&gt;vector-every predicate </span><i>bytevector1 bytevector2</i> ...<span class="monospace">)</span> -&gt; value or <span class="monospace">#f</span></p>
+      <h2 id="Swap">Swap</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-swap! </span><i>bytevector i j</i><span class="monospace">)</span> -&gt; unspecified</p>
+      <p>Exchanges the values of the locations in <i>bytevector</i>, when viewed as a &lt;type&gt;vector, at indices <i>i</i> and <i>j</i>.</p>
+      <h2 id="Reverseoperations">Reverse operations</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-reverse! </span><i>bytevector</i> [ <i>start</i> [ <i>end</i> ] ] <span class="monospace">)</span></p>
+      <p>Destructively reverses the order of the elements in <i>bytevector</i> from <i>start</i> to <i>end</i>.</p>
+      <p>The <span class="monospace">&lt;type&gt;vector-reverse-copy</span>, <span class="monospace">&lt;type&gt;reverse-vector-&gt;vector</span>, <span class="monospace">&lt;type&gt;reverse-vector-&gt;list</span>, <span class="monospace">&lt;type&gt;reverse-list-&gt;vector</span>, and <span class="monospace">&lt;type&gt;reverse-list-&gt;list</span> procedures are identical to their regular counterparts, but produce the bytevector argument, when viewed as a &lt;type&gt;vector, in reverse element order.</p></div></body></html>

@@ -1,0 +1,37 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ConsentDocket</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ConsentDocket.md">ConsentDocket</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Consent&shy;Docket</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-11-17 05:54:29</div>
+      <div class="version">25<span class="comment"></span><a href="/wiki/ConsentDocket/history">history</a></div>
+      <div class="source"><a href="/wiki/ConsentDocket/25/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="WG2ConsentDocket">WG2 Consent Docket</h2>
+      <p>The following items will be approved without a formal vote unless someone objects, in which case they will be moved to another docket.  See <a href="/wiki/WG2Dockets">WG2Dockets</a> for other dockets.</p>
+      <p>Note: &quot;Prefix stripping&quot; means that prefixes such as <span class="monospace">fx</span>, <span class="monospace">fl</span>, or <span class="monospace">bitwise-</span> are removed from identifiers exported by this package.  That way, users can add back their own prefixes using the facilities of <span class="monospace">import</span>.</p>
+      <p>Explicit renaming macros: Uses the <span class="monospace">er-macro-transformer</span> keyword (bare lambdas are unsupported).  Three arguments are provided to transformers: <span class="monospace">form rename compare</span>.</p>
+      <p>Fixnum arithmetic: The R6RS <span class="monospace">arithmetic fixnum</span> library with prefix stripping.  [Orange]</p>
+      <p>Format combinators: Alex Shinn's <a href="http://synthcode.com/scheme/fmt/">fmt library</a>, with possibly a touch of renaming.  The C formatting library is excluded.</p>
+      <p>Generalized getters and setters: <a href="http://srfi.schemers.org/srfi-17/srfi-17.html">SRFI 17</a>.</p>
+      <p>Getopt/args-fold:  <a href="http://srfi.schemers.org/srfi-37/srfi-37.html">SRFI 37</a>.</p>
+      <p>Pretty-printer: see Format combinators</p>
+      <p><a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a>, list library: As written, but excluding  <span class="monospace">cons</span>, <span class="monospace">pair?</span>, <span class="monospace">null?</span>, <span class="monospace">car</span>, <span class="monospace">cdr</span>, <span class="monospace">caar</span> ... <span class="monospace">cddddr</span>, <span class="monospace">set-car!</span>, <span class="monospace">set-cdr!</span>, <span class="monospace">list</span>, <span class="monospace">append</span>, <span class="monospace">reverse</span>, <span class="monospace">length</span>, <span class="monospace">list-ref</span>, <span class="monospace">map</span>, <span class="monospace">for-each</span>, <span class="monospace">memq</span>, <span class="monospace">memv</span>, <span class="monospace">member</span>, <span class="monospace">assq</span>, <span class="monospace">assv</span>, <span class="monospace">assoc</span>, which are all in the <span class="monospace">(scheme base)</span> and <span class="monospace">(scheme cxr)</span> libraries in a SRFI-1-compatible way.  <b>Specification bug in SRFI 1: <span class="monospace">any</span>, <span class="monospace">every</span>, and <span class="monospace">list-index</span> should omit the words &quot;and returning a boolean result&quot;.</b>  [Red]</p>
+      <p><a href="http://srfi.schemers.org/srfi-2/srfi-2.html">SRFI 2</a>, <span class="monospace">and-let*</span> macro: As written.</p>
+      <p><a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a>, character set library: As written. [Red]</p>
+      <p><a href="http://srfi.schemers.org/srfi-31/srfi-31.html">SRFI 31</a>, <span class="monospace">rec</span> macro: As written.</p>
+      <p><a href="http://srfi.schemers.org/srfi-115">SRFI 115</a>, regular expressions.</p>
+      <h3 id="Obsoleteitems">Obsolete items</h3>
+      <p>The following items formerly on this docket are now part of R7RS-small:  binary ports, the R6RS exception (not condition) system, datum labels (SRFI 38), <span class="monospace">when</span> and <span class="monospace">unless</span>.</p></div></body></html>

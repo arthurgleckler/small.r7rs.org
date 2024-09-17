@@ -1,0 +1,184 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #49</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #49</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2011-01-24 06:40:58</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>There are code which uses tricks to report &lt;undefined&gt; values, like this one:
+(if #f #f)   
+
+Some cleaner mechanism has to be proposed for returning &lt;undefined&gt; values. 
+</pre>
+    <h2>id</h2>
+    <pre>49</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>medernac</pre>
+    <h2>priority</h2>
+    <pre>minor</pre>
+    <h2>reporter</h2>
+    <pre>medernac</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>undefined values</pre>
+    <h2>time</h2>
+    <pre>2010-04-14 20:04:29</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2011-01-24 06:40:58</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 voted not to have an undefined-value API.</pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1295822458000000</pre>
+    <h2>ticket</h2>
+    <pre>49</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:40:58</pre>
+    <h2>Change at time 2011-01-24 06:40:58</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1295822458000000</pre>
+    <h2>ticket</h2>
+    <pre>49</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:40:58</pre>
+    <h2>Change at time 2011-01-24 06:40:58</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>assigned</pre>
+    <h2>raw-time</h2>
+    <pre>1295822458000000</pre>
+    <h2>ticket</h2>
+    <pre>49</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:40:58</pre>
+    <h2>Change at time 2010-04-22 15:04:58</h2>
+    <h2>author</h2>
+    <pre>medernac</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>
+I agree that the best would be to standardize &quot;void&quot;, at least I known that Chicken, Gambit, Guile and STklos implementations have it.
+
+Then we must make sure that forms returning unspecified/undefined values returns (void).
+
+</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1271923498000000</pre>
+    <h2>ticket</h2>
+    <pre>49</pre>
+    <h2>time</h2>
+    <pre>2010-04-22 15:04:58</pre>
+    <h2>Change at time 2010-04-21 07:09:41</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Yes, there is a difference, but I think this is talking specifically about unspecified values. I would say that the VOID thunk is as good as any for a procedure that explicitly returns an unspecified value. This is different than something like what is filled in a vector. You don't want to force vectors to contain any sort of data, because this could be a very serious performance problem. It's much better to let them be filled with whatever the implementation wants to fill it at the time. The 2-argument version of that function should be used when you want to guarantee something about the contents: (make-vector k #f). It's not dangerous to have these values be unreliable, because they'll still be something, even if you can't predict what they will be. It will not cause Scheme to crash, and it should not. And yes, there is a big difference between an undefined or unspecified value and an unbound variable. A variable that is unbound has a specific name, but no bindings, whereas an unspecified value may have a specific single representation, but it probably is bound to very few names, or locations, if any.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1271808581000000</pre>
+    <h2>ticket</h2>
+    <pre>49</pre>
+    <h2>time</h2>
+    <pre>2010-04-21 07:09:41</pre>
+    <h2>Change at time 2010-04-19 14:30:28</h2>
+    <h2>author</h2>
+    <pre>medernac</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Let it be clearer:
+
+I know there are a proposed mechanism in R6RS with exceptions, however there are cases where a specific &quot;undefined&quot; value are to be returned. 
+For instance when an empty vector is created (make-vector k), depending on the implementation different Schemes give different values inside the vector cells, this is dangerous if these values are used and cannot be identified as &quot;undefined&quot; values.
+
+Question: Is there a difference between unbound variable and a variable with undefined value ? to me yes, because the unbound variable is not allocated, whereas a variable with undefined value is allocated.
+
+</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1271662228000000</pre>
+    <h2>ticket</h2>
+    <pre>49</pre>
+    <h2>time</h2>
+    <pre>2010-04-19 14:30:28</pre>
+    <h2>Change at time 2010-04-19 14:30:28</h2>
+    <h2>author</h2>
+    <pre>medernac</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>medernac</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1271662228000000</pre>
+    <h2>ticket</h2>
+    <pre>49</pre>
+    <h2>time</h2>
+    <pre>2010-04-19 14:30:28</pre>
+    <h2>Change at time 2010-04-19 14:30:28</h2>
+    <h2>author</h2>
+    <pre>medernac</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>assigned</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1271662228000000</pre>
+    <h2>ticket</h2>
+    <pre>49</pre>
+    <h2>time</h2>
+    <pre>2010-04-19 14:30:28</pre></body></html>

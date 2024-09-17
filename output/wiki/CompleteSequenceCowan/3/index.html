@@ -1,0 +1,96 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CompleteSequenceCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CompleteSequenceCowan.md">CompleteSequenceCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Complete&shy;Sequence&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-08-27 20:16:38</div>
+      <div class="version">3<span class="comment">Added tables</span><a href="/wiki/CompleteSequenceCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/CompleteSequenceCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>The WG1 charter says &quot;Self consistency is an important objective, which may require adding new features.&quot;  Scheme has three sequence types: lists, strings, and vectors, but the support for them is not consistent.  Lists have the most support, strings and vectors have much less, and inconsistently so.  I propose providing the following procedures, some of which are R5RS, some R6RS, some in various SRFIs, and some new:</p>
+      <table><tr><td class="default">
+            <p>Type of procedure</p></td><td class="default">
+            <p>Lists</p></td><td class="default">
+            <p>Strings</p></td><td class="default">
+            <p>Vectors</p></td><td class="default">
+            <p>Tables</p></td></tr><tr><td class="default">
+            <p>Basic constructor</p></td><td class="default">
+            <p><span class="monospace">make-list</span> (SRFI 1)</p></td><td class="default">
+            <p><span class="monospace">make-string</span></p></td><td class="default">
+            <p><span class="monospace">make-vector</span></p></td><td class="default">
+            <p><span class="monospace">make-table</span></p></td></tr><tr><td class="default">
+            <p>Variadic constructor</p></td><td class="default">
+            <p><span class="monospace">list</span></p></td><td class="default">
+            <p><span class="monospace">string</span></p></td><td class="default">
+            <p><span class="monospace">vector</span></p></td><td class="default">
+            <p><span class="monospace">table</span></p></td></tr><tr><td class="default">
+            <p>Copy constructor</p></td><td class="default">
+            <p><span class="monospace">copy-list</span> (SRFI 1)</p></td><td class="default">
+            <p><span class="monospace">copy-string</span></p></td><td class="default">
+            <p><span class="monospace">copy-vector</span> (SRFI 43)</p></td><td class="default">
+            <p><span class="monospace">copy-table</span></p></td></tr><tr><td class="default">
+            <p>Basic predicate</p></td><td class="default">
+            <p><span class="monospace">list?</span></p></td><td class="default">
+            <p><span class="monospace">string?</span></p></td><td class="default">
+            <p><span class="monospace">vector?</span></p></td><td class="default">
+            <p><span class="monospace">table?</span></p></td></tr><tr><td class="default">
+            <p>Sequence length</p></td><td class="default">
+            <p><span class="monospace">length</span></p></td><td class="default">
+            <p><span class="monospace">string-length</span></p></td><td class="default">
+            <p><span class="monospace">vector-length</span></p></td><td class="default">
+            <p><span class="monospace">table-length</span></p></td></tr><tr><td class="default">
+            <p>Element access?</p></td><td class="default">
+            <p><span class="monospace">list-ref</span></p></td><td class="default">
+            <p><span class="monospace">string-ref</span></p></td><td class="default">
+            <p><span class="monospace">vector-ref</span></p></td><td class="default">
+            <p><span class="monospace">table-ref</span></p></td></tr><tr><td class="default">
+            <p>Element mutator</p></td><td class="default">
+            <p><span class="monospace">list-set!</span> (proposed)</p></td><td class="default">
+            <p><span class="monospace">string-set!</span></p></td><td class="default">
+            <p><span class="monospace">vector-set!</span></p></td><td class="default">
+            <p><span class="monospace">table-set!</span></p></td></tr><tr><td class="default">
+            <p>Map function</p></td><td class="default">
+            <p><span class="monospace">map</span></p></td><td class="default">
+            <p><span class="monospace">string-map</span> (SRFI 13 extended)</p></td><td class="default">
+            <p><span class="monospace">vector-map</span> (R6RS)</p></td><td class="default">
+            <p><span class="monospace">table-map</span></p></td></tr><tr><td class="default">
+            <p>Map side effects</p></td><td class="default">
+            <p><span class="monospace">for-each</span></p></td><td class="default">
+            <p><span class="monospace">string-for-each</span> (proposed)</p></td><td class="default">
+            <p><span class="monospace">vector-for-each</span> (R6RS)</p></td><td class="default">
+            <p><span class="monospace">table-for-each</span></p></td></tr><tr><td class="default">
+            <p>Convert to list</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">string-&gt;list</span></p></td><td class="default">
+            <p><span class="monospace">vector-&gt;list</span></p></td><td class="default">
+            <p><span class="monospace">table-&gt;list</span></p></td></tr><tr><td class="default">
+            <p>Convert to string</p></td><td class="default">
+            <p><span class="monospace">list-&gt;string</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">vector-&gt;string</span> (proposed)</p></td><td class="default">
+            <p>---</p></td></tr><tr><td class="default">
+            <p>Convert to vector</p></td><td class="default">
+            <p><span class="monospace">list-&gt;vector</span></p></td><td class="default">
+            <p><span class="monospace">string-&gt;vector</span> (proposed)</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td></tr><tr><td class="default">
+            <p>Convert to table</p></td><td class="default">
+            <p><span class="monospace">list-&gt;table</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td></tr></table>
+      <p>In summary: 33 procedures, 23 in R5RS, 2 in R6RS, 2 in SRFI 1, 1 in SRFI 43, 1 in SRFI-13 but extended to take multiple strings, 4 novel but obvious.</p>
+      <p>I further propose that the map and for-each groups should be specified to implicitly truncate all sequence arguments to the length of the shortest sequence.</p>
+      <p>Update: I have added an additional row and column to this table that reflects the <a href="/wiki/TablesCowan">TablesCowan</a> proposal.</p></div></body></html>

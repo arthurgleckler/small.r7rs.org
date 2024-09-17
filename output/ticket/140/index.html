@@ -1,0 +1,80 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>140: Removing `quotient`, `remainder`, `modulo`</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 140: <span class="summary">Removing `quotient`, `remainder`, `modulo`</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-08-27 06:57:41</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/140/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-02-03 06:17:13</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Are we removing the IEEE Scheme functions <span class="monospace">quotient</span>, <span class="monospace">remainder</span>, and <span class="monospace">modulo</span> from WG1 Scheme?  If so, we need a special justification, due to the charter text:</p>
+        <p>Existing features of IEEE Scheme may be removed only if a strong case can be made that they are fundamentally flawed. Insofar as practical, the language should be backwards compatible with the IEEE standard, the R5RS standard, and an appropriate subset of the R6RS standard.</p>
+        <p>Here's what <a href="/wiki/DivisionRiastradh">DivisionRiastradh</a> says:</p>
+        <p>Unfortunately, most programming languages give nondescript names such as DIV(IDE), QUOT(IENT), MOD(ULO), and REM(AINDER) to these operations. The language should make clear to programmers what division operations their programs are performing, especially when negative dividends and divisors can arise, but perhaps may not often arise during testing.</p>
+        <p>[...]</p>
+        <p>The R5RS gives the names <span class="monospace">quotient</span> and <span class="monospace">remainder</span> to the truncating division operator pair, and the name <span class="monospace">modulo</span> to the remainder half of the flooring division operator pair. For all these three procedures in the R5RS, the dividend may be any integer, and the divisor may be any nonzero integer.</p>
+        <p>On the other hand, we may prefer relegating them to a backward-compatibility module.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 18:07:16</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted to keep these.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-09 23:41:14</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I'm reopening this ticket, because the circumstances have changed:</p>
+              <ul>
+                <li>We now have the R5RS library, which captures all the R5RS names including these.</li></ul>
+              <ul>
+                <li>We no longer have the division library, so both old and new sets are in the base library, bloating it.</li></ul>
+              <ul>
+                <li>We have set a precedent by adopting the R6RS names <span class="monospace">inexact</span> and <span class="monospace">exact</span>, so we are now interpreting the charter as saying that function documented in IEEE must not be removed, rather than that names in IEEE must not be changed, particularly since the old names are still available in another library.</li></ul></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-25 00:40:01</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 decided to make no change.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 06:57:41</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

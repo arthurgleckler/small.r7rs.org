@@ -1,0 +1,72 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>49: undefined values</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 49: <span class="summary">undefined values</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-01-24 06:40:58</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">medernac</div>
+      <div class="priority">minor</div>
+      <div class="reporter">medernac</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/49/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-04-14 20:04:29</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>There are code which uses tricks to report &lt;undefined&gt; values, like this one:
+(if #f #f)</p>
+        <p>Some cleaner mechanism has to be proposed for returning &lt;undefined&gt; values.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">medernac</div>
+            <div class="time">2010-04-19 14:30:28</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">medernac</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">assigned</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Let it be clearer:</p>
+              <p>I know there are a proposed mechanism in R6RS with exceptions, however there are cases where a specific &quot;undefined&quot; value are to be returned. 
+For instance when an empty vector is created (make-vector k), depending on the implementation different Schemes give different values inside the vector cells, this is dangerous if these values are used and cannot be identified as &quot;undefined&quot; values.</p>
+              <p>Question: Is there a difference between unbound variable and a variable with undefined value ? to me yes, because the unbound variable is not allocated, whereas a variable with undefined value is allocated.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-04-21 07:09:41</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Yes, there is a difference, but I think this is talking specifically about unspecified values. I would say that the VOID thunk is as good as any for a procedure that explicitly returns an unspecified value. This is different than something like what is filled in a vector. You don't want to force vectors to contain any sort of data, because this could be a very serious performance problem. It's much better to let them be filled with whatever the implementation wants to fill it at the time. The 2-argument version of that function should be used when you want to guarantee something about the contents: (make-vector k #f). It's not dangerous to have these values be unreliable, because they'll still be something, even if you can't predict what they will be. It will not cause Scheme to crash, and it should not. And yes, there is a big difference between an undefined or unspecified value and an unbound variable. A variable that is unbound has a specific name, but no bindings, whereas an unspecified value may have a specific single representation, but it probably is bound to very few names, or locations, if any.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">medernac</div>
+            <div class="time">2010-04-22 15:04:58</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I agree that the best would be to standardize &quot;void&quot;, at least I known that Chicken, Gambit, Guile and STklos implementations have it.</p>
+              <p>Then we must make sure that forms returning unspecified/undefined values returns (void).</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 06:40:58</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">assigned</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted not to have an undefined-value API.</p></div></div></div></div></div></body></html>

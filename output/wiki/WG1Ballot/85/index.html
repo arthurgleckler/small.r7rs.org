@@ -1,0 +1,1044 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1Ballot</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1Ballot.md">WG1Ballot</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Ballot</h1>
+    <div class="wiki metadata">
+      <div class="author">steven_ganz</div>
+      <div class="time">2012-07-31 09:03:58</div>
+      <div class="version">85<span class="comment"></span><a href="/wiki/WG1Ballot/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1Ballot/85/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Instructions">Instructions</h1>
+      <ul>
+        <li>You may list as many of the options as you want in order of preference.</li>
+        <li>Options are comma-delimited (ignoring space) and case-insensitive.</li>
+        <li>You can pipe-delimit (|) options you want to give equal weight to.</li>
+        <li>You may write in your own option if you announce it to the list first.</li>
+        <li>You may specify a variant with option/variant, for example srfi-1/module to vote for srfi-1 but clarify it should be in a separate module. Please also include the srfi-1 option in this case.</li>
+        <li>You can write a free-form rationale after the &quot;preferences&quot; line,</li>
+        <li>module means &quot;yes, but I want it in a separate module&quot;,</li>
+        <li>wg2 means &quot;no, but I think it should go in WG2&quot;.</li>
+        <li>undecided means I want to discuss this issue further.</li>
+        <li>Abstain on any item by leaving the preferences blank.</li></ul>
+      <h1 id="WG1BallotItemsToFinalizeByJuly31">WG1 Ballot Items To Finalize By July 31</h1>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="#460Semanticsof`eqv?`"><a href="/ticket/460">#460</a> Semantics of <span class="monospace">eqv?</span></h3>
+      <p>Earlier we voted on <a href="/ticket/125">#125</a>, <a href="/ticket/229">#229</a> and <a href="/ticket/345">#345</a> separately without regard to
+the formal semantics of <span class="monospace">eqv?</span> from a top level.  We need to first
+decide what the definition of <span class="monospace">eqv?</span> is, and consider if there should
+be any exception cases as a secondary effect.</p>
+      <p>The debate is fundamentally one of whether we define <span class="monospace">eqv?</span> in terms
+of &quot;operational equivalence&quot; as in R6RS or a simpler rule
+(e.g. resolve by <span class="monospace">=</span>) as in earlier standards.</p>
+      <p>R2RS had the simplest historical rule which was simply to use <span class="monospace">=</span>.</p>
+      <p>The term &quot;operational equivalence&quot; appears in R3RS but for numbers the
+definition is the same as in R4RS and R5RS, which is <span class="monospace">=</span> plus the same
+exactness.  This is the <span class="monospace">r5rs</span> option, with the &quot;true&quot; cases written formally as:</p><span class="monospace">  The `eqv?` procedure returns #t if:
+
+  (1) obj1 and obj2 are both booleans and are the same according
+  to the `boolean=?` procedure.
+
+  (2) obj1 and obj2 are both symbols and are the same symbol
+  according to the `symbol=?` procedure.
+
+  (3) obj1 and obj2 are both numbers, have the same exactness, are
+  numerically equal (see `=`).
+
+  (4) obj1 and obj2 are both characters and are the same
+  character according to the `char=?` procedure.
+
+  (5) obj1 and obj2 are both the empty list.
+
+  (6) obj1 and obj2 are pairs, vectors, bytevectors, records,
+  or strings that denote the same location in the store.
+
+  (7) obj1 and obj2 are procedures whose location tags are equal.
+</span>
+      <p>Note that (7) is an exception case which will be decided
+separately in <a href="/ticket/125">#125</a>.  Furthermore, an exception to make NaNs
+unspecified regardless of the semantics here will be decided in
+<a href="/ticket/229">#229</a>.</p>
+      <p>The <span class="monospace">r6rs</span> vote replaces (3) with the following operational
+equivalence semantics:</p><span class="monospace">  (3.1) obj1 and obj2 are both exact numbers and are numerically
+  equal (see `=`)
+
+  (3.2) obj1 and obj2 are both inexact numbers, are numerically
+  equal (see `=`), and yield the same results (in the sense of
+  `eqv?`) when passed as arguments to any other procedure that
+  can be defined as a finite composition of Scheme’s standard
+  arithmetic procedures.
+</span>
+      <p>where &quot;standard arithmetic procedures&quot; refers arguably to either</p>
+      <ol class="number" start="11">
+        <li>7 or 11.7.4.3.  For R7RS it would apply to the &quot;Numbers&quot;</li></ol>
+      <p>section 6.2.6.  R6RS further adds an extra case which is not
+applicable because we don't guarantee record-types are first-class
+objects:</p><span class="monospace">  (8) obj1 and obj2 are record-type descriptors that are
+  specified to be `eqv?` in library section on “Procedural
+  layer”.
+</span>
+      <p>The <span class="monospace">r6rs/all</span> option changes (3.2) to a finite composition of
+any of the implementations arithmetic procedures.  The intention
+is that <span class="monospace">decode-float</span> if provided could distinguish NaNs, but
+something like <span class="monospace">eq?</span> (which could distinguish the same bit
+pattern in different locations) would not be considered
+arithmetic and not apply.  This does leave the
+definition &quot;arithmetic&quot; open to some interpretation.</p>
+      <p>In contrast to R6RS, R7RS does not require the full numeric tower.
+This means that any definition of operational equivalence would render
+many numbers unspecified from the perspective of the standard, yet
+users could rely on consistency within their own implementation, and
+broad agreement amongst most implementations which provide the full
+tower.</p>
+      <p>Finally, the <span class="monospace">same-bits</span> option replaces (3) with:</p><span class="monospace">  (3.1) obj1 and obj2 are both exact numbers and are numerically
+  equal (see `=`)
+
+  (3.2) obj1 and obj2 are both inexact real numbers conforming to the
+  IEEE 754-2008 standard, and they have the same radix,
+  precision, maximum exponent, sign, exponent, and significand as
+  described in IEEE 754-2008
+
+  (3.3) obj1 and obj2 are both inexact real numbers, are not implemented using
+  IEEE 754-2008, and are numerically equal (see `=`)
+
+  (3.4) obj1 and obj2 are both complex numbers whose real and imaginary
+  parts are `eqv?`
+</span>
+      <p>Keep in mind the semantics of <span class="monospace">eqv?</span> also affect <span class="monospace">memv</span>, <span class="monospace">assv</span> and
+<span class="monospace">case</span>.</p>
+      <ul>
+        <li><b>References:</b>
+          <ul>
+            <li><a href="https://groups.google.com/d/msg/scheme-reports-wg1/BGvDFtD6A1M/5pHmfXHtvEIJ">eqv? issues summarized</a></li>
+            <li><a href="https://groups.google.com/d/msg/scheme-reports-wg1/2Nv6oIND8HI/Z2HXPQMNFooJ">the history of eqv? on numbers</a></li></ul></li>
+        <li><b>Options:</b> r5rs, r6rs, r6rs/all, same-bits</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#229eqv?andNaN"><a href="/ticket/229">#229</a> eqv? and NaN</h3>
+      <p>As announced previously this is being re-opened due to incorrect
+formulation in the previous ballot, and in response to formal comment
+<a href="/ticket/423">#423</a>.</p>
+      <p>Regardless of the result of <a href="/ticket/460">#460</a>, the semantics implies that <span class="monospace">eqv?</span>
+return <span class="monospace">#f</span> on comparing any two NaN objects.  It is reasonable to
+want to consider any two NaNs as the &quot;same&quot; since they behave the same
+under any operation, even though none of the results are <span class="monospace">=</span>.  Moreover,
+it is very common to use a shortcut <span class="monospace">eq?</span> pointer comparison before
+falling back on general <span class="monospace">eqv?</span> logic.  In deference to this R6RS makes
+an exception and allows the result to be unspecified, and we should
+consider allowing this exception.</p>
+      <p>This proposal is only to allow an explicit exception to make
+NaN comparisons unspecified, regardless of the semantics.
+Vote <span class="monospace">no-exception</span> (or anything other than <span class="monospace">unspecified</span>)
+to require NaN comparisons to follow directly from <a href="/ticket/460">#460</a>.</p>
+      <p>The default of <span class="monospace">unspecified</span> still holds from the previous invalidated
+ballot.</p>
+      <ul>
+        <li><b>Options:</b> no-exception, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#125Allowproceduresnottobelocations(makingEQV?unspecifiedinsomeadditionalcases)"><a href="/ticket/125">#125</a> Allow procedures not to be locations (making EQV? unspecified in some additional cases)</h3>
+      <p>Procedures are another case for contention with <span class="monospace">eqv?</span>.  In R3RS, an
+operational equivalence was defined for procedures, and this was
+subsequently removed.</p>
+      <p>R6RS went the other direction and allowed the exact same procedure <span class="monospace">x</span>
+to return <span class="monospace">#f</span> for <span class="monospace">(eqv? x x)</span>, and R7RS currently reaffirms this.
+The rationale behind this is for compiler optimizations such as
+inlining local procedures, that is given:</p><span class="monospace">(let ((square (lambda (x) (* x x))))
+  (eqv? square square))
+</span>
+      <p>it is reasonable for a compiler to perform the optimization:</p><span class="monospace">(eqv? (lambda (x) (* x x)) (lambda (x) (* x x)))
+</span>
+      <p>in which case the result would naturally return <span class="monospace">#f</span>.</p>
+      <p>Vote <span class="monospace">yes</span> to allow the result to be <span class="monospace">#f</span>.</p>
+      <p>The default of <span class="monospace">yes</span> still holds from the previous invalidated ballot.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> yes</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#393Definingrecordequality"><a href="/ticket/393">#393</a> Defining record equality</h3>
+      <p>Currently, R7RS-small says that when <span class="monospace">equal?</span> is applied to records
+that are not <span class="monospace">eqv?</span> (that were constructed by different calls to the
+record constructor), the result may be <span class="monospace">#t</span> or <span class="monospace">#f</span> at the
+implementation's discretion.  The proposal is to treat records of the same
+type like pairs, strings, vectors, and bytevectors: that is, their
+contents are recursively compared.</p>
+      <p>Vote <span class="monospace">recursive</span> to require recursive comparison of the record's
+fields, <span class="monospace">identity</span> to return <span class="monospace">#t</span> iff <span class="monospace">eqv?</span> does, and <span class="monospace">unspecified</span>
+to leave this open.</p>
+      <p>Note <span class="monospace">equal?</span> is already required to handle cycles regardless.</p>
+      <ul>
+        <li><b>Options:</b> recursive, identity, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#306Whatdoes&quot;fullUnicode&quot;supportmeaninAppendixB?"><a href="/ticket/306">#306</a> What does &quot;full Unicode&quot; support mean in Appendix B?</h3>
+      <p>Specifically, does it indicate case-folding and normalization support
+for the repertoire of any particular version of Unicode, or any
+version greater than 5 or 6 or 6.1, or no particular version?</p>
+      <p>Full unicode refers to the set of characters available.  Case-folding
+and character predicates are required to work according to the Unicode
+standard for all supported characters.  The question of which version
+of Unicode the property refers to is important.  We could require a
+specific version (and all further revisions), or always require the
+latest official Unicode standard, in which case an implementation
+would not be compliant until it was updated with each new standard.  Alternatively, we could parameterize the feature identifier, so that implementations might claim to support (full-unicode 6), (full-unicode 6.1), etc.</p>
+      <ul>
+        <li><b>Options:</b> at-least-6, at-least-6.1, latest, parameterize, undecided, unspecified</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#458Removetheformalsemanticsfromthereport"><a href="/ticket/458">#458</a> Remove the formal semantics from the report</h3>
+      <p>There have been a bunch of complaints about the formal semantics: it's
+incomplete, it cannot be mechanized with a proof assistant, it doesn't
+help either users or implementers very much, and so on.  See in
+particular <a href="/ticket/453">#453</a>.</p>
+      <p>The semantics have been updated to include <span class="monospace">dynamic-wind</span>, however the
+other arguments still hold.</p>
+      <p>This proposal is to remove it from the report altogether, and to urge
+the Steering Committee to create a new WG to produce one, likely in a
+&quot;rolling&quot; style with increasingly comprehensive releases, on its own
+schedule.  Some members of the current WG have expressed interest in
+serving on such a group, and others have expressed their complete lack
+of interest, so a new WG seems the best choice if this is done.</p>
+      <p>Alternately, we can adapt the operational semantics from R6RS.</p>
+      <ul>
+        <li><b>Options:</b> remove, keep, operational, undecided</li>
+        <li><b>Default:</b> keep</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#398Allowrepeatedkeysin`case`"><a href="/ticket/398">#398</a> Allow repeated keys in <span class="monospace">case</span></h3>
+      <p>R5RS says it's an error for a key to appear in more than one clause of
+<span class="monospace">case</span> (or twice in the same clause, but that's trivial).  R6RS allows
+the same key to appear more than one clause, but insists on
+left-to-right testing throughout, like <span class="monospace">cond</span>.  The R6RS editors
+thought this was better for machine-generated code, though worse for
+hand-written code.</p>
+      <p>The proposal is a compromise: allow keys to appear in more than one clause,
+but behave as if the key appeared only in the first (leftmost) clause.
+This allows hash-table or other non-left-to-right implementations.</p>
+      <ul>
+        <li><b>Options:</b> r5rs, r6rs, leftmost, unspecified, undecided</li>
+        <li><b>Default:</b> r5rs</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#85Blobs,bytevectors,byte-vectors,octet-vectors,orsomethingelse?"><a href="/ticket/85">#85</a> Blobs, bytevectors, byte-vectors, octet-vectors, or something else?</h3>
+      <p>Following exactly in the footsteps of R6RS we voted for a <span class="monospace">blob</span> API
+and then changed the name to <span class="monospace">bytevector</span>.</p>
+      <p>Formal comment <a href="/ticket/435">#435</a> argues that <span class="monospace">u8vector</span> is in more common use, so
+this item is being re-opened.  The default is the current draft
+<span class="monospace">bytevector</span>, and for any member leaving the preferences are left
+blank their votes from ballot 3 will be used.</p>
+      <ul>
+        <li><b>Options:</b> blob, bytevector, byte-vector, u8vector, octet-vector, undecided</li>
+        <li><b>Default:</b> bytevector</li>
+        <li><b>Preferences:</b></li></ul>
+      <h2 id="WG1-LibrarySystem">WG1 - Library System</h2>
+      <h3 id="#353Nousebeforeimportinlibraries"><a href="/ticket/353">#353</a> No use before import in libraries</h3>
+      <p>For ease of implementation, the proposal is to make it an error for an
+imported identifier to be referenced or defined in a library before
+the library declaration that imports it.  This allows strict
+left-to-right processing of library declarations, with no need to
+delay processing till the end of the library.</p>
+      <p>Therefore, this would be an error (but still permitted as an extension
+in Schemes that can easily provide it):</p><span class="monospace">(module
+  (begin (define x y))
+  (import (library defining y))
+</span>
+      <p>This would necessitate replacing the penultimate paragraph of section</p>
+      <ol class="number" start="5">
+        <li>5.1 with:</li></ol>
+      <p>One possible implementation of libraries is as follows: After all
+<span class="monospace">cond-expand</span> library declarations are expanded, a new environment is
+constructed for the library consisting of all imported bindings. The
+expressions and declarations from all <span class="monospace">begin</span>, <span class="monospace">include</span>, and
+<span class="monospace">include-ci</span> declarations are expanded in that environment in the
+order in which they occur in the library declaration.  Alternatively,
+<span class="monospace">cond-expand</span> and <span class="monospace">import</span> declarations may be processed in left to
+right order interspersed with the processing of expressions and
+declarations, with the environment growing as imported bindings are
+added to it by each <span class="monospace">import</span> declaration.</p>
+      <p>Vote <span class="monospace">yes</span> to add the restriction, or <span class="monospace">no</span> to leave it out.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#359Limitnumbersusedinlibrarynames"><a href="/ticket/359">#359</a> Limit numbers used in library names</h3>
+      <p>This is a proposal to limit numbers in library names to the range 0 to</p>
+      <ol class="number" start="32767">
+        <li>Currently, there is no portable lower bound which all Schemes</li></ol>
+      <p>can assume as the maximum size of an integer.</p>
+      <p>Numbers are mostly used for SRFI-based libraries anyway, which are not
+likely to reach either limit.</p>
+      <p>The option <span class="monospace">uint15</span> for the proposal as stated (0 to 32767), <span class="monospace">int16</span>
+for -32768 to 32767, int24 for -2<sup>23</sup> to 2<sup>23</sup>-1, etc.</p>
+      <p>Vote <span class="monospace">unspecified</span> to make no explicit requirement on the integers
+allowed in library names.</p>
+      <ul>
+        <li><b>Options:</b> uint15, int16, uint16, int24, uint24, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#441Makesureaprogram/libraryloadsanyimportedlibrariesatmostonce"><a href="/ticket/441">#441</a> Make sure a program/library loads any imported libraries at most once</h3>
+      <p>Add the following text to the discussion of library loading:</p>
+      <p>Regardless of the number of times that a library is loaded, each
+ program or library that imports bindings from a library will receive
+ bindings from a single loading of that library, regardless of the
+ number of <span class="monospace">import</span> or <span class="monospace">cond-expand</span> declarations in which it appears.</p>
+      <p>to make it clear that, for example,</p><span class="monospace">(import (prefix (foo) 'foo:))
+(import (only (foo) bar))
+</span>
+      <p>will cause <span class="monospace">bar</span> and <span class="monospace">foo:bar</span> to come from the same instantiation of
+the library '(foo)'</p>
+      <p>Vote <span class="monospace">yes</span> to add this requirement.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#402Addanexport-allform."><a href="/ticket/402">#402</a> Add an export-all form.</h3>
+      <p>Add an export-all form to the library declaration that means &quot;export
+all identifiers that are defined in the library with begin, include,
+and include-ci but none that are imported with import.&quot;</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#448Addlibrarydeclarationinclude-library-declarations"><a href="/ticket/448">#448</a> Add library declaration include-library-declarations</h3>
+      <p>The proposed <span class="monospace">include-library-declarations</span> allows a library to
+incorporate a file containing arbitrary library declarations, not just
+Scheme code (definitions and expressions).  This allows, for example,
+the exports of a module to be written directly in the library file,
+and its imports in a separate file.</p>
+      <p>An alternative would be something like <span class="monospace">(export-from &lt;library&gt;)</span> to
+export the same bindings as another library.  This does require the
+clumsiness of actually defining the identifiers in the other library
+if it is abstract.</p>
+      <ul>
+        <li><b>Options:</b> include-library-declarations, export-from, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#449Clarifylibraryloadingrules"><a href="/ticket/449">#449</a> Clarify library loading rules</h3>
+      <p>R7RS currently says:</p>
+      <p>Within a program, each imported library is loaded at least once, and,
+ if imported by more than one program or library, may possibly be
+ loaded additional times.</p>
+      <p>Richard Kelsey thinks this is too liberal, and proposes:</p>
+      <p>Regardless of the number of times that a library is loaded, each
+ program or library that imports bindings from a library will receive
+ bindings from a single loading of that library, regardless of the
+ number of <span class="monospace">import</span> or <span class="monospace">cond-expand</span> forms in which it appears.</p>
+      <p>Aaron Hsu, however, thinks this is too restrictive, and proposes
+(backed up by actual R6RS implementations):</p>
+      <p>If a library's definitions are referenced in the expanded form of a
+ program or library body, then that library must be loaded before the
+ expanded program or library body is evaluated. This rule applies
+ transitively.</p>
+      <p>Similarly, during the expansion of a library, if a syntax keyword
+ imported from a library is needed to expand the library, then the
+ imported library must be visited before the expansion of the
+ importing library.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>one:</b> Kelsey's proposal</li>
+            <li><b>one-or-more:</b> current draft</li>
+            <li><b>zero-or-more:</b> Hsu's proposal, R6RS status-quo</li>
+            <li><b>zero-or-one:</b> Kelsey's proposal with Hsu's relaxation</li></ul></li>
+        <li><b>Options:</b> one, one-or-more, zero-or-one, zero-or-more</li>
+        <li><b>Default:</b> one-or-more</li>
+        <li><b>Preferences:</b></li></ul>
+      <h2 id="WG1-Numerics">WG1 - Numerics</h2>
+      <h3 id="#366Add(logzb)forlogarithmofztothebaseb"><a href="/ticket/366">#366</a> Add (log z b) for logarithm of z to the base b</h3>
+      <p>Coverage for this R6RS feature is currently sparse: only Gauche, Chez,
+Vicare, Larceny, Ypsilon, Mosh, IronScheme, KSi, RScheme, Rep support
+it.  But it is convenient when working in bases other than <i>e</i> such
+as 10, 2, or 16, and it is just a few extra lines of code, since `(log
+z b)<span class="monospace"> =&gt; </span>(/ (log z) (log b))` for arbitrary complex numbers <i>z, b</i>.</p>
+      <p>Vote <span class="monospace">yes</span> to add the optional second argument from R6RS.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#367Inexactdivisionbyexactzero"><a href="/ticket/367">#367</a> Inexact division by exact zero</h3>
+      <p>Draft 6 says that it's an error for an argument of <span class="monospace">/</span> (other than the
+first) to be an exact zero.  R6RS, however, says that it's an error
+only if <i>all</i> the arguments are exact.  In other words, <span class="monospace">(/ 2.0 0)</span>
+is an error according to the draft, but in R6RS it returns <span class="monospace">+inf.0</span>
+(assuming the implementation supports it).  The proposal is to adopt
+the R6RS wording.</p>
+      <p>Cowan tested <span class="monospace">(/ 2.0 0)</span> in the usual set of Schemes:</p>
+      <ul>
+        <li>Racket, Gambit, Chicken (with the numbers egg), Guile, Chibi, Elk, Spark report an error.</li>
+        <li>Gauche, Bigloo, Scheme48/scsh, Kawa, SISC, Chez, SCM, Ikarus/Vicare, Larceny, Ypsilon, Mosh, IronScheme, NexJ, STklos, RScheme, BDC, UMB, VX return <span class="monospace">+inf.0</span>.</li>
+        <li>MIT, scsh, Shoe, TinyScheme, Scheme 7, XLisp, Rep, Schemik, Inlab always report an error when dividing by zero, exact or inexact.</li>
+        <li>KSi, Scheme 9 produce incorrect results.</li>
+        <li>SigScheme, Dream, Oaklisp, Owl Lisp don't support inexact numbers.</li></ul>
+      <p>Vote <span class="monospace">error</span> for the current draft semantics that it is an error,
+<span class="monospace">all-error</span> for the R6RS semantics that it is only an error if all
+arguments are exact, or <span class="monospace">unspecified</span> to make this case unspecified.</p>
+      <ul>
+        <li><b>Options:</b> error, all-error, unspecified, undecided</li>
+        <li><b>Default:</b> error</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#369Requirethat-and/allowanarbitrarynumberofarguments"><a href="/ticket/369">#369</a> Require that - and / allow an arbitrary number of arguments</h3>
+      <p>R5RS requires that <span class="monospace">-</span> and <span class="monospace">/</span> accept one or two arguments, and labels
+support for more than two as &quot;optional&quot;.  R6RS requires such support.
+The proposal is to require it.</p>
+      <p>All Schemes in the test suite support more than two arguments except
+Scheme48/scsh.  (Owl Lisp does not support variadic procedures of any
+kind.)</p>
+      <p>Vote <span class="monospace">require</span> for required n-ary behavior and <span class="monospace">optional</span> to leave it
+optional as in R5RS.  Alternately, vote <span class="monospace">forbidden</span> to make this
+always an error in all implementations.</p>
+      <ul>
+        <li><b>Options:</b> required, optional, forbidden, undecided</li>
+        <li><b>Default:</b> optional</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#370Logofexactandinexactzero"><a href="/ticket/370">#370</a> Log of exact and inexact zero</h3>
+      <p>R5RS and draft 6 of R7RS don't say what <span class="monospace">(log 0.0)</span> and <span class="monospace">(log 0)</span>
+return.  R6RS requires <span class="monospace">-inf.0</span> and an exception respectively.  The
+proposal is to say that <span class="monospace">(log 0.0)</span> returns <span class="monospace">-inf.0</span> on systems that
+have <span class="monospace">-inf.0</span>, and that <span class="monospace">(log 0)</span> is an error.</p>
+      <p>In Racket, Gambit, Chicken (with the numbers egg), Guile, Chibi, Chez,
+Ikarus/Vicare, Larceny, Ypsilon, Mosh, IronScheme, STklos, Spark,
+<span class="monospace">(log 0.0)</span> returns <span class="monospace">-inf.0</span> and <span class="monospace">(log 0)</span> raises an exception.</p>
+      <p>Gauche, MIT, Chicken (without the numbers egg), Bigloo, Scheme48/scsh,
+Kawa, SISC, SCM, NexJ, KSi, RScheme, XLisp, Rep, VX, SXM, Inlab return
+<span class="monospace">-inf.0</span> in both cases.</p>
+      <p>Elk, UMB, Oaklisp raise an exception in both cases.</p>
+      <p>Scheme 7 returns the wrong answer in both cases.</p>
+      <p>SigScheme, Shoe, TinyScheme, Dream, BDC, Owl Lisp don't support <span class="monospace">log</span>.</p>
+      <p>Scheme 9 apparently goes into an infinite loop in both cases.</p>
+      <p>Vote <span class="monospace">r6rs</span> for the R6RS behavior of returning <span class="monospace">-inf.0</span> and raising an
+error, respectively.  Vote <span class="monospace">infinity</span> to always return <span class="monospace">-inf.0</span>.</p>
+      <ul>
+        <li><b>Options:</b> r6rs, infinity, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#407Dividingexact0byaninexactnumber"><a href="/ticket/407">#407</a> Dividing exact 0 by an inexact number</h3>
+      <p>This proposal allows <span class="monospace">(/ 0 </span><i>x</i><span class="monospace">)</span>, where <i>x</i> is an inexact
+number, to return an exact value.  Currently only Racket, Gambit,
+TinyScheme, Sizzle, Spark do this; see <a href="/wiki/Zero">Zero</a> for details.</p>
+      <p>Vote <span class="monospace">zero</span> to allow (but not require) this to return exact 0.  Vote
+<span class="monospace">no-nan</span> to allow it to return 0 except when <span class="monospace">x</span> is <span class="monospace">+nan.0</span>, where it
+would return <span class="monospace">+nan.0</span>.</p>
+      <ul>
+        <li><b>Options:</b> zero, no-nan, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#410Infinityvs.NaNinmaxandmin"><a href="/ticket/410">#410</a> <a href="/wiki/Infinity">Infinity</a> vs. NaN in max and min</h3>
+      <p>Currently R7RS says nothing about the value of <span class="monospace">(max +inf.0 +nan.0)</span>
+or <span class="monospace">(min -inf.0 +nan.0)</span>.  R6RS required these functions to return the
+infinite value, but this was adopted by some but not all R6RS
+implementations (see <a href="/wiki/MaxInfNan">MaxInfNan</a> for details).  R5RS implementations are
+also divided.</p>
+      <p>The proposal is to allow R7RS implementations to provide either value.</p>
+      <p>Vote <span class="monospace">both</span> to explicitly add a note that either are allowed,
+<span class="monospace">infinity</span> to require the infinite value as in R6RS, <span class="monospace">nan</span> to require
+returning <span class="monospace">+nan.0</span>, and <span class="monospace">unspecified</span> leave unspecified (i.e. the same
+as <span class="monospace">both</span> but without the note).</p>
+      <ul>
+        <li><b>Options:</b> both, infinity, nan, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#395InfiniteandNaNcomplexnumbers"><a href="/ticket/395">#395</a> Infinite and NaN complex numbers</h3>
+      <p>Currently both <span class="monospace">infinite?</span> and <span class="monospace">nan?</span> return <span class="monospace">#t</span> to a complex number
+like <span class="monospace">+inf.0+nan.0i</span>.  Is this the Right Thing, or should <span class="monospace">infinite?</span>
+only return <span class="monospace">#t</span> if neither part is a NaN?</p>
+      <p>Note it is reasonable for an implementation to not support partial nan
+complex numbers.</p>
+      <p>Vote <span class="monospace">disjoint</span> to ensure that <span class="monospace">infinite?</span> and <span class="monospace">nan?</span> are disjoint
+predicates as in the proposal, or <span class="monospace">overlap</span> to allow the current
+behavior.</p>
+      <ul>
+        <li><b>Options:</b> overlap, disjoint, unspecified, undecided</li>
+        <li><b>Default:</b> overlap</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#364truncate,floor,ceilingroundshouldreturnanon-finiteargument"><a href="/ticket/364">#364</a> truncate, floor, ceiling round should return a non-finite argument</h3>
+      <p>Currently R7RS is silent on what truncate, floor, ceiling, and round
+do when the argument is <span class="monospace">+inf.0</span>, <span class="monospace">-inf.0</span>, or <span class="monospace">+nan.0</span>. R6RS has them
+return the argument, which seems reasonable.</p>
+      <p>Tests were made for <span class="monospace">(round (* 1.0e200 1.0e200))</span> on a variety of
+implementations.</p>
+      <p>Racket, Gauche, Chicken (with and without the numbers egg), Bigloo,
+Guile, Kawa, Chibi, Chez, SCM, Ikarus/Vicare?, Larceny, Ypsilon, Mosh,
+IronScheme, NexJ, STklos, KSi, Shoe, BDC, Rep, Schemik, Elk, Spark
+all return the argument.</p>
+      <p>MIT, Gambit, Scheme48/scsh, SISC, Scheme 9, Scheme 7, signal errors.</p>
+      <p>SigScheme, TinyScheme, Dream, UMB don't work for one or another
+reason.</p>
+      <p>Oaklisp and Owl Lisp don't do flonums.</p>
+      <p>XLisp only has fixnums and flonums, and returns the largest or
+smallest fixnum as the case may be.</p>
+      <p>RScheme returns a variety of slightly strange values: (round +inf.0),
+for example, is 0, but (round -inf.0) is -inf.0.</p>
+      <p>Vote <span class="monospace">input</span> to return the input, <span class="monospace">error</span> to specify &quot;it is an error&quot;,
+and <span class="monospace">unspecified</span> to leave unspecified as in the current draft.</p>
+      <ul>
+        <li><b>Options:</b> input, error, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#392Exactpositiveandnon-negativeintegerpredicates"><a href="/ticket/392">#392</a> Exact positive and non-negative integer predicates</h3>
+      <p>There are two useful subsets of the exact numbers, both of which are
+commonly called natural numbers, depending on who's talking.
+Logicians, set theorists, and computer scientists include 0, other
+mathematicians mostly don't.  This proposal adds the predicates
+<span class="monospace">exact-positive-integer?</span> and <span class="monospace">exact-non-negative-integer?</span>, analogous
+to <span class="monospace">exact-integer?</span>.  Because of the ambiguity, the name
+<span class="monospace">natural-number?</span> is not proposed.</p>
+      <p>Vote <span class="monospace">yes</span> to add these two procedures.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, wg2, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h2 id="WG1-Read/Write">WG1 - Read/Write</h2>
+      <h3 id="#380IssupportofTABasawhitespacecharacterrequiredornot?"><a href="/ticket/380">#380</a> Is support of TAB as a whitespace character required or not?</h3>
+      <ol class="number" start="2">
+        <li>2 says:</li></ol>
+      <p>Whitespace characters include the space and newline characters.
+(Implementations may provide additional whitespace characters such as
+tab or page break.)</p>
+      <p>However, 7.1.1 has:</p>
+      <p>&lt;intraline whitespace&gt; -&gt; &lt;space or tab&gt;
+&lt;whitespace&gt; -&gt; &lt;intraline whitespace&gt; | &lt;newline&gt; | &lt;return&gt;</p>
+      <p>So 2.2 implies that supporting tabs is allowed but not required, yet</p>
+      <ol class="number" start="7">
+        <li>1.1 implies supporting tabs is required.</li></ol>
+      <p>Vote <span class="monospace">required</span> to require support for tab as a whitespace character
+by <span class="monospace">read</span>.  <span class="monospace">char-whitespace?</span> is required to return <span class="monospace">#t</span> for it
+regardless.</p>
+      <ul>
+        <li><b>Options:</b> required, optional, undecided</li>
+        <li><b>Default:</b> optional</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#388Specifywhat`display`doeswithcircularlists"><a href="/ticket/388">#388</a> Specify what <span class="monospace">display</span> does with circular lists</h3>
+      <p>Currently we don't specify what <span class="monospace">display</span> does with circular lists.
+Should it generate labels like <span class="monospace">write</span>, or loop like <span class="monospace">write-simple</span>,
+or leave it unspecified?</p>
+      <ul>
+        <li><b>Options:</b> labels, loop, unspecified</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#447#!fold-caseand#!no-fold-casehavenofinaldelimiter"><a href="/ticket/447">#447</a> #!fold-case and #!no-fold-case have no final delimiter</h3>
+      <p>The <span class="monospace">#!fold-case</span> and <span class="monospace">#!no-fold-case</span> directives are read as
+comments, which means that they are treated as whitespace (section</p>
+      <ol class="number" start="2">
+        <li>2).  Unlike the other kinds of comments, their final delimiter is</li></ol>
+      <p>implicit.  This means that <span class="monospace">(1#!no-fold-cases)</span> reads as <span class="monospace">(1 s)</span>.
+This seems unfortunate.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>identifier:</b> add the formal syntax <span class="monospace">&lt;lexical-directive&gt; --&gt; #! &lt;identifier&gt;</span> and then make the interpretation of <span class="monospace">&lt;identifier&gt;</span> implementation-dependent, except for the standard cases <span class="monospace">#!fold-case</span> and <span class="monospace">#!no-fold-case</span>. (Per Bothner, Richard Kelsey)</li>
+            <li><b>delimiter:</b> the directives must be followed by delimiter (John Cowan)</li>
+            <li><b>comment:</b> the draft status-quo</li></ul></li>
+        <li><b>Options:</b> identifier, delimiter, comment, undecided</li>
+        <li><b>Default:</b> comment</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#442writeprocedureisnotbackwardscompatible"><a href="/ticket/442">#442</a> write procedure is not backwards compatible</h3>
+      <p>There is concern that the output of <span class="monospace">write</span> cannot be read by non-R7RS
+implementations.  This is not a strict requirement, but is reasonable
+if using simple sexp-based file/interchange formats.</p>
+      <p>Specifically, even though there are no cycles in</p>
+      <p><span class="monospace">(let ((x (list 2))) (write (list x x)))</span></p>
+      <p>it previously output &quot;((2) (2))&quot; but now outputs &quot;(<a href="/ticket/0">#0</a>=(2) <a href="/ticket/0">#0</a>#)&quot;.</p>
+      <p>The WG concern is that R5RS write is unsafe, easily causing infinite
+loops, and should therefore not be the default.  Thus we renamed this
+&quot;write-simple&quot;, requiring programmers to know they are writing a
+&quot;simple&quot; data structure up front.</p>
+      <p>Arguably, there are three procedures desired:</p>
+      <ul>
+        <li>write-cyclic: uses labels only to avoid cycles</li>
+        <li>write-shared: uses labels for all shared structure</li>
+        <li>write-simple: won't use labels - it is an error to pass a cyclic structure</li></ul>
+      <p>although even for <span class="monospace">write-shared</span> people sometimes want to treat
+containers such as strings separately.</p>
+      <p>Note the algorithms for detecting shared structure differ from those
+for detecting cycles, so providing both -shared and -cyclic imposes an
+additional implementation burden.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>write+simple:</b> the current draft status quo</li>
+            <li><b>write+shared:</b> change <span class="monospace">write</span> back and add <span class="monospace">write-shared</span> to explicitly handle sharing</li>
+            <li><b>write+cyclic:</b> change <span class="monospace">write</span> back and add <span class="monospace">write-cyclic</span> to handle only cycles</li>
+            <li><b>write+shared+cyclic:</b> change <span class="monospace">write</span> back and add both <span class="monospace">write-shared</span> and <span class="monospace">write-cyclic</span></li>
+            <li><b>write+simple+shared:</b> <span class="monospace">write</span> handles cycles only, provide <span class="monospace">write-simple</span> and <span class="monospace">write-shared</span> separately</li></ul></li>
+        <li><b>Options:</b> write+simple, write+shared, write+cyclic, write+shared+cyclic, write+simple+shared, unspecified, undecided</li>
+        <li><b>Default:</b> write+simple</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#219Bringbackreadablebooleanliterals"><a href="/ticket/219">#219</a> Bring back readable boolean literals</h3>
+      <p>Scheme used to use <span class="monospace">#!true</span> and <span class="monospace">#!false</span> before abbreviating to
+the <span class="monospace">#t</span> and <span class="monospace">#f</span> syntax.</p>
+      <p>In draft 4 we added these back in as aliases, without the &quot;!&quot; now
+that tokens are required to be delimited so there would be no ambiguity.</p>
+      <p>Some objections were made to the new syntax which generated
+a lot of discussion, so we are re-opening this ticket.  The default
+is the previous decision to add <span class="monospace">#true</span> and <span class="monospace">#false</span> as aliases.</p>
+      <p>The primary objection is that boolean literals are very common,
+and this introduces needless incompatibilities with non-R7RS
+systems, and potential confusion in documentation.</p>
+      <p>The counter-argument is that these are more readable and
+friendly to beginners, and allow easy visual distinction in long lists
+of booleans.  We retain full backwards compatibility and are
+under no obligation for non-R7RS systems to be able to run R7RS code.</p>
+      <p>Note that Racket and Chibi independently adopted this same
+syntax unaware of each other.  Chicken also supports this via
+its SRFI-38 implementation.</p>
+      <ul>
+        <li><b>References:</b></li>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>long:</b> #true and #false</li>
+            <li><b>bang-long:</b> #!true and #!false</li></ul></li>
+        <li><b>Options:</b> long, bang-long, none, undecided</li>
+        <li><b>Default:</b> long</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#443Recommendsourcesofcharacternames"><a href="/ticket/443">#443</a> Recommend sources of character names</h3>
+      <p>Currently, we allow implementations to provide their own names for
+characters, but provide no guidance for them.  There are two plausible
+sources: the <a href="http://unicode.org/Public/UNIDATA/NamesList.txt">names in
+the Unicode Standard</a>, and the [http://www.w3.org/TR/xml-entity-names/
+entity names specified by W3C] for use in HTML, MathML, and other
+markup standards (ultimately derived from ISO SGML character entity
+sets).</p>
+      <p>The Unicode names are in all upper case and contain significant spaces
+and apostrophes as name characters, which would require some mapping
+to make valid Scheme identifiers.  The W3C name list is incomplete
+though fairly large (currently 2237 names), covering mainly the Greek
+and Cyrillic scripts and non-ASCII punctuation and symbols.  It
+distinguishes between iota (small) and Iota (capital).</p>
+      <p>Vote <span class="monospace">w3c</span> for the W3C list, <span class="monospace">unicode</span> to use the Unicode list with
+names mapped by converting to lowercase and replacing any
+non-identifier character (space and apostrophe) with hyphens.  Vote
+<span class="monospace">unspecified</span> to leave the character name extensions entirely up to
+the implementation.</p>
+      <ul>
+        <li><b>Options:</b> w3c, unicode, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h2 id="WG1-BaseLibrary">WG1 - Base Library</h2>
+      <h3 id="#140Removing`quotient`,`remainder`,`modulo`"><a href="/ticket/140">#140</a> Removing <span class="monospace">quotient</span>, <span class="monospace">remainder</span>, <span class="monospace">modulo</span></h3>
+      <p>With the acceptance of <a href="/ticket/278">#278</a>, we reduced the set of division operators
+to <span class="monospace">truncate-*</span> and <span class="monospace">floor-*</span> and move these into the base library.
+Three of these procedures are simply aliases for <span class="monospace">quotient</span>,
+<span class="monospace">remainder</span> and <span class="monospace">modulo</span>, so it is worth considering removing the old
+names.</p>
+      <p>Since the old names are in IEEE Scheme we need strong justification
+for removing them from (scheme base), and even if we do so they will
+remain available in (scheme r5rs).</p>
+      <p>We have precedence for changing names, but only in the case when the
+existing names were both actively misleading and had already been
+changed in R6RS.  Specifically, in ticket <a href="/ticket/328">#328</a> we replaced the names
+<span class="monospace">inexact-&gt;exact</span> and <span class="monospace">exact-&gt;inexact</span> with the more accurate <span class="monospace">exact</span>
+and <span class="monospace">inexact</span>.</p>
+      <p>Arguably the new division operator names are clearer, but the old
+names are not actually misleading.</p>
+      <p>Vote <span class="monospace">yes</span> to remove the old names from (scheme base), or <span class="monospace">no</span> to
+leave them in as aliases.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#378RenameGET-FEATUREStojustFEATURES"><a href="/ticket/378">#378</a> Rename GET-FEATURES to just FEATURES</h3>
+      <p>This is compatible with Chicken, and &quot;more Scheme-like, less
+Java-like&quot;.  Okay, it's bikeshedding.</p>
+      <ul>
+        <li><b>Options:</b> features, get-features, undecided</li>
+        <li><b>Default:</b> get-features</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#384Merge`bytevector-copy`and`bytevector-copy-partial`"><a href="/ticket/384">#384</a> Merge <span class="monospace">bytevector-copy</span> and <span class="monospace">bytevector-copy-partial</span></h3>
+      <p>Under this proposal, the name would be <span class="monospace">bytevector-copy</span> and the
+signature would be</p>
+      <p><span class="monospace">(bytevector-copy </span><i>bytevector</i> [<i>start</i> [<i>end</i>]]<span class="monospace">)</span></p>
+      <p>Vote <span class="monospace">yes</span> for this simplification.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#385Merge`write-bytevector`and`write-bytevector-partial`"><a href="/ticket/385">#385</a> Merge <span class="monospace">write-bytevector</span> and <span class="monospace">write-bytevector-partial</span></h3>
+      <p>One proposal is <span class="monospace">port-last</span> with a signature of:</p>
+      <p><span class="monospace">(write-bytevector ''bytevector'' [''start'' [''end'' [''port'']]])</span></p>
+      <p>This has the disadvantage of being required to call
+<span class="monospace">bytevector-length</span> when writing to a specific port.</p>
+      <p>Alternately we could do <span class="monospace">offsets-last</span>:</p>
+      <p><span class="monospace">(write-bytevector ''bytevector'' [''port'' [''start'' [''end'']]])</span></p>
+      <p>which has the disadvantage of separating the bytevector from its
+offsets.</p>
+      <p>Alternately, vote <span class="monospace">separate</span> to keep these as two separate procedures.</p>
+      <ul>
+        <li><b>Options:</b> port-last, offsets-last, separate, undecided</li>
+        <li><b>Default:</b> separate</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#387Addstart/endargumentstostring-&gt;vectorandvector-&gt;string"><a href="/ticket/387">#387</a> Add start/end arguments to string-&gt;vector and vector-&gt;string</h3>
+      <p>This is a proposal to add optional start (inclusive) and end
+(exclusive) arguments to <span class="monospace">string-&gt;vector</span> and <span class="monospace">vector-&gt;string</span>.  We
+now have start (inclusive) and end (exclusive) arguments for
+<span class="monospace">string-&gt;list</span> and <span class="monospace">vector-&gt;list</span>, but our non-R5RS and non-SRFI
+procedures to convert directly between strings and vectors don't
+provide these.</p>
+      <p>Vote <span class="monospace">yes</span> to add these optional arguments.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#391AddpredicatesforR7RSsignalledconditions"><a href="/ticket/391">#391</a> Add predicates for R7RS signalled conditions</h3>
+      <p>R7RS requires an error to be signalled (which means an exception is
+raised as if by <span class="monospace">raise</span>) in the following circumstances:</p>
+      <ol class="number">
+        <li>Trying to open for input or delete a file that does not exist or is otherwise inaccessible.</li>
+        <li>Specifying an argument to <span class="monospace">scheme-report-environment</span> that the implementation doesn't support.  (It must support 7 and may support other values.)</li>
+        <li>An EOF is encountered while <span class="monospace">read</span> is in the middle of a datum.</li>
+        <li>Using <span class="monospace">expt</span> to raise zero to the power of a non-real number (alternatively an arbitrary number may be returned).</li></ol>
+      <p>This proposal is to provide four standard predicates that identify
+these specific conditions, to be used in <span class="monospace">guard</span> clauses or in
+<span class="monospace">with-exception</span> handlers as a portable means of detecting these
+errors.  Although these predicates may return <span class="monospace">#t</span> on other objects,
+if one reports <span class="monospace">#t</span> on an object, the others must report <span class="monospace">#f</span>.
+Proposed names are <span class="monospace">file-error?</span>, <span class="monospace">scheme-report-error?</span>,
+<span class="monospace">read-error?</span>, and <span class="monospace">expt-error?</span> respectively.</p>
+      <p>Vote <span class="monospace">yes</span> to add these procedures, or <span class="monospace">file-only</span> to only add the
+<span class="monospace">file-error?</span> predicate.</p>
+      <ul>
+        <li><b>Options:</b> yes, file-only, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#400Definerecord?."><a href="/ticket/400">#400</a> Define record? .</h3>
+      <p>We should define the predicate record? so that it's possible to
+distinguish instances of record types from all other types.  It should
+not be necessary to enumerate all record type predicates in order to
+determine whether an object is an instance of a record.</p>
+      <p>This is Alexey Radul's suggestion.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#425Addread-string,read-string!,write-stringproceduresto(schemebase)"><a href="/ticket/425">#425</a> Add read-string, read-string!, write-string procedures to (scheme base)</h3>
+      <p>This was requested by Formal Comment <a href="/ticket/424">#424</a>.</p>
+      <p>These procedures would be provided for parallelism with the
+byte-vector I/O operations:</p>
+      <table><tr><td class="default">
+            <p>Byte</p></td><td class="default">
+            <p>Character</p></td><td class="default">
+            <p>Bytevector</p></td><td class="default">
+            <p>String</p></td></tr><tr><td class="default">
+            <p>read-u8</p></td><td class="default">
+            <p>read-char</p></td><td class="default">
+            <p>read-bytevector(!)</p></td><td class="default">
+            <p>read-string(!)</p></td></tr><tr><td class="default">
+            <p>write-u8</p></td><td class="default">
+            <p>write-char</p></td><td class="default">
+            <p>write-bytevector</p></td><td class="default">
+            <p>write-string</p></td></tr></table>
+      <p>If <a href="/ticket/385">#385</a> passes, optional <i>start</i> (inclusive) and <i>end</i> (exclusive)
+index arguments would be added to <span class="monospace">write-string</span>.  Otherwise
+<span class="monospace">write-partial-string</span> would be provided.</p>
+      <p>Vote <span class="monospace">yes</span> to add all three, <span class="monospace">immutable</span> to add only <span class="monospace">read-string</span> and
+<span class="monospace">write-string</span>, or <span class="monospace">no</span> to leave them out.</p>
+      <ul>
+        <li><b>Options:</b> yes, immutable, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#433fullconversioncycleforcontainers"><a href="/ticket/433">#433</a> full conversion cycle for containers</h3>
+      <p>Marc Feeley proposes it should be possible to convert from any
+container type to another, possibly via an intermediary such as</p>
+      <p><span class="monospace">(list-&gt;B (A-&gt;list a))</span></p>
+      <p>proposing specifically &quot;list&quot; be the universally available
+intermediary, although &quot;vector&quot; would also be worth considering.</p>
+      <p>The container types are list, vector, string and bytevector.  String
+and bytevector are second-class in that they are not general-purpose
+container types, and may raise errors converting from lists or
+vectors.</p>
+      <p>Vote <span class="monospace">list</span> for the proposal to add the following procedures to
+complete the cycle:</p>
+      <ul>
+        <li>list-&gt;bytevector</li>
+        <li>bytevector-&gt;list</li></ul>
+      <p>Vote <span class="monospace">vector</span> to add the equivalent procedures to allow converting
+between any of the types and vectors, specifically the following two
+new procedures:</p>
+      <ul>
+        <li>vector-&gt;bytevector</li>
+        <li>bytevector-&gt;vector</li></ul>
+      <p>Vote <span class="monospace">list+vector</span> to add both list and vector conversions.</p>
+      <p>The <span class="monospace">latin-1</span> proposal also adds the Latin-1-centric ideas of string to
+bytevector conversion, where each element of the bytevector is
+converted to/from a character with char-&gt;integer/integer-&gt;char.</p>
+      <p>The <span class="monospace">matrix</span> proposal requires all 4<sup>3</sup>=64 conversions.</p>
+      <ul>
+        <li><b>Options:</b> matrix, list, vector, list+vector, latin-1, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#444Addvector-appendprocedure"><a href="/ticket/444">#444</a> Add vector-append procedure</h3>
+      <p>This is for completeness with <span class="monospace">append</span> and <span class="monospace">string-append</span>.  See <a href="/ticket/436">#436</a>
+for the Formal Comment that triggered this ticket.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#451Addbytevector-appendprocedure"><a href="/ticket/451">#451</a> Add bytevector-append procedure</h3>
+      <p>This is for consistency with <span class="monospace">append</span>, <span class="monospace">string-append</span>, and
+<span class="monospace">vector-append</span> (per ticket <a href="/ticket/444">#444</a>) procedures.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#445Bidirectionalportsandport-open?"><a href="/ticket/445">#445</a> Bidirectional ports and port-open?</h3>
+      <p>Replace <span class="monospace">port-open?</span> with <span class="monospace">input-port-open?</span> and <span class="monospace">output-port-open?</span>,
+since a bidirectional port can be closed on one side without the
+other.  See Formal Comment <a href="/ticket/439">#439</a>.</p>
+      <p>Vote <span class="monospace">replace</span> to replace <span class="monospace">port-open?</span> with just the two new versions,
+or <span class="monospace">add</span> to have all three.</p>
+      <ul>
+        <li><b>Options:</b> replace, add, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#450Eliminatedefaultforfillargumentinvector-copy"><a href="/ticket/450">#450</a> Eliminate default for fill argument in vector-copy</h3>
+      <p>Marc Feeley writes:</p>
+      <p>It is a bad idea for the <i>fill</i> parameter of <span class="monospace">vector-copy</span> to have a
+default. When <i>fill</i> is absent, it should be an error when <i>start</i>
+and <i>end</i> are not within the bounds of the sequence. Otherwise, some
+index calculation errors (off-by-one on <i>end</i>) may go
+unnoticed. Moreover, when it is supplied, <i>fill</i> should also be used
+when <i>start</i> is less than 0, for consistency with the case where
+<i>end</i> is greater to the length of the sequence.</p>
+      <p>Vote <span class="monospace">required</span> to make the fill parameter required, <span class="monospace">error</span> to make
+it an error in the case that fill is absent yet needed, <span class="monospace">remove</span> to
+remove the fill parameter and signal a runtime error if end is longer
+than the input vector, or <span class="monospace">default</span> for the current status quo.</p>
+      <ul>
+        <li><b>Options:</b> required, error, remove, default, undecided</li>
+        <li><b>Default:</b> default</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#404Makehandlerstakearaise-continuable?argument."><a href="/ticket/404">#404</a> Make handlers take a raise-continuable? argument.</h3>
+      <p>Pass exception handlers a second, Boolean argument that declares
+whether the exception is continuable.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#464Addoptionalstartandendparameterstoutf8-&gt;stringandstring-&gt;utf8."><a href="/ticket/464">#464</a> Add optional start and end parameters to utf8-&gt;string and string-&gt;utf8.</h3>
+      <p>Per ticket 464, add optional start and end arguments to <span class="monospace">utf8-&gt;string</span>
+and <span class="monospace">string-&gt;utf8</span>.</p>
+      <p>Vote <span class="monospace">both</span> to add optional start and end arguments to both,
+<span class="monospace">string-&gt;utf8</span> or <span class="monospace">utf8-&gt;string</span> to add them to only one procedure, or
+<span class="monospace">neither</span> to leave both unchanged.</p>
+      <ul>
+        <li><b>Options:</b> both, string-&gt;utf8, utf8-&gt;string, neither</li>
+        <li><b>Default:</b> neither</li>
+        <li><b>Preferences:</b></li></ul>
+      <h2 id="WG1-OptionalLibraries">WG1 - Optional Libraries</h2>
+      <h3 id="#373(exit#t)shouldbethesameas(exit)"><a href="/ticket/373">#373</a> (exit #t) should be the same as (exit)</h3>
+      <p>See Formal Comment <a href="/ticket/372">#372</a> for the argument.  Cowan writes: &quot;I support this proposal.  I
+don't support the alternative proposal to just say that any true value
+reports success and only #f reports failure, for there is usually only
+one kind of success (0 on Posix and Windows, &quot;&quot; on Plan 9, 2 on VMS)
+and many kinds of failure.&quot;</p>
+      <p>It is reasonable and convenient to use <span class="monospace">#t</span>/<span class="monospace">#f</span> as generic
+success/failure for portable programs, with <span class="monospace">(exit)</span> as a shorthand
+for the &quot;normal&quot; completion <span class="monospace">(exit #t)</span>.</p>
+      <p>Another reasonable extension is fallback for certain success values
+that the implementation cannot understand.  Specifically, <span class="monospace">0</span> is
+commonly used for success on Posix systems, and the empty string &quot;&quot; as
+success on Plan9.  We could require that if the implementation does
+not know how to pass these value types (string or number) to the OS,
+then it should recognize <span class="monospace">0</span> and <span class="monospace">&quot;&quot;</span> as true.  Any value other than
+these which cannot be passed to the OS should be treated as a generic
+error.  That way, a program written for Posix that alternatively uses
+<span class="monospace">(exit 0)</span> and <span class="monospace">(exit &lt;n&gt;)</span> will still work as desired on a Plan9
+system, only losing details of the type of failure (and likewise for
+Plan9 programs running on Posix).</p>
+      <p>In either case, unless someone makes a proposal to the contrary,
+unknown values should always be treated as generic failure, and never
+raise an exception or fail to exit (from <a href="/ticket/374">#374</a>).</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>boolean:</b> Only <span class="monospace">#t</span>/<span class="monospace">#f</span> are as described as above, and all other values are passed (as best as possible) to the OS and therefore implementation-defined</li>
+            <li><b>extended-true:</b> <span class="monospace">#f</span> is generic failure, <span class="monospace">#t</span> generic success, and <span class="monospace">&quot;&quot;</span> and <span class="monospace">0</span> are generic success if not otherwise understood by the OS</li></ul></li>
+        <li><b>Options:</b> boolean, extended-true, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#375AddEMERGENCY-EXITprocedure"><a href="/ticket/375">#375</a> Add EMERGENCY-EXIT procedure</h3>
+      <p>This procedure provides instant guaranteed process exit without
+running <span class="monospace">dynamic-wind</span> thunks.  This is a low-level and dangerous
+procedure.</p>
+      <p>Vote <span class="monospace">emergency-exit</span> to add this procedure, or <span class="monospace">no</span> to leave it out.
+If you want to write in an alternate name, be sure to include
+<span class="monospace">emergency-exit</span> as a secondary option after it.</p>
+      <ul>
+        <li><b>Options:</b> emergency-exit, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#394DitchingSCHEME-REPORT-ENVIRONMENTandNULL-ENVIRONMENT"><a href="/ticket/394">#394</a> Ditching SCHEME-REPORT-ENVIRONMENT and NULL-ENVIRONMENT</h3>
+      <p>Cowan writes:</p>
+      <p>&quot;I have reluctantly come to the same conclusion as the R6RS editors:
+that in a Scheme with libraries, <span class="monospace">scheme-report-environment</span> and
+<span class="monospace">null-environment</span> don't make much sense.  They are not in IEEE Scheme
+or R4RS, so there is no formal barrier to removing them.</p>
+      <p>&quot;Semantically, <span class="monospace">scheme-report-environment</span> holds all the identifiers in
+R5RS, excepting any which the implementation doesn't provide, like
+<span class="monospace">make-rectangular</span> if it does not have complex numbers.
+<span class="monospace">Null-environment</span>, on the other hand, contains only the syntax
+keywords with none of the standard procedures: it is not an empty
+environment.  R6RS preserves these procedures only in the R5RS
+compatibility library, where they expose only R5RS content.</p>
+      <p>&quot;When adapting the definition to R7RS, I changed
+<span class="monospace">scheme-report-environment</span> to contain all the identifiers in all the
+standard libraries that the implementation provides, and
+<span class="monospace">null-environment</span> all the syntax keywords in those libraries.  This
+was the best I thought I could do, but now I think that it provides
+very little utility.</p>
+      <p>&quot;It's possible to construct any specific environment you want by using
+the <span class="monospace">environment</span> procedure, which turns a sequence of import-specs
+into an environment.  In particular, we now have the <span class="monospace">(scheme r5rs)</span>
+library, which essentially provides what
+<span class="monospace">(scheme-environment-procedure 5)</span> should provide, and there is no
+portable use of any argument other than 5.&quot;</p>
+      <p>Vote <span class="monospace">remove</span> to remove these two procedures entirely, or <span class="monospace">move</span> to
+move them from (scheme eval) and provide them only as portability
+options in <span class="monospace">(scheme r5rs)</span>, where only the argument 5 is required to
+be supported.  Vote <span class="monospace">keep</span> to leave them as-is.</p>
+      <ul>
+        <li><b>Options:</b> remove, move, keep, undecided</li>
+        <li><b>Default:</b> keep</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#413EVALacceptsDEFINE"><a href="/ticket/413">#413</a> EVAL accepts DEFINE</h3>
+      <p>The proposal is to require <span class="monospace">eval</span> to accept definitions as well as
+expressions, as long as the specified environment is mutable.  See
+<a href="/wiki/EvalDefine">EvalDefine</a> for which Schemes already handle this.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, unspecified, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#399clarifywhichprimitivesareallowedtoimplicitlyforce"><a href="/ticket/399">#399</a> clarify which primitives are allowed to implicitly force</h3>
+      <p>The standard allows the following extension to force:</p>
+      <p>Some implementations may implement &quot;implicit forcing,&quot; where the
+  value of a promise is forced by primitive procedures like `cdr'
+  and `+'</p>
+      <p>We should remove this note or tighten the definition.</p>
+      <p>A simple definition is any primitive that would require a type-check
+can perform implicit forcing.  This would include all type predicates
+themselves except for <span class="monospace">promise?</span>.  Note if <a href="/ticket/405">#405</a> passes, then in
+implementations which support this extension an object could return
+<span class="monospace">#t</span> for <span class="monospace">promise?</span> in addition to one other type.</p>
+      <ul>
+        <li><b>Options:</b> remove, type-check, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#405Makepromisesfirst-class"><a href="/ticket/405">#405</a> Make promises first-class</h3>
+      <p>Currently there is no way to inspect an object to see if it's a
+promise.  This proposal makes promises first-class by adding a
+<span class="monospace">promise?</span> predicate.  It also requires that if the argument to
+<span class="monospace">make-promise</span> is a promise, it is returned without rewrapping it, and
+that if <span class="monospace">force</span> is given a non-promise argument, it returns it
+unchanged.  (These things cannot be provided by the user without a
+<span class="monospace">promise?</span> predicate, and are trivial to provide with it.)</p>
+      <p>Vote <span class="monospace">disjoint</span> to add <span class="monospace">promise?</span> and make it a disjoint type, or
+<span class="monospace">yes</span> to add it as a not-necessarily disjoint predicate.</p>
+      <ul>
+        <li><b>Options:</b> disjoint, yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#462endoflinedefinition"><a href="/ticket/462">#462</a> end of line definition</h3>
+      <p>The definition of read-line allows implementation defined extensions
+to the set of end of line sequences. This is arguably too loose, as an
+implementation could define &quot;a&quot; as and end of line. On the other hand,
+if we do want to leave this in it may make sense to remove &quot;\r&quot;, which
+is no longer used in any contemporary OS.</p>
+      <p>Vote <span class="monospace">no-extensions</span> to forbid implementation defined extensions,
+<span class="monospace">no-return</span> to remove a single return from the list of required end of
+lines, and <span class="monospace">none</span> to leave as-is.</p>
+      <ul>
+        <li><b>Options:</b> no-extensions, no-return, none, undecided</li>
+        <li><b>Default:</b> none</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#452providedigit-valuesupportfornon-decimal-digits"><a href="/ticket/452">#452</a> provide digit-value support for non-decimal-digits</h3>
+      <p>In ballot 4, in symmetry with the new Unicode definition of
+<span class="monospace">char-numeric?</span> and as an analog to CL's <span class="monospace">digit-char-p</span>, we provided
+<span class="monospace">digit-value</span>.</p>
+      <p>An informal comment was made questioning this procedure, and
+suggesting if provided at all it be extended to hex digits.</p>
+      <p>Vote <span class="monospace">ascii-hex</span> to support only the ASCII hex digits a-f,A-F (in
+addition to full Unicode numeric digits), <span class="monospace">unicode-hex</span> to support all
+Unicode variants of a-f,A-F (need to define formally).</p>
+      <p>Vote <span class="monospace">ascii-radix</span> or <span class="monospace">unicode-radix</span> to have both <span class="monospace">digit-value</span> and <span class="monospace">char-numeric?</span> take a radix argument, such that <span class="monospace">char-numeric?</span> returns #t and <span class="monospace">digit-value</span> returns the appropriate value for characters representing non-numeric digits of that radix under ASCII or Unicode character encodings, respectively, and for characters representing numeric digits under Unicode.  Implementations are required to support at least the radix values: 2, 8, 10, and 16, and may support others.</p>
+      <p>Vote <span class="monospace">remove</span> to remove <span class="monospace">digit-value</span> entirely, <span class="monospace">remove-radix</span> to remove <span class="monospace">digit-value</span> entirely, but add the radix argument to <span class="monospace">char-numeric?</span> as described above, or <span class="monospace">keep</span> to keep as is.</p>
+      <ul>
+        <li><b>Options:</b> ascii-hex, unicode-hex, ascii-radix, unicode-radix, remove, remove-radix, keep, undecided</li>
+        <li><b>Default:</b> keep</li>
+        <li><b>Preferences:</b></li></ul>
+      <h2 id="WG1-Non-normative">WG1 - Non-normative</h2>
+      <h3 id="#411Referenceimplementation"><a href="/ticket/411">#411</a> Reference implementation</h3>
+      <p>Our charter calls for one or more reference implementations.  As of
+today, Chibi is very close to being so.  The proposal is to bless it
+as a sample or model implementation, but not technically a reference
+implementation -- if it disagrees with the standard, the standard
+wins.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#463librarynamingconventions"><a href="/ticket/463">#463</a> library naming conventions</h3>
+      <p>We currently use the singular form of data types for library names,</p>
+      <ol class="alpha-lower" start="5">
+        <li>g. <span class="monospace">(scheme char)</span> and <span class="monospace">(scheme file)</span>.  R6RS prefers the plural, as</li></ol>
+      <p>in <span class="monospace">(scheme lists)</span> and <span class="monospace">(scheme records)</span>. We should decide
+officially which is preferred.</p>
+      <ul>
+        <li><b>Options:</b> singular, plural, unspecified, undecided</li>
+        <li><b>Default:</b> unspecified</li>
+        <li><b>Preferences:</b></li></ul>
+      <h2 id="WG1-Lateadditions">WG1 - Late additions</h2>
+      <h3 id="#465Addjiffy-modulustospecifywhen,ifever,current-jiffywraps"><a href="/ticket/465">#465</a> Add jiffy-modulus to specify when, if ever, current-jiffy wraps</h3>
+      <p>If the value of <span class="monospace">current-jiffy</span> is to be both space-efficient (that is, a fixnum) and reasonably precise (say, microsecond timing), it needs to wrap around: 30-bit fixnums on a 32-bit system will wrap every 17 minutes.  That means an application needs to know what the maximum value is before it wraps back to zero.  The <span class="monospace">jiffy-modulus</span> function returns the maximum value of the current jiffy plus 1.  Alternatively, jiffies can be signed and wrap from (- (jiffy-modulus) 1) to (- (jiffy-modulus)), which is easier for the implementation but harder for the user.</p>
+      <ul>
+        <li><b>Options:</b> unsigned, signed, no, undecided</li>
+        <li><b>Default:</b> no</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#466casefoldingofcharacternames"><a href="/ticket/466">#466</a> case folding of character names</h3>
+      <p>In ticket <a href="/ticket/11">#11</a> we voted to make the reader case-sensitive
+by default. In ticket <a href="/ticket/92">#92</a> we further added the R6RS
+#!fold-case and #!no-fold-case reader extensions. In
+both cases the terminology was lax and simply referred
+to &quot;reader case sensitivity&quot;, and all discussion centered
+around symbols, although in R6RS character names were
+also affected.</p>
+      <p>Case folding will apply to numeric literals, booleans and
+bytevectors regardless, as they do in both R5RS and R6RS.
+We need to clarify how character names and the case
+folding directives themselves are handled.</p>
+      <p>The default is <span class="monospace">r6rs</span>, where character names are case
+sensitive by default and folded by the <span class="monospace">#!fold-case</span> flag:</p>
+      <p>​http://www.r6rs.org/final/html/r6rs-app/r6rs-app-Z-H-4.html#node_chap_B</p>
+      <p>Alternately character names could be made to ignore
+the reader directives and always or never fold case.
+Never folding case breaks R5RS and earlier compatibility
+without any easy workaround.</p>
+      <p>These same settings apply to the <span class="monospace">include-ci</span> syntax.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>r6rs:</b> character names behave like symbols, directives are sensitive</li>
+            <li><b>r6rs+directives:</b> like <span class="monospace">r6rs</span> but directives can also be case-folded</li>
+            <li><b>always-fold:</b> like <span class="monospace">r6rs</span> but character names and directives always fold case</li>
+            <li><b>never-fold:</b> like <span class="monospace">r6rs</span> but character names and directives never fold case</li></ul></li>
+        <li><b>Options:</b> r6rs, r6rs+directives, always-fold, never-fold, undecided</li>
+        <li><b>Default:</b> r6rs</li>
+        <li><b>Preferences:</b></li></ul>
+      <h3 id="#467Alloweqv?andeq?toreturndifferentanswersonproceduresaswellasintegersandcharacters"><a href="/ticket/467">#467</a> Allow eqv? and eq? to return different answers on procedures as well as integers and characters</h3>
+      <p>This proposal stems from <a href="http://lists.r6rs.org/pipermail/r6rs-discuss/2012-July/006405.html">remarks</a> by Alaric Snell-Pym and Will Clinger on the r6rs public mailing list.  If <span class="monospace">eq?</span> is allowed to return <span class="monospace">#f</span> on two procedures when <span class="monospace">eqv?</span> nevertheless returns <span class="monospace">#t</span>, as is already the case for numbers and characters, then more intelligent implementation-specific procedure comparisons using <span class="monospace">eqv?</span> are possible, while still keeping <span class="monospace">eq?</span> simple enough to inline easily.</p>
+      <p>Note that this is orthogonal to the question of <a href="/ticket/460">#460</a>, how <span class="monospace">eqv?</span> works on procedures.  There should be little or no backward-compatibility hit for this change.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>same:</b> <span class="monospace">eq?</span> and <span class="monospace">eqv?</span> always return the same on procedures, per R5RS and R6RS</li>
+            <li><b>different:</b> <span class="monospace">eq?</span> may return <span class="monospace">#f</span> on procedures even when <span class="monospace">eqv?</span> returns <span class="monospace">#t</span> (but not vice versa)</li></ul></li>
+        <li><b>Options:</b> same, different, undecided</li>
+        <li><b>Default:</b> same</li>
+        <li><b>Preferences:</b></li></ul></div></body></html>

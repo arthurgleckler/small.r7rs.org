@@ -1,0 +1,224 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki NumericVectorsCowan version 15</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki NumericVectorsCowan version 15</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>NumericVectorsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This is a proposal for a simple API for specialized numeric vectorsdistinguished by their ''representation type''.  The `u8` type is the same as the R7RS-small bytevector type, but the other types are all disjoint from all other Scheme types.  This API is more restricted than BytevectorsCowan, except that it is possible to dispatch on the different types of numeric vectors.  It may be useful for Schemes on the JVM or the CLR to use this API to provide access to the platform's native numeric vectors.
+
+This design subsumes [http://srfi.schemers.org/srfi-4/srfi-4.html SRFI 4].  There are many procedures, but many of them can be easily inlined by even a very dumb compiler, providing high efficiency.   The procedures provided in the present proposal are the numeric-vector analogues of the R7RS-small vector API.
+
+== Representation types ==
+
+The [type] values are:
+
+ `u8`::
+  unsigned 8-bit integer
+ `s8`::
+  signed 8-bit integer
+ `u16`::
+  unsigned 16-bit integer
+ `s16`::
+  signed 16-bit integer
+ `u32`::
+  unsigned 32-bit integer
+ `s32`::
+  signed 32-bit integer
+ `u64`::
+  unsigned 64-bit integer
+ `s64`::
+  signed 64-bit integer
+ `u128`::
+  unsigned 128-bit integer
+ `s128`::
+  signed 128-bit integer
+ `f32`::
+  32-bit float
+ `f64`::
+  64-bit float
+ `c64`::
+  64-bit complex number
+ `c128`::
+  128-bit complex number
+
+== Constructors ==
+
+`(make-[type]vector `''k'' [ ''fill'' ]`)`
+
+Returns a newly allocated numeric vector of length ''k''.''Fill'' is converted to a binary value according to `[type] and used to fill the vector; if ''fill'' is not specified, the values of the elements are unspecified.  It is an error if ''fill'' cannot be converted to [type].
+
+`([type]vector ` ''v'' ... `)`
+
+Returns a newly allocated numeric vector of length ''k'', where ''k'' is the number of arguments to the procedure.  It is filled with the binary values resulting from encoding the ''v'' arguments according to [type].  It is an error if an argument cannot be converted to [type].
+
+== Predicates ==
+
+`([type]vector? `''obj''`)`
+
+Returns `#t` if ''obj'' is a [type]vector, and `#f` if it is not.
+
+`([type]vector-empty? ` ''[type]vector''`)`
+
+Returns `#t` if ''[type]vector'' has length 0, and `#f` otherwise.
+
+== Selectors ==
+
+`([type]vector-ref` ''[type]vector k''`)`
+
+Returns a Scheme number corresponding to the ''k''th element of ''[type]vector''.  Note that `u8vector-ref` is the same as the R7RS-small procedure `bytevector-u8-ref`.
+
+== Mutators ==
+
+`([type]vector-set!` ''[type]vector k v''`)`
+
+Converts ''v'' to a binary value encoded according to [type] and places it into the ''k''th element of ''[type]vector''.  It is an error if ''v'' cannot be converted to [type].  Note that `u8vector-set!` is the same as the R7RS-small procedure `bytevector-u8-set!`.
+
+== Conversions to numeric vectors ==
+
+It is an error if a value being used to fill an element of a [type]vector cannot be converted to [type].
+
+`(vector-&gt;[type]vector `''vector'' [''start'' [ ''end'' ] ]`)`
+
+Returns a newly allocated [type]vector of length ''end - start'', filled with the corresponding elements of ''vector''.
+
+`(list-&gt;[type]vector `''list''`)`
+
+Returns a newly allocated [type]vector whose length is the length of ''list'', filled with the elements of ''list''.
+
+`(bytevector-&gt;[type]vector `''bytevector'' [ ''start'' [ ''end'' ] ]`)`
+
+Returns a [type]vector of length ''end / b - start / b'', filled with the elements of ''bytevector'' taken ''b'' at a time.
+
+`(vector-&gt;[type]vector! `''[type]vector at vector'' [''start'' [ ''end'' ] ]`)`
+
+Writes the elements of ''vector'' from ''start'' to ''end'' into ''[type]vector'' starting at ''at''.
+
+`(list-&gt;[type]vector! `''list [type]vector at''`)`
+
+Writes the elements of ''list'' into ''[type]vector'' starting at ''at''.
+
+`(bytevector-&gt;[type]vector! `''[type]vector at vector'' [''start'' [ ''end'' ] ]`)`
+
+Writes the elements of ''bytevector'' from ''b * start'' to ''b * end'' taken ''b'' at a time into ''[type]vector'' starting at ''at''.
+
+== Conversions from numeric vectors ==
+
+`([type]vector-&gt;vector `''[type]vector'' [ ''start'' [ ''end'' ] ]`)`
+
+`([type]vector-&gt;list `''[type]vector'' [ ''start'' [ ''end'' ] ]`)`
+
+Returns a newly allocated vector or list of length ''end - start'' with the elements of ''[type]vector'' from ''start'' to ''end''.
+
+`([type]vector-&gt;bytevector `''[type]vector'' [ ''start'' [ ''end'' ] ]`)`
+
+Returns a newly allocated bytevector of length ''b * end - b * start'' with the elements of ''[type]vector'' from ''start'' to ''end''.  The result may share structure with ''[type]vector''; in particular
+
+`([type]vector-&gt;vector! `''vector at [type]vector'' [''start'' [ ''end'' ] ]`)`
+
+`([type]vector-&gt;bytevector! `''bytevector at [type]vector'' [''start'' [ ''end'' ] ]`)`
+
+Writes the elements of ''[type]vector'' from ''start'' to ''end'' into ''vector'' or ''bytevector'' starting at ''at''.
+
+== The whole numeric vector ==
+
+`([type]vector-length ` ''[type]vector''`)`
+
+Returns the length of ''[type]vector''.
+
+`([type]vector-copy ` ''[type]vector'' [ [ ''start'' ] ''end'' ] `)`
+
+Copies the elements of ''[type]vector'' from ''start'' to ''end'' into a newly allocated [type]vector.
+
+`([type]vector-copy! `''to at from'' [ [ ''start'' ] ''end'' ] `)`
+
+Copies the elements of ''from'' from ''start'' to ''end'' into ''to'' starting at ''at''.
+
+`[type]vector-append ` ''[type]vector'' ...`)`
+
+Returns a newly allocated [type]vector whose elements are the concatenation of the elements in ''[type]vectors''.  It is an error if the ''[type]vectors'' are not all of the same type.
+
+`([type]vector-fill! `''[type]vector fill'' [ [ ''start'' ] ''end'' ] `)`
+
+Stores ''fill'' in the elements of ''[type]vector''. An error is signaled if ''fill'' cannot be converted to [type].
+
+== Mapping ==
+
+`([type]vector-map `''proc [type]vector'' ...`)`
+
+Returns a newly allocated [type]vector which contains the results of applying ''proc'' to the elements of the ''[type]vectors'' in an unspecified order.
+
+`([type]vector-map! `''proc output-[type]vector [type]vector'' ...`)`
+
+Writes the results of applying ''proc'' to the elements of the ''[type]vectors'' into the corresponding elements of ''output-[type]vector'' in an unspecified order.  It is not an error for ''output-[type]vector'' to be the same as one of the ''[type]vectors''.  Returns an unspecified value.
+
+`([type]vector-for-each `''proc [type]vector'' ...`)`
+
+Applies ''proc'' to the elements of the ''[type]vectors'' in order from first to last and discards the results.  Returns an unspecified value.
+
+== Input and output ==
+
+It is an error if the ports passed to these procedures are not binary ports.
+
+`(read-[type] ` [ ''port'' ]`)`
+
+Reads the appropriate number of bytes from ''port'' and returns a number of the appropriate type (exact integer or inexact real or complex number).
+
+`(write-[type] `''number'' [ ''port'' ]`)`
+
+Writes ''number'' to ''port'' in the appropriate format.
+
+`(read-ber-integer ` [ ''port'' ]`)`
+
+Reads a BER-encoded integer of arbitrary size from ''port''.
+
+`(write-ber-integer ` ''k'' [ ''port'' ]`)`
+
+Writes ''integer'' using BER encoding to ''port''.
+
+`(read-[type]vector `''k'' [ ''port'' ]`)`
+
+Read ''k'' * ''b'' bytes from ''port'' into a newly allocated [type]vector and returns it.
+
+`(read-[type]vector! `''[type]vector'' [ ''port'' [ ''start'' [ ''end'' ] ] ]`)`
+
+Read ''end * b - start * b'' bytes from ''port'' into ''[type]vector'' starting at ''start''.  Returns the number of bytes read divided by ''b'', or an eof object if no bytes are available.  If the number of bytes available is not a multiple of ''b'', the value of the element of ''[type]vector'' for which ''b'' bytes are not available is unspecified.
+
+`(write-[type]vector `''[type]vector [ ''port'' [ ''start'' [ ''end'' ] ] ]`)`
+
+Write ''end * b - start * b'' bytes to ''port'' from ''[type]vector'' starting at ''start''.  Returns an unspecified value.
+
+== Extended numeric vector API ==
+
+See the procedures of VectorsCowan, with the exceptions of the ones defined here.
+
+== Packaging ==
+
+Since there are many procedures, it makes sense to factor this into separate libraries.  Most programs won't require all the representation types, so factoring horizontally into 38 libraries based on that is a simple approach.  If the result is still too large, then we can factor vertically based on expected uses for the function.  SRFI 4 provides just 8 procedures per type: the basic and multi-argument constructors, the predicate, the basic accessor, the basic mutator, length, and conversion to and from lists.
+
+== Implementation ==
+
+[https://gist.github.com/ijp/1e0e67ff93c486f66fc8 This syntax-rules macro by Ian Price] will be helpful in implementing lots of similar but not identical procedures for the 14 types.</pre>
+    <h2>time</h2>
+    <pre>2014-09-25 10:38:42</pre>
+    <h2>version</h2>
+    <pre>15</pre></body></html>

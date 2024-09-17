@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>226: Remove property-list file specs from WG1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 226: <span class="summary">Remove property-list file specs from WG1</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-09-11 07:46:18</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/226/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-07-04 08:39:39</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>In the current draft, the procedures that open or refer to files use <i>filespecs</i>, which are either strings in R5RS style or else property lists.  The latter are more fundamental: the string filespec <span class="monospace">&quot;foo&quot;</span> is equivalent to the p-list filespec <span class="monospace">(path &quot;foo&quot;)</span>.  Property lists allow various options to be specified in addition to the file path.</p>
+        <p>There are only two uses of p-list filespecs in the current draft: the <span class="monospace">buffering</span> key, which allows the user to specify whether ports are buffered or unbuffered, and the possibility of an implementation-dependent extension for supporting file paths which are not Scheme strings.  (In Posix, a path is really a sequence of 8-bit integers with some restrictions on their values, and in Windows, it's a sequence of 16-bit integers with more restrictions on their values.)</p>
+        <p>However, it is unclear that either of these is of sufficient importance to support in WG1.  Most of the time, buffering is the Right Thing, and when output buffering causes a problem, the <span class="monospace">flush-output-port</span> procedure can be used to force output to occur.  The overwhelming majority of file paths in existence map directly to strings.</p>
+        <p>This ticket proposes, therefore, that only string filespecs be defined in WG1 Scheme, as in R5RS, and that p-list filespecs be deferred to WG2.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-11 07:46:18</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 accepted this proposal, which is already in effect in the current draft, so no change is required.</p></div></div></div></div></div></body></html>

@@ -1,0 +1,46 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki NegativeSqrt version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki NegativeSqrt version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>108.182.78.175</pre>
+    <h2>name</h2>
+    <pre>NegativeSqrt</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This is a test of `(sqrt -1)` to determine various issues: does the value become inexact, and if we don't have complex numbers, do we get an error or a NaN?
+
+Returns exact `+i`:  Racket, MIT, Gambit, Chibi, Chez, Vicare, Ypsilon, Mosh, !IronScheme, STklos, Spark, Owl Lisp
+
+Return inexact `0.0+1.0i`: Gauche, Chicken (with the numbers egg), Scheme48, Guile, Kawa, SISC, SCM, Larceny, KSi, UMB
+
+Returns `+nan.0`: Chicken (without the numbers egg), NexJ, RScheme, BDC, VX, Inlab
+
+Returns `+nan.0+nan.0i`: S7
+
+Signals an error: Bigloo, scsh, Ikarus, Scheme 9, XLisp, Rep, Schemik, Elk, Llava, SXM, Sizzle, Dfsch
+
+`sqrt` is undefined: !SigScheme, Shoe, !TinyScheme, Oaklisp, !FemtoLisp
+
+Dream hangs.
+</pre>
+    <h2>time</h2>
+    <pre>2013-05-24 13:04:04</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

@@ -1,0 +1,79 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki MutableEnvironmentsCurtisCowan version 3</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki MutableEnvironmentsCurtisCowan version 3</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>MutableEnvironmentsCurtisCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This proposal provides mutable environments for R7RS-large.  It's based on [http://groups.csail.mit.edu/mac/ftpdir/scheme-mail/HTML/rrrs-1988/msg00139.html this proposal by Pavel Curtis], but he is not responsible for the use I have made of it.
+
+== Introduction ==
+
+The small language provides four procedures that return global environment specifiers for use by `eval`.  They are:
+
+* `environment`, which returns an immutable environment specifier when passed on zero or more import-specs which contains the bindings made available by those import specs
+
+* `scheme-report-environment`, which when passed the argument `5` returns a specifier for a copy of the R5RS environment, which may or may not be mutable
+
+* `null-environment`, which when passed the argument `5` returns a specifier for a copy of the R5RS environment containing syntax keywords only, which may or may not be mutable
+
+* `interaction-environment`, which returns a mutable environment specifier containing implementation-defined bindings, including at least those exported by the base library
+
+== Procedures ==
+
+The following procedures allow an application to generate, examine, and mutate environment specifiers which can be used like those obtained from the R7RS-small procedures above.
+
+`(make-environment `''environment'' ...`)`
+
+Returns a newly allocated mutable environment specifier that has imported into it the bindings of the ''environments''.
+
+`(environment? `''obj''`)`
+
+Returns `#t` if ''obj'' is an environment specifier, and `#f` otherwise.
+
+`(mutable-environment? `''obj''`)`
+
+Returns `#t` if ''obj'' is a mutable environment specifier, and `#f` otherwise.
+
+`(environment-ref `''environment symbol''`)`
+
+If ''symbol'' is bound as a variable in the environment specified by ''environment'', returns the value bound to it.  If ''symbol'' is bound as a syntax keyword, returns an implementation-defined object.  If ''symbol'' is not bound, returns `#f`.
+
+`(environment-bound? `''environment symbol''`)`
+
+Returns `#t` if ''symbol'' is bound in the environment specified by ''environment'', and `#f` otherwise.
+
+`(environment-set! `''environment symbol value''`)`
+
+In the environment specified by ''environment'', binds ''symbol'' as a variable whose value is ''value'', shadowing any imported binding.  Returns an unspecified value.
+
+`(environment-remove! `''environment symbol''`)`
+
+In the environment specified by ''environment'', removes any binding for ''symbol'' created by `environment-set!`, revealing any imported binding.  If there is no such binding, it does nothing.  Returns an unspecified value.
+
+`(environment-for-each `''environment proc''`)`
+
+Invokes ''proc'' on each identifier bound in the environment specified by ''environment'' whose value comes from a call to `environment-set!`.  ''Proc'' is passed the identifier and the value (or an unspecified value if the identifier is bound as a syntax keyword).  Note that identifiers imported when the environment was created are not passed to ''proc'' unless their values have been changed.  Returns an unspecified value.</pre>
+    <h2>time</h2>
+    <pre>2013-04-23 07:34:01</pre>
+    <h2>version</h2>
+    <pre>3</pre></body></html>

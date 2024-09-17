@@ -1,0 +1,26 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CondExpand</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CondExpand.md">CondExpand</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Cond&shy;Expand</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-12-28 08:05:36</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/CondExpand/history">history</a></div>
+      <div class="source"><a href="/wiki/CondExpand/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Supporting <span class="monospace">cond-expand</span> from SRFI-0 and R7RS at the REPL?</p>
+      <p>Supported: Gauche, MIT, Chicken, Bigloo, Kawa, SISC, STklos, SigScheme, Scheme 9, RScheme, S7, SXM, Foment, Chibi, Sagittarius</p>
+      <p>Not supported: Racket* , Scheme48/scsh, SCM, Chez, Vicare*, Larceny*, Ypsilon*, Mosh, IronScheme, NexJ, JScheme, KSi, Shoe, TinyScheme, BDC, XLisp, Rep, Schemik, Elk, Llava, Sizzle, FemtoLisp, Dfsch, Inlab, Owl Lisp</p>
+      <p>*Said to support SRFI 0 through <a href="https://code.launchpad.net/~scheme-libraries-team/scheme-libraries/srfi">a third-party library</a>; not tested</p>
+      <p>Note:  Although <a href="http://srfi.schemers.org/srfi-0/srfi-0.html">SRFI 0</a> says that <span class="monospace">cond-expand</span> can only be portably used at the top level, all the above Schemes support nested <span class="monospace">cond-expand</span>.  R7RS allows <span class="monospace">cond-expand</span> anywhere a syntactic expression is permitted (it's also a library declaration).</p></div></body></html>

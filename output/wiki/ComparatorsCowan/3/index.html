@@ -1,0 +1,169 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ComparatorsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ComparatorsCowan.md">ComparatorsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Comparators&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-06-03 09:24:22</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/ComparatorsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ComparatorsCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Abstract">Abstract</h2>
+      <p>A <i>comparator</i> is an object of a disjoint type.  It is bundle of procedures that are useful for comparing two objects either for equality or for ordering.  There are four procedures in the bundle:</p>
+      <ul>
+        <li>The <i>type check</i> procedure returns <span class="monospace">#t</span> if the two objects have the correct types to be passed to the other procedures, and <span class="monospace">#f</span> otherwise.  Note that there is no requirement that both objects have the same type: it is possible, for example, to have a comparator that will compare a number to a string.</li></ul>
+      <ul>
+        <li>The <i>equivalence</i> procedure returns <span class="monospace">#t</span> if the two objects are the same in the sense of the particular comparator, and <span class="monospace">#f</span> otherwise.  It is the programmer's responsibility to ensure that it is reflexive, symmetric, transitive, and can handle any arguments that satisfy the type check procedure.</li></ul>
+      <ul>
+        <li>The <i>compare</i> procedure returns -1, 0, or 1 if the first object precedes the second, is equivalent to the second, or follows the second, respectively, in a total order defined by this comparator.  It is the programmer's responsibility to ensure that it is reflexive, weakly antisymmetric, transitive, can handle any arguments that satisfy the type check procedure, and returns 0 iff the equivalence procedure returns <span class="monospace">#t</span>.  Compare procedures are compatible with the compare procedures of <a href="http://srfi.schemers.org/srfi-67/srfi-67.html">SRFI 67</a>; see SRFI 67 for the rationale for adopting this return convention.</li></ul>
+      <ul>
+        <li>The <i>hash</i> procedure takes one argument, and returns an exact non-negative integer which corresponds to it in the sense of a hash function.  It is the programmer's responsibility to ensure that the hash procedure returns the same value on two objects if the equivalence procedure says they are the same (but not necessarily the converse).  <b>Issue:  Should this procedure accept a second argument such that its result must be less than this argument?</b></li></ul>
+      <p>All four procedures must provide the same result whenever they are applied to the same object(s) unless the object(s) have been mutated since the last invocation.  In other words, they must not depend in any way on memory addresses in systems where the garbage collector can move objects in memory.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>The four procedures above have complex dependencies on one another, and it is inconvenient to have to pass them all to various higher-level procedures that might or might not make use of all of them.  For example, a set implementation naturally requires only an equivalence procedure, but if it is implemented using a hash table, an appropriate hash procedure is also required if the implementation does not provide one; alternatively, if it is implemented using a tree, a compare procedure is required.  By passing a comparator rather than a bare equivalence procedure, the set implementation can make use of whatever procedures are useful to it.</p>
+      <h2 id="Specification">Specification</h2>
+      <h3 id="Predicate">Predicate</h3>
+      <p><span class="monospace">(comparator? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a comparator, and <span class="monospace">#f</span> otherwise.</p>
+      <h3 id="Standardatomiccomparators">Standard atomic comparators</h3>
+      <p>The following comparators are analogues to the standard compare procedures of SRFI 67.  They all provide appropriate hash functions as well.</p>
+      <p><span class="monospace">boolean-comparator</span></p>
+      <p>Compares booleans using the total order <span class="monospace">#f &lt; #t</span>.</p>
+      <p><span class="monospace">char-comparator</span></p>
+      <p>Compares characters using the total order implied by <span class="monospace">char&lt;?</span>.</p>
+      <p><span class="monospace">char-ci-comparator</span></p>
+      <p>Compares characters using the total order implied by <span class="monospace">char-ci&lt;?</span>.</p>
+      <p><span class="monospace">string-comparator</span></p>
+      <p>Compares strings using the total order implied by <span class="monospace">string&lt;?</span>.  Note that this order is implementation-dependent.</p>
+      <p><span class="monospace">string-ci-comparator</span></p>
+      <p>Compares strings using the total order implied by <span class="monospace">string-ci&lt;?</span>.  Note that this order is implementation-dependent.</p>
+      <p><span class="monospace">symbol-comparator</span></p>
+      <p>Compares symbols using the total order implied by applying <span class="monospace">symbol-&gt;string</span> to the symbols and comparing them using the total order implied by <span class="monospace">string&lt;?</span>.  It is not a requirement that the hash procedure of <span class="monospace">symbol-comparator</span> be consistent with the hash procedure of <span class="monospace">string-comparator</span>, however.</p>
+      <p><span class="monospace">exact-integer-comparator</span></p>
+      <p><span class="monospace">integer-comparator</span></p>
+      <p><span class="monospace">rational-comparator</span></p>
+      <p><span class="monospace">real-comparator</span></p>
+      <p><span class="monospace">complex-comparator</span></p>
+      <p><span class="monospace">number-comparator</span></p>
+      <p>These comparators compare exact integers, integers, rational numbers, real numbers, complex numbers, and any numbers using the total order implied by <span class="monospace">&lt;</span>.  They must be compatible with the R5RS numerical tower in the following sense: If S is a subtype of the numerical type T and the two objects are members of both S and T, then the equivalence and compare procedures (but not necessarily the hash procedure) of S-comparator and T-comparator compute the same results on those objects.</p>
+      <p>Since non-real numbers cannot be compared with <span class="monospace">&lt;</span>, the following least-surprising ordering is defined: If the real parts are &lt; or &gt;, so are the complex numbers; otherwise, the complex numbers are ordered by their imaginary parts.</p>
+      <p>It is an error to pass a NaN value to any of these comparators.</p>
+      <h3 id="Constructors">Constructors</h3>
+      <p>Most of the following comparators are analogues to the standard compare procedures of SRFI 67.  They all provide appropriate hash functions as well.</p>
+      <p>Note that comparator constructors are allowed to cache their results: they need not return a newly allocated object, since comparators are purely functional.</p>
+      <p><span class="monospace">(make-comparator </span><i>type-check equivalence compare hash</i><span class="monospace">)</span></p>
+      <p>Returns a comparator which bundles the <i>type-check, equivalence, compare</i>, and <i>hash</i> procedures provided.  If <i>type-check</i> is <span class="monospace">#f</span>, a type-check procedure that accepts any arguments is provided.  If <i>equivalence</i> is <span class="monospace">#f</span> but <i>compare</i> is not, an equivalence procedure is provided that returns <span class="monospace">#t</span> iff <i>compare</i> returns 0.  If <i>compare</i> or <i>hash</i> is <span class="monospace">#f</span>, a procedure is provided that signals an error on application.</p>
+      <p><span class="monospace">(make-vector-comparator </span><i>element-comparator</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(make-bytevector-comparator </span><i>element-comparator</i><span class="monospace">)</span></p>
+      <p>Returns a comparator which compares two vectors (or bytevectors) as follows: shorter objects precede longer ones, and objects of the same size are compared lexicographically: that is, the first elements are compared using <i>element-comparator</i>, and if they are not equivalent that is the result; otherwise, the second elements are compared, and so on until non-equivalent elements are found.  If all elements are equivalent, the objects are equivalent.</p>
+      <p><span class="monospace">(make-list-comparator </span><i>element-comparator</i><span class="monospace">)</span></p>
+      <p>Returns a comparator which compares two lists as follows: the empty list precedes all other lists, and other lists are compared lexicographically.</p>
+      <p><span class="monospace">(make-vectorwise-comparator </span><i>type-check element-comparator length ref</i><span class="monospace">)</span></p>
+      <p>Returns a comparator which compares two objects that satisfy <i>type-check</i> as if they were vectors, using the <i>length</i> procedure to determine the length of the object, and the <i>ref</i> procedure to access a particular element.  The <span class="monospace">make-vector-comparator</span> procedure may be defined thus:</p><span class="monospace">(define (make-vector-comparator element-comparator)
+  (make-vectorwise-comparator
+    (lambda (x y) (and (vector? x) (vector? y)))
+    element-comparator
+    vector-length
+    vector-ref))
+</span>
+      <p><span class="monospace">(make-listwise-comparator </span><i>type-check element-comparator empty? head tail</i><span class="monospace">)</span></p>
+      <p>Returns a comparator which compares two objects that satisfy <i>type-check</i> as if they were lists, using the <i>empty?</i> procedure to determine if an object is empty, and the <i>head</i> and <i>tail</i> procedures to access particular elements.  The <span class="monospace">make-list-comparator</span> procedure may be defined thus:</p><span class="monospace">(define (make-list-comparator element-comparator)
+  (make-listwise-comparator
+    (lambda (x y) (and (list? x) (list? y)))
+    element-comparator
+    null?
+    car
+    cdr))
+</span>
+      <p><span class="monospace">(make-pair-comparator-car </span><i>comparator</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(make-pair-comparator-cdr </span><i>comparator</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(make-pair-comparator </span><i>car-comparator cdr-comparator</i><span class="monospace">)</span></p>
+      <p>Return comparators that compare pairs on their cars alone, their cdrs alone, or first the cars and then, if the cars are equivalent, the cdrs.</p>
+      <p><span class="monospace">(make-improper-list-comparator </span><i>comparator</i><span class="monospace">)</span></p>
+      <p>Returns a comparator that compares arbitrary objects as follows:  the empty list precedes all pairs, which precede all other objects.  Pairs are compared using <i>comparator</i> on their cars, and if they compare equal, on their cdrs.  Other objects are compared using <i>comparator</i>.</p>
+      <p><span class="monospace">(make-selecting-comparator </span><i>comparator<sub>1</sub> comparator<sub>2</sub></i> ...<span class="monospace">)</span></p>
+      <p>Returns a comparator that makes use of the <i>comparators</i> as follows:  Its arguments are passed to the type check procedure of each <i>comparator</i> in sequence.  The first comparator whose type check procedure is satisfied is used to select the comparator whose equivalence, compare, and hash procedures are to be used when comparing those arguments.  All other comparators are ignored.  If no type check procedure is satisfied, an error is signaled; to avoid this, make sure that the type check procedure of the final comparator is satisfied by any arguments.</p>
+      <p>This procedure is analogous to the expression types <span class="monospace">select-compare</span> and <span class="monospace">cond-compare</span> from SRFI 67.</p>
+      <p><span class="monospace">(make-refining-comparator </span><i>comparator<sub>1</sub> comparator<sub>2</sub></i> ...<span class="monospace">)</span></p>
+      <p>Returns a comparator that makes use of the <i>comparators</i> in the same way as <span class="monospace">make-selecting-comparator</span>, except that if the compare procedure returns 0 (or, if there is no compare procedure, if the equivalence procedure returns <span class="monospace">#t</span>), then the next comparator whose type check procedure is satisfied is used instead.  If there are no more such comparators, then the equivalence procedure returns <span class="monospace">#t</span>, the compare procedure returns 0, and the hash procedure returns whatever the hash procedure of the last comparator examined returns.  If no type check procedure is satisfied, an error is signaled; to avoid this, make sure that the type check procedure of the final comparator is satisfied by any arguments.  <b>Issue:  Is this the right treatment of hash procedures?</b></p>
+      <p><span class="monospace">(make-debug-comparator </span><i>comparator</i><span class="monospace">)</span></p>
+      <p>Returns a comparator that behaves exactly like <i>comparator</i>, except that it verifies all the programmer responsibilities whenever its procedures are invoked, and an error is signaled if any of them are violated.  Transitivity is not tested on the first call to a debug comparator, because it requires three arguments; it is tested on all future calls using an arbitrarily chosen argument from the previous invocation.  Note that this may cause unexpected storage leaks.</p>
+      <h3 id="Thedefaultcomparator">The default comparator</h3>
+      <p><span class="monospace">default-comparator</span></p>
+      <p>This is a comparator that accepts any two Scheme values and orders them in some implementation-defined way, subject to the following constraints:</p>
+      <ul>
+        <li>When applied to booleans, characters, strings, and numbers, its behavior must be the same as <span class="monospace">boolean-comparator</span>, <span class="monospace">character-comparator</span>, <span class="monospace">string-comparator</span>, and <span class="monospace">number-comparator</span> respectively.  The same should be true for any pair of objects of the same type if a comparator is defined for that type.</li></ul>
+      <ul>
+        <li>When applied to lists, vectors, and bytevectors, its behavior must be the same as <span class="monospace">(make-list-comparator default-comparator)</span>, <span class="monospace">(make-vector-comparator default-comparator)</span>, and <span class="monospace">(make-bytevector-comparator default-comparator)</span> respectively.  The same should be true for any pair of sequences of the same type if an element-wise comparator is defined for that type.</li></ul>
+      <ul>
+        <li>All objects of a disjoint type must compare either greater than or less than all values of another disjoint type.  In other words, type trumps structure.</li></ul>
+      <h3 id="Standardconveniencecomparators">Standard convenience comparators</h3>
+      <p><span class="monospace">list-comparator</span></p>
+      <p><span class="monospace">vector-comparator</span></p>
+      <p><span class="monospace">bytevector-comparator</span></p>
+      <p>These comparators compare lists, vectors, and bytevectors in the same way that the results of applying <span class="monospace">make-list-comparator</span>, <span class="monospace">make-vector-comparator</span>, and <span class="monospace">make-bytevector-comparator</span> do when applied to <span class="monospace">default-comparator</span>.</p>
+      <p><span class="monospace">eq-comparator</span></p>
+      <p><span class="monospace">eqv-comparator</span></p>
+      <p><span class="monospace">equal-comparator</span></p>
+      <p>The equivalence procedures of these comparators are <span class="monospace">eq?</span>, <span class="monospace">eqv?</span>, and <span class="monospace">equal?</span> respectively.  When applied to non-equivalent objects, they compare objects the same way as <span class="monospace">default-comparator</span> does.</p>
+      <h3 id="Primitiveapplicators">Primitive applicators</h3>
+      <p><span class="monospace">(comparator-type-check </span><i>comparator obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Invokes the type check procedure of <i>comparator</i> on <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> and returns what it returns.</p>
+      <p><span class="monospace">(comparator-equivalent? </span><i>comparator obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Invokes the equivalence procedure of <i>comparator</i> on <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> and returns what it returns.</p>
+      <p><span class="monospace">(comparator-compare </span><i>comparator obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Invokes the compare procedure of <i>comparator</i> on <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> and returns what it returns.</p>
+      <p><span class="monospace">(comparator-hash </span><i>comparator obj</i><span class="monospace">)</span></p>
+      <p>Invokes the hash procedure of <i>comparator</i> on <i>obj</i> and returns what it returns.</p>
+      <h3 id="Comparisonsyntax">Comparison syntax</h3>
+      <p>The following expression types allow the convenient use of comparators.  They come directly from SRFI 67.</p>
+      <p><span class="monospace">(if3 </span><i>&lt;expr&gt; &lt;less&gt; &lt;equal&gt; &lt;greater&gt;</i><span class="monospace">)</span></p>
+      <p>The expression <i>&lt;expr&gt;</i> is evaluated; it will typically, but not necessarily, be a call on <span class="monospace">comparator-compare</span>.  If the result is -1, <i>&lt;less&gt;</i> is evaluated and its value(s) are returned; if the result is 0, <i>&lt;equal&gt;</i> is evaluated and its value(s) are returned; if the result is 1, <i>&lt;greater&gt;</i> is evaluated and its value(s) are returned.  Otherwise an error is signaled.</p>
+      <p><span class="monospace">(if=? </span><i>&lt;expr&gt; &lt;consequent&gt;</i> [ <i>&lt;alternate&gt;</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(if&lt;? </span><i>&lt;expr&gt; &lt;consequent&gt;</i> [ <i>&lt;alternate&gt;</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(if&gt;? </span><i>&lt;expr&gt; &lt;consequent&gt;</i> [ <i>&lt;alternate&gt;</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(if&lt;=? </span><i>&lt;expr&gt; &lt;consequent&gt;</i> [ <i>&lt;alternate&gt;</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(if&gt;=? </span><i>&lt;expr&gt; &lt;consequent&gt;</i> [ <i>&lt;alternate&gt;</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(if-not=? </span><i>&lt;expr&gt; &lt;consequent&gt;</i> [ <i>&lt;alternate&gt;</i> ]<span class="monospace">)</span></p>
+      <p>The expression <i>&lt;expr&gt;</i> is evaluated; it will typically, but not necessarily, be a call on <span class="monospace">comparator-compare</span>.  If the result is consistent with one of the six relations, <i>&lt;consequent&gt;</i> is evaluated and its value(s) are returned.  Otherwise, if <i>&lt;alternate&gt;</i> is present, it is evaluated and its value(s) are returned; if it is absent, an unspecified value is returned.</p>
+      <h3 id="Comparisonprocedures">Comparison procedures</h3>
+      <p>The following procedures allow the convenient use of comparators in situations where the expression types are not usable.  They are analogous to their SRFI 67 equivalents.  However, in SRFI 67, the analogous procedures return curried compare procedures if the comparand arguments are omitted.  Because there is no notion of a curried comparator in this proposal, these arguments are required.</p>
+      <p><span class="monospace">(=? </span> [ <i>comparator </i> ] <i>obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&lt;? </span> [ <i>comparator </i> ] <i>obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&gt;? </span> [ <i>comparator </i> ] <i>obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&lt;=? </span> [ <i>comparator </i> ] <i>obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&gt;=? </span> [ <i>comparator </i> ] <i>obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(not=? </span> [ <i>comparator </i> ] <i>obj<sub>1</sub> obj<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>These procedures return <span class="monospace">#t</span> if, when <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are compared using the equivalence or compare procedures of <i>comparator</i>, the objects bear the specified relation to one another, and <span class="monospace">#f</span> otherwise.  If <i>comparator</i> is omitted, <i>default-comparator</i> is used.  If the objects do not satisfy the type check procedure, an error is signaled.</p>
+      <p><span class="monospace">(&lt;/&lt;? </span>[ <i>comparator</i> ] <i>obj<sub>1</sub> obj<sub>2</sub> obj<sub>3</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&lt;/&lt;=? </span>[ <i>comparator</i> ] <i>obj<sub>1</sub> obj<sub>2</sub> obj<sub>3</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&lt;=/&lt;? </span>[ <i>comparator</i> ] <i>obj<sub>1</sub> obj<sub>2</sub> obj<sub>3</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&lt;=/&lt;=? </span>[ <i>comparator</i>  ] <i>obj<sub>1</sub> obj<sub>2</sub> obj<sub>3</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&gt;/&gt;? </span>[ <i>comparator</i> ] <i>obj<sub>1</sub> obj<sub>2</sub> obj<sub>3</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&gt;/&gt;=? </span>[ <i>comparator</i>  ] <i>obj<sub>1</sub> obj<sub>2</sub> obj<sub>3</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&gt;=/&gt;? </span>[ <i>comparator</i>  ] <i>obj<sub>1</sub> obj<sub>2</sub> obj<sub>3</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&gt;=/&gt;=? </span>[ <i>comparator</i>  ] <i>obj<sub>1</sub> obj<sub>2</sub> obj<sub>3</sub></i>)</p>
+      <p>These procedures apply the compare procedure of <i>comparator</i> to the three objects, and return <span class="monospace">#t</span> if the result of comparing <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> is consistent with the relation specified before the slash, and the result of comparing <i>obj<sub>2</sub></i> and <i>obj<sub>3</sub></i> is consistent with the relation specified after the slash.  Otherwise, <span class="monospace">#f</span> is returned.  If <i>comparator</i> is omitted, <i>default-comparator</i> is used.  The order in which the comparisons are done is unspecified, but both of them are always performed to ensure type checking.</p>
+      <p><span class="monospace">(chain=? </span><i>comparator object</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(chain&lt;? </span><i>comparator object</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(chain&gt;? </span><i>comparator object</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(chain&lt;=? </span><i>comparator object</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(chain&gt;=? </span><i>comparator object</i> ...<span class="monospace">)</span></p>
+      <p>These procedures are analogous to the number, character, and string comparison procedures of Scheme.  They apply the compare procedure of <i>comparator</i> to the <i>objects</i> as follows.  If the specified relation returns <span class="monospace">#t</span> for all <i>object<sub>i</sub></i> and <i>object<sub>j</sub></i> where <i>n</i> is the number of objects and <span class="monospace">(&lt;= 1 </span><i>object<sub>i</sub></i> <i>object<sub>j</sub> n</i><span class="monospace">)</span> returns true, then the procedures return <span class="monospace">#t</span>, but otherwise <span class="monospace">#f</span>.  In particular this applies where <i>n</i> is 0 or 1.  Note that the comparator must be provided, in order to handle the case of comparing comparators with <span class="monospace">default-comparator</span>.</p>
+      <p>The order in which the values are compared is unspecified, but each value is compared at least once, even if there is just one, to ensure type checking.  The reason that two different relations are provided is to handle half-open intervals easily and correctly.</p>
+      <p>Because the relations are transitive, it suffices to compare each object with its successor.</p>
+      <p><span class="monospace">(comparator-min </span><i>comparator object<sub>1</sub> object<sub>2</sub></i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(comparator-max </span><i>comparator object</i> ...<span class="monospace">)</span></p>
+      <p>These procedures are analogous to <span class="monospace">min</span> and <span class="monospace">max</span> respectively.  They apply the compare procedure of <i>comparator</i> to the <i>objects</i> to determine the first object that is minimal (or maximal).  The order in which the values are compared is unspecified, but each value is compared at least once, even if there is just one, to ensure type checking.</p>
+      <p>Note:  The SRFI 67 procedures <span class="monospace">pairwise-not=?</span> and <span class="monospace">kth-largest</span> involve sorting their arguments, and are not provided by this proposal in order to avoid an unnecessary implementation dependency.  They are easily provided by a sorting package that makes use of comparators.</p></div></body></html>

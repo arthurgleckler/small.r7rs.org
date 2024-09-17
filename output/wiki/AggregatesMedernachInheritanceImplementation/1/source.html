@@ -1,0 +1,85 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki AggregatesMedernachInheritanceImplementation version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki AggregatesMedernachInheritanceImplementation version 1</h1>
+    <h2>author</h2>
+    <pre>medernac</pre>
+    <h2>comment</h2>
+    <pre>AggregatesMedernach with inheritance added (test implementation)</pre>
+    <h2>ipnr</h2>
+    <pre>134.158.120.90</pre>
+    <h2>name</h2>
+    <pre>AggregatesMedernachInheritanceImplementation</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>
+{{{
+
+;; Optional inheritance 
+
+(define-syntax define-datatype
+  (syntax-rules ()
+    ((define-datatype &lt;datatype-name&gt; &lt;info&gt; &lt;designation&gt; (&lt;fieldname-spec&gt; ...))
+     (define-inherited-datatype &lt;datatype-name&gt; &lt;info&gt; () &lt;designation&gt; (&lt;fieldname-spec&gt; ...)))))
+
+(define-syntax define-inherited-datatype
+  (syntax-rules ()
+    ;; Base data type
+    ((define-inherited-datatype &lt;datatype-name&gt; &lt;info&gt; () &lt;designation&gt; (&lt;fieldname-spec&gt; ...))
+     (begin
+       ;; We need an informative macro for sub-types
+       (define-syntax &lt;info&gt;
+         (syntax-rules (create designate fields)
+           ((&lt;info&gt; designate) &lt;designation&gt;)
+           ((&lt;info&gt; fields) '(&lt;fieldname-spec&gt; ...))
+           ((&lt;info&gt; create &lt;self-designation&gt; (&lt;children&gt; (... ...)) (&lt;children-field-specs&gt; (... ...)))
+            (define-inherited-datatype-helper (&lt;designation&gt; &lt;children&gt; (... ...))
+              &lt;self-designation&gt;
+              (&lt;fieldname-spec&gt; ...)
+              (&lt;children-field-specs&gt; (... ...))))))
+       (define &lt;datatype-name&gt; (&lt;info&gt; create &lt;designation&gt; () ()))))
+     
+    ((define-inherited-datatype &lt;datatype-name&gt; &lt;info&gt; &lt;parent-datatype-info&gt; &lt;designation&gt; (&lt;fieldname-spec&gt; ...))
+     (begin 
+       (define-syntax &lt;info&gt;
+         (syntax-rules (create designate fields)
+           ((&lt;info&gt; designate) &lt;designation&gt;)
+           ((&lt;info&gt; fields) '(&lt;fieldname-spec&gt; ...))
+           ((&lt;info&gt; create &lt;self-designation&gt; (&lt;children&gt; (... ...)) (&lt;children-field-specs&gt; (... ...)))
+            (&lt;parent-datatype-info&gt; create
+                                    &lt;self-designation&gt;
+                                    (&lt;designation&gt; &lt;children&gt; (... ...))
+                                    (&lt;fieldname-spec&gt; ... &lt;children-field-specs&gt; (... ...))))))
+     
+       (define &lt;datatype-name&gt; (&lt;info&gt; create &lt;designation&gt; () ()))))))
+
+
+(define-syntax define-inherited-datatype-helper
+  (syntax-rules ()
+    ((define-inherited-datatype-helper (&lt;ancestor&gt; ...)
+                                     &lt;designation&gt;
+                                     (&lt;parent-fieldname-spec&gt; ...)
+                                     (&lt;fieldname-spec&gt; ...))
+     (define-datatype-loop (&lt;ancestor&gt; ...) 
+                         &lt;designation&gt;                      
+                         (&lt;parent-fieldname-spec&gt; ... &lt;fieldname-spec&gt; ...)
+                         () ()))))
+
+}}}
+</pre>
+    <h2>time</h2>
+    <pre>2011-01-15 02:00:02</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

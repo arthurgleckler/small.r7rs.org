@@ -1,0 +1,97 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>111: Require EQUAL? to return #t if EQV? does</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 111: <span class="summary">Require EQUAL? to return #t if EQV? does</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-01-24 07:06:44</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/111/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-12-07 00:05:14</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Shall we require <span class="monospace">equal?</span> to return <span class="monospace">#t</span> if <span class="monospace">eqv?</span> does?  This would make it possible to compare potentially circular lists or trees for equality provided they are the same in the sense of <span class="monospace">eqv?</span>.</p>
+        <p>This is a common implementation hack in many Lisps, but has never been standardized.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-12-17 15:25:56</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>It already is defined to use <span class="monospace">eqv?</span> in most cases excepting pairs and vectors, so I do not really see a need to require this. There is no difference whether we require this or not as it won’t change any results.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-12-17 15:33:50</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Yes, it will.  Given two circular lists as arguments, <span class="monospace">equal?</span> will loop on them unless they are <span class="monospace">eqv?</span>, in which case it will return <span class="monospace">#t</span> under this proposal.  In R5RS it may do either.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-12-17 15:40:57</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The result is the same however. They will return <span class="monospace">#t</span> in either case. It cannot return <span class="monospace">#f</span>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-12-17 15:50:12</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The result is <i>not</i> the same.  Possible non-termination is not the same as being guaranteed to return <span class="monospace">#t</span>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-12-17 15:55:06</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Since when is it non-terminating? Wait, I just saw the ticket, I feel like something is seriously wrong here.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-12-17 16:00:57</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Per <a href="/ticket/51">#51</a>, we keep the R5RS definition of <span class="monospace">equal?</span>, in which it &quot;may fail to terminate if its arguments are circular data structures&quot;.  You seem to be thinking of the R6RS definition, which did not pass WG1.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 06:55:28</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to take no action.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 07:06:44</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Correction: WG1 voted to accept this, but it is redundant with its vote on <a href="/ticket/51">#51</a>.</p></div></div></div></div></div></body></html>

@@ -1,0 +1,64 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PropertyLists</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PropertyLists.md">PropertyLists</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Property&shy;Lists</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-04-29 06:30:40</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/PropertyLists/history">history</a></div>
+      <div class="source"><a href="/wiki/PropertyLists/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>The following Schemes have implementations of property lists:</p>
+      <table><tr><td class="default">
+            <p>Scheme</p></td><td class="default">
+            <p>Get property</p></td><td class="default">
+            <p>Put property</p></td><td class="default">
+            <p>Remove property</p></td><td class="default">
+            <p>Get p-list</p></td></tr><tr><td class="default">
+            <p>Chicken</p></td><td class="default">
+            <p>get</p></td><td class="default">
+            <p>put or (setter get)</p></td><td class="left">
+            <p>remprop!</p></td><td class="default">
+            <p>symbol-plist</p></td></tr><tr><td class="default">
+            <p>Chez</p></td><td class="default">
+            <p>getprop</p></td><td class="default">
+            <p>putprop</p></td><td class="default">
+            <p>remprop</p></td><td class="default">
+            <p>property-list (returns copy)</p></td></tr><tr><td class="default">
+            <p>Ikarus</p></td><td class="default">
+            <p>getprop</p></td><td class="default">
+            <p>putprop</p></td><td class="default">
+            <p>remprop</p></td><td class="default">
+            <p>property-list (returns copy)</p></td></tr><tr><td class="default">
+            <p>Larceny</p></td><td class="default">
+            <p>getprop</p></td><td class="default">
+            <p>putprop</p></td><td class="default">
+            <p>remprop</p></td><td class="default">
+            <p>(none)</p></td></tr><tr><td class="default">
+            <p>Bigloo</p></td><td class="default">
+            <p>getprop</p></td><td class="default">
+            <p>putprop!</p></td><td class="left">
+            <p>remprop!</p></td><td class="default">
+            <p>symbol-plist</p></td></tr><tr><td class="default">
+            <p>Guile</p></td><td class="default">
+            <p>symbol-property</p></td><td class="left">
+            <p>set-symbol-property!</p></td><td class="left">
+            <p>symbol-property-remove!</p></td><td class="default">
+            <p>(none)</p></td></tr></table>
+      <p>||</p>
+      <p>Chicken also provides:</p>
+      <ul>
+        <li>get-properties, which searches for multiple properties simultaneously</li>
+        <li>(setter symbol-plist), which replaces the whole property list</li></ul>
+      <p>Kawa's underlying implementation provides property lists for its Elisp implementation, but they aren't directly exposed to Scheme except through the Java FFI.</p></div></body></html>

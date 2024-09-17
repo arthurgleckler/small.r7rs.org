@@ -1,0 +1,168 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RedEdition</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RedEdition.md">RedEdition</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Red&shy;Edition</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-01-18 00:22:00</div>
+      <div class="version">7<span class="comment"></span><a href="/wiki/RedEdition/history">history</a></div>
+      <div class="source"><a href="/wiki/RedEdition/7/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a frozen version of the Red Edition ballot, with hyperlinks.  It serves as a definition of the Red Edition, since a single document is not being prepared at this time.</p>
+      <p>By unanimous consent, the libraries of R7RS-small are all required in implementations of the Red Edition.  The following additional libraries are required:</p>
+      <h2 id="Basiclibraries">Basic libraries</h2>
+      <ol class="number">
+        <li>What list library should R7RS-large provide?</li></ol>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> (passed as <span class="monospace">(scheme list)</span>)</li></ul>
+      <ol class="number" start="2">
+        <li>What vector library should R7RS-large provide?</li></ol>
+      <p>SRFI 133 is a minor variant of SRFI 43 to make it compatible with R7RS-small by renaming a few procedures. It also includes a few additional procedures not present in SRFI 43.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-133/srfi-133.html">SRFI 133</a> (passed as <span class="monospace">(scheme vector)</span>)</li></ul>
+      <ol class="number" start="3">
+        <li>What string library should R7RS-large provide?</li></ol>
+      <p>SRFI 13 is an index-based string library. SRFI 130 provides support for string cursors as well, but does not provide string mutation procedures. SRFI 135 is an immutable text library, but accepts strings as well; if you vote for it, you may want to vote &quot;None&quot; here.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-13/srfi-13.html">SRFI 13</a></li>
+        <li><a href="http://srfi.schemers.org/srfi-130/srfi-130.html">SRFI 130</a></li></ul>
+      <p>No final result: this will be reballoted.</p>
+      <ol class="number" start="4">
+        <li>What sorting library should R7RS-large provide?</li></ol>
+      <p>SRFI 132 is an edited version of the withdrawn SRFI 32, with the algorithm-specific procedures removed and a few additional procedures; it provides sortedness testing, stable and unstable sorting, merging, duplicate removal, median, and selection. R6RS provides only stable sorting and merging.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-5.html#node_chap_4">R6RS</a></li>
+        <li><a href="http://srfi.schemers.org/srfi-132/srfi-132.html">SRFI 132</a> (passed as <span class="monospace">(scheme sort)</span>)</li></ul>
+      <h2 id="Setsandmaps">Sets and maps</h2>
+      <ol class="number" start="5">
+        <li>What general set and bag library should R7RS-large provide?</li></ol>
+      <p>SRFI 113 provides linear-update sets and bags, which can be mutable or immutable according to the implementer's preference. Since the interface of SRFI 113 depends on SRFI 114, which has been replaced by SRFI 128, voting for SRFI 113 will cause your vote on comparator libraries to be automatically changed to SRFI 128.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-113/srfi-113.html">SRFI 113</a> (passed as <span class="monospace">(scheme set)</span>)</li></ul>
+      <ol class="number" start="6">
+        <li>What character set library should R7RS-large provide?</li></ol>
+      <p>SRFI 14 provides linear-update sets and bags, which can be mutable or immutable according to the implementer's preference. The contents are limited to characters.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a> (passed as <span class="monospace">(scheme charset)</span>)</li></ul>
+      <ol class="number" start="7">
+        <li>What hash table library should R7RS-large provide?</li></ol>
+      <p>SRFI 69 is a basic hash table library. SRFI 125 is an upward compatible extension of it. Likewise, R6RS provides a basic hash table library, of which SRFI 126 is an upward compatible extension. Since the interface of SRFI 125 depends on SRFI 128, voting for SRFI 125 will cause your vote on comparator libraries to be automatically changed to SRFI 128.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-69/srfi-69.html">SRFI 69</a></li>
+        <li><a href="http://srfi.schemers.org/srfi-125/srfi-125.html">SRFI 125</a> (passed as <span class="monospace">(scheme hash-table)</span>)</li>
+        <li><a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-14.html#node_chap_13">R6RS</a></li>
+        <li><a href="http://srfi.schemers.org/srfi-126/srfi-126.html">SRFI 126</a></li></ul>
+      <h2 id="Immutability">Immutability</h2>
+      <ol class="number" start="8">
+        <li>What immutable pair/list library should R7RS-large provide?</li></ol>
+      <p>SRFI 116 is a variant of SRFI 1 for immutable pairs, which are a separate data type from ordinary Scheme pairs. Only a few functional update procedures are provided. Procedure names are prefixed with &quot;i&quot;.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-116/srfi-116.html">SRFI 116</a> (passed as <span class="monospace">(scheme ilist)</span>)</li></ul>
+      <ol class="number" start="9">
+        <li>What random access pair/list library should R7RS-large provide?</li></ol>
+      <p>SRFI 101 is a library for purely functional pairs and lists with O(log n) access time. To avoid conflicts, procedure names will be modified for R7RS-large purposes as follows:</p>
+      <ul>
+        <li><span class="monospace">make-list</span> to become <span class="monospace">make-rlist</span></li>
+        <li><span class="monospace">random-access-list-&gt;linear-access-list</span> to become <span class="monospace">rlist-&gt;list</span></li>
+        <li><span class="monospace">linear-access-list-&gt;random-access-list</span> to become <span class="monospace">list-&gt;rlist</span></li>
+        <li>all other identifiers to be prefixed with <span class="monospace">r</span> (<span class="monospace">rcons</span>, <span class="monospace">rpair?</span>, <span class="monospace">rcar</span>, <span class="monospace">rmap</span>, etc.)</li></ul>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-101/srfi-101.html">SRFI 101</a> (passed as <span class="monospace">(scheme rlist)</span>)</li></ul>
+      <ol class="number" start="10">
+        <li>What immutable deque library should R7RS-large provide?</li></ol>
+      <p>SRFI 134 is a library for immutable double-ended queues, with O(1) addition and removal time at both ends.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-134/srfi-134.html">SRFI 134</a> (passed as <span class="monospace">(scheme ideque)</span>)</li></ul>
+      <ol class="number" start="11">
+        <li>What immutable text library should R7RS-large provide?</li></ol>
+      <p>SRFI 135 is a library for immutable character sequences with O(1) access time. Its procedures accept strings as well as texts, so that a separate string library may not be as useful.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-135/srfi-135.html">SRFI 135</a> (passed as <span class="monospace">(scheme text)</span>)</li>
+        <li><a href="http://srfi.schemers.org/srfi-140/srfi-140.html">SRFI 140</a></li></ul>
+      <p>Laziness</p>
+      <ol class="number" start="12">
+        <li>What generator library should R7RS-large provide?</li></ol>
+      <p>SRFI 121 is a collection of routines for manipulating generators, which are nullary procedures that are invoked repeatedly to generate a sequence of values. They provide lightweight laziness.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-121/srfi-121.html">SRFI 121</a> (passed as <span class="monospace">(scheme generator)</span>)</li></ul>
+      <ol class="number" start="13">
+        <li>What lazy sequence library should R7RS-large provide?</li></ol>
+      <p>SRFI 127 is a variant of SRFI 1 for lazy sequences, which are either proper lists or lists with a generator in the tail. They provide medium-weight laziness.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-127/srfi-127.html">SRFI 127</a> (passed as <span class="monospace">(scheme lseq)</span>)</li></ul>
+      <ol class="number" start="14">
+        <li>What stream library should R7RS-large provide?</li></ol>
+      <p>SRFI 41 provides classical streams based on delay/force. They provide heavyweight laziness.  It specifies two libraries, but will be treated as just one for R7RS purposes.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-41/srfi-41.html">SRFI 41</a> (passed as <span class="monospace">(scheme stream)</span>)</li></ul>
+      <h2 id="Miscellaneous">Miscellaneous</h2>
+      <ol class="number" start="15">
+        <li>What box library should R7RS-large provide? *</li></ol>
+      <p>SRFI 111 is a trivial library for boxes (single-slot records).</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-111/srfi-111.html">SRFI 111</a> (passed as <span class="monospace">(scheme box)</span>)</li></ul>
+      <ol class="number" start="16">
+        <li>What list queue library should R7RS-large provide?</li></ol>
+      <p>SRFI 117 provides mutable half-deques with O(1) addition at both ends and O(1) deletion from the front. They are based directly on ordinary Scheme lists, and are known in other Lisps as &quot;tconc structures&quot;.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-117/srfi-117.html">SRFI 117</a> (passed as <span class="monospace">(scheme list-queue)</span>)</li></ul>
+      <ol class="number" start="17">
+        <li>What ephemeron library should R7RS-large provide?</li></ol>
+      <p>SRFI 124 provides ephemerons compatible with MIT Scheme except that they are immutable. A dummy implementation for systems without GC support is also provided.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None</li>
+        <li><a href="http://srfi.schemers.org/srfi-124/srfi-124.html">SRFI 124</a> (passed as <span class="monospace">(scheme ephemeron)</span>)</li></ul>
+      <ol class="number" start="18">
+        <li>What titlecase library should R7RS-large provide?</li></ol>
+      <p>SRFI 129 is a modified version of R6RS titlecase support with full Unicode compatibility. It is less useful with SRFI 135, which provides titlecase support already.</p>
+      <ul>
+        <li>No vote</li>
+        <li>None (passed, so no library)</li>
+        <li><a href="http://srfi.schemers.org/srfi-129/srfi-129.html">SRFI 129</a></li></ul>
+      <ol class="number" start="19">
+        <li>What comparator library should R7RS-large provide?</li></ol>
+      <p><a href="http://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> is a comparator library whose interface is used by SRFI 113 and SRFI 125.  It was not formally balloted but was voted in based on the votes for those libraries, as <span class="monospace">(scheme comparator)</span>.</p></div></body></html>

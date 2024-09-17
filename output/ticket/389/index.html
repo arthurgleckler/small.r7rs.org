@@ -1,0 +1,58 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>389: Ban mixed-exactness complex numbers</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 389: <span class="summary">Ban mixed-exactness complex numbers</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-07-15 04:27:46</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">duplicate</div>
+      <div class="source"><a href="/ticket/389/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-05-07 07:23:28</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>No Scheme standard prescribes how complex numbers interoperate with exactness.  Different implementations provide inexact complex numbers only, exact and inexact complex numbers, and mixed-exactness complex numbers (see <a href="/wiki/ComplexRepresentations">ComplexRepresentations</a> for who provides what).</p>
+        <p>Mixed-exactness complex numbers, however, are problematic.  As a whole they must be treated as inexact, and R7RS-draft already says so.  However, in implementations where 1.0+2i, 1+2.0i, and 1.0+2.0i are distinct in the sense of <span class="monospace">eqv?</span>, they are all = and have the same exactness.  This means that their behavior is different under arithmetic operations that treat the real and imaginary parts separately, which seems counter-intuitive.  The Common Lisp Hyperspec does not permit mixed-exactness complex numbers; CLISP provides them as an extension.</p>
+        <p>The five implementations in the test suite that provide mixed-exactness complex numbers are MIT, Gambit, Chibi, Mosh, STklos.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-05-07 07:29:25</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">No Scheme standard prescribes how complex numbers interoperate with exactness.  Different implementations provide inexact complex numbers only, exact and inexact complex numbers, and mixed-exactness complex numbers (see ComplexImplementations for who provides what).
+
+Mixed-exactness complex numbers, however, are problematic.  As a whole they must be treated as inexact, and R7RS-draft already says so.  However, in implementations where 1.0+2i, 1+2.0i, and 1.0+2.0i are distinct in the sense of `eqv?`, they are all = and have the same exactness.  This means that their behavior is different under arithmetic operations that treat the real and imaginary parts separately, which seems counter-intuitive.  The Common Lisp Hyperspec does not permit mixed-exactness complex numbers; CLISP provides them as an extension.
+
+The five implementations in the test suite that provide mixed-exactness complex numbers are MIT, Gambit, Chibi, Mosh, STklos.</span><span class="new-value">No Scheme standard prescribes how complex numbers interoperate with exactness.  Different implementations provide inexact complex numbers only, exact and inexact complex numbers, and mixed-exactness complex numbers (see ComplexRepresentations for who provides what).
+
+Mixed-exactness complex numbers, however, are problematic.  As a whole they must be treated as inexact, and R7RS-draft already says so.  However, in implementations where 1.0+2i, 1+2.0i, and 1.0+2.0i are distinct in the sense of `eqv?`, they are all = and have the same exactness.  This means that their behavior is different under arithmetic operations that treat the real and imaginary parts separately, which seems counter-intuitive.  The Common Lisp Hyperspec does not permit mixed-exactness complex numbers; CLISP provides them as an extension.
+
+The five implementations in the test suite that provide mixed-exactness complex numbers are MIT, Gambit, Chibi, Mosh, STklos.</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-15 04:27:46</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">duplicate</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Subsumed under <a href="/ticket/460">#460</a>, because by R5RS rules <span class="monospace">(eqv? 1.0+2i 1.0+2.0i)</span> returns <span class="monospace">#t</span>, because the argument are <span class="monospace">=</span> and have the same exactness, namely inexact), but by R6RS rules it returns <span class="monospace">#f</span>, since the arguments return different values to the standard arithmetic procedure <span class="monospace">imag-part</span>.</p></div></div></div></div></div></body></html>

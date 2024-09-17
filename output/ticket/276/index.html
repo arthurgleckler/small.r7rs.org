@@ -1,0 +1,103 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>276: Ordering conventions for identifiers in modules</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 276: <span class="summary">Ordering conventions for identifiers in modules</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-02-27 04:39:59</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">duplicate</div>
+      <div class="source"><a href="/ticket/276/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-09-08 04:15:53</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description"></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-23 23:51:07</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Chicken modules work like this, and it's compatible with R6RS.  See also <a href="http://lists.r6rs.org/pipermail/r6rs-discuss/2009-September/005487.html">The tale of Professor Simpleton and Dr. Hardcase</a>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2012-02-26 17:05:58</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">invalid</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The example is broken, <span class="monospace">define</span> is not a library declaration.
+A possible example would have to be <span class="monospace">(begin (define x y))</span>.</p>
+              <p>However this suggests a misunderstanding of the library
+semantics as described in the draft - all declarations are
+cond-expanded, an environment of all imports is created,
+and then the library body is expanded.  There is no way
+any code can interfere with the imports.</p>
+              <p>We could specify that all imports must occur before all
+code (and presumably that all exports then must occur
+before all imports as in R6RS), but I'm not sure of the
+motivation for this, and am marking the ticket invalid
+pending a clearer proposal.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-02-26 18:27:38</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">For ease of implementation, I think we should make it an error to refer to an identifier before it is imported or define an identifier before it is exported.  This allows modules to just do name control and not also have to be scopes.
+
+So this would be an error (but still permitted as an extension in Schemes that can easily provide it):
+
+{{{
+(module
+  (define x y)
+  (import (something defining y))
+  (export x))
+}}}</span><span class="new-value">'''New'''
+
+</span></div>
+            <div><span class="field">resolution</span><span class="old-value">invalid</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>See replacement ticket <a href="/ticket/353">#353</a>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">aag</div>
+            <div class="time">2012-02-27 02:12:33</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>If there's a replacement ticket, shouldn't this one remain closed?</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-02-27 04:39:59</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">'''New'''
+
+</span><span class="new-value">
+
+</span></div>
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">duplicate</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Yes, it should.  I screwed up.</p></div></div></div></div></div></body></html>

@@ -1,0 +1,50 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>507: R6RS/R7RS incompatibility of bytevector-copy! procedure</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 507: <span class="summary">R6RS/R7RS incompatibility of bytevector-copy! procedure</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:12:33</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/507/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-13 08:08:43</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Per Bothner writes:</p>
+        <p>I just noticed one unresolvable incompatibility with R6RS:</p>
+        <p><span class="monospace">(bytevector-copy! bv1 i bv2 j k)</span></p>
+        <p>In R6RS this copies <i>bv1[i..i+k-1]</i> into <i>bv2[j..j+k-1]</i>.   In the draft, it copies <i>bv2[j..k-1]</i> into <i>bv1[i..i+(k-j)-1]</i>.  Ouch.  OTOH, I think R6RS got this one wrong: Mutable operations in Scheme have the target (&quot;left-hand&quot;) value first, and the source (&quot;right-hand&quot;) value last.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-21 01:03:55</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I have added a note to the 10th draft warning that R6RS is different.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:12:33</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

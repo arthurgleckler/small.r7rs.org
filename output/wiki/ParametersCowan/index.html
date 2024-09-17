@@ -1,0 +1,93 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ParametersCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ParametersCowan.md">ParametersCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Parameters&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-09-07 07:36:22</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/ParametersCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ParametersCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p><i>I've replaced this proposal with a slightly amended version of <a href="/wiki/ImmutableParametersCowan">ImmutableParametersCowan</a>.</i></p>
+      <h1 id="Parameters"><a href="/wiki/Parameters">Parameters</a></h1>
+      <p>This proposal defines <i>parameter objects</i>, the procedure <span class="monospace">make-parameter</span> to create parameter objects, and the <span class="monospace">parameterize </span>special form to dynamically bind parameter objects. In the dynamic environment, each parameter object is bound to a cell containing the value of the parameter, which may be any Scheme object. When a procedure is invoked, the called procedure inherits the dynamic environment from the caller. The <span class="monospace">parameterize</span> special form allows the binding of a parameter object to be changed for the dynamic extent of its body.</p>
+      <p>The proposal is an alternative to <a href="/wiki/ParametersSnellPym">ParametersSnellPym</a>, providing parameter objects that are <i>not</i> shared between threads.  It is a profile of SRFI 39, which does not specify how threads and parameters interact.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>The <i>dynamic environment</i> is the structure which allows the system to find the value to be returned by the R5RS procedures <span class="monospace">current-input-port</span> and <span class="monospace">current-output-port</span>. The R5RS procedures <span class="monospace">with-input-from-file</span> and <span class="monospace">with-output-to-file</span> extend the dynamic environment to produce a new dynamic environment which is in effect for the dynamic extent of the call to the thunk passed as their last argument. These procedures are essentially special-purpose dynamic binding operations on hidden dynamic variables (one for <span class="monospace">current-input-port</span> and one for <span class="monospace">current-output-port</span>). The purpose of this proposal is to generalize this dynamic binding mechanism (which exists in all R5RS-compliant systems) to allow the user to introduce new dynamic variables and dynamically bind them.</p>
+      <p>General dynamic binding mechanisms exist in several implementations of Scheme under various names, including fluid variables and parameter objects. The parameter objects specified in this proposal are compatible with the semantics of some, but not all, implementations of Scheme that currently support <a href="http://srfi.schemers.org/srfi-39/srfi-39.html">SRFI-39</a>.</p>
+      <p><a href="/wiki/Parameters">Parameters</a> are certainly useful:</p>
+      <ol class="number">
+        <li>They can be labor-savers, passing &quot;configuration information&quot; down through complex call stacks without needing explicit parameter passing through functions that do nothing with the parameter other than pass it to all child procedures called, until a lower layer actually uses it.</li></ol>
+      <ol class="number" start="2">
+        <li>They allow isolation of concerns; as per the previous point, the intermediate procedures do not need to know what configuration information is sent to which child procedures, which is useful when the child procedures are provided by external libraries, or are arbitrary closures which might invoke arbitrary external libraries.</li></ol>
+      <ol class="number" start="3">
+        <li>They allow dynamically scoped state, for tasks like exception handling and thread-local storage.</li></ol>
+      <ol class="number" start="4">
+        <li>They generalize a mechanism that must be present within the implementation to support <span class="monospace">current-input-port</span> and <span class="monospace">current-output-port</span>, making it portably available to library authors.</li></ol>
+      <p><a href="/wiki/Parameters">Parameters</a> need to be specified as part of WG1 Scheme rather than implemented by portable libraries, because a portable library has no way of knowing if the implementation provides threads; and if it does, it has no portable way of implementing dynamically scoped state in a thread-safe manner.</p>
+      <h2 id="Specification">Specification</h2>
+      <p>The dynamic environment is composed of two parts: the <i>local dynamic environment</i> and the <i>global dynamic environment</i>. The global dynamic environment is used to look up parameter objects that can't be found in the local dynamic environment. When parameter objects are created, their initial binding is put into the global dynamic environment by mutation. The local dynamic environment is only extended by the <span class="monospace">parameterize</span> form.</p>
+      <p>Parameter objects are created with the <span class="monospace">make-parameter</span> procedure. The global dynamic environment is updated to cause the newly created parameter object to refer to a value, which can be retrieved by invoking the parameter object as a procedure with no arguments.</p>
+      <p>A parameter object is a procedure which accesses the cell bound to a particular parameter object in the dynamic environment. When no argument is passed, the current contents of the cell is returned. When one argument is passed, the contents of the cell is updated with the result of applying the parameter object's conversion procedure to the argument.</p>
+      <p>The <span class="monospace">parameterize</span> special form, when given parameter objects and corresponding values, binds, for the dynamic extent of its body only, each parameter object to a new value. The <span class="monospace">parameterize</span> special form behaves analogously to <span class="monospace">let</span> when binding more than one parameter object; that is, the order of evaluation is unspecified and the new bindings are only visible in the dynamic extent of the <span class="monospace">parameterize</span> special form.  However, while <span class="monospace">let</span> requires the user to specify identifiers to be bound, the parameter objects bound by <span class="monospace">parameterize</span> can be specified using arbitrary Scheme expressions.</p>
+      <p>This proposal also specifies that <span class="monospace">current-input-port</span> and <span class="monospace">current-output-port</span> are implemented as parameter objects created with <span class="monospace">make-parameter</span>.</p>
+      <h2 id="Proceduresandsyntax">Procedures and syntax</h2>
+      <p><span class="monospace">(make-parameter </span><i>init</i><span class="monospace"> </span>[<i>converter</i>]<span class="monospace">)</span>                     <i>procedure</i></p>
+      <p>Returns a new parameter object which is bound in the global dynamic environment to a cell containing the value returned by the call <span class="monospace">(</span><i>converter</i><span class="monospace"> </span><i>init</i><span class="monospace">)</span>. If <i>converter</i> is not specified the identity function is used instead.  The conversion procedure can be used to coerce <i>init</i> to a suitable type or to signal an error if its type is inappropriate.</p>
+      <p>Invoking the returned parameter object with no arguments returns the value it currently refers to.  Invoking the returned parameter object with a single argument <i>x</i> causes it to refer to <i>x</i>.</p><span class="monospace">        (define radix
+          (make-parameter 10))
+
+        (define write-shared
+          (make-parameter
+            #f
+            (lambda (x)
+              (if (boolean? x)
+                  x
+                  (error &quot;only booleans are accepted by write-shared&quot;)))))
+
+        (radix)           ==&gt;  10
+        (radix 2)
+        (radix)           ==&gt;  2
+        (write-shared 0)  gives an error
+
+        (define prompt
+          (make-parameter
+            123
+            (lambda (x)
+              (if (string? x)
+                  x
+                  (with-output-to-string (lambda () (write x)))))))
+
+        (prompt)       ==&gt;  &quot;123&quot;
+        (prompt &quot;&gt;&quot;)
+        (prompt)       ==&gt;  &quot;&gt;&quot;
+
+</span>
+      <p><span class="monospace">(parameterize ((</span><i>expr1</i><span class="monospace"> </span><i>expr2</i><span class="monospace">) ...) ''body'')</span>             <i>syntax</i></p>
+      <p>The expressions expr1 and expr2 are evaluated in an unspecified order. The value of the expr1 expressions must be parameter objects. For each expr1 expression and in an unspecified order, the local dynamic environment is extended with a binding of the parameter object expr1 to a new cell whose content is the result of the call (converter val), where val is the value of expr2 and converter is the conversion procedure of the parameter object. The resulting dynamic environment is then used for the evaluation of &lt;body&gt; (which refers to the R5RS grammar nonterminal of that name). The result(s) of the parameterize form are the result(s) of the &lt;body&gt;.</p>
+      <p>The expressions <i>expr1</i> and <i>expr2</i> are evaluated in an unspecified order. The values of the <i>expr1</i> expressions must be parameter objects. For each <i>expr1</i> expression, the local dynamic environment is extended in an unspecified order with a binding of the parameter object expr1 to a new cell whose contents is the result of the call <span class="monospace">(</span><i>converter</i><span class="monospace"> </span><i>val</i><span class="monospace">)</span>, where <i>val</i> is the value of <i>expr2</i> and <i>converter</i> is the conversion procedure of the parameter object. The resulting dynamic environment is then used for the evaluation of <i>body</i>, which refers to the R5RS grammar nonterminal of that name. The result(s) of the <span class="monospace">parameterize</span> form are the result(s) of <i>body</i>.</p><span class="monospace">        (radix)                                              ==&gt;  2
+        (parameterize ((radix 16)) (radix))                  ==&gt;  16
+        (radix)                                              ==&gt;  2
+
+        (define (f n) (number-&gt;string n (radix)))
+
+        (f 10)                                               ==&gt;  &quot;1010&quot;
+        (parameterize ((radix 8)) (f 10))                    ==&gt;  &quot;12&quot;
+        (parameterize ((radix 8) (prompt (f 10))) (prompt))  ==&gt;  &quot;1010&quot;
+</span>
+      <h2 id="Interactionwiththreads">Interaction with threads</h2>
+      <p>SRFI 39 does not specify how parameter objects interact with threads.  <a href="/wiki/ParametersSnellPym">ParametersSnellPym</a> provides mutable parameters shared between threads, which threads may atomically mutate to share information.  I take the view that using parameter objects in this way is an improper and unnecessary conflation of two distinct facilities, dynamic variables and shared data.  Instead, some mechanism for exchanging data between threads, such as mailboxes, should be provided as a part of standardizing threads, probably in WG2.</p>
+      <p>Therefore, this proposal specifies that when a parent thread creates a new child thread, the cells inside the parameter objects in the child thread are new objects whose <i>initial</i> contents are the same  (in the sense of <span class="monospace">eqv?</span>) as their <i>current</i> (not initial) values in the parent thread.  In this way, parameters in the child thread are initialized sensibly but operate independently of the parent thread.</p>
+      <h2 id="Thanks">Thanks</h2>
+      <p>Thanks to Taylor Campbell, Alaric Snell-Pym, and Marc Feeley, who as usual are not responsible for what I did to their ideas and/or prose.</p></div></body></html>

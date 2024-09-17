@@ -1,0 +1,42 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki SquareBrackets version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki SquareBrackets version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>98.14.173.81</pre>
+    <h2>name</h2>
+    <pre>SquareBrackets</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>I tested the usual suite of Schemes with `'[a b c]` to see how they reacted to the square brackets.  R6RS requires the result to be `(a b c)`.
+
+Evaluates to `(a b c)`: Racket, Gauche, Gambit, Chicken, Bigloo, Guile, SISC, Chez, Vicare, Larceny, Ypsilon, Mosh, !IronScheme, STklos, KSi, Schemik, Elk, Oaklisp, SXM, Sizzle, Spark
+
+Evaluates to the identifier `[a`, followed by undefined-variable error on `b`:  Chibi, SCM, Shoe, !TinyScheme, Scheme 9, Dream, Scheme 7, BDC, XLisp, UMB, VX, Llava, Dfsch, Inlab
+
+Syntax error: MIT, Scheme48/scsh, NexJ, !SigScheme, RScheme, Owl Lisp
+
+Evaluates to `#(a b c)`: Rep, !FemtoLisp
+
+Evaluates to `($bracket-list$ a b c)`: Kawa
+</pre>
+    <h2>time</h2>
+    <pre>2012-06-25 07:25:00</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

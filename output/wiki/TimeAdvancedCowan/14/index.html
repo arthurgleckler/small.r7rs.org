@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>TimeAdvancedCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/TimeAdvancedCowan.md">TimeAdvancedCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Time&shy;Advanced&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-12-02 10:48:56</div>
+      <div class="version">14<span class="comment"></span><a href="/wiki/TimeAdvancedCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/TimeAdvancedCowan/14/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Dateandtimearithmetic">Date and time arithmetic</h2>
+      <p>This is a WG2 proposal for date and time arithmetic, loosely based on Java's <a href="http://joda-time.sourceforge.net">Joda Time</a> functions.  It's possible to implement SRFI 19 on top of it, but it provides much more flexibility.</p>
+      <h2 id="Instants">Instants</h2>
+      <p>For the purposes of this proposal, an <i>instant</i> is a rational number representing a particular second (or fraction thereof) of the Posix epoch, which began on 00:00:00 on 1 January 1970, Coordinated Universal Time but excludes all leap seconds.  See <a href="/wiki/TimeCowan">TimeCowan</a> for the <span class="monospace">current-posix-second</span> procedure, which returns the current instant.</p>
+      <h2 id="Chronologies">Chronologies</h2>
+      <p>A <i>chronology</i> is a disjoint and immutable object that describes a particular calendar, such as the ISO, Gregorian, Julian, Jewish, Islamic, Persian, French Revolutionary, Maya, Chinese, Buddhist, Coptic, or Ethiopic calendar.  Implementations MUST support the ISO chronology, and MAY support any of the other calendars mentioned here, or indeed any calendar not mentioned here.</p>
+      <p>Chronologies also incorporate the concept of time zone.  An implementation MUST support the UTC (Universal Coordinated Time) timezone and any time zones expressible as a fixed offset in minutes from UTC.  It SHOULD support the historical time zones of the <a href="http://en.wikipedia.org/wiki/Tz_database">tz database</a>.</p>
+      <h2 id="Chronologyprocedures">Chronology procedures</h2>
+      <p><span class="monospace">(default-chronology)</span></p>
+      <p>Returns the default system-dependent chronology, which may include time zone information.</p>
+      <p><span class="monospace">(chronology </span><i>symbol</i><span class="monospace">)</span></p>
+      <p>Return a chronology named by <i>symbol</i>.  The ISO chronology is named <span class="monospace">iso</span>.  If provided, the Gregorian chronology is named <span class="monospace">gregorian</span> and the Julian chronology is named <span class="monospace">julian</span>.  The names of other chronologies are system-dependent.  The chronologies returned by this procedure are in the UTC time zone.</p>
+      <p><span class="monospace">(chronology-names)</span></p>
+      <p>Returns a list of the symbols naming the chronologies provided by the implementation.  It is an error to modify this list.</p>
+      <p><span class="monospace">(chronology-name </span><i>chronology</i><span class="monospace">)</span></p>
+      <p>Returns the symbol that names <i>chronology</i>.</p>
+      <p><span class="monospace">(chronology? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a chronology and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(chronology-with-time-zone </span><i>chronology</i><span class="monospace"> </span><i>timezone</i><span class="monospace">)</span></p>
+      <p>Returns a chronology object based on <i>chronology</i>, but with the time zone specified by <i>timezone</i>.  If <i>timezone</i> is an integer, it represents the number of minutes ahead of UTC.  If the implementation supports the tz database, and <i>timezone</i> is a string containing a time zone name defined by that database, it represents the time zone with that name.  Otherwise, the interpretation of <i>timezone</i> is implementation-dependent.</p>
+      <p><span class="monospace">(chronology-time-zone </span><i>chronology</i><span class="monospace">)</span></p>
+      <p>When <i>chronology</i> was returned from <span class="monospace">default-chronology</span>, returns an implementation-dependent value.  When <i>chronology</i> was returned from <span class="monospace">chronology</span>, returns 0.  When <i>chronology</i> was returned from <span class="monospace">chronology-with-time-zone</span>, returns the time zone value (of whatever type) which was specified to that procedure.</p>
+      <p><span class="monospace">(make-compound-chronology </span><i>chronology1</i><span class="monospace"> </span><i>chronology2</i><span class="monospace"> </span><i>instant</i><span class="monospace">)</span></p>
+      <p>Returns a chronology that uses <i>chronology2</i> at all times before <i>instant</i>, and <i>chronology1</i> for all times including and following <i>instant</i>.  This is useful for constructing chronologies that transition from Julian to Gregorian at a specified date.</p>
+      <h2 id="Dateobjects">Date objects</h2>
+      <p>A <i>date object</i> is a member of an immutable disjoint type that specifies information about a date or time with respect to a certain chronology.  For example, with respect to the ISO, Gregorian, or Julian chronologies, a date may represent a specific year, a specific week of a specific year, or an instant in time precise to a second or better.  On the other hand, a date object may contain just a particular month.  Date objects have multiple numeric-valued fields such as <span class="monospace">year</span> or <span class="monospace">minute-of-day</span>, whose meanings and possible values are determined by the chronology.</p>
+      <h2 id="Dateprocedures">Date procedures</h2>
+      <p><span class="monospace">(make-date </span><i>chronology</i><span class="monospace"> </span><i>alist</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a date object using <i>chronology</i>.  <i>Alist</i> is an association list mapping symbols which are names of fields meaningful to <i>chronology</i> to associated numeric values.  An error is signaled if the field values are invalid or inconsistent.</p>
+      <p><span class="monospace">(date? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a date object, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(date-&gt;alist </span><i>date</i><span class="monospace">)</span></p>
+      <p>Constructs and returns an alist containing the fields of <i>date</i>.  Implementations SHOULD provide computed fields as well as explicitly set ones.</p>
+      <p><span class="monospace">(date-field </span><i>date</i><span class="monospace"> </span><i>fieldname</i><span class="monospace">)</span></p>
+      <p>Returns the numeric value of the field named <i>fieldname</i> (a symbol) within <i>date</i>, or <span class="monospace">#f</span> if there is no such field.  If the specified field was not provided when <i>date</i> was constructed, and it is possible to compute its value from the values of fields that were provided, the value is computed and returned.</p>
+      <p><span class="monospace">(date-update </span><i>date</i><span class="monospace"> </span><i>fieldname</i><span class="monospace"> </span><i>value</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new date object based on <i>date</i>, but with the field named <i>fieldname</i> updated to <i>value</i>.  An error is signaled if the field is unknown or the value is out of range.</p>
+      <p><span class="monospace">(date-increment </span><i>date</i><span class="monospace"> </span><i>fieldname</i><span class="monospace"> </span><i>increment</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new date object which is later than <i>date</i> by                                                    
+<i>increment</i> measured in the units specified by <i>fieldname</i>, or
+earlier if <i>increment</i> is negative.   Returns <span class="monospace">#f</span> if an appropriate
+date object cannot be constructed due to lack of information in <i>date</i>                                                                                           
+An error is signaled if <i>fieldname</i> is unknown.</p>
+      <p>For example, <span class="monospace">(date-increment </span><i>date</i><span class="monospace"> 'day-of-month 7)</span> adds seven days to <i>date</i>
+(which is typically the same as one week, but may be different in some chronologies).</p>
+      <p><span class="monospace">(date-chronology </span><i>date</i><span class="monospace">)</span></p>
+      <p>Returns the chronology associated with <i>date</i>.</p>
+      <p><span class="monospace">(date-field-maximum </span><i>date</i><span class="monospace"> </span><i>fieldname</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(date-field-minimum </span><i>date</i><span class="monospace"> </span><i>fieldname</i><span class="monospace">)</span></p>
+      <p>Returns the maximum or minimum legal value of the field named <i>fieldname</i> in the chronology associated with <i>date</i>.  This value is not necessarily the same for all instants; for example, 28 is the maximum value of <span class="monospace">day-of-month</span> if <span class="monospace">month</span> has the value 2 (February).  Returns <span class="monospace">#f</span> if the value cannot be determined (there is no maximum or minimum year in the ISO chronology, for example).</p>
+      <p><span class="monospace">(date-round </span><i>date</i><span class="monospace"> </span><i>fieldname</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(date-ceiling </span><i>date</i><span class="monospace"> </span><i>fieldname</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(date-floor </span><i>date</i><span class="monospace"> </span><i>fieldname</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(date-truncate </span><i>date</i><span class="monospace"> </span><i>fieldname</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new date object which is the same as <i>date</i>, but adjusted to the nearest integral value of <i>fieldname</i> using the <span class="monospace">round</span>, <span class="monospace">ceiling</span>, <span class="monospace">floor</span>, or <span class="monospace">truncate</span> functions.  This may cause other fields to change their values as well.</p>
+      <h2 id="Datefields">Date fields</h2>
+      <p>Unless otherwise noted, the values of these fields MUST be either exact integers or <span class="monospace">#f</span> if they were not explicitly set and cannot be calculated from the given information.  These fields are specified for the ISO, Gregorian, and Julian chronologies, but they may be relevant to other chronologies as well.  For interoperability, every chronology must support the <span class="monospace">instant</span> field.</p>
+      <dl>
+        <dt><span class="monospace">century</span></dt>
+        <dd>The absolute century of the date.  In the ISO chronology, the century of 1965 C.E. is 19, the century of 70 C.E. is 0, and the century of 43 B.C.E is -1.  In the Gregorian and Julian chronologies, they are 20, 1, and -1 respectively, and there is no century 0.</dd>
+        <dt><span class="monospace">century-of-era</span></dt>
+        <dd>The century of the date's era.</dd>
+        <dt><span class="monospace">clock-hour-of-day</span></dt>
+        <dd>The hour of the date's day in the range 1-24.</dd>
+        <dt><span class="monospace">clock-hour-of-half-day</span></dt>
+        <dd>The hour of the date's half-day, in the range 1-12.</dd>
+        <dt><span class="monospace">day-of-month</span></dt>
+        <dd>The day of the date's month, in the range 1-31 (or less in some months).</dd>
+        <dt><span class="monospace">day-of-week</span></dt>
+        <dd>The day of the date's week.  In the ISO chronology, Monday is day 1 and Sunday is day 7.  In the Julian and Gregorian chronologies, Sunday is day 1 and Saturday is day 7.</dd>
+        <dt><span class="monospace">day-of-year</span></dt>
+        <dd>The day of the date's year, in the range 1-365 in non-leap years and 1-366 in leap years.</dd>
+        <dt><span class="monospace">daylight-saving-time</span></dt>
+        <dd>1 if daylight saving time (summer time) was in effect, or 0 if not.  This field discriminates between 2:00 A.M. daylight time and 2:00 A.M. standard time on the day when daylight saving time ends in the U.S. (and the corresponding periods for other daylight saving time regimes).</dd>
+        <dt><span class="monospace">era</span></dt>
+        <dd>The date's era.  The ISO chronology has just one era.  In the Gregorian and Julian chronologies, C.E. (or A.D.) = 1, and B.C.E. (or B.C.) = 0.  By convention, the era containing the Posix epoch is era 1.</dd>
+        <dt><span class="monospace">half-day-of-day</span></dt>
+        <dd>The half-day (A.M. or P.M.) of this day.  A.M. = 0, P.M. = 1.</dd>
+        <dt><span class="monospace">hour-of-day</span></dt>
+        <dd>The hour of the date's day, in the range 0-23.</dd>
+        <dt><span class="monospace">hour-of-half-day</span></dt>
+        <dd>The hour of the date's half-day, in the range 0-11.</dd>
+        <dt><span class="monospace">instant</span></dt>
+        <dd>The instant corresponding to this date.</dd>
+        <dt><span class="monospace">local-time-offset</span></dt>
+        <dd>The local time zone offset (standard or daylight saving, as the case may be) in minutes ahead of UTC.</dd>
+        <dt><span class="monospace">minute-of-day</span></dt>
+        <dd>The minute of the date's day, in the range 0-1439.</dd>
+        <dt><span class="monospace">minute-of-hour</span></dt>
+        <dd>The minute of the date's hour, in the range 0-59.</dd>
+        <dt><span class="monospace">month-of-year</span></dt>
+        <dd>The month of the date's year, in the range 1-12.</dd>
+        <dt><span class="monospace">second-of-day</span></dt>
+        <dd>The second of the date's day.  This value MAY be a non-integer; it MUST be greater than or equal to 0 and less than 86400.</dd>
+        <dt><span class="monospace">second-of-minute</span></dt>
+        <dd>The second of the date's minute.  This value MAY be a non-integer; it MUST be greater than or equal to 0 and less than 60.</dd>
+        <dt><span class="monospace">standard-time-offset</span></dt>
+        <dd>The standard time zone offset in minutes ahead of UTC.</dd>
+        <dt><span class="monospace">week-of-week-year</span></dt>
+        <dd>The week of the date's week-year, in the range 1-53.</dd>
+        <dt><span class="monospace">week-year</span></dt>
+        <dd>The date's week-year, which begins on the week that has at least 4 days in the chronological year.</dd>
+        <dt><span class="monospace">week-year-of-century</span></dt>
+        <dd>The week-year of the date's century.  The range is the same as for <span class="monospace">year-of-century</span>.</dd>
+        <dt><span class="monospace">year</span></dt>
+        <dd>The absolute year of the date.</dd>
+        <dt><span class="monospace">year-of-century</span></dt>
+        <dd>The year of the date's century.  In the ISO chronology, the range is 0-99.  In the Gregorian and Julian chronologies, the range is 1-100.</dd>
+        <dt><span class="monospace">year-of-era</span></dt>
+        <dd>The year of the date's era.  In the Gregorian and Julian chronologies, the value cannot be 0.</dd></dl></div></body></html>

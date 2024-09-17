@@ -1,0 +1,38 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NamedParametersCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NamedParametersCowan.md">NamedParametersCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Named&shy;Parameters&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-04-27 00:48:14</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/NamedParametersCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/NamedParametersCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="NamedParameters">Named <a href="/wiki/Parameters">Parameters</a></h2>
+      <p>In this design, keywords are disjoint from symbols, but there is no special syntax for them: for each keyword, a variable is bound to the value of that keyword.  <a href="/wiki/Keywords">Keywords</a> must be compared with <span class="monospace">keyword=?</span> rather than with <span class="monospace">eq?</span>.</p>
+      <h2 id="Syntax">Syntax</h2>
+      <p><span class="monospace">(keywords-lambda </span><i>arg</i> ... <span class="monospace">(</span><i>key</i><span class="monospace"> </span><i>value</i><span class="monospace">) </span>...<span class="monospace">) ''body'' ...</span>)`  [syntax]</p>
+      <p>Returns a procedure whose body is <i>body</i> that accepts non-keyword arguments <i>args</i> and keyword arguments whose names are <i>keys</i>.  <i>Values</i> specify the default value for the corresponding <i>keys</i>.</p>
+      <p>Note that <i>keys</i> need not have any particular syntax such as beginning with or ending with a colon, but they may do so by convention.  As identifiers, keywords must be explicitly exported from modules.</p>
+      <p><span class="monospace">(keywords-define (</span><i>name</i><span class="monospace"> </span><i>arg</i> ... <span class="monospace">(</span><i>key</i><span class="monospace"> </span><i>value</i><span class="monospace">) </span>...<span class="monospace">) ''body'' ...</span>)`  [syntax]</p>
+      <p>Defines a procedure named <i>name</i> with body <span class="monospace">(lambda/keywords </span><i>arg</i> ... <span class="monospace">(</span><i>key</i><span class="monospace"> </span><i>value</i><span class="monospace">) </span>...<span class="monospace">) </span><i>body</i> ...<span class="monospace">)</span></p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(make-keyword </span><i>symbol</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a keyword object whose name is <i>symbol</i>.</p>
+      <p><span class="monospace">(keyword? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a keyword object, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(keyword=? </span><i>kw1</i><span class="monospace"> </span><i>kw2</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>kw1</i> and <i>kw2</i> are keywords with the same name, and <span class="monospace">#f</span> if they have different names.  It is an error if <i>kw1</i> and <i>kw2</i> are not keyword objects.</p>
+      <h2 id="Rationaleandimplementation">Rationale and implementation</h2>
+      <p>See <a href="/wiki/KeywordArgumentsArcfide">KeywordArgumentsArcfide</a>.  The syntax keywords <span class="monospace">keywords-define</span> and <span class="monospace">keywords-lambda</span> here correspond to <span class="monospace">define/optional</span> and <span class="monospace">lambda/opt</span> there.</p></div></body></html>

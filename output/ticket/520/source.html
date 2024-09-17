@@ -1,0 +1,149 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #520</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #520</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Mikael More writes:
+
+  There is no description in the spec of what a library exports if it has no export library declaration, and this could very well be interpreted as something else than that in this case, all of the library's identifiers should be exported.
+
+  Rationale:  For (library) exports, an export-all by default approach is of value in many incremental development situations.
+
+  To give an example, a Tetris game, with rendering, keyboard input, and other libraries.  The basic idea is that, as the programmer adds modules to the code project and imports them incrementally into the Scheme environment, it is implicit that every new identifier the programmer defines in a module should be exported to all of its dependencies; The library abstraction is used as a means for subdivision/modularization/separation of code only and the code project is so small that there cannot possibly be any unexpectable identifier/export collision to talk about.
+
+  A requirement to explicitly export symbols though, would require the programmer to add this as an extra consideration which is strictly speaking unnecessary, and would provide a clear incentive for the programmer to replace the spec-provided library functionality with a custom one; this would be an involvement of unnecessary complexity, and would also decrease the generality of the spec-provided library functionality so much that a less general name for its |import| form, such as |import-library|, would be really relevant to consider.
+
+  I would suggest that the R7RS Library syntax should be intended to deliver for incremental development also, as this appears like the most holistic approach - the Library syntax describe a mechanism for subdivision/modularization of code as it is already, so it would make sense for it to be intended also for this use. Therefore:
+
+  Suggestion:  I'd suggest that a clarification is added to the spec that all identifiers are exported by default, so that that is the effect absence of an export library declaration has.  A library that wants not to export any identifiers specify an export library declaration that lists no libraries, i.e. `(export)` .
+
+The intention is that if nothing is mentioned in an export library declaration, nothing is exported.  Such libraries can be imported solely for their side effects.
+
+Ticket #402 proposed `(export-all)`, though not the interpretation of no export declarations.  In [wiki:WG1Ballot6Results], the WG narrowly decided not to have `(export-all)` in the small language, on the grounds that it was an additional unnecessary complication, and that it was good discipline to export only what is explicitly mentioned.  One member did bring up the idea of exporting all when no declarations are present, and rejected it as violating the Law of Least Astonishment.
+
+In addition, the question was raised whether `(export-all)` should export what is imported as well as what is defined.  There is a use case for both interpretations, analogous to public vs. private inheritance in C++.  It's not clear which version this proposal intends, though I'd guess that it's meant to export only what is defined.</pre>
+    <h2>id</h2>
+    <pre>520</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>A library with no export declarations should export everything</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 15:59:37</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG decided by unanimous consent to take no action on this ticket.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>520</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>520</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>520</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-05-13 16:12:31</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>_comment0</pre>
+    <h2>newvalue</h2>
+    <pre>1369075080517197</pre>
+    <h2>oldvalue</h2>
+    <pre>I agree that magically exporting all violates the Law of Least Astonishment, and so I rejecdt this option.  I have, however, proposed `export-all` and `reexport` library declarations as a mandatory WG2 extension: see LibraryDeclarationsCowan for details.
+
+In my (still very limited) experience at writing R7RS libraries, however, I find that I almost never do want to export ''everything'', other than in the situation of extending a library (which is what `reexport` is for).  For one thing, there is generally at least one new record type in each of my libraries, and I usually want to wrap the raw setters and the raw constructor in procedures that check their arguments for type and/or other things; similarly, I often want procedures that don't verify their invariants because I know they will only be called from other procedures that do verify them.  In both cases, hiding the raw versions is crucial to safety.
+
+Given that in some libraries exporting may be more frequent than hiding, an alternative to `export-all` would be an `export-all-except` declaration.  Such a declaration would be brittle: one would have to be careful, when adding new private procedures, to add them to the `export-all-except` list as well, and the compiler would provide no support for doing so.  By contrast, if you forget to export something, you find out as soon as you run a proper set of tests that imports the library.</pre>
+    <h2>raw-time</h2>
+    <pre>1368436351106746</pre>
+    <h2>ticket</h2>
+    <pre>520</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 16:12:31</pre>
+    <h2>Change at time 2013-05-13 16:12:31</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>I agree that magically exporting all violates the Law of Least Astonishment, and so I reject this option.  I have, however, proposed `export-all` and `reexport` library declarations as a mandatory WG2 extension: see LibraryDeclarationsCowan for details.
+
+In my (still very limited) experience at writing R7RS libraries, however, I find that I almost never do want to export ''everything'', other than in the situation of extending a library (which is what `reexport` is intended for).  For one thing, there is generally at least one new record type in each of my libraries, and I usually want to wrap the raw setters and the raw constructor in procedures that check their arguments for type and/or other things; similarly, I often want procedures that don't verify their invariants because I know they will only be called from other procedures that do verify them.  In both cases, hiding the raw versions is crucial to safety.
+
+Given that in some libraries exporting may be more frequent than hiding, an alternative to `export-all` would be an `export-all-except` declaration.  Such a declaration would be brittle: one would have to be careful, when adding new private procedures, to add them to the `export-all-except` list as well, and the compiler would provide no support for doing so.  By contrast, if you forget to export something, you find out as soon as you run a proper set of tests that imports the library.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1368436351106746</pre>
+    <h2>ticket</h2>
+    <pre>520</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 16:12:31</pre></body></html>

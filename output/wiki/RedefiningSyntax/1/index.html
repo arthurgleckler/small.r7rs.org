@@ -1,0 +1,45 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RedefiningSyntax</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RedefiningSyntax.md">RedefiningSyntax</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Redefining&shy;Syntax</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-05-17 04:52:20</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/RedefiningSyntax/history">history</a></div>
+      <div class="source"><a href="/wiki/RedefiningSyntax/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>I've been poking around the usual list of Schemes, trying to find out
+what the behavior is when an identifier is defined as a value and then
+redefined as syntax.  For example:</p><span class="monospace">        (define (noodle) (foodle))
+        (define (foodle) 23)
+        (noodle) =&gt; ??
+        
+        (define-syntax foodle (syntax-rules ()
+          ((foodle) 17)))
+        (noodle) =&gt; ??
+        
+        (define (noodle) (foodle))
+        (noodle) =&gt; ??
+</span>
+      <p>I tested Racket, Gauche, MIT, Chicken, Bigloo, Scheme48/scsh, Guile 2.0,
+Kawa, SISC, Chibi, Chez, SCM, IronScheme, Ikarus, Larceny, Ypsilon, Mosh,
+STklos, and Scheme 9.</p>
+      <p>All the implementations behave the same way on the first and third calls
+to <span class="monospace">noodle</span>, returning 23 and 17 respectively.  The first definition of
+<span class="monospace">noodle</span> refers to <span class="monospace">foodle</span>, which is undefined, and is therefore assumed to
+be a variable.  (Some but not all Schemes print a warning at this point.)</p>
+      <p>The second definition of <span class="monospace">noodle</span> refers to the current (syntax) definition
+of <span class="monospace">foodle</span>.  All but Guile and Chibi also return 23 on the second call to
+noodle, ignoring the syntax definition.  Guile and Chibi, however, signal
+an error to the effect that a macro was invoked where a function was expected.</p></div></body></html>

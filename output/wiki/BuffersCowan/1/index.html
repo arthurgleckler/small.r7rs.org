@@ -1,0 +1,49 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BuffersCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BuffersCowan.md">BuffersCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Buffers&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-01-26 02:43:41</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/BuffersCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/BuffersCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="EditBuffers">Edit Buffers</h1>
+      <p>This is a very preliminary description of edit buffers, basically mutable variable-length strings with some pointers into them.  Temporarily, these functions are defined in terms of their <a href="http://www.gnu.org/software/emacs/manual/html_node/elisp/Buffers.html#Buffers">Emacs Lisp</a> equivalents, with the following exceptions:</p>
+      <ul>
+        <li>There is no notion of the current buffer, so many procedures have the buffer as the first argument.</li>
+        <li>Buffers do not have intrinsic names, so <i>buffer-or-name</i> arguments accept only buffers.</li>
+        <li>Point and markers are zero-based, as is usual in Scheme.</li></ul>
+      <h2 id="Procedures">Procedures</h2>
+      <p>(buffer? obj) == (bufferp object)</p>
+      <p>(buffer-modified? buffer) == (buffer-modified-p)</p>
+      <p>(buffer-modified! buffer) == (restore-buffer-modified-p t)</p>
+      <p>(buffer-unmodified! buffer) == (set-buffer-modified-p nil)</p>
+      <p>(buffer-read-only? buffer) == buffer-read-only buffer local variable</p>
+      <p>(buffer-read-only! buffer) == (toggle-read-only t)</p>
+      <p>(buffer-read-write! buffer) == (toggle-read-only nil)</p>
+      <p>(make-buffer) == simple constructor, no name provided</p>
+      <p>(buffer-point buffer) == (point)</p>
+      <p>(buffer-length buffer) == (buffer-size buffer)</p>
+      <p>(buffer-set-point! buffer integer) == (goto-char integer)</p>
+      <p>(buffer-point-increment) == (forward-char integer)</p>
+      <p>(buffer-skip-chars-forward buffer string) == (skip-chars-forward string)</p>
+      <p>(buffer-skip-chars-backward buffer string) == (skip-chars-forward string)</p>
+      <p>(buffer-marker? obj) == (markerp obj)</p>
+      <p>(make-marker buffer marker-or-integer insertion-type) == (copy-marker marker-or-integer insertion-type)</p>
+      <p>(marker-position marker) == (marker-position marker)</p>
+      <p>(marker-buffer marker) == (marker-buffer marker)</p>
+      <p>(marker-insertion-type marker) == (marker-insertion-type marker)</p>
+      <p>(marker-set-position! marker position) = (set-marker marker position)</p>
+      <p>More to come....</p></div></body></html>

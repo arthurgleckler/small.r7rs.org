@@ -1,0 +1,44 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ModuleFactoringGleckler</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ModuleFactoringGleckler.md">ModuleFactoringGleckler</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Module&shy;Factoring&shy;Gleckler</h1>
+    <div class="wiki metadata">
+      <div class="author">aag</div>
+      <div class="time">2011-06-20 11:55:35</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ModuleFactoringGleckler/history">history</a></div>
+      <div class="source"><a href="/wiki/ModuleFactoringGleckler/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is my counterproposal to <a href="/wiki/ModuleFactoringCowan">ModuleFactoringCowan</a>, which is in turn a counterproposal to <a href="/wiki/ModuleFactoringShinn">ModuleFactoringShinn</a>.  I've copied some text directly with only minor edits.</p>
+      <ul>
+        <li>Leave <span class="monospace">(scheme io)</span> unchanged.
+          <ul>
+            <li>It's better to be explicit than to make a combined module here.  For example, if we added a fifth submodule later, would that automatically be included in (scheme io)?  Furthermore, it's better not to move it to the base.  Some embedded Schemes may really not want to include this kind of I/O in some situations, and leaving these procedures in a module makes that easier.</li></ul></li>
+        <li>Leave <span class="monospace">interaction-environment</span> in the <span class="monospace">(scheme repl)</span> module.
+          <ul>
+            <li>Same as <a href="/wiki/ModuleFactoringCowan">ModuleFactoringCowan</a>.</li></ul></li>
+        <li>Move <span class="monospace">case-lambda' to a new </span>(scheme case-lambda)` module.
+          <ul>
+            <li>Same as <a href="/wiki/ModuleFactoringShinn">ModuleFactoringShinn</a>.  There's no reason that this has to be provided in the base.</li></ul></li>
+        <li>Move <span class="monospace">(scheme multiple-values)</span> back to the base.
+          <ul>
+            <li>Same as <a href="/wiki/ModuleFactoringCowan">ModuleFactoringCowan</a>.  It's too late to remove multiple values from the base language.</li></ul></li>
+        <li>Rename <span class="monospace">(scheme unicode)</span> to <span class="monospace">(scheme char)</span>.
+          <ul>
+            <li>Same as <a href="/wiki/ModuleFactoringCowan">ModuleFactoringCowan</a>.</li></ul></li>
+        <li>Move <span class="monospace">char-alphabetic?</span>, <span class="monospace">char-numeric?</span>, <span class="monospace">char-upper-case?</span>, <span class="monospace">char-lower-case?</span> and <span class="monospace">char-whitespace?</span> to <span class="monospace">(scheme char)</span>.
+          <ul>
+            <li>Same as <a href="/wiki/ModuleFactoringCowan">ModuleFactoringCowan</a>.</li></ul></li>
+        <li>Move the normalization procedures to <span class="monospace">(scheme char normalization)</span>.
+          <ul>
+            <li>Same as <a href="/wiki/ModuleFactoringShinn">ModuleFactoringShinn</a>, as opposed to <a href="/wiki/ModuleFactoringCowan">ModuleFactoringCowan</a>'s <span class="monospace">(scheme normalization)</span>.  &quot;Normalization&quot; is too broad a term to use without qualification, and there's no reason that three symbols is too many.</li></ul></li></ul></div></body></html>

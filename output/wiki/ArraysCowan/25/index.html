@@ -1,0 +1,150 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ArraysCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ArraysCowan.md">ArraysCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Arrays&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-06-09 10:06:47</div>
+      <div class="version">25<span class="comment"></span><a href="/wiki/ArraysCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ArraysCowan/25/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Specification">Specification</h2>
+      <h2 id="Terminology">Terminology</h2>
+      <p>An <i>array</i> is an object of a disjoint type, a container with elements arranged according to a rectilinear coordinate system.  An array may have any number of dimensions or <i>axes</i>, including zero; this number is called the <i>rank</i> of the array.  Arrays of rank zero are supported and contain exactly one element.  Note that &quot;rank&quot; is a Fortran, Common Lisp, and APL term that has nothing to do with matrix ranks in the sense of linear algebra.</p>
+      <p>Each axis has an <i>extent</i> represented by two exact integers, the first representing the smallest possible coordinate for that axis, and the second representing the largest possible coordinate plus one.  <i>Extent</i> is also used, by a mild abuse of language, for the difference between the two values.  The smallest coordinates are collected into a Scheme vector known as the <i>lower bound</i> of the array; the largest coordinates are collected into another Scheme vector known as the <i>upper bound</i> of the array.  An <i>index</i> of the array is any Scheme vector of exact integers which has the same number of elements as the array's rank, and whose values lie between the lower bound (inclusive) and the upper bound (exclusive) of the corresponding axis.</p>
+      <p>An array may be a general array, meaning each element may be any Scheme object, or it may be a specialized array, meaning that each element must be of a given restricted type.  This is accomplished by separating array objects from the underlying <i>storage objects</i>, which can be Scheme vectors or numeric vectors or other objects.  Any object which can map a non-negative exact integer into an appropriate value can serve as a storage object by writing a <i>storage class</i> for it.  See <a href="/wiki/StorageClassesCowan">StorageClassesCowan</a> for the storage class API.  Note that if the extent of any axis is non-positive, the array has no elements.</p>
+      <p>In order to map an array index (a Scheme vector of exact integers) into a storage index (a single exact integer), each array maintains another associated vector of exact integers: the <i>stride</i>, and an exact integer, the <i>offset</i>.  Multiplying each element of the stride by the corresponding element of the array index, summing the results, and adding the offset produces the corresponding storage index.  Therefore, the offset is the storage index of the element whose array index consists of all zeros.  Except as otherwise specified, the stride and offset of an array returned by the procedures of this SRFI are implementation-dependent.</p>
+      <p>Procedures that accept an array object and return a new array sharing the same storage object but with different upper bound, lower bound, stride, and/or offset are known as <i>array transformations</i>, and this SRFI provides a number of them.  The SRFI also provides other procedures for operating on arrays, all of which have the property that they are meaningful no matter what the elements of the array may be.  So <span class="monospace">array-map</span> may be used to sum two matrices, since that is done element-wise over the <span class="monospace">+</span> operation; but there is no operation provided for matrix inversion, because it depends on the array elements being solely numeric.</p>
+      <p>In the same way that the names <i>start</i> and <i>end</i> are applied to optional numerical indexes that default to the smallest element of a sequence (list, vector, string, or whatever) and the largest element plus one, in this SRFI they default to the lower bound and the upper bound of an array.</p>
+      <p>Note that array objects are immutable, but their storage objects are usually mutable.  It is possible to create arrays that are prohibited from mutating their storage objects.</p>
+      <p>In certain cases, the elements of an array are processed in <i>lexicographic order</i>, also known as <i>array-major order</i>.  This means the order in which the highest-numbered axis changes most rapidly, and the other axes change only when the following axis returns to its lowest value.</p>
+      <h3 id="Predicates">Predicates</h3>
+      <p><span class="monospace">(array? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an array, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(array-mutable? </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>array</i> is mutable, and <span class="monospace">#f</span> otherwise.</p>
+      <h3 id="Constructors">Constructors</h3>
+      <p>FIXME:</p>
+      <p><span class="monospace">(make-array </span><i>storage-class</i> [ <i>lower-bounds</i> ] <i>upper-bounds</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array with a newly allocated storage object.  The lower and upper bounds of the array's dimensions are specified as vectors: they must be of the same length.  If <i>lower-bounds</i> is not given, it is understood to be all zeros.</p>
+      <p><span class="monospace">(array-broadcast </span><i>array obj</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array whose bounds are the same as <i>array</i> and all of whose elements are <i>obj</i>.</p>
+      <h3 id="Metadataaccessors">Metadata accessors</h3>
+      <p><span class="monospace">(array-storage-class </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the storage class with which <i>array</i> was created.</p>
+      <p><span class="monospace">(array-storage-object</span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the storage object underlying this array.  Note that this may be <span class="monospace">#f</span> in the case of storage classes without actual storage.</p>
+      <p><span class="monospace">(array-rank </span><i>array</i><span class="monospace">)</span></p>
+      <p>Return the rank (number of dimensions) of <i>array</i>.</p>
+      <p><span class="monospace">(array-lower-bound </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the index specifying the lower bound of <i>array</i>.  It is an error to mutate this index.</p>
+      <p><span class="monospace">(array-upper-bound </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the index specifying the upper bound of <i>array</i>.  It is an error to mutate this index.</p>
+      <p><span class="monospace">(array-stride </span><i>array</i><span class="monospace">)</span></p>
+      <p>Return the stride of <i>array</i>.  It is an error to mutate this vector.</p>
+      <p><span class="monospace">(array-offset </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the offset of <i>array</i>.  This is the storage index of the location whose index is all zeros.</p>
+      <h3 id="Accessors">Accessors</h3>
+      <p><span class="monospace">(array-ref </span><i>array index</i><span class="monospace">)</span></p>
+      <p>Returns the value of the element of <i>array</i> specified by <i>index</i>.  Note that this is different from the <span class="monospace">array-ref</span> of most Lisp systems, which specify the index as a sequence of arguments.</p>
+      <p><span class="monospace">(array-recursive-ref </span><i>array index</i> ...<span class="monospace">)</span></p>
+      <p>Applies <span class="monospace">array-ref</span> to the <i>array</i> using the first <i>index</i>.  If there are more arguments, apply <span class="monospace">array-ref</span> to the result using the next <i>index</i>.  Repeat until there are no more indexes, returning the last result.  It is an error if any intermediate result is not an array.  (APL enlist.)</p>
+      <p><span class="monospace">(array-for-each </span><i>proc array</i> [ <i>start</i> [ <i>end </i> ] ]<span class="monospace">)</span></p>
+      <p>Iterates over the elements of <i>array</i> in lexicographic orderstarting at the index <i>start</i> and ending at the index <i>end</i>, and calling <i>proc</i> on each element.  Each invocation of <i>proc</i> receives <i>array</i>, the current index, and the value of the element at that index.  The value returned by <i>proc</i> is discarded.  It is an error to mutate the index.</p>
+      <p><span class="monospace">(array-for-each-index </span><i>proc array</i> [ <i>start</i> [ <i>end </i> ] ]<span class="monospace">)</span></p>
+      <p>Iterates over the indexes of <i>array</i> in lexicographic order, starting at the index <i>start</i> and ending at the index <i>end</i>, and calling <i>proc</i> on each index.  The value returned by <i>proc</i> is discarded.  It is an error for <i>proc</i> to mutate the index.</p>
+      <h3 id="Mutators">Mutators</h3>
+      <p>These procedures return an unspecified value.</p>
+      <p><span class="monospace">(array-set! </span><i>array index value</i><span class="monospace">)</span></p>
+      <p>Sets the value of the element of <i>array</i> specified by <i>index</i> to <i>value</i>.  Note that this is different from the <span class="monospace">array-set!</span> of most Lisp systems, which specify the index as a sequence of arguments.</p>
+      <p><span class="monospace">(array-tabulate! </span><i>proc array</i> [ <i>start</i> [ <i>end </i> ] ]<span class="monospace">)</span></p>
+      <p>Iterates over the indexes of <i>array</i> starting at the index <i>start</i> (each dimension is inclusive) and ending at the index <i>end</i> (each dimension is exclusive), and calling <i>proc</i> on each index.  Whatever <i>proc</i> returns becomes the value of the array at the index.  It is an error for <i>proc</i> to mutate the index.</p>
+      <h2 id="Thewholearray">The whole array</h2>
+      <p>In all cases where a procedure passed to these procedures receives an index as an argument, it is an error for the procedure to mutate the index.</p>
+      <p><span class="monospace">(array-map </span><i>proc array</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated array with the same bounds as the <i>arrays</i>; it is an error if they do not all have the same bounds.   For each valid index value, <i>proc</i> is invoked, passing each corresponding element of the <i>arrays</i>.  TWhatever <i>proc</i> returns becomes the value of the storage element corresponding to that index in the result array.  The order of invocations of <i>proc</i> is not specified.</p>
+      <p><span class="monospace">(array-map! </span><i>proc array</i> ...<span class="monospace">)</span></p>
+      <p>It is an error if the <i>arrays</i> do not all have the same bounds.  For each valid index value, <i>proc</i> is invoked, passing each corresponding element of the <i>arrays</i>.  Whatever <i>proc</i> returns becomes the value of the storage element corresponding to that index in the first specified array.  The order of invocations of <i>proc</i> is not specified.  Returns an undefined value.</p>
+      <p><span class="monospace">(array-fold </span><i>proc seed array</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated array with the same bounds as the <i>arrays</i>; it is an error if they do not all have the same bounds.   For each valid index value, <i>proc</i> is invoked in lexicographic order, passing each corresponding element of the <i>arrays</i> and a seed, whose initial value is <i>seed</i>.  'Proc'' returns two values, the value of the storage element corresponding to that index in the result array, and the new value of the seed.</p>
+      <p><span class="monospace">(array-reduce </span><i>proc array axis</i> [ <i>n</i> ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated array whose rank is one less than the rank of <i>array</i>, by combining all the groups of elements of length <i>n</i> (where the default is the extent of <i>axis</i>) along <i>axis</i> using <i>proc</i>, a two-argument procedure.  The order and number of invocations of <i>proc</i> is unspecified.  If there is only one such element, it is unchanged.  (APL reduce.)</p>
+      <p><span class="monospace">(array-cumulate </span><i>proc array axis</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array whose bounds are the same as the bounds of <i>array</i>.  Each element along <i>axis</i> is constructed by reducing (as if by <span class="monospace">array-reduce</span>) successive prefixes of the elements of <i>array</i> along that axis.  (APL scan.)</p>
+      <p><span class="monospace">(array-count </span><i>pred array</i><span class="monospace">)</span></p>
+      <p>Returns an exact integer containing the number of elements in <i>array</i> that satisfy <i>pred</i>.</p>
+      <p><span class="monospace">(array-index </span><i>pred array</i><span class="monospace">)</span></p>
+      <p>Returns the index of the first element of <i>array</i> in lexicographic order that satisfies <i>pred</i>.</p>
+      <p><span class="monospace">(array-compress </span><i>array booleans axis</i><span class="monospace">)</span></p>
+      <p>Returns an array with the same bounds as <i>array</i> except possibly along the <i>axis</i> dimension.  The array is sliced along <i>axis</i> and the elements of <i>booleans</i> (a vector of boolean values) are used to decide which slices to incorporate into the result: if the corresponding boolean is <span class="monospace">#t</span>, the slice is incorporated, otherwise not.  (APL compress.)</p>
+      <p><span class="monospace">(array-expand </span><i>array booleans nil axis</i><span class="monospace">)</span></p>
+      <p>Returns an array with the same bounds as <i>array</i> except possibly along the <i>axis</i> dimension.  <i>Array</i> is sliced along <i>axis</i> and the elements of <i>booleans</i> (a vector of boolean values) are used to decide where, if anywhere, <i>nil</i> (which must have the same bounds as a slice) is to be interpolated: if the corresponding boolean is <span class="monospace">#t</span>, <i>nil</i> is interpolated, otherwise the next slice is incorporated.  The size of <i>booleans</i> MUST be equal to the value of the <i>axis</i> dimension in the result.  (APL expand.)</p>
+      <p><span class="monospace">(array-rearrange </span><i>array vector axis</i><span class="monospace">)</span></p>
+      <p>Returns an array with the same bounds as <i>array</i>.  <i>Array</i> is sliced along the <i>axis</i> dimension, and the slices are reassembled in the order given by <i>vector</i>, which MUST be a vector of exact integers.  The slice whose number appears in the first element of <i>vector</i> appears first in the result, and so on.  (Generalized version of APL rotate.)
+ransformations ==</p>
+      <p>These procedures return arrays which share their storage object with the array argument.</p>
+      <p><span class="monospace">(array-transform </span><i>proc array</i><span class="monospace">)</span></p>
+      <p>The procedure <i>proc</i> must implement an affine function that returns an index of <i>array</i> when given an index of the returned array. The array does not retain a dependence to <i>proc</i>.  (SRFI 25 share-array.)</p>
+      <p><span class="monospace">(array-diagonal </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns a one-dimensional array which contains the diagonal elements of <i>array</i> (that is, the elements whose indices are all the same integer).</p>
+      <p><span class="monospace">(array-reshape </span><i>lower-bound upper-bound array</i><span class="monospace">)</span></p>
+      <p>Returns an array with the specified <i>bounds</i> whose elements in lexicographic order are the same (in the sense of <span class="monospace">eqv?</span>) as the elements of <i>array</i> in lexicographc order.  It is an error if there are too many or too few elements.  (APL reshape.)</p>
+      <p><span class="monospace">(array-reverse </span><i>array axis</i><span class="monospace">)</span></p>
+      <p>Returns an array with the same bounds as <i>array</i>, but whose elements on the specified <i>axis</i> are reversed.  (APL reverse.)</p>
+      <p><span class="monospace">(array-transpose </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns an array whose axes appear in the reverse order of the axes of <i>array</i>.  This implies that the upper and lower bound are the reverse of the bounds of <i>array</i>.  (APL monadic transpose.)</p>
+      <p><span class="monospace">(array-rearrange-axes </span><i>array vector</i><span class="monospace">)</span></p>
+      <p>Returns an array whose axes are an arbitrary permutation of the axes of <i>array</i>.  <i>Vector</i> specifies how to do the permutation: the axis whose number appears in the first element of <i>vector</i> appears as the first axis of the result, and so on.  (APL dyadic transpose with integer-valued vector.)</p>
+      <p><span class="monospace">(subarray </span><i>array start end</i><span class="monospace">)</span></p>
+      <p>Returns a smaller array with the same rank as <i>array</i> whose elements begin at the &quot;lower left&quot; corner specified by <i>start-</i> and end at the &quot;upper right&quot; corner specified by the list <i>end-subscripts</i>.  Unlike <i>array-copy</i>, the result shares its storage object with <i>array</i>. (APL take and drop.)</p>
+      <p><span class="monospace">(array-squeeze </span><i>array vector</i><span class="monospace">)</span></p>
+      <p>Returns an array with the ranks specified by the elements of <i>vector</i> removed from <i>array</i>.  It is an error if the extents of the specified ranks are not equal to 1.  (NumPy squeeze)</p>
+      <p><span class="monospace">(array-unsqueeze </span><i>array rank</i><span class="monospace">)</span></p>
+      <p>Returns an array whose rank is one greater than the rank of <i>array</i>.  This is accomplished by inserting a new axis numbered 'axis' whose extent is (0:1).  (NumPy expand.)</p>
+      <h2 id="Copyingandconversion">Copying and conversion</h2>
+      <p>These procedures return arrays which do not share their storage objects with any existing arrays.</p>
+      <p>When these procedures return arrays, both the array and the underlying storage object are newly allocated</p>
+      <p><span class="monospace">(array-copy </span><i>array</i> mutable? [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Returns an array containing the elements of <i>array</i> starting at <i>start</i> (inclusive) and ending at <i>end</i> (exclusive).  The lower bound of the resulting array is all zeros, and the upper bound is determined by subtracting <i>start</i> from <i>end</i> element-wise.  The stride and offset are implementation-defined.  The resulting array is mutable if <i>mutable?</i> is true.</p>
+      <p><span class="monospace">(array-copy! </span><i>to at from</i> [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span></p>
+      <p>Copies the elements of array <i>from</i> from index <i>start</i> (inclusive) to index <i>end</i> (inclusive) onto array <i>to</i> starting at index <i>at</i>.  It is an error if there are not enough elements in <i>to</i> to make this possible.  The storage objects need not belong to the same storage classes.</p>
+      <p><span class="monospace">(array-append </span><i>axis array</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated array consisting of the <i>arrays</i> concatenated along <i>axis</i>.  With the exception of <i>axis</i>, the bounds of all the arrays must be the same.  The <i>axis</i>th element of the lower bound of the result is 0; the corresponding element of the upper bound is the sum of the extents of the <i>arrays</i>.</p>
+      <p><span class="monospace">(array-repeat </span><i>array axis repeat</i><span class="monospace">)</span></p>
+      <p>Append <i>repeat</i> copies of <i>array</i> along axis <i>axis</i>, as if by <span class="monospace">array-append</span>.  (Variant of NumPy repeat.)</p>
+      <p><span class="monospace">(array-reclassify </span><i>array storage-class</i><span class="monospace">)</span></p>
+      <p>Returns an array with the same bounds and elements as <i>array</i>, but whose storage class is specified by <i>storage-class</i>.</p>
+      <p><span class="monospace">(</span>(array-collapse <span class="monospace">''array j''</span>)`</p>
+      <p>Let <i>k</i> be the rank of <i>array</i>.  This procedure returns an array of rank <i>j</i> whose elements are arrays of rank <i>k</i> - <i>j</i>.  It is an error if <i>j &gt; k</i>.  The bounds of the returned array are equal to the first <i>j</i> elements of the bounds of <i>array</i>, and the bounds of its subarrays are equal to the remaining <i>k</i>-<i>j</i> elements of the bounds.</p>
+      <p><span class="monospace">(array-explode </span><i>array j</i><span class="monospace">)</span></p>
+      <p>Let <i>k</i> be the rank of <i>array</i>.  This procedure returns an array of rank <i>j</i>.  It is an error if <i>j &lt; k</i>.  Each element of <i>array</i> MUST be an array of rank <i>j</i> - <i>k</i>, all of which MUST have the same bounds.  The bounds of the returned array are the bounds of <i>array</i> concatenated with the bounds of any of its elements, and each element is the corresponding element of the corresponding subarray of <i>array</i>.</p>
+      <p>array-&gt;nested-vector <span class="monospace">''array''</span>)`</p>
+      <p><span class="monospace">(array-&gt;nested-list </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated vector/list whose elements are also newly constructed vectors/lists, and so on as far down as necessary to cover every axis of the array.  Bottom-level Scheme vectors/lists contain the elements of <i>array</i>.  Thus, if <i>array</i> has rank 1, the result is a vector/list; if the array has rank 2, the result is a vector/list whose elements are vectors/lists, and so on.  As a special case, if <i>array</i> has rank 0, the sole element is returned.</p>
+      <p><span class="monospace">(nested-vector-&gt;array </span><i>nested-vector rank</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(nested-vector-&gt;array </span><i>nested-list rank</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array with rank <i>rank</i> whose elements are initialized from the vector <i>nested-vector</i> or list <i>nested-list</i>.  It is an error if this argument is not rectangular.  As a special case, if <i>rank</i> is 0, the sole element is <i>nested-vector</i> or <i>nested-list</i>, which need not be a Scheme vector/list.</p>
+      <h2 id="Innerandouterproducts">Inner and outer products</h2>
+      <p>These procedures return arrays which do not share their storage objects with any existing arrays.</p>
+      <p><span class="monospace">(array-inner-product </span><i>proc1 proc2 array1 array2</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array whose bounds are equal to the bounds of <i>array1</i> without their last elements, concatenated with the bounds of <i>array2</i> without their first elements.  It is an error if the omitted upper bounds are not numerically equal; it is also an error if the omitted lower bounds are not numerically equal.  It is an error if both arrays have rank 0.</p>
+      <p>Each element of the result array results from applying <i>proc2</i> to the corresponding elements of the last vectors of <i>array1</i> and the first vectors of <i>array2</i> and then reducing them with <i>proc1</i> to a single value.  The order and number of invocations of the procedures is unspecified.</p>
+      <p>In particular, if both arrays have rank 1, the last and first vectors are the whole of the arrays, and the result has rank 0; if both arrays have rank 2, the last vectors of <i>array1</i> are the column-wise vectors, and the first vectors of <i>array2</i> are the row-wise vectors, and the result has rank 2.  (APL inner product.)</p>
+      <p>Example:  <span class="monospace">(array-inner-product + * array1 array2)</span>, where the arrays have rank 1, computes the usual dot product of two vectors.</p>
+      <p><span class="monospace">(array-outer-product </span><i>proc array1 array2</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array whose bounds are the concatenation of the bounds of <i>array1</i> and <i>array2</i>.  Each element of the new array is the result of applying <i>proc</i> to every element of <i>array1</i> and every element of <i>array2</i>.  The order and number of invocations of <i>proc</i> is unspecified.  (APL outer product.)</p>
+      <h2 id="TODO">TODO</h2>
+      <p>TBD: any, every</p>
+      <p>I/O: read, write, lexical syntax</p>
+      <p>index-&gt;offset, offset-&gt;index</p></div></body></html>

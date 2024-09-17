@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>538: Falling off a cond-expand should be unspecified behavior</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 538: <span class="summary">Falling off a cond-expand should be unspecified behavior</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:18:46</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/538/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-23 21:32:28</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Jussi Piitulainen writes in a private email to John Cowan:</p>
+        <p><span class="monospace">(cond-expand ...)</span> entry (page 15): &quot;Otherwise, the <span class="monospace">cond-expand</span> has no effect.&quot; I think it would be better for it to &quot;expand to nothing&quot;, except the sample implementation seems to be a syntax error, which surely is an effect.</p>
+        <p><a href="http://srfi.schemers.org/srfi-0/srfi-0.html">SRFI 0</a> clearly requires that an error be signaled if the cond-expand falls off the end.  Unfortunately, when I created <a href="/wiki/CondExpandCowan">CondExpandCowan</a>, on which people actually voted, I forgot to specify anything for this case.  In Chibi it has no effect.  Changed editorially to &quot;the behavior is unspecified&quot;.</p>
+        <p>Also, &quot;spliced into the current context as if by <span class="monospace">begin</span>&quot; -&gt; &quot;expanded to a <span class="monospace">begin</span>&quot; and let that <span class="monospace">begin</span> have the splicing semantics if the context is appropriate.</p>
+        <p>Changed editorially.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:18:46</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

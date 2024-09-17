@@ -1,0 +1,286 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StringSlicesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StringSlicesCowan.md">StringSlicesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">String&shy;Slices&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-12-16 05:33:46</div>
+      <div class="version">10<span class="comment"></span><a href="/wiki/StringSlicesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/StringSlicesCowan/10/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Characterspanlibrary">Character span library</h2>
+      <p>This is a library for manipulating textual content based on <i>character spans</i>, also known as just <i>spans</i>.  These are conceptually references to a part of a Scheme string.  It is not defined whether the character span type is disjoint from strings.  Character spans are immutable, and except as noted below, it is an error to mutate the string(s) that underly a span.</p>
+      <p><i>String cursors</i> are pointers into strings, and are not necessarily disjoint from other Scheme types.  For example, they may be exact integers that are character-based indexes into strings.  Alternatively, in an implementation whose internal representation of strings is UTF-8, string cursors may be indexes of individual bytes in the string.  It is also possible to implement string cursors as objects of a disjoint type.</p>
+      <p>This proposal also contains a useful subset of <a href="http://srfi.schemers.org/srfi-13/srfi-13.html">SRFI 13</a>, which manipulates strings directly with some allowances for shared substrings (which are provided only by Guile).  Unlike SRFI 13, the string procedures of this proposal do not have <i>start</i> and <i>end</i> arguments, as their function is subsumed by spans.  In addition, the low-level procedures are not provided, nor are there any mutation operations.  Procedures with the same names and basic functions as SRFI-13 procedures are marked [SRFI 13].</p>
+      <p>The operations provided here (with the exception of those in the Compatibility section) are entirely independent of the character repertoire supported by the implementation.</p>
+      <p>Procedures marked [R7RS-small] are available in the small language, and are not exported by implementations of this proposal.  They are included only for clarity and completeness.</p>
+      <h2 id="Issues">Issues</h2>
+      <ol class="number">
+        <li>Allow negative indices in constructors?</li></ol>
+      <ol class="number" start="2">
+        <li>Titlecase doesn't really fit; keep it?</li></ol>
+      <ol class="number" start="3">
+        <li>Keep functional update?</li></ol>
+      <ol class="number" start="4">
+        <li>Keep string trees?</li></ol>
+      <ol class="number" start="5">
+        <li>Keep compatibility routines, possibly in a different package?</li></ol>
+      <h2 id="Specification">Specification</h2>
+      <p>With the exception of the constructors, all the procedures in this proposal exist in pairs: one that accepts and produces character spans and one that accepts and produces strings.  Only the character span version is documented in full; the string version should be understood as accepting the same non-span arguments, performing the same operations, and providing the same non-span results.</p>
+      <p>All predicates passed to procedures defined in this proposal may be called in any order and any number of times, except as otherwise noted.</p>
+      <h2 id="Stringconstructors">String constructors</h2>
+      <p><span class="monospace">(make-string </span> <i>k</i> [ <i>char</i> ]<span class="monospace">)</span> [R7RS-small]</p>
+      <p>Returns a string containing <i>k</i> characters, all of which are <i>char</i>.  If <i>char</i> is omitted, the contents of the string are implementation-dependent.</p>
+      <p><span class="monospace">(string </span><i>char</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p>Returns a string consisting of the <i>char</i> arguments.</p>
+      <p><span class="monospace">(string-unfold </span><i>stop? mapper successor</i> [ <i>seed</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-unfold-right </span><i>stop? mapper successor</i> [ <i>seed</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(span-&gt;string </span><i>span</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated string which contains the characters of <i>span</i> in order.</p>
+      <h2 id="Characterspanconstructors">Character span constructors</h2>
+      <p><span class="monospace">(make-span </span><i>string start end</i><span class="monospace">)</span></p>
+      <p>Returns a character span which contains the characters of <i>string</i> in order from <i>start</i> (inclusive) to <i>end</i> (exclusive).</p>
+      <p><span class="monospace">(span </span><i>char</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(subspan </span><i>span start end</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-&gt;span </span><i>string</i><span class="monospace">)</span></p>
+      <p>Returns a character span which contains the characters of <i>string</i> in order.  Later mutation of <i>string</i> will not affect the value of <i>span</i>.</p>
+      <p><span class="monospace">(span/cursors </span><i>string start-cursor end-cursor</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-subspan/cursors </span><i>string start-cursor end-cursor</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(span-transform </span><i>proc span obj</i> ...<span class="monospace">)</span></p>
+      <p><i>Proc</i> is a procedure which accepts a string as its first argument and returns a string.  It is invoked on a string which contains the characters of <i>span</i> in order plus the <i>obj</i> arguments, if any.  The resulting string is returned as a character span by <span class="monospace">span-transform</span>.  This procedure allows string-based procedures to be easily used in an environment that provides and expects spans.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(span? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string? </span><i>obj</i><span class="monospace">)</span>  [R7RS-small]</p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a character span, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(span-null? </span><i>span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-null? </span><i>string</i><span class="monospace">)</span>  [SRFI 13]</p>
+      <p>Returns <span class="monospace">#t</span> if <i>span</i> contains zero characters, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(span-every </span><i>pred span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-every </span><i>pred string</i><span class="monospace">)</span>  [SRFI 13]</p>
+      <p>Returns <span class="monospace">#t</span> if <i>pred</i> returns true for every character in <i>span</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(span-any </span><i>pred span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-any </span><i>pred string</i><span class="monospace">)</span>  [SRFI 13]</p>
+      <p>Returns <span class="monospace">#t</span> if <i>pred</i> returns false for every character in <i>span</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(is-char? </span><i>char</i><span class="monospace">)</span></p>
+      <p>Returns a predicate which accepts one argument, and returns <span class="monospace">#t</span> if the argument is the same as <i>char</i> (in the sense of <span class="monospace">char=?</span>) and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(in-char-set? </span><i>char-set</i><span class="monospace">)</span></p>
+      <p>Returns a predicate which accepts one argument, and returns <span class="monospace">#t</span> if the argument is an element of <i>char-set</i>, a SRFI 14 character set, and <span class="monospace">#f</span> otherwise.</p>
+      <h2 id="Selection">Selection</h2>
+      <p><span class="monospace">(span-ref </span><i>span k</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-ref </span><i>string k</i><span class="monospace">)</span> [R7RS-small]</p>
+      <p>Returns the 'k'th character of <i>span</i>, starting with 0.  It is an error if <i>k</i> is not a non-negative exact integer less than the length of <i>span</i>.</p>
+      <p><span class="monospace">(span-take </span><i>span n</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-take </span><i>string n</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns a character span which contains the first <i>n</i> characters of <i>span</i>.</p>
+      <p><span class="monospace">(span-take-right </span><i>span n</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-take-right </span><i>string n</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns a character span which contains the last <i>n</i> characters of <i>span</i>.</p>
+      <p><span class="monospace">(span-drop </span><i>span n</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-drop </span><i>string  n</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns a character span which contains all but the first <i>n</i> characters of <i>span</i>.</p>
+      <p><span class="monospace">(span-drop-right </span><i>span n</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-drop-right </span><i>string n</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns a character span which contains all but the last <i>n</i> characters of <i>span</i>.</p>
+      <p><span class="monospace">(span-split-at </span><i>span n</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-split-at </span><i>string  n</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns two values, a character span containing the first <i>n</i> characters of <i>span</i>, and another character span containing the remaining characters of <i>span</i>.</p>
+      <p><span class="monospace">(span-replicate </span><i>span from to</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-replicate </span><i>string from to</i><span class="monospace">)</span></p>
+      <p><i>Span</i> is conceptually replicated an infinite number of times to both left and right, and this doubly infinite sequence is then truncated to form a span starting at index <i>from</i> (inclusive) and ending at index <i>to</i> (exclusive).  Negative indexes are allowed in order to access the infinite left extension.</p><span class="monospace">(string-replicate &quot;abcdef&quot; 2 7) =&gt; &quot;cdefab&quot; ; rotate left
+
+(string-replicate &quot;abcdef&quot; -2 4) =&gt; &quot;efabcd&quot; ; rotate right
+
+(string-replicate &quot;abc&quot; 0 7) =&gt; &quot;abcabca&quot; ; replicate
+</span>
+      <p>This procedure is the same as the SRFI 13 procedure <span class="monospace">xsubstring</span>, except that the <i>to</i> argument is required.</p>
+      <h2 id="Padding,trimming,andcompressing">Padding, trimming, and compressing</h2>
+      <p><span class="monospace">(span-pad </span><i>span len</i> [ <i>char</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-pad </span><i>string  len</i> [ <i>char</i> ]<span class="monospace">)</span> [SRFI 13]</p>
+      <p><span class="monospace">(span-pad-right </span><i>span len</i> [ <i>char</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-pad-right </span><i>string  len</i> [ <i>char</i> ]<span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns a span of length <i>len</i> consisting of <i>span</i> padded on the left (right) by as many occurrences of the character <i>char</i> as needed.  If <i>span</i> has more than <i>len</i> characters, it is truncated on the left (right) to length <i>len</i>.  If <i>char</i> is omitted, <span class="monospace">#\space</span> is used.</p>
+      <p><span class="monospace">(span-trim </span><i>span [ </i>pred'' ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-trim </span><i>string [ </i>pred'' ]<span class="monospace">)</span> [SRFI 13]</p>
+      <p><span class="monospace">(span-trim-right </span><i>span [ </i>pred<i> ][ </i>char'' ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-trim-right </span><i>string [ </i>pred'' ]<span class="monospace">)</span> [SRFI 13]</p>
+      <p><span class="monospace">(span-trim-both </span><i>span [ </i>pred'' ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-trim-both </span><i>string [ </i>pred'' ]<span class="monospace">)</span> [SRFI 13]</p>
+      <p>Trim <i>span</i> by skipping over all characters on the left / on the right / on both sides that satisfy <i>pred</i> and returning the resulting span.</p>
+      <p><span class="monospace">(span-compress </span><i>span</i> [ <i>char</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-compress </span><i>string</i> [ <i>char</i> ]<span class="monospace">)</span></p>
+      <p>Return a span which differs from <i>span</i> in that every sequence of consecutive occurrences of <i>char</i> has been replaced by a single <i>char</i>.  If <i>char</i> is omitted, <span class="monospace">#\space</span> is used.</p>
+      <h2 id="Prefixesandsuffixes">Prefixes and suffixes</h2>
+      <p><span class="monospace">(span-prefix </span><i>span<sub>1</sub></i> <i>span<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-prefix </span><i>string<sub>1</sub></i> <i>string<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(span-suffix </span><i>span<sub>1</sub></i> <i>span<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-suffix </span><i>string<sub>1</sub></i> <i>string<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Returns a span containing the characters in the common prefix/suffix of <i>span,,1,,' and </i>span,,2,,''.  If there is no common prefix/suffix, returns an empty span.</p>
+      <p><span class="monospace">(span-prefix-length </span><i>span<sub>1</sub></i> <i>span<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-prefix-length </span><i>string<sub>1</sub></i> <i>string<sub>2</sub></i><span class="monospace">)</span> [SRFI 13]</p>
+      <p><span class="monospace">(span-suffix-length </span><i>span<sub>1</sub></i> <i>span<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-suffix-length </span><i>string<sub>1</sub></i> <i>string<sub>2</sub></i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns the length of the span that would be returned by <span class="monospace">span-prefix</span> and friends.</p>
+      <p><span class="monospace">(span-prefix? </span><i>span<sub>1</sub></i> <i>span<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-prefix? </span><i>string<sub>1</sub></i> <i>string<sub>2</sub></i><span class="monospace">)</span> [SRFI 13]</p>
+      <p><span class="monospace">(span-suffix? </span><i>span<sub>1</sub> span<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-suffix? </span><i>string<sub>1</sub></i> <i>string<sub>2</sub></i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns <span class="monospace">#t</span> if <i>span<sub>1</sub></i> is a prefix/suffix of <i>span<sub>2</sub></i>, and <span class="monospace">#f</span> otherwise.</p>
+      <h2 id="Searching">Searching</h2>
+      <p><span class="monospace">(span-count </span><i>pred span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-count </span><i>proc string</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns an exact integer, the number of characters in <i>span</i> which satisfy <i>pred</i>.</p>
+      <p><span class="monospace">(span-take-while </span><i>pred span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-take-while  </span><i>pred string</i><span class="monospace">)</span></p>
+      <p>Returns the characters of</p>
+      <p><span class="monospace">(span-drop-while </span><i>pred span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-drop-while  </span><i>pred string</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(span-break </span><i>pred span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-break </span><i>pred string</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p><span class="monospace">(span-span </span><i>pred span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-span </span><i>pred string</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p><span class="monospace">(span-contains </span><i>span<sub>1</sub> span<sub>2</sub></i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-contains </span><i>string<sub>1</sub> string<sub>2</sub></i><span class="monospace">)</span> [SRFI 13]</p>
+      <h2 id="Thewholecharacterspanorstring">The whole character span or string</h2>
+      <p><span class="monospace">(span-length </span><i>span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-length </span><i>string</i><span class="monospace">)</span> [R7RS-small]</p>
+      <p>Returns the number of characters in <i>span</i>.</p>
+      <p><span class="monospace">(span-copy </span><i>span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-copy </span><i>string</i> [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span> [R7RS-small]</p>
+      <p>Makes a copy of <i>span</i> such that any future mutation of any string underlying <i>span</i> does not affect the characters of <i>span</i>.</p>
+      <p><span class="monospace">(span-reverse </span><i>span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-reverse </span><i>span</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns a span containing the characters of <i>span</i> in reverse order.</p>
+      <p><span class="monospace">(span-append </span><i>span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-append </span><i>string</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p>Returns a span containing the characters of the <i>spans</i> in order.</p>
+      <p><span class="monospace">(span-concatenate </span><i>list-of-spans</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-concatenate </span><i>list-of-strings</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>Returns a span containing the characters of the spans enumerated in <i>list-of-spans</i> in order.  This procedure will succeed even if <span class="monospace">(apply string-append list-of-strings)</span> fails due to an implementation limit on the number of arguments a procedure may receive.</p>
+      <p><span class="monospace">(span-concatenate-reverse </span><i>list-of-spans</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-concatenate-reverse </span><i>list-of-strings</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p>The same as <span class="monospace">span-concatenate</span>, except that <i>list-of-spans</i> is processed in reverse order.  Note that the individual spans are <i>not</i> processed in reverse order.</p>
+      <h2 id="Foldingandmapping">Folding and mapping</h2>
+      <p><span class="monospace">(span-map </span><i>proc span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-map </span><i>proc string</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span-for-each </span><i>proc span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-for-each </span><i>proc string</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span-fold </span><i>proc nil span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-fold </span><i>proc nil string</i><span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span-fold-right </span><i>proc nil span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-fold-right </span><i>proc nil string</i><span class="monospace">)</span> [R7RS-small]</p>
+      <h2 id="Parsing">Parsing</h2>
+      <p><span class="monospace">(span-split </span><i>span [</i>sep<i> [ </i>limit'' ] ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(span-split </span><i>span [</i>sep<i> [ </i>limit'' ] ]<span class="monospace">)</span></p>
+      <p>Returns a list of the words contained in <i>span</i>.  If <i>sep</i> (which is also a character span) is omitted, then the words are separated by one or more whitespace characters (those on which <span class="monospace">char-whitespace?</span> returns <span class="monospace">#t</span>). If <i>sep</i> is supplied, it specifies a string to be used as the word separator. The returned list will then have one more item than the number of non-overlapping occurrences of the separator in the string.  If <i>sep</i> is an empty span, then the returned list contains a list of the characters in <i>span</i>.</p>
+      <p>If <i>limit</i> is provided, at most that many splits occur, and the remainder of <i>span</i> is returned as the final element of the list (thus, the result will have at most <i>limit</i> + 1 elements). If <i>limit</i> is not specified, then as many splits as possible are made.  It is an error if <i>limit</i> is not a positive exact integer.</p>
+      <h2 id="Filteringandpartitioning">Filtering and partitioning</h2>
+      <p><span class="monospace">(span-filter </span><i>pred span</i><span class="monospace">)</span> [SRFI 13]</p>
+      <p><span class="monospace">(string-filter </span><i>pred string</i><span class="monospace">)</span></p>
+      <p>Returns a span containing the characters of <i>span</i> which satisfy <i>proc</i>.</p>
+      <p><span class="monospace">(span-remove </span><i>pred span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-remove </span><i>pred string</i><span class="monospace">)</span></p>
+      <p>Returns a span containing the characters of <i>span</i> which do not satisfy <i>proc</i>.</p>
+      <p><span class="monospace">(span-partition </span><i>pred span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-partition </span><i>pred string</i><span class="monospace">)</span></p>
+      <p>Returns two values, a span containing the characters of <i>span</i> which satisfy <i>proc</i> and another span containing those which do not.</p>
+      <h2 id="Conversion">Conversion</h2>
+      <p><span class="monospace">(span-&gt;list </span><i>span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(span-&gt;vector </span><i>span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-&gt;list </span><i>string</i> [ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(list-&gt;string </span><i>list</i>[ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(string-&gt;vector </span><i>string</i>[ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(vector-&gt;string </span><i>vector</i>[ <i>start</i> [ <i>end</i> ] ]<span class="monospace">)</span> [R7RS-small]</p>
+      <h2 id="Stringcursors">String cursors</h2><span class="monospace">string-cursor-start
+string-cursor-end
+
+string-cursor-ref
+
+string-cursor-next
+string-cursor-previous
+
+string-cursor-forward
+string-cursor-backward
+
+string-cursor-forward-until
+string-cursor-backward-until
+
+string-cursor=?
+string-cursor&lt;?
+string-cursor&gt;?
+string-cursor&lt;=?
+string-cursor&gt;=?
+
+string-cursor-&gt;index
+string-index-&gt;cursor
+
+string-cursors-&gt;string
+
+string-cursor-difference
+</span>
+      <h2 id="Functionalupdate">Functional update</h2><span class="monospace">span-replace
+string-replace
+
+span-insert
+string-insert
+
+span-delete
+string-delete
+</span>
+      <h2 id="Output">Output</h2>
+      <p><span class="monospace">(write-string-tree </span><i>obj</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>It is an error if <i>port</i> is not a textual output port.  If <i>port</i> is omitted, the value of <span class="monospace">(current-output-port)</span> is used.</p>
+      <p>If <i>obj</i> is a string or character span, its characters are output to <i>port</i>.  If <i>obj</i> is a character, it is output to <i>port</i>.  If <i>obj</i> is a number, it is converted to a string as if by <span class="monospace">number-&gt;string</span> and the characters of the string are output to <i>port</i>.  If <i>obj</i> is a pair or vector, its components are processed recursively by <span class="monospace">write-string-tree</span>.  Otherwise, <span class="monospace">write-string-tree</span> does nothing.</p>
+      <p><span class="monospace">(tree-&gt;span </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(tree-&gt;string </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Behaves as if <span class="monospace">write-string-tree</span> were applied to <i>obj</i> and a newly allocated string output port.  When <i>obj</i> has been completely output, the port's string is returned as a span or a string.</p>
+      <h2 id="Compatibility">Compatibility</h2>
+      <p><span class="monospace">(span-upcase </span><i>span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-upcase </span><i>span</i><span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span-downcase </span><i>span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-downcase </span><i>span</i><span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span-foldcase </span><i>span</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-foldcase </span><i>span</i><span class="monospace">)</span> [R7RS-small]</p>
+      <p>For the behavior of the string procedures, see R7RS-small.  In any implementation of this proposal based on R7RS, the span procedures must behave analogously to the string procedures.  That is, if a call to string procedure <i>x</i> on a string containing characters <i>y<sub>0</sub> ... y<sub>n</sub></i> produces a string containing characters <i>z<sub>0</sub> ... z<sub>n</sub></i>, then a call to the analogous span procedure <i>x′</i> on a span containing characters <i>y<sub>0</sub> ... y<sub>n</sub></i> must produce a span containing characters ''z<sub>0</sub> ... z,,n,,'.</p>
+      <p><span class="monospace">(span=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span&lt;? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string&lt;? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span&gt;? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string&gt;? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span&lt;=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string&lt;=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span&gt;=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string&gt;=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span-ci=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-ci=? </span> <i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span-ci&lt;? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-ci&lt;? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span-ci&gt;? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-ci&gt;? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span-ci&lt;=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-ci&lt;=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p><span class="monospace">(span-ci&gt;=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-ci&gt;=? </span><i>span<sub>1</sub> span<sub>2</sub> span</i> ...<span class="monospace">)</span> [R7RS-small]</p>
+      <p>For the behavior of the string procedures, see R7RS-small.  In any implementation of this proposal based on R7RS, the span procedures must behave analogously to the string procedures.</p>
+      <p><span class="monospace">(span-titlecase ''span''</span>)`</p>
+      <p><span class="monospace">(string-titlecase </span><i>span</i><span class="monospace">)</span>[SRFI 13]</p>
+      <p>For every character <i>c</i> in <i>span</i>: if <i>c</i> is preceded by a character with case, it is downcased; otherwise it is replaced by its titlecase equivalent, if any.  Other characters are unchanged.  Note that most lowercase characters have the same character as both uppercase and titlecase equivalents.</p><span class="monospace">(string-titlecase &quot;--capitalize tHIS sentence.&quot;) =&gt;
+  &quot;--Capitalize This Sentence.&quot;
+
+(string-titlecase &quot;see Spot run. see Nix run.&quot;) =&gt;
+  &quot;See Spot Run. See Nix Run.&quot;
+
+(string-titlecase &quot;3com makes routers.&quot;) =&gt;
+  &quot;3Com Makes Routers.&quot;
+</span></div></body></html>

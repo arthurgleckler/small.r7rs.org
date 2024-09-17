@@ -1,0 +1,64 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>360: Formal Comment: Change syntax of escaped symbols from  |&lt;symbol element&gt;*| to #&quot;&lt;string element&gt;*&quot;</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 360: <span class="summary">Formal Comment: Change syntax of escaped symbols from  |&lt;symbol element&gt;*| to #&quot;&lt;string element&gt;*&quot;</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 03:00:51</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/360/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-03-13 00:37:08</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Submitter's Name: Arthur Smyles</p>
+        <p>Submitter's Email Address: atsmyles at verizon dot net</p>
+        <p>Draft Version of Report: 6th</p>
+        <p>Section of draft R7RS: 7.1.1. Lexical structure</p>
+        <p>Summary:</p>
+        <p>Change syntax of [escaped] symbols from <span class="monospace">|&lt;symbol element&gt;*|</span> to <span class="monospace">#&quot;&lt;string element&gt;*&quot;</span></p>
+        <p>Full Description:</p>
+        <p>The vertical line character is being proposed as a syntax for literal symbols. This symbol however is used by SCSH to represent shell-style pipes. The backslash is also being used for the same purpose (which is currently used by Gambit for infix notation).  Also the &lt;symbol element&gt; and &lt;string element&gt; production are practically identical only differing because of the quote symbol used.</p>
+        <p>This proposal will allow freeing the <span class="monospace">|</span> and <span class="monospace">\</span> characters for future use and eliminate &lt;symbol element&gt; production from the syntax.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-29 02:31:31</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-11 01:24:20</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Rejected by editors: see <a href="/ticket/360">#360</a>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 03:00:51</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

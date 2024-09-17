@@ -1,0 +1,121 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>2: module system</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 2: <span class="summary">module system</span></h1>
+    <div class="ticket metadata">
+      <div class="cc">arcfide@sacrideo.us</div>
+      <div class="changetime">2012-10-04 22:52:15</div>
+      <div class="component">WG1 - Modules</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">blocker</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/2/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-02-23 15:57:25</div>
+      <div class="type">enhancement</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>As per the charter, we need a module system
+proposal which allows sharing of code between
+implementations.</p>
+        <p>This is one issue where we can't default to
+the R5RS, since it has no module system.  If
+we can't come to consensus, we will have to
+take the R6RS module system as-is.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2010-02-23 16:24:37</div></div>
+          <div class="changes">
+            <div><span class="field">component</span><span class="old-value">WG1 - Core</span><span class="new-value">WG1 - Modules</span></div>
+            <div><span class="field">type</span><span class="old-value">defect</span><span class="new-value">enhancement</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-03-05 07:27:13</div></div>
+          <div class="changes">
+            <div><span class="field">milestone</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">cc</span><span class="old-value">&blank;</span><span class="new-value">arcfide@sacrideo.us</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I have made a proposal regarding the module system on <a href="/wiki/ModulesAndPackagesArcfide">ModulesAndPackagesArcfide</a> that has been updated recently.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2010-11-14 14:43:16</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p><a href="/wiki/ModulesShinn">ModulesShinn</a> won.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 11:07:55</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 11:08:26</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 12:04:08</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Must take into account <a href="/ticket/102">#102</a>, <a href="/ticket/103">#103</a>, <a href="/ticket/105">#105</a> and <a href="/ticket/106">#106</a>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-01-29 12:25:45</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-02-19 16:13:23</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Need to update \subsection{Primitive, library, and optional features}
+and \subsection{Entry format} in struct.tex regarding library and optional
+features.</p>
+              <p>Need to update prog.tex to include module system description.</p>
+              <p>Need to update &quot;Programs and definitions&quot; section of syn.tex to include
+modules.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-04 22:52:15</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

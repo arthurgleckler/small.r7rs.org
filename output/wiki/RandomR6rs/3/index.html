@@ -1,0 +1,28 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RandomR6rs</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RandomR6rs.md">RandomR6rs</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Random&shy;R6rs</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-05-28 06:43:37</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/RandomR6rs/history">history</a></div>
+      <div class="source"><a href="/wiki/RandomR6rs/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a dumping ground for random R6RS base library procedures that might be wanted in WG2.</p>
+      <p><span class="monospace">boolean=?</span> compares booleans for identity.  <b>Added to R7RS-small.</b></p>
+      <p><span class="monospace">symbol=?</span> compares symbols for identity.  <b>Added to R7RS-small.</b></p>
+      <p><span class="monospace">real-valued?</span>, <span class="monospace">rational-valued?</span>, and <span class="monospace">integer-valued?</span> test whether a given number object can be coerced to the specified type without loss of numerical accuracy. Specifically, the behavior of these predicates differs from the behavior of <span class="monospace">real?</span>, <span class="monospace">rational?</span>, and <span class="monospace">integer?</span> on complex number objects whose imaginary part is inexact zero.  <b>Rejected for R7RS-small.</b></p>
+      <p><span class="monospace">infinite?</span> returns <span class="monospace">#t</span> on <span class="monospace">+inf.0</span> and <span class="monospace">-inf.0</span>  <b>Added to R7RS-small.</b></p>
+      <p><span class="monospace">assert</span> raises an error if its argument is <span class="monospace">#f</span>.  <b>Rejected for R7RS-small.</b></p>
+      <p>There are now <a href="/wiki/RevoteDocket">RevoteDocket</a> entries for the <span class="monospace">assert</span> and <span class="monospace">*-valued</span> procedures.</p></div></body></html>

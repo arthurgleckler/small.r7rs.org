@@ -1,0 +1,148 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #320</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #320</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-04-07 03:15:39</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>(In this ticket, &quot;complex&quot; is used for readability; it is synonymous with &quot;non-real&quot;.)
+
+This feature is true in implementations that support complex numbers such that both the real and the imaginary parts are exact; that is, if `(eqv? 3+4i 3.0+4.0i)` evaluates to `#f`.  This feature is false if complex numbers are not supported or if only inexact complex numbers are supported.  Most of the applications of complex numbers use inexact numbers, but some applications may require exactness: this feature allows those applications to fail fast on implementations that cannot support them.
+
+Existing implementations:
+
+* Exact complex numbers: Racket, MIT, Gambit, Chicken with the `numbers` egg, Scheme48/scsh, Kawa, Chibi, Chez, Vicare, Ypsilon, Mosh, !IronScheme, STklos, Wraith 
+* No exact complex numbers: Gauche, Guile, SISC, SCM, Scheme 7, KSi, UMB, Stalin 
+* No complex numbers: Chicken without the `numbers` egg, Bigloo, Ikarus, RScheme, Scheme 9, Oaklisp, Elk, VX, Sixx, Sizzle, Dream, Owl Lisp, Psyche
+
+</pre>
+    <h2>id</h2>
+    <pre>320</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Add new cond-expand feature to Appendix B: exact-complex</pre>
+    <h2>time</h2>
+    <pre>2012-01-01 03:42:10</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-04-07 03:15:39</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Correction: the WG voted to '''accept''' this procedure.  However, nothing needs to be done, as it is already in the draft.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1333743339111776</pre>
+    <h2>ticket</h2>
+    <pre>320</pre>
+    <h2>time</h2>
+    <pre>2012-04-07 03:15:39</pre>
+    <h2>Change at time 2012-04-07 03:15:39</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1333743339111776</pre>
+    <h2>ticket</h2>
+    <pre>320</pre>
+    <h2>time</h2>
+    <pre>2012-04-07 03:15:39</pre>
+    <h2>Change at time 2012-04-07 03:15:39</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1333743339111776</pre>
+    <h2>ticket</h2>
+    <pre>320</pre>
+    <h2>time</h2>
+    <pre>2012-04-07 03:15:39</pre>
+    <h2>Change at time 2012-04-05 08:52:00</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG voted to reject this proposal.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1333590720486072</pre>
+    <h2>ticket</h2>
+    <pre>320</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 08:52:00</pre>
+    <h2>Change at time 2012-04-05 08:52:00</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1333590720486072</pre>
+    <h2>ticket</h2>
+    <pre>320</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 08:52:00</pre>
+    <h2>Change at time 2012-01-05 02:13:22</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>This is actually in draft 5, but didn't exist when `cond-expand` was voted on, so we need to vote on it.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1325700802430200</pre>
+    <h2>ticket</h2>
+    <pre>320</pre>
+    <h2>time</h2>
+    <pre>2012-01-05 02:13:22</pre></body></html>

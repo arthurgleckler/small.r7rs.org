@@ -1,0 +1,141 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>132: Imports override previous imports?</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 132: <span class="summary">Imports override previous imports?</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-07 12:12:08</div>
+      <div class="component">WG1 - Modules</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/132/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-01-22 08:45:28</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>In R6RS and therefore in our current module system, you can't import the same name from two different places.  I think we should consider changing this so that you can <span class="monospace">(import (foo))</span> and then <span class="monospace">(import (override))</span>, where <span class="monospace">(override)</span> contains a subset of the names defined in <span class="monospace">(foo)</span>.  Otherwise you have to say <span class="monospace">(import (except (foo) this that)</span>.  This is no doubt safer, but also more annoying.</p>
+        <p>There are two sub-issues: allowing this at the REPL and/or allowing it in modules.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-01-22 12:13:32</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>This requires that IMPORT be a normal form, which is not specified by <a href="/wiki/ModulesShinn">ModulesShinn</a>. What ticked deals with this issue?</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-22 14:07:51</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Actually it is specified there; see the section on REPL Interaction.  You'll note that it provides for overriding, so the remaining part of this ticket is whether the same can be done within a module.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-01-22 14:37:18</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Okay, I see the section on the REPL interactions, but I also see: “It is a syntax error if the same identifier is imported twice, from any combination of modules or multiple import forms.” This is for the module form. Moreover, <a href="/wiki/ModulesShinn">ModulesShinn</a> does not define an import form that is accessible in code. It is purely an element of the library form itself, so this question cannot apply to anything but the REPL unless we wish to introduce local imports.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-23 02:51:14</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Au contraire.  We have already accepted imports overriding previous imports at the REPL per <a href="/wiki/ModulesShinn">ModulesShinn</a>.  The question now is whether to change <a href="/wiki/ModulesShinn">ModulesShinn</a> so that imports into a module can override previous imports into that module.  The case against it is that it makes the final result hard to predict; the case for it is improved convenience.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-01-23 08:16:36</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Ignoring REPL interactions, <a href="/wiki/ModulesShinn">ModulesShinn</a> already makes implicit shadowing in modules illegal. Moreover, I believe it a mistake to imply any sort of ordering on the module declarations, which implies that we should not allow more than one body or include form.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-23 12:19:59</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Not ordering the module declarations is fine; I'm now convinced that this ticket's proposal doesn't make sense in modules.  Only allowing one code <i>body</i>, in the name of not having to concern yourself with how they are ordered, is absurd overkill.</p>
+              <p>The definitions in the bodies are order-independent anyhow, since you are not allowed to define an identifier more than once in all the bodies.  So all that's left is the random expressions in the bodies, and ordering the bodies in the module controls how their execution is ordered.  Otherwise, you're no better off than with R6RS and its single implicit body.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-01-24 06:21:30</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We have not bettered R6RS here, we have merely changed the syntax. Consider the following:</p><span class="monospace">(library
+  (code ...)
+  (import ...)
+  (include ...)
+  (import ...)
+  (code ...))
+</span>
+              <p>Assume the semantics you describe, then the above code contains some forms where order matters intermingled with some that do not. It matters in what order the <span class="monospace">code</span> and <span class="monospace">include</span> forms appear, but it does not matter where the <span class="monospace">import</span> forms appear. I can see only one useful situation for this behavior: if we could expand into <span class="monospace">library</span> forms, then it would be easier to write such macros, because we need not collect all the code before we insert some of it into the final expanded <span class="monospace">library</span> form. We cannot expand into library forms; allowing this in WG1 gains us nothing but potential confusion.</p>
+              <p>On the other hand, such independence and partial ordering might make sense in WG2, and I would like to consider it there.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 06:34:06</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>/me shrugs.</p>
+              <p>As a matter of style, imports should be bubbled to the top even if the syntax doesn't demand it.  But interspersing exports with code bodies makes sense to me.  (Hey, I like the Java style of tagging every definition as public or private.)</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-01-24 06:49:18</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I object to making order appear to matter when it does not; I do not object to the use of ordering freedom to produce more readable code. Nonetheless, if you really want something like you say, then you ought to appreciate the full flexibility of a syntactic module language, which we do not have in WG1. In such a system, where <span class="monospace">export</span> is just another form, implementing <span class="monospace">define/exported</span>, which is a trivial macro, is better than the workaround you have suggested.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 18:04:33</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted this is an error.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 20:34:20</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-07 12:12:08</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Nothing to be done here.</p></div></div></div></div></div></body></html>

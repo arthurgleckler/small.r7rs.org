@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>InexactEqvWeaver</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/InexactEqvWeaver.md">InexactEqvWeaver</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Inexact&shy;Eqv&shy;Weaver</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-25 10:03:00</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/InexactEqvWeaver/history">history</a></div>
+      <div class="source"><a href="/wiki/InexactEqvWeaver/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="ProposedR7RSdefinitionfor`eqv?`onnumbers">Proposed R7RS definition for <span class="monospace">eqv?</span> on numbers</h2>
+      <p>[See <a href="/ticket/477">#477</a> for detailed background and rationale]</p>
+      <p>Objects <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are <i>substantially different</i> if and only if one of the following holds:</p>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are both numbers, at least one is numerically equal to itself (see <span class="monospace">=</span>), and they are not numerically equal (see <span class="monospace">=</span>) to each other.</li></ul>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are not both numbers, and they are different (in the sense of <span class="monospace">eqv?</span>).</li></ul>
+      <p>Inexact numbers <i>z<sub>1</sub></i> and <i>z<sub>2</sub></i> are <i>operationally equivalent</i> if and only if for all procedures <i>f</i> that can be defined as a finite composition of the standard numerical operations specified in section 6.2.6, <span class="monospace">(f z1)</span> and <span class="monospace">(f z2)</span> either both raise exceptions or yield results that are not substantially different.</p>
+      <p>The <span class="monospace">eqv?</span> procedure returns <span class="monospace">#t</span> if one of the following holds:</p>
+      <p>[...]</p>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are both exact numbers and are numerically equal (see <span class="monospace">=</span>).</li></ul>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are both inexact numbers, at least one is numerically equal to itself (see <span class="monospace">=</span>), and the implementation is able to prove that <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are operationally equivalent.  Implementations must be able to prove that two inexact numbers with the same internal representation are operationally equivalent.</li></ul>
+      <p>The <span class="monospace">eqv?</span> procedure returns <span class="monospace">#f</span> if one of the following holds:</p>
+      <p>[...]</p>
+      <ul>
+        <li>One of <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> is an exact number but the other is an inexact number.</li></ul>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are exact numbers for which the <span class="monospace">=</span> procedure returns <span class="monospace">#f</span>.</li></ul>
+      <ul>
+        <li><i>Obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are inexact numbers, at least one is numerically equal to itself (see <span class="monospace">=</span>), and the implementation is unable to prove that <i>obj<sub>1</sub></i> and <i>obj<sub>2</sub></i> are operationally equivalent.</li></ul></div></body></html>

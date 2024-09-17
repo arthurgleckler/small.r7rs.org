@@ -1,0 +1,93 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ArraysCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ArraysCowan.md">ArraysCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Arrays&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-10-03 01:37:37</div>
+      <div class="version">15<span class="comment"></span><a href="/wiki/ArraysCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ArraysCowan/15/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Arrays">Arrays</h2>
+      <p>This is a proposal for the WG2 multidimensional arrays package.  These arrays are general: that is, the components may be any Scheme object.  However, future proposals may add support for numeric-only arrays.</p>
+      <h2 id="Terminology">Terminology</h2>
+      <p>The <i>axes</i> of an array are its dimensions: a vector has one axis, a matrix has two, and so on.  The <i>rank</i> of a vector is the number of axes it has.  Note that in this proposal, the objects called &quot;vectors&quot; in Scheme are referred to as &quot;Scheme vectors&quot;.</p>
+      <p>Every array has a <i>shape</i>, which is a Scheme vector of non-negative exact integers that specify the number of distinct values on each of its axes.  Thus an array with shape <span class="monospace">#(4)</span> is a vector whose axis contains 4 elements, by default labeled from 0 to 3, and an array with shape <span class="monospace">#(2 7)</span> is a 2 x 7 matrix whose rows range by default from 0 to 1 and whose columns range by default from 0 to 6 respectively.  A component of the shape MAY be 0, in which case the vector has no components.  A rank-0 vector's shape is <span class="monospace">#()</span>, and it has exactly one component.</p>
+      <p>It is possible to create arrays whose indexes have a lower bound other than 0, in which case the upper bound is not the same as the shape.  In addition, the valid index values of a specific axis may be restricted to exact multiples of an integer known as the <i>step</i>.</p>
+      <p>Each array has associated with it a <i>storage object</i>, which for the purposes of this proposal is a Scheme vector.  It is possible for many arrays to be associated with a single storage object.  The locations associated with a storage object are known as <i>storage elements</i>.  The values put into storage elements are <span class="monospace">eqv?</span> to the values fetched from them.</p>
+      <p>An array's <i>size</i> is the total number of storage objects associated with it.  This is the product of the components of the array's shape, or 1 if the shape has no components.</p>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(make-array </span><i>shape</i> [<i>initial-value</i>]<span class="monospace">)</span></p>
+      <p><span class="monospace">(make-array </span><i>lower-bounds upper-bounds</i> [ <i>steps</i> [ <i>initial-value</i> ] ]<span class="monospace">)</span></p>
+      <p>The first form of this procedure returns a newly allocated array whose shape is <i>shape</i>.  The second form specifies the lower bounds (inclusive) and the upper bounds (exclusive) of the dimensions, along with the step values, if any (which default to 1 in each axis).  All of these arguments are Scheme vectors.  It is an error if they do not have the same length.</p>
+      <p>All the components of the new array are set to  <i>initial value</i> if it is specified; otherwise their values are undefined.</p>
+      <p><span class="monospace">(array </span><i>shape obj</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocatedn array whose shape is <i>shape</i>.  Each <i>obj</i> is used to initialize the contents of the array in row-major order.  This procedure cannot specify lower bounds or steps.</p>
+      <p><span class="monospace">(vector-&gt;array </span><i>shape</i> <i>vector</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(vector-&gt;array </span><i>lower-bounds upper-bounds</i> [ <i>steps</i> ] <i>vector</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(list-&gt;array </span><i>shape</i> <i>list</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(list-&gt;array </span><i>lower-bounds upper-bounds</i> [ <i>steps</i> ] <i>list</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array with shape <i>shape</i>, or with the specified lower-bounds, upper-bounds, and steps, containing the components of <i>vector</i> or <i>list</i> in storage order.  If <i>shape</i> is omitted, the result has the same shape as <i>vector</i>.</p>
+      <p><span class="monospace">(array-tabulate </span><i>shape proc</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(array-tabulate </span><i>lower-bounds upper-bounds</i> [ <i>steps</i> ] <i>proc</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array with the specified <i>shape, lower-bounds, upper-bounds</i>, and <i>steps</i>.  <i>Proc</i> For each valid combination of indexes, <i>proc</i> is invoked, passing the indexes as a Scheme vector, which may be the same vector each time or distinct vectors.  Whatever <i>proc</i> returns becomes the value of the storage element corresponding to those indexes.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(array? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an array and <span class="monospace">#f</span> otherwise.</p>
+      <h2 id="Arraystructure">Array structure</h2>
+      <p><span class="monospace">(array-shape </span><i>array</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(array-lower-bounds </span><i>array</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(array-upper-bounds </span><i>array</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(array-steps </span><i>array</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(array-strides </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the shape, lower bounds, upper bounds, steps, or strides of <i>array</i> as Scheme vectors.  It is an error to m may be the same (in the sense of <span class="monospace">eqv?</span>) as other arrays of the same shape.  It is an error to mutate the results of these procedures.</p>
+      <p><span class="monospace">(array-rank </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the rank of <i>array</i>.</p>
+      <p><span class="monospace">(array-size </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the size of <i>array</i>.</p>
+      <p><span class="monospace">(array-in-bounds? </span><i>array subscript</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>subscripts</i>, which MUST be exact integers, are valid subscripts for <i>array</i>, and #f otherwise.  A subscript is valid if it is non-negative and less than the corresponding component of the shape.</p>
+      <h2 id="Storageprocedures">Storage procedures</h2>
+      <p><span class="monospace">(array-storage </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the storage associated with an array.</p>
+      <p><span class="monospace">(array-copy </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns a new array with the same shape, bounds, steps, and strides as <i>array</i>.  However, the storage object is a copy of the storage object of <i>array</i>.</p>
+      <p><span class="monospace">(array-ref </span><i>array subscript</i> ...<span class="monospace">)</span></p>
+      <p>Returns the component of <i>array</i> specified by <i>subscripts</i>, which MUST be exact integers.  It is an error to specify an invalid <i>subscript</i>.</p>
+      <p><span class="monospace">(array-set! </span><i>array subscript</i> ... <i>value</i><span class="monospace">)</span></p>
+      <p>Sets the component of <i>array</i> specified by <i>subscripts</i>, which MUST be exact integers, to <i>value</i>.  Returns undefined values.  It is an error to specify an invalid <i>subscript</i>.</p>
+      <h2 id="Mappingandfolding">Mapping and folding</h2>
+      <p><span class="monospace">(array-map </span><i>proc array</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to each corresponding component of the <i>arrays</i> in row-major order.  It returns a newly allocated array with the same shape as <i>array</i> and containing components which are the results of the appropriate applications.  It is an error unless all the <i>arrays</i> have the same shape.  It is also an error unless <i>proc</i> accepts at least as many arguments as there are arrays.</p>
+      <p><span class="monospace">(array-map! </span><i>proc array</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to each corresponding component of the <i>arrays</i> in row-major order and places the results into  <i>array</i>.  It is an error unless all the <i>arrays</i> have the same shape.  It is also an error unless <i>proc</i> accepts at least as many arguments as there are arrays.</p>
+      <p><span class="monospace">(array-for-each </span><i>proc array</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to each corresponding component of the <i>arrays</i> in storage order, discarding the results.  Returns undefined values.  It is an error unless all the <i>arrays</i> have the same shape.  It is also an error unless <i>proc</i> accepts at least as many arguments as there are arrays.</p>
+      <p><span class="monospace">(array-fold </span><i>proc nil array</i> ...<span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> on each component of <i>arrays</i> in storage order.  Each invocation is passed as arguments a Scheme vector containing the array indices of the current component, and the result of the previous invocation, in that order.  The Scheme vector may be reused by successive calls on <i>proc</i>.  For the first invocation, <i>nil</i> is used as the final argument.  Returns the result of the last invocation.  It is an error unless all the <i>arrays</i> have the same shape.  It is also an error unless <i>proc</i> accepts at least as many arguments as there are arrays.</p>
+      <h2 id="Conversions">Conversions</h2>
+      <p><span class="monospace">(array-&gt;vector </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated Scheme vector containing the components of <i>array</i> in row-major order.</p>
+      <p><span class="monospace">(array-&gt;list </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated list containing the components of <i>array</i> in row-major order.</p>
+      <p><span class="monospace">(array-&gt;nested-vector </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated Scheme vector whose components are also newly constructed Scheme vectors, and so on as far down as necessary to cover every axis of the vector.  Bottom-level vectors contain the components of <i>array</i>.  Thus, if <i>array</i> has rank 1, the result is a vector; if the array has rank 2, the result is a vector of vectors, and so on.  It is an error if <i>array</i> has rank 0.</p>
+      <p><span class="monospace">(array-&gt;nested-list </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated list whose components are also newly constructed lists, and so on as far down as necessary to cover every axis of <i>array</i>.  Bottom-level lists contain the components of <i>array</i>.  Thus, if <i>array</i> has rank 1, the result is a list; if the array has rank 2, the result is a list of lists, and so on.    It is an error if <i>array</i> has rank 0.</p>
+      <p><span class="monospace">(nested-vector-&gt;array </span><i>rank nested-vector</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array with rank <i>rank</i> whose components are initialized from <i>nested-vector</i>.  It is an error if <i>nested-vector</i> is not rectangular.  As a special case, if <i>rank</i> is 0, the sole component is <i>nested-vector</i>, which need not be a vector.</p>
+      <p><span class="monospace">(nested-list-&gt;array </span><i>rank nested-list</i><span class="monospace">)</span></p>
+      <p>Returns an array with rank <i>rank</i> whose components are initialized from <i>nested-list</i>.  It is an error if <i>nested-list</i> is not rectangular.  As a special case, if <i>rank</i> is 0, the sole component is <i>nested-list</i>, which need not be a list.</p>
+      <h2 id="Advancedprocedures">Advanced procedures</h2>
+      <p>See <a href="/wiki/AdvancedArraysCowan">AdvancedArraysCowan</a>.</p></div></body></html>

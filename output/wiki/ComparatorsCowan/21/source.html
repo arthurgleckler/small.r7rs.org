@@ -1,0 +1,290 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ComparatorsCowan version 21</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ComparatorsCowan version 21</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>ComparatorsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Please see [http://srfi.schemers.org/srfi-114/ SRFI 114] for the predecessor to this proposal.  SRFI 114 has been deprecated by its author.  Here is the first draft of a simpler and better replacement,  which will eventually become a new SRFI.
+
+{{{
+#!html
+&lt;h2 id=&quot;Abstract&quot;&gt;Abstract&lt;/h2&gt;
+&lt;p&gt;
+This SRFI provides &lt;i&gt;comparators&lt;/i&gt;, procedure bundles that represent one or more of an equality predicate, an ordering predicate, and a hash function.  By packaging these procedures together, along with a type test predicate, they can be treated as a single item for use in the implementation of data structures.
+&lt;/p&gt;
+&lt;h2 id=&quot;Issues&quot;&gt;Issues&lt;/h2&gt;
+&lt;p&gt;None at present.&lt;/p&gt;
+
+&lt;h2 id=&quot;Rationale&quot;&gt;Rationale&lt;/h2&gt;
+&lt;p&gt;
+The four procedures above have complex dependencies on one another, and it is inconvenient to have to pass them individually to other procedures that might or might not make use of all of them.  For example, a set implementation by nature requires only an equality predicate, but if it is implemented using a hash table, an appropriate hash function is also required if the implementation does not provide one; alternatively, if it is implemented using a tree, an ordering predicate is required.  By passing a comparator rather than a bare equality predicate, the set implementation can make use of whatever procedures are available and useful to it.
+&lt;/p&gt;
+&lt;p&gt;This SRFI is a simplified and enhanced rewrite of &lt;a href=&quot;http://srfi.schemers.org/srfi-114/srfi-114&quot;&gt;SRFI 114&lt;/a&gt;, and shares some of its design rationale and all of its acknowledgements.  Special thanks to Taylan Ulrich Bayırlı/Kammer, whose insistence that SRFI 114 was over-complicated but also inadequate inspired this redesign.&lt;/p&gt;
+
+&lt;h2 id=&quot;Specification&quot;&gt;Specification&lt;/h2&gt;
+
+&lt;p&gt;The procedures in this SRFI are in the &lt;code&gt;(srfi ???)&lt;/code&gt; library (or &lt;code&gt;(srfi :???)&lt;/code&gt; on R6RS), but the sample implementation currently places them in the &lt;code&gt;(comparators)&lt;/code&gt; library.  This means it can't be used alongside SRFI 114, but there's no reason for anyone to do that.&lt;/p&gt;
+
+&lt;h3 id=&quot;Definitions&quot;&gt;Definitions&lt;/h3&gt;
+&lt;p&gt;
+A &lt;em&gt;comparator&lt;/em&gt; is an object of a disjoint type.  It is a bundle of procedures that are useful for comparing two objects either for equality or for ordering.  There are four procedures in the bundle:
+&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;&lt;p&gt;The &lt;em&gt;type test predicate&lt;/em&gt; returns &lt;code&gt;#t&lt;/code&gt; if its argument has the correct type to be passed as an argument to the other three procedures, and &lt;code&gt;#f&lt;/code&gt; otherwise.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;em&gt;equality predicate&lt;/em&gt; returns &lt;code&gt;#t&lt;/code&gt; if the two objects are the same in the sense of the comparator, and &lt;code&gt;#f&lt;/code&gt; otherwise.  It is the programmer's responsibility to ensure that it is reflexive, symmetric, transitive, and can handle any arguments that satisfy the type test predicate.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;em&gt;ordering predicate&lt;/em&gt; returns &lt;code&gt;#t&lt;/code&gt; if the first object precedes the second in a total order, and &lt;code&gt;#f&lt;/code&gt; otherwise.  Note that if it is true, the equality predicate must be false.  It is the programmer's responsibility to ensure that it is irreflexive, asymmetric, transitive, and can handle any arguments that satisfy the type test predicate.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The &lt;em&gt;hash function&lt;/em&gt; takes one or more arguments and returns an exact non-negative integer; the first argument is the object to be hashed.  It is the programmer's responsibility to ensure that it can handle any argument that satisfies the type test predicate, and that it returns the same value on two objects if the equality predicate says they are the same (but not necessarily the converse).&lt;/p&gt;
+
+&lt;p&gt;If a second argument is provided, it is a non-negative exact integer, a hint from the caller of the hash function that the returned value should be bounded from above by the second argument.  There is no requirement that a hash
+function support this hint, and the caller cannot count on its being applied.  Supplying &lt;code&gt;#f&lt;/code&gt;
+as the second argument is equivalent to providing no argument.&lt;/p&gt;
+
+&lt;p&gt;If a third argument is provided, it is also a non-negative exact integer that serves as a &lt;i&gt;salt&lt;/i&gt; value to be mixed in along with the first argument when performing the hash calculation.  If the caller is careful to provide a sufficiently random salt, attacks on the hash function become more difficult.  In addition, callers that need more than one hash function can easily obtain it by varying the salt.  Like the upper bound, the salt is a hint: no hash function is required to make use of it.&lt;/p&gt;  
+&lt;/li&gt;&lt;/ul&gt;
+&lt;p&gt;
+It is also the programmer's responsibility to ensure that all four procedures provide the same result whenever they are applied to the same object(s) (in the sense of &lt;code&gt;eqv?&lt;/code&gt;), unless the object(s) have been mutated since the last invocation.  In particular, they must not depend in any way on memory addresses in implementations where the garbage collector can move objects in memory.
+&lt;/p&gt;
+&lt;h3&gt;Limitations&lt;/h3&gt;
+&lt;p&gt;The comparator objects defined in this SRFI are not applicable to circular structure or to NaNs or objects containing them.  Attempts to pass any such objects to any procedure defined here, or to any procedure that is part of a comparator defined here, is an error except as otherwise noted.&lt;/p&gt;
+&lt;h3&gt;Index&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;#Predicates&quot;&gt;Predicates&lt;/a&gt;: &lt;code&gt;comparator?, comparator-ordered?, comparator-hashable?&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;#Constructors&quot;&gt;Constructors&lt;/a&gt;: &lt;code&gt;make-comparator,  make-list-comparator, make-vector-comparator, make-eq-comparator, make-eqv-comparator, make-equal-comparator&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;Hashfunctions&quot;&gt;Standard hash functions&lt;/a&gt;: &lt;code&gt;boolean-hash, char-hash, char-ci-hash, string-hash, string-ci-hash, symbol-hash, number-hash&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;#Defaultcomparators&quot;&gt;Default comparators&lt;/a&gt;: &lt;code&gt;default-comparator, comparator-register-default!&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;#Accessors&quot;&gt;Accessors&lt;/a&gt;: &lt;code&gt;comparator-type-test-procedure, comparator-equality-predicate, comparator-ordering-predicate, comparator-hash-function, comparator-check-type&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;#Comparisonpredicates&quot;&gt;Comparison predicates&lt;/a&gt;: &lt;code&gt;=?, &amp;lt;?, &gt;?, &amp;lt;=?, &gt;=?&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Predicates&quot;&gt;Predicates&lt;/h3&gt;
+&lt;p&gt;
+&lt;code&gt;(comparator? &lt;/code&gt;&lt;em&gt;obj&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns &lt;code&gt;#t&lt;/code&gt; if &lt;em&gt;obj&lt;/em&gt; is a comparator, and &lt;code&gt;#f&lt;/code&gt; otherwise.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;(comparator-ordered? &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns &lt;code&gt;#t&lt;/code&gt; if &lt;em&gt;comparator&lt;/em&gt; has a supplied ordering predicate, and &lt;code&gt;#f&lt;/code&gt; otherwise.
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;(comparator-hashable? &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns &lt;code&gt;#t&lt;/code&gt; if &lt;em&gt;comparator&lt;/em&gt; has a supplied hash function, and &lt;code&gt;#f&lt;/code&gt; otherwise.
+&lt;/p&gt;
+&lt;h3 id=&quot;Constructors&quot;&gt;Constructors&lt;/h3&gt;
+&lt;p&gt;
+The following comparator constructors all supply appropriate type test functions, equality predicates, ordering predicates, and hash functions based on the supplied arguments.  They are allowed to cache their results: they need not return a newly allocated object, since comparators are pure and functional.
+&lt;/p&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(make-comparator &lt;/code&gt;&lt;em&gt;type-test equality ordering hash&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns a comparator which bundles the &lt;em&gt;type-test, equality, ordering&lt;/em&gt;, and &lt;em&gt;hash&lt;/em&gt; procedures provided.  As a convenience, the following additional values are accepted:
+&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;If &lt;em&gt;type-test&lt;/em&gt; is &lt;code&gt;#t&lt;/code&gt;, a type-test procedure that accepts any arguments is provided.
+&lt;/li&gt;
+&lt;li&gt;If &lt;em&gt;ordering&lt;/em&gt; or &lt;em&gt;hash&lt;/em&gt; is &lt;code&gt;#f&lt;/code&gt;, a procedure is provided that signals an error on application.  The predicates &lt;code&gt;comparator-ordered?&lt;/code&gt; and/or &lt;code&gt;comparator-hashable?&lt;/code&gt;, respectively, will return &lt;code&gt;#f&lt;/code&gt; in these cases.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Here are calls on &lt;code&gt;make-comparator&lt;/code&gt; that will return useful comparators for standard Scheme types:
+&lt;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;(make-comparator boolean? boolean=? (lambda (x y) (and (not x) y)) (lambda (x) (if x 1 0)))&lt;/code&gt; will return a comparator for booleans, expressing the ordering &lt;code&gt;#f&lt;/code&gt; &amp;lt; &lt;code&gt;#t&lt;/code&gt; and a plausible hash function.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;(make-comparator real? = &lt; (lambda (x) (exact (abs x))))&lt;/code&gt; will return a comparator expressing the natural ordering of real numbers and a plausible (but not optional) hash function.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;(make-comparator string? string=? string&amp;lt;? string-hash&lt;/code&gt; will return a comparator expressing the implementation's ordering of strings.  On R5RS systems this is a lexicographic extension of some implementation-defined ordering of characters; on R6RS systems it is a lexicographic extension of Unicode codepoint order; on R7RS systems it is implementation-defined.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;(make-comparator string? string-ci=? string-ci&amp;lt;? string-ci-hash&lt;/code&gt; will return a comparator expressing the implementation's case-insensitive ordering of strings.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;
+&lt;code&gt;(make-pair-comparator &lt;/code&gt; [ &lt;var&gt;car-comparator cdr-comparator&lt;/var&gt; ]&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;This comparator compares pairs using &lt;var&gt;car-comparator&lt;/var&gt; (a default comparator by default) on their cars. If the cars are not equal, that value is returned. If they are equal, &lt;var&gt;cdr-comparator&lt;/var&gt; (also a default comparator by default) is used on their cdrs and that value is returned.  Hashing is done on both the car and cdr sides, and the results are hashed together.
+&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;(make-list-comparator &lt;/code&gt; [ &lt;em&gt;element-comparator&lt;/em&gt; [ &lt;em&gt;type-test&lt;/em&gt; &lt;em&gt;empty? head tail&lt;/em&gt; ] ]&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns a comparator which lexicographically compares two sequences that satisfy &lt;em&gt;type-test&lt;/em&gt; (&lt;code&gt;list&lt;/code&gt; by default), as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The empty sequence, as determined by calling &lt;var&gt;empty?&lt;/var&gt; (&lt;code&gt;null?&lt;/code&gt; by default) compares equal to itself.&lt;/li&gt;
+&lt;li&gt;The empty sequence compares less than any non-empty sequence.&lt;/li&gt;
+&lt;li&gt;Two non-empty sequences are compared by comparing the result of calling the &lt;var&gt;head&lt;/var&gt; procedure (&lt;code&gt;car&lt;/code&gt; by default).  If the heads are not equal when compared using &lt;var&gt;element-comparator&lt;/var&gt; (a default comparator by default), then the result is the result of that comparison.  Otherwise, the results of calling the &lt;var&gt;tail&lt;/var&gt; procedure (&lt;code&gt;cdr&lt;/code&gt; by default) are compared recursively.
+&lt;/p&gt;
+&lt;p&gt;In particular, &lt;code&gt;(make-list-comparator)&lt;/code&gt; returns a comparator that compares lists using a default comparator for the elements, and &lt;code&gt;(make-list-comparator &lt;/code&gt;&lt;var&gt;element-comparator&lt;/var&gt;&lt;code&gt;)&lt;/code&gt; returns a comparator that compares lists using &lt;var&gt;element-comparator for the elements.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;(make-vector-comparator &lt;/code&gt; [ &lt;em&gt;element-comparator&lt;/em&gt; [ &lt;em&gt;type-test&lt;/em&gt; &lt;em&gt;length ref&lt;/em&gt; ] ]&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns a comparator which compares two sequences that satisfy &lt;em&gt;type-test&lt;/em&gt; (&lt;code&gt;vector?&lt;/code&gt; by default), using the &lt;em&gt;length&lt;/em&gt; procedure (&lt;code&gt;vector-length&lt;/code&gt; by default) to determine the lengths of the sequences, and the &lt;em&gt;ref&lt;/em&gt; procedure (&lt;code&gt;vector-ref&lt;/code&gt; by default) to access a particular elements.  If one sequence is shorter than the other, it compares less than the other.  If the sequences are the same length, they are compared element-wise using &lt;var&gt;element-comparator&lt;/var&gt; (a default comparator by default) until they are exhausted.&lt;/p&gt;
+&lt;p&gt;
+In particular, &lt;code&gt;(make-vector-comparator)&lt;/code&gt; returns a comparator that compares vectors using a default comparator for the elements, and &lt;code&gt;(make-vector-comparator &lt;/code&gt;&lt;var&gt;element-comparator&lt;/var&gt;&lt;code&gt;)&lt;/code&gt; returns a comparator that compares vectors using &lt;var&gt;element-comparator&lt;/var&gt;.  Similarly, &lt;code&gt;(make-vector-comparator (make-default-comparator) bytevector? bytevector-length bytevector-u8-ref)&lt;/code&gt; returns a comparator that compares bytevectors.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(make-eq-comparator)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(make-eqv-comparator)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(make-equal-comparator)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+The equality predicates of these comparators are &lt;code&gt;eq?&lt;/code&gt;, &lt;code&gt;eqv?&lt;/code&gt;, and &lt;code&gt;equal?&lt;/code&gt; respectively.  When their ordering procedures are applied to non-equal objects, their behavior is implementation-defined.  The type test predicates always return &lt;code&gt;#t&lt;/code&gt;.
+&lt;/p&gt;
+&lt;p&gt;These comparators accept circular structure (in the case of
+&lt;code&gt;equal-comparator&lt;/code&gt;, provided the implementation's &lt;code&gt;equal?&lt;/code&gt; predicate
+does so) and NaNs.&lt;/p&gt;
+
+&lt;h3 id=&quot;Hashfunctions&quot;&gt;Standard hash functions&lt;/h3&gt;
+&lt;p&gt;These are hash functions for standard Scheme types, suitable for passing to &lt;code&gt;make-comparator&lt;/code&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(boolean-hash&lt;/code&gt; obj [ &lt;var&gt;bound&lt;/var&gt; [ &lt;var&gt;salt&lt;/var&gt; ] ] &lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(char-hash&lt;/code&gt; obj [ &lt;var&gt;bound&lt;/var&gt; [ &lt;var&gt;salt&lt;/var&gt; ] ] &lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(char-ci-hash&lt;/code&gt; obj [ &lt;var&gt;bound&lt;/var&gt; [ &lt;var&gt;salt&lt;/var&gt; ] ] &lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(string-hash&lt;/code&gt; obj [ &lt;var&gt;bound&lt;/var&gt; [ &lt;var&gt;salt&lt;/var&gt; ] ] &lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(string-ci-hash&lt;/code&gt; obj [ &lt;var&gt;bound&lt;/var&gt; [ &lt;var&gt;salt&lt;/var&gt; ] ] &lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(symbol-hash&lt;/code&gt; obj [ &lt;var&gt;bound&lt;/var&gt; [ &lt;var&gt;salt&lt;/var&gt; ] ] &lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(number-hash&lt;/code&gt; obj [ &lt;var&gt;bound&lt;/var&gt; [ &lt;var&gt;salt&lt;/var&gt; ] ] &lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;These are suitable hash functions for the specified types. The hash functions &lt;code&gt;char-ci-hash&lt;/code&gt; and &lt;code&gt;string-ci-hash&lt;/code&gt; treat their first argument case-insensitively.
+&lt;/p&gt;
+
+
+&lt;h3 id=&quot;Defaultcomparators&quot;&gt;Default comparators&lt;/h3&gt;
+&lt;p&gt;
+&lt;code&gt;(make-default-comparator)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns a comparator known as a &lt;var&gt;default comparator&lt;/var&gt; that accepts any two Scheme values (with the exceptions listed in the Limitations section) and orders them in some implementation-defined way, subject to the following conditions:
+&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;&lt;p&gt;The following arbitrary ordering between types must hold: the empty list precedes pairs, which precede booleans, which precede characters, which precede strings, which precede symbols, which precede numbers, which precede vectors, which precede bytevectors, which precede all other objects.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When applied to pairs, it must behave the same as a comparator returned by &lt;code&gt;make-pair-comparator&lt;/code&gt; when applied to no arguments.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When applied to booleans, it must compare them using the total order &lt;code&gt;#f&lt;/code&gt; &amp;lt; &lt;code&gt;#t&lt;/code&gt; and hash them using the hash function &lt;code&gt;boolean-hash&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When applied to characters, it must compare them using &lt;code&gt;char=?&lt;/code&gt; and &lt;code&gt;char&amp;lt;?&lt;/code&gt;.  In R5RS, this is an implementation-dependent order that is typically the same as Unicode codepoint order; in R6RS and R7RS, it is Unicode codepoint order.  It must also hash them using the hash function &lt;code&gt;char-hash&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When applied to strings, it must compare them using &lt;code&gt;string=?&lt;/code&gt; and &lt;code&gt;string&amp;lt;?&lt;/code&gt;.  In R5RS, this is lexicographic order on the implementation-dependent order defined by &lt;code&gt;char&amp;lt;?&lt;/code&gt;; in R6RS it is lexicographic order order on Unicode codepoint order; in R7RS it is an implementation-defined order.  It must also hash them using the hash function &lt;code&gt;string-hash&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When applied to symbols, it must compare them using an implementation-dependent total order.  One possibility is to use the order obtained applying &lt;code&gt;symbol-&amp;gt;string&lt;/code&gt; to the symbols and comparing them using the total order implied by &lt;code&gt;string&amp;lt;?&lt;/code&gt;.  It must also hash them using the hash function &lt;code&gt;symbol-hash&lt;/code&gt;.  It is not a requirement that symbol hash functions be consistent with string hash functions, however.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When applied to numbers where either number is complex, since non-real numbers cannot be compared with &lt;code&gt;&amp;lt;&lt;/code&gt;, the following least-surprising ordering is defined: If the real parts are &amp;lt; or &amp;gt;, so are the numbers; otherwise, the numbers are ordered by their imaginary parts.  This can still produce somewhat surprising results if one real part is exact and the other is inexact.  It must also hash them using the hash function&lt;code&gt;number-hash&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When applied to real numbers, it must compare them using &lt;code&gt;=&lt;/code&gt; and &lt;code&gt;&amp;lt;&lt;/code&gt;, and hash them using the hash function &lt;code&gt;number-hash&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When applied to vectors, it must behave the same as a comparator returned by &lt;code&gt;make-vector-comparator&lt;/code&gt; when applied to no arguments.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When applied to bytevectors, it must behave the same as a comparator created by &lt;code&gt;(make-vector-comparator (make-default-comparator) bytevector? bytevector-length bytevector-u8-ref)&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When applied to types registered with &lt;code&gt;comparator-register-default!&lt;/code&gt;, it must behave the same as the comparator registered using that function.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Given disjoint types &lt;em&gt;a&lt;/em&gt; and &lt;em&gt;b&lt;/em&gt;, one of three conditions must hold:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;All objects of type &lt;em&gt;a&lt;/em&gt; compare less than all objects of type &lt;em&gt;b&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;All objects of type &lt;em&gt;a&lt;/em&gt; compare greater than all objects of type &lt;em&gt;b&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;All objects of either type &lt;em&gt;a&lt;/em&gt; or type &lt;em&gt;b&lt;/em&gt; compare equal to each other.  This is not permitted for any of the standard types listed above.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;(comparator-register-default! &lt;/code&gt;&lt;var&gt;comparator&lt;/var&gt;&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Registers &lt;var&gt;comparator&lt;/var&gt; for use by default comparators, such that if the objects being compared
+both satisfy the type test predicate of &lt;var&gt;comparator&lt;/var&gt;, it will be employed by default comparators
+to compare them.
+&lt;/p&gt;
+&lt;/p&gt;
+&lt;h3 id=&quot;Accessors&quot;&gt;Accessors&lt;/h3&gt;
+&lt;p&gt;
+&lt;code&gt;(comparator-type-test-procedure &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns the type test predicate of &lt;em&gt;comparator&lt;/em&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(comparator-equality-predicate &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns the equality predicate of &lt;em&gt;comparator&lt;/em&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(comparator-ordering-predicate &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns the ordering predicate of &lt;em&gt;comparator&lt;/em&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(comparator-hash-function &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Returns the hash function of &lt;em&gt;comparator&lt;/em&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(comparator-check-type &lt;/code&gt;&lt;em&gt;comparator obj&lt;/em&gt;&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+Invokes the type test predicate of &lt;em&gt;comparator&lt;/em&gt; on &lt;em&gt;obj&lt;/em&gt; and returns true if it returns true and signals an error otherwise.
+&lt;/p&gt;
+&lt;h3 id=&quot;Comparisonpredicates&quot;&gt;Comparison predicates&lt;/h3&gt;
+&lt;p&gt;
+&lt;code&gt;(=? &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt; &lt;em&gt;object&lt;sub&gt;1&lt;/sub&gt; object&lt;sub&gt;2&lt;/sub&gt; object&lt;sub&gt;3&lt;/sub&gt;&lt;/em&gt; ...&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(&amp;lt;? &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt; &lt;em&gt;object&lt;sub&gt;1&lt;/sub&gt; object&lt;sub&gt;2&lt;/sub&gt; object&lt;sub&gt;3&lt;/sub&gt;&lt;/em&gt; ...&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(&amp;gt;? &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt; &lt;em&gt;object&lt;sub&gt;1&lt;/sub&gt; object&lt;sub&gt;2&lt;/sub&gt; object&lt;sub&gt;3&lt;/sub&gt;&lt;/em&gt; ...&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(&amp;lt;=? &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt; &lt;em&gt;object&lt;sub&gt;1&lt;/sub&gt; object&lt;sub&gt;2&lt;/sub&gt; object&lt;sub&gt;3&lt;/sub&gt;&lt;/em&gt; ...&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+&lt;code&gt;(&amp;gt;=? &lt;/code&gt;&lt;em&gt;comparator&lt;/em&gt; &lt;em&gt;object&lt;sub&gt;1&lt;/sub&gt; object&lt;sub&gt;2&lt;/sub&gt; object&lt;sub&gt;3&lt;/sub&gt;&lt;/em&gt; ...&lt;code&gt;)&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+These procedures are analogous to the number, character, and string comparison predicates of Scheme.  They allow the convenient use of comparators to handle arbitrary data types.&lt;/p&gt;
+&lt;p&gt;These procedures apply the comparison procedure of &lt;em&gt;comparator&lt;/em&gt; to the &lt;em&gt;objects&lt;/em&gt; as follows.  If the specified relation returns &lt;code&gt;#t&lt;/code&gt; for all &lt;em&gt;object&lt;sub&gt;i&lt;/sub&gt;&lt;/em&gt; and &lt;em&gt;object&lt;sub&gt;j&lt;/sub&gt;&lt;/em&gt; where &lt;em&gt;n&lt;/em&gt; is the number of objects and 1 &amp;lt;= &lt;em&gt;i &amp;lt; j &amp;lt;= n&lt;/em&gt;, then the procedures return &lt;code&gt;#t&lt;/code&gt;, but otherwise &lt;code&gt;#f&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;
+The order in which the values are compared is unspecified.  Because the relations are transitive, it suffices to compare each object with its successor.
+&lt;/p&gt;
+&lt;h2&gt;Implementation&lt;/h2&gt;
+&lt;p&gt;The &lt;a href=&quot;comparators.tar.gz&quot;&gt;sample implementation&lt;/a&gt; contains the following files: FIXME&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;basics.scm&lt;/code&gt; - the syntax, record type definition, and simple constructors and procedures&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;default.scm&lt;/code&gt; - a simple implementation of the default constructor, which should be improved by implementers to handle records and implementation-specific types&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;constructors.scm&lt;/code&gt; - most of the constructors&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;advanced.scm&lt;/code&gt; - the more complex constructors&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;r7rs-shim.scm&lt;/code&gt; - procedures for R7RS compatibility, including a trivial implementation of bytevectors on top of &lt;a href=&quot;http://srfi.schemers.org/srfi-4/srfi-4.html&quot;&gt;SRFI 4&lt;/a&gt; u8vectors&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;complex-shim.scm&lt;/code&gt; - a trivial implementation of &lt;code&gt;real-part&lt;/code&gt; and &lt;code&gt;imag-part&lt;/code&gt; for Schemes that don't have complex numbers&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;comparators.sld&lt;/code&gt; - an R7RS library&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;comparators.scm&lt;/code&gt; - a Chicken library&lt;/li&gt;&lt;/ul&gt;
+&lt;p&gt;A future release will include a test program using the Chicken &lt;code&gt;test&lt;/code&gt; egg, which is available on Chibi as the &lt;code&gt;(chibi test)&lt;/code&gt; library.&lt;/p&gt;
+}}}
+</pre>
+    <h2>time</h2>
+    <pre>2015-10-24 01:30:10</pre>
+    <h2>version</h2>
+    <pre>21</pre></body></html>

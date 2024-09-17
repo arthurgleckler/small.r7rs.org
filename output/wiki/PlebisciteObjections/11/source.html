@@ -1,0 +1,68 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki PlebisciteObjections version 11</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki PlebisciteObjections version 11</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>173.13.139.236</pre>
+    <h2>name</h2>
+    <pre>PlebisciteObjections</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>'''Work in progress, please ignore for now'''
+
+
+* Adding Unicode support is too large a change from R5RS.
+ * It is still possible for a Scheme to provide ASCII-only support; the only constraint is that it must be done in a way that extends smoothly to the rest of the Unicode repertoire.
+* Exceptions integrate badly with the rest of the language.
+ * Perhaps that is because they are pure R6RS.  We can't do it all.
+* The syntaxes `#true` and `#false` are totally gratuitous.
+ * They add a little extra readability, but are optional.  Early versions of the Scheme standard provided them in the forms `#!true` and `#!false`.
+* The lexical syntax `#| ... |#` is unsightly.
+ * A matter of taste.  Many Schemes provide it already, including R6RS.
+* The lexical syntax `#!(no-)fold-case` is a bit ugly.
+ * It is R6RS-compatible and fairly clear.  The alternatives `#cs` (case sensitive) and `#ci` are less widely standardized and less intuitively clear.
+* The `read-line` procedure can cause a denial of service because it does not provide for a limit on the amount of input read.
+ * True.  However, `read` has the same problem.  It's easy for an implementation that worries about this sort of thing to provide an optional second argument setting a limit.
+* The `call/cc` abstraction is intractable and not useful and should have been excluded.
+ * The WG did not believe that the very high bar for removing an IEEE Scheme feature was met.
+* The draft was forbidden by its charter to remove restrictions that make additional features seem necessary.
+ * If the restrictions in question were hard-coded into R5RS, and removing them would break backward compatibility, then yes.  Restrictions that could be removed without breaking backward compatibility could be and sometimes were removed; for example, the restriction that `load` loads into the interaction environment only.
+* The large language should have been developed before the small language.
+ * This objection is untimely.  In addition, developing a large language and then subsetting it would have a higher overall risk of failure; if the large language was never completed, the small language would not exist.
+* The text-handling routines are redundant or inelegant in a Unicode world, but could not be removed or fundamentally altered due to charter restrictions.
+ * Scheme would probably be better off not treating strings as sequences of characters, but rather treating characters as a special case of strings.  Unfortunately, that's too far away from the IEEE model.
+* The interaction between exceptions, `dynamic-wind`, and continuations is missing something orthogonal.
+ * This objection is too vague to meet head-on.
+* The draft made many matters settled by R6RS undefined again.
+ * Since R6RS support never became pervasive, these matters were in practice not defined in a way that Schemers could rely on, unless they used only R6RS-compatible implementations.
+* The order of arguments in the draft's `bytevector-copy` is fundamentally incompatible with R6RS in an undetectable way, though it is R6RS that is wrong here.
+ * True and unfortunate, but the draft's approach is consistent with the rest of Scheme.
+* The draft should have included delimited continuation support.
+ * The large language will provide it.
+* The draft does not provide procedures that operate on mixed types of sequences (e.g. a map function that accepts a list and a vector and applies a two-argument function element-wise on them).
+ * True.  Unfortunately, no one proposed them during the working life of WG1.
+* The draft is too conservative in its changes to R5RS.
+ * That was a charter requirement.
+* #467 should not be reverted.
+
+</pre>
+    <h2>time</h2>
+    <pre>2013-05-13 16:56:38</pre>
+    <h2>version</h2>
+    <pre>11</pre></body></html>

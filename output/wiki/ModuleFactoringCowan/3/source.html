@@ -1,0 +1,64 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ModuleFactoringCowan version 3</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ModuleFactoringCowan version 3</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>74.68.112.189</pre>
+    <h2>name</h2>
+    <pre>ModuleFactoringCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Here's my counterproposal to ModuleFactoringShinn, with rationales:
+
+ * Move `(scheme io)` back to the base.
+   * It provides string-ports and the shared function of all ports, and there is no reason why all Schemes shouldn't provide these.  Note that `(scheme io)` was never actually proposed or voted on, and its presence in the first draft is an error by the editors.
+   * Failing this, I prefer the name `(scheme ports)` from ModuleFactoringMedernach to `(scheme io)`, since by themselves these routines don't actually provide input to or output from the program.
+ * Don't provide an umbrella module for I/O.
+   * Files, reading Scheme objects, and writing Scheme objects are orthogonal.  Demanding that your implementation provide all of them as a matter of course, across the whole range of Schemes, doesn't make much sense.  We already have a ticket allowing Schemes to pre-import whichever modules they want in the REPL.
+ * Leave `interaction-environment` in the `(scheme repl)` module.
+   * Alex wants to move this to `(scheme eval)`, but the essence of `(scheme repl)` is that it provides not only evaluation of expressions, but a mutable global environment.  There is no reason why a Scheme can't provide the first without the second.
+ * Leave `case-lambda` in the base module.
+   * It captures a useful pattern and can be optimized by a slick compiler or by hand.
+ * Move `(scheme multiple-values)` back to the base.
+   * Multiple values are easy to hack an implementation for (lists, or a list wrapped in a record if you insist), and at least `exact-integer-sqrt` depends on them.  Alex wants to move this procedure to a separate module so it can depend on `(scheme multiple-values)`, but I think that's [http://dictionary.reference.com/browse/pelion piling Pelion on Ossa].
+ * Rename `(scheme unicode)` to `(scheme char)`.
+   * Alex and I agree on this one.  The essence of this module is that it does things which, on a full-Unicode system, require a big table.  Making it a module means that you can have full Unicode without the big table unless specific code requires it.
+ * Move `char-alphabetic?`, `char-numeric?`, `char-upper-case?`, `char-lower-case?` and `char-whitespace?` to `(scheme char)`.
+   * Alex and I agree on this one; not doing it in the first place was an oversight on my part.
+ * Move the normalization procedures to `(scheme char normalization)`.
+   * I still prefer to keep the names of WG1 modules simple, but okay, fine.
+
+== Not part of the proposal ==
+
+Alex says that depending on discussion, he would consider moving
+the following out of the core:
+
+ * `syntax-rules`
+ * `define-record-type`
+ * blob procedures
+ * `string-ref` and `string-set!` (but possibly he means `string-set!` and `string-fill`?)
+
+The first three are IMO important parts of Scheme and cheap to provide directly on all reasonable systems.  There is no reason why all Schemes can't support them, which I consider the most important factor in moving things to modules.  It doesn't make sense for all Schemes to provide inexact arithmetic (which is mostly about having floating-point instructions available) or files, so they belong in modules.
+
+I am no fan of mutable strings, but reluctantly I conclude that programs depend on them and we can't get rid of them, so all Schemes might as well provide them.  Hence no module.
+</pre>
+    <h2>time</h2>
+    <pre>2011-06-21 01:49:47</pre>
+    <h2>version</h2>
+    <pre>3</pre></body></html>

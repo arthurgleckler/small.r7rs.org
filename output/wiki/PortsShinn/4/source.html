@@ -1,0 +1,90 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki PortsShinn version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki PortsShinn version 4</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>74.68.112.189</pre>
+    <h2>name</h2>
+    <pre>PortsShinn</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>We specify the two ports types - binary and character - as in
+PortsCowan, but make them distinct.  The following procedures are
+provided as in the draft, but whether or not they are disjoint is
+implementation-dependent:
+
+  * (character-port? &lt;obj&gt;)
+  * (binary-port? &lt;obj&gt;)
+
+{{{
+Rationale: Many existing languages, including some of the most popular
+such as C/C++ and Java, enforce a strict distinction between binary
+and textual ports.  Allowing programs to freely shift between binary
+and textual operations is error-prone and difficult to implement
+efficiently, especially if buffered encoding conversions are desired.
+}}}
+
+All ports described in the R5RS are character by default.  New binary
+ports may be opened on files with the following procedures:
+
+  * (open-binary-input-file &lt;path&gt;)
+  * (open-binary-output-file &lt;path&gt;)
+
+{{{
+Rationale: The current draft follows Gambit's convention of using
+property lists to specify additional file options, such as binary or
+textual encoding.  This allows for extensibility, but we do not use
+any of this flexibility in WG1, and it is unclear if this is the best
+way to specify file options.  It also doesn't address the fact that we
+need separate procedures for creating new ports anyway, such as for
+TCP/IP ports, and our APIs should be consistent and reflect this.
+}}}
+
+
+The following operations can be performed on binary ports as in the
+current draft:
+
+  * (read-u8 [&lt;input-port&gt;])
+  * (peek-u8 [&lt;input-port&gt;])
+  * (u8-ready? [&lt;input-port&gt;])
+  * (write-u8 &lt;octet&gt; [&lt;output-port&gt;])
+
+The following utility is also provided for the common idiom of opening
+a port from some arbitrary source, performing some work on it, then
+closing the port:
+
+  * (call-with-port &lt;port&gt; &lt;proc&gt;)
+
+If we decide not to have `close-port`, which this procedure implicitly depends on, then this proposal will instead provide two procedures:
+
+  * (call-with-input-port &lt;port&gt; &lt;proc&gt;)
+  * (call-with-output-port &lt;port&gt; &lt;proc&gt;)
+
+
+{{{
+Note that `current-in/output-port` are parameters, and can be
+parameterized as such, obviating the need for `with-in/output-port`
+shortcuts.
+}}}
+
+</pre>
+    <h2>time</h2>
+    <pre>2011-06-29 11:58:08</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

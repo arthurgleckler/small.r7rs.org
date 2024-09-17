@@ -1,0 +1,27 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CallCc</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CallCc.md">CallCc</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Call&shy;Cc</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-07-16 15:04:38</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/CallCc/history">history</a></div>
+      <div class="source"><a href="/wiki/CallCc/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>The alternative name <span class="monospace">call/cc</span> is available in Racket*, Gauche, Gambit, Chicken, Bigloo, Guile*, Kawa, SISC, Chibi+, Chez*, Vicare*, Larceny*, Ypsilon*, Mosh*, IronScheme*, NexJ, STKlos, KSi, SigScheme, TinyScheme, Scheme 7, XLisp, XLisp, Rep, Schemik, Elk, UMB, Oaklisp, Llava, SXM, Sizzle, Spark, Inlab, Owl Lisp.</p>
+      <p>It is not available in MIT, Scheme48/scsh, SCM, Shoe, Dream, RScheme, BDC, VX, FemtoLisp, Dfsch.</p>
+      <p>[*] Required by R6RS</p>
+      <p>[+] Required by R7RS-small</p>
+      <p>The following Schemes that support <span class="monospace">call/cc</span> return different error messages from <span class="monospace">(call-with-current-continuation 32)</span> and <span class="monospace">(call/cc 32)</span>, implying that they are distinct procedures: Chicken, Bigloo, Guile*, Chez, Vicare, Ypsilon*, XLisp, Oaklisp*.</p>
+      <p>[*] Error messages differ only in a hex address for the procedure or opcode</p></div></body></html>

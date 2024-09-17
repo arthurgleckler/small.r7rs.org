@@ -1,0 +1,55 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ChezReplSemantics version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ChezReplSemantics version 1</h1>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>99.31.15.163</pre>
+    <h2>name</h2>
+    <pre>ChezReplSemantics</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= REPL Semantics of Chez Scheme =
+
+== Introduction ==
+
+Chez Scheme represents an example of a high-speed incremental compiler with an interactive environemnt that follows a traditional lisp REPL behavior. It is interesting to note that Chez Scheme achieves high performance while still providing a dynamic environment, though the optimizations that Chez Scheme can make are limited by the top level semantics.
+
+== Official Documentation ==
+
+The Chez Scheme User's Guide Version 8 provides a chapter on the [http://www.scheme.com/csug8/use.html#./use:h3 Interaction Environment] of Chez Scheme. The reader is referred to this reading for the full description.
+
+== Important Key REPL Semantics ==
+
+  * Expressions are entered at the REPL one at a time
+  * Each expression received is expanded and evaluated in the current interaction environment before the next expression that is entered is processed
+  * Files that are `load`ed by reading each form in the file and processing each in turn, as if they had been entered by hand into the REPL
+  * There is a single interaction environment containing bindings to macro transformers and procedures
+  * The initial environment is the Chez Scheme default environment
+  * All initial bindings are immutable
+  * Definitions are mutable
+  * Initial bindings may be redefined
+  * A parameter exists that allows you to alter the interaction environment using `environment` controls
+  * All identifiers are considered implicitly bound if not already defined
+    * This allows recursive definitions to be entered one at a time
+    * As a result, top-level identifiers will mess with `free-identifier=?`, requiring auxilary syntaxes to be explicitly bound instead of implicitly used
+  * Top level identifiers are not optimized away, since they may be reassigned</pre>
+    <h2>time</h2>
+    <pre>2010-02-16 02:15:48</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

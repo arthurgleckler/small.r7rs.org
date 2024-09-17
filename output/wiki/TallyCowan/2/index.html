@@ -1,0 +1,85 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>TallyCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/TallyCowan.md">TallyCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Tally&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-06-23 13:23:33</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/TallyCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/TallyCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Introduction">Introduction</h2>
+      <p>A <i>tally</i> is a member of a disjoint type whose purpose is to keep running descriptive statistics on <i>observations</i>, consisting of one or two Scheme numbers, that are injected into it.  It can compute a variety of simple statistics such as the arithmetic mean, the variance, and the standard deviation.  It does not record the observations themselves, and therefore cannot compute the median or the mode.</p>
+      <h2 id="Constructor">Constructor</h2>
+      <p><span class="monospace">(make-tally </span>[ <i>key</i> ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated tally with no observations.  The <i>key</i> is an arbitrary Scheme object useful for distinguishing this tally from other tallies; for example, it can be used when tallying observations into multiple bins to record the lower and/or upper limit of each bin.  The default value is <span class="monospace">#f</span>.</p>
+      <h2 id="Injectors">Injectors</h2>
+      <p>Some of the statistics may be meaningless if more than one of these injectors is used on any one tally.</p>
+      <p><span class="monospace">(tally! </span><i>tally</i> <i>value</i><span class="monospace">)</span></p>
+      <p>Injects <i>value</i> into <i>tally</i> and updatse all descriptive statistics.</p>
+      <p><span class="monospace">(tally-weighted! </span><i>tally</i> <i>value</i> <i>weight</i><span class="monospace">)</span></p>
+      <p>Injects <i>value</i> into <i>tally</i>, assigning it a weight of <i>weight</i> (from 0 to 1) for the purpose of calculating weighted sums and weighted averages, and updates all descriptive statistics.</p>
+      <p><span class="monospace">(tally-timed! </span><i>tally</i> <i>value</i> <i>timestamp</i><span class="monospace">)</span></p>
+      <p>The same as <span class="monospace">tally-weighted!</span>, except that the weight is <i>timestamp</i> minus the value of <i>timestamp</i> on the previous call to <span class="monospace">tally-timed!</span>, or 0 if there was no previous call.</p>
+      <p><span class="monospace">(tally-correlated! </span><i>tally</i> <i>value<sub>1</sub></i> <i>value<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Injects <i>value<sub>1</sub></i> into <i>tally</i>, tracking <i>value<sub>2</sub></i> separately for the purpose of calculating correlation and covariance.</p>
+      <h2 id="Basicstatistics">Basic statistics</h2>
+      <p><span class="monospace">(tally-key </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the key of <i>tally</i>.</p>
+      <p><span class="monospace">(tally-count </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the number of observations injected so far as an exact integer.</p>
+      <p><span class="monospace">(tally-sum </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the sum of all observations injected so far.</p>
+      <p><span class="monospace">(tally-sum </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the sum of all observations injected so far.</p>
+      <p><span class="monospace">(tally-product </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the product of all observations injected so far.</p>
+      <p><span class="monospace">(tally-harmonic-sum </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the harmonic sum of all observations injected so far.  This is the sum of the reciprocals of the observation values.  If any observation value is zero, returns <span class="monospace">+nan.0</span>.</p>
+      <p><span class="monospace">(tally-mean </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the arithmetic mean of all observations injected so far.  This is the quotient of the sum and the count, or <span class="monospace">+nan.0</span> if the count is zero.</p>
+      <p><span class="monospace">(tally-geometric-mean </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the geometric mean of all observations injected so far.  This is the nth root of the product, where n = the count.</p>
+      <p><span class="monospace">(tally-harmonic-mean </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the sum of all observations injected so far.  This is the count divided by the harmonic sum.</p>
+      <p><span class="monospace">(tally-max </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the maximum observation injected so far.  If no observations have been injected, returns <span class="monospace">+inf.0</span>.</p>
+      <p><span class="monospace">(tally-min </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the minimum observation injected so far.  If no observations have been injected, returns <span class="monospace">-inf.0</span>.</p>
+      <p><span class="monospace">(tally-range </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the difference between the maximum and the minimum.  If no observations have been injected, returns <span class="monospace">+nan.0</span>.</p>
+      <p><span class="monospace">(tally-sample-variance </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the sample variance of the observations injected so far.  If no observations have been injected, returns <span class="monospace">+nan.0</span>.</p>
+      <p><span class="monospace">(tally-population-variance </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the population variance of the observations injected so far.  If no observations have been injected, returns <span class="monospace">+nan.0</span>.</p>
+      <p><span class="monospace">(tally-sample-standard-deviation </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the sample standard deviation of the observations injected so far.  If no observations have been injected, returns <span class="monospace">+nan.0</span>.</p>
+      <p><span class="monospace">(tally-population-standard-deviation </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the population standard deviation of the observations injected so far.  If no observations have been injected, returns <span class="monospace">+nan.0</span>.</p>
+      <h2 id="Weightedandtimedstatistics">Weighted and timed statistics</h2>
+      <p><span class="monospace">(tally-weighted-sum </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the weighted sum of the observations and weights injected so far.</p>
+      <p><span class="monospace">(tally-weighted-mean </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the weighted arithmetic mean of the observations and weights injected so far.  If no observations have been injected, returns <span class="monospace">+nan.0</span>.</p>
+      <p><span class="monospace">(tally-timed-sum </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the weighted sum of the observations and weights (based on timestamps) injected so far.</p>
+      <p><span class="monospace">(tally-timed-mean </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the weighted arithmetic mean of the observations and weights (based on timestamps) injected so far.  If no observations have been injected, returns <span class="monospace">+nan.0</span>.</p>
+      <h2 id="Covarianceandcorrelation">Covariance and correlation</h2>
+      <p><span class="monospace">(tally-sample-covariance </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the sample covariance of the pairs of observations injected so far.  If no observations have been injected, returns <span class="monospace">+nan.0</span>.</p>
+      <p><span class="monospace">(tally-population-covariance </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the population covariance of the pairs of observations injected so far.  If no observations have been injected, returns <span class="monospace">+nan.0</span>.</p>
+      <p><span class="monospace">(tally-correlation </span><i>tally</i><span class="monospace">)</span></p>
+      <p>Returns the correlation based on the pairs of observations injected so far.</p></div></body></html>

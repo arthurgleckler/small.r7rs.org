@@ -1,0 +1,178 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1ReBallotHarvey</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1ReBallotHarvey.md">WG1ReBallotHarvey</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Re&shy;Ballot&shy;Harvey</h1>
+    <div class="wiki metadata">
+      <div class="author">bh</div>
+      <div class="time">2010-11-01 14:33:46</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/WG1ReBallotHarvey/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1ReBallotHarvey/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Notes about results:</p>
+      <ul>
+        <li>you may list as many of the options as you want in order of preference</li>
+        <li>you are encouraged to list all options</li>
+        <li>options are comma-delimited (ignoring space) and case-insensitive</li>
+        <li>you may write in your own option if you announce it to the list first</li>
+        <li>everything but the <span class="monospace">preferences</span> line is free-form, and may be used for a rationale</li>
+        <li><span class="monospace">wg2</span> means &quot;pass this issue to WG2&quot;</li>
+        <li><span class="monospace">undecided</span> means I want to discuss this issue further</li>
+        <li>abstain by leaving the preferences blank</li></ul>
+      <h1 id="WG1BallotItemsToFinalizeByOct.31">WG1 Ballot Items To Finalize By Oct. 31</h1>
+      <h2 id="WG1-Modules">WG1 - Modules</h2>
+      <h3 id="#2ModuleSystem"><a href="/ticket/2">#2</a> Module System</h3>
+      <p>As per the charter, we need a module system
+proposal which allows sharing of code between
+implementations.</p>
+      <p>This is one issue where we can't default to
+the R5RS, since it has no module system. If
+we can't come to consensus, we will have to
+take the R6RS module system as-is.</p>
+      <p>Note the <b>r6rs--</b> option is just the
+R6RS module system without versioning or
+phasing.</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>ganz:</b> <a href="/wiki/ModulesGanz">ModulesGanz</a></li>
+            <li><b>hsu:</b> <a href="/wiki/ModulesAndPackagesArcfide">ModulesAndPackagesArcfide</a></li>
+            <li><b>shinn:</b> <a href="/wiki/ModulesShinn">ModulesShinn</a></li></ul></li>
+        <li><b>Options:</b> ganz, hsu, shinn, r6rs, r6rs--, undecided</li>
+        <li><b>Preferences:</b> shinn, undecided, r6rs--, ganz, hsu, NO, r6rs</li></ul>
+      <p>I know there's no NO option, but according to John's excellent chart,
+the r6rs option is the only one that's way, way, way worse than nothing,
+because of &quot;phasing: yes.&quot;  Shinn gets the edge on simplicity: top-level
+only, explicit exports, etc.  Ganz beats out Hsu also on simplicity,
+since Hsu has two columns in the table with different properties, already
+way too complicated.</p>
+      <p>I feel compelled to reiterate that none of these proposals strikes me
+as jewel-like.</p>
+      <h2 id="WG1-Core">WG1 - Core</h2>
+      <h3 id="#57Simplerandomness"><a href="/ticket/57">#57</a> Simple randomness</h3>
+      <p>Student programs often want a small amount of randomness, not
+necessarily of very high quality.  Shall we provide a simple interface
+to a random variables in WG1 Scheme?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/RandomCowan">RandomCowan</a></li></ul></li>
+        <li><b>Options:</b> cowan/core, cowan/module, srfi-27/core, srfi-27/module, no, wg2, undecided</li>
+        <li><b>Preferences:</b> cowan/module, srfi-27/module, cowan/core, srfi-27/core</li></ul>
+      <h2 id="WG1-Exceptions">WG1 - Exceptions</h2>
+      <h3 id="#18ExceptionSystem"><a href="/ticket/18">#18</a> Exception System</h3>
+      <p>R6RS provided a detailed exception system with
+support for raising and catching exceptions, using
+a hierarchy of exception types.</p>
+      <p>Do we use this, or parts of it, or a new exception
+system?</p>
+      <ul>
+        <li><b>Proposals:</b>
+          <ul>
+            <li><b>cowan:</b> <a href="/wiki/ExceptionHandlingCowan">ExceptionHandlingCowan</a></li></ul></li>
+        <li><b>Options:</b> cowan/core, cowan/module, r6rs/core, r6rs/module, wg2, none, undecided</li>
+        <li><b>Preferences:</b> none, wg2, cowan/module, r6rs/module</li></ul>
+      <h2 id="WG1-I/O">WG1 - I/O</h2>
+      <h3 id="#52read/writecyclicdata"><a href="/ticket/52">#52</a> read/write cyclic data</h3>
+      <p>SRFI-38 standardizes the <a href="/ticket/0">#0</a>=(1 . <a href="/ticket/0">#0</a>#) shared
+structure notation for read/write.  In the case
+of write, this can be expensive to compute, but
+otherwise the common case of the repl printing
+a cyclic structure results in an infinite loop.</p>
+      <p>Do we want to add support for this, as an option
+or separate set of procedures?</p>
+      <p><span class="monospace">srfi-38</span> for separate procedures or <span class="monospace">native</span> to require <span class="monospace">read</span> and
+<span class="monospace">write</span> to handle cyclic notation.</p>
+      <ul>
+        <li><b>Options:</b> srfi-38/core, srfi-38/module, native, no, wg2, undecided</li>
+        <li><b>Preferences:</b> srfi-38/module, srfi-38/core, wg2, no, native</li></ul>
+      <h2 id="WG1-Macros">WG1 - Macros</h2>
+      <h3 id="#8SRFI-46ellipsespecifierinsyntax-rules"><a href="/ticket/8">#8</a> SRFI-46 ellipse specifier in syntax-rules</h3>
+      <p>As an alternative to <a href="/ticket/7">#7</a>, SRFI-46 proposed
+allowing an optional ellipse specified as
+an identifier before the literals list in
+syntax-rules:</p>
+      <p>(syntax-rules ::: ()
+     &lt;ellipse now represented as ::: instead of ...&gt;)</p>
+      <p>Do we allow this?</p>
+      <ul>
+        <li><b>Options:</b> yes/core, yes/module, no, wg2, undecided</li>
+        <li><b>Preferences:</b> wg2, yes/module, no</li></ul>
+      <h3 id="#9tailpatternsinsyntax-rules"><a href="/ticket/9">#9</a> tail patterns in syntax-rules</h3>
+      <p>SRFI-46 and R6RS both allow a fixed number of
+tail patterns following an ellipsis in a syntax-rules
+pattern:</p>
+      <p>(P1 ... Pk Pe &lt;ellipsis&gt; Pm+1 ... Pn)</p>
+      <p>R6RS further allows dotted tail patterns</p>
+      <p>(P1 ... Pk Pe &lt;ellipsis&gt; Pm+1 ... Pn . Px)</p>
+      <p>where Px only matches a dotted list.</p>
+      <p>Do we allow either or both of these extensions?</p>
+      <ul>
+        <li><b>Options:</b> tail/core, tail/module, dotted-tail/core, dotted-tail/module, both/core, both/module, no, wg2, undecided</li>
+        <li><b>Preferences:</b> wg2, tail/module, both/module, no</li></ul>
+      <h2 id="WG1-Numerics">WG1 - Numerics</h2>
+      <h3 id="#22mantissawidths"><a href="/ticket/22">#22</a> mantissa widths</h3>
+      <p>R6RS introduced the concept of mantissa widths
+as an alternative to the R5RS #s in numbers.
+Do we want either or both of these?</p>
+      <ul>
+        <li><b>Options:</b> r5rs, r6rs, both, no, wg2, undecided</li>
+        <li><b>Preferences:</b> no, wg2, r5rs</li></ul>
+      <h2 id="WG1-ReaderSyntax">WG1 - Reader Syntax</h2>
+      <h3 id="#11case-sensitivity"><a href="/ticket/11">#11</a> case-sensitivity</h3>
+      <p>Does the reader fold case by default, and if so how?</p>
+      <p>Yes to fold-case (R5RS) no to preserve case (R6RS), additional votes
+to come later from specific proposals.</p>
+      <ul>
+        <li><b>Options:</b> yes, no, implementation-determined, undecided</li>
+        <li><b>Preferences:</b> yes</li></ul>
+      <p>Oh, please yes, let's not adopt all of C's mistakes.  As I said before,
+I can't imagine why people think bug-avoidance important enough to put
+up with hygienic macros, and yet want such a bug-attractor as making
+&quot;foo&quot; and &quot;Foo&quot; mean two different things.</p>
+      <p>People have raised Unicode as an argument here, but there is a perfectly
+good Unicode case-folding standard; they invented it precisely so that
+programming languages can be international in scope without having to
+endorse the horror of making semantically identical glyphs turn
+semantically different.</p>
+      <h3 id="#14alternatecommentsyntax"><a href="/ticket/14">#14</a> alternate comment syntax</h3>
+      <p>R6RS provides support for #; nested sexp comments,
+and #| ... |# nested block comments.  Do we include
+either or both of these?</p>
+      <ul>
+        <li><b>Options:</b> sexp, block, both, no, wg2, undecided</li>
+        <li><b>Preferences:</b> no, wg2</li></ul>
+      <p>... but I don't feel strongly about it, and I wish the voting mechanism
+gave us a way to say /how much/ we care about things.  I'd spend all my
+votes on case folding and no-r6rs-modules, of the things so far on this
+ballot, if I could.</p>
+      <h2 id="WG1-StringsandChars">WG1 - Strings and Chars</h2>
+      <h3 id="#26stringnormalization"><a href="/ticket/26">#26</a> string normalization</h3>
+      <p>R6RS provides procedures to explicitly convert
+strings back and forth between the four Unicode
+normalization forms.</p>
+      <p>The previous phrasing of this option was overly vague, referring to
+&quot;any form of normalization.&quot;  I've had to treat <span class="monospace">yes</span> votes as
+undecided for lack of a better default.  If you voted <span class="monospace">yes</span> before
+please choose one of the following options or write in your own
+proposal.</p>
+      <ul>
+        <li>generic - <span class="monospace">string-normalize</span> converts to a single implementation-defined normal form</li>
+        <li>separate - <span class="monospace">string-compose-canonical</span>, <span class="monospace">string-decompose-canonical</span> and <span class="monospace">string-decompose-compatibility</span> gives orthogonal control over the normalization being performed</li>
+        <li>specific - <span class="monospace">string-normalize-{nfd,nfc,nfkd,nfkc}</span> converts explicitly to the four normal forms defined in the Unicode standard</li>
+        <li>agnostic - <span class="monospace">string-ni=?' etc. provides an API of basic normalization insensitive procedures without explicitly converting the strings, analagous to </span>string-ci=?'</li></ul>
+      <p>Note <a href="/wiki/UnicodeCowan">UnicodeCowan</a> currently provides specific normalization
+procedures.</p>
+      <ul>
+        <li><b>Options:</b> generic/core, generic/module, separate/core, separate/module, specific/core, specific/module, agnostic/core, agnostic/module, no, wg2, undecided</li>
+        <li><b>Preferences:</b> agnostic/core, agnostic/module, wg2, no</li></ul></div></body></html>

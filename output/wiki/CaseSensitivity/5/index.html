@@ -1,0 +1,51 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CaseSensitivity</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CaseSensitivity.md">CaseSensitivity</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Case&shy;Sensitivity</h1>
+    <div class="wiki metadata">
+      <div class="author">steven_ganz</div>
+      <div class="time">2010-02-12 17:46:13</div>
+      <div class="version">5<span class="comment"></span><a href="/wiki/CaseSensitivity/history">history</a></div>
+      <div class="source"><a href="/wiki/CaseSensitivity/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Historically one of the most heated flame-wars in the Scheme
+community.  We have to decide whether we want to preserve backwards
+compatibility with standards up through the R5RS, or reaffirm the
+switch to case-sensitivity in the R6RS.  The charter gives precedence
+to the former, so unless we can reach a rough consensus (&gt; 90%) to the
+contrary, the default should remain case-insensitive.</p>
+      <p>Whatever we choose we should realize that some implementations are likely
+to use a different default in their preferred environments.</p>
+      <p>Note that the default case-sensitivity is orthogonal to the issue of
+whether and how behavior can be toggled on a per-file or
+per-expression basis.  If there is a toggle, it may be specified by
+WG1 for both groups, or only by WG2.</p>
+      <p>Below are some common arguments for each side.</p>
+      <p><b>Pro-folding:</b></p>
+      <ul>
+        <li>R[0-5]RS and IEEE Scheme compatible</li>
+        <li>code from R5RS and before continues to work</li>
+        <li>possibly easier for beginners not expecting case distinctions to be significant</li>
+        <li>allows using different cases as stylistic differences in source</li>
+        <li>prevents using separate identifiers which differ only in case</li>
+        <li>less confusion when code is read aloud, e.g. variable names</li></ul>
+      <p><b>Pro-preserving:</b></p>
+      <ul>
+        <li>R6RS compatible</li>
+        <li>the popular default in a number of modern implementations</li>
+        <li>easier compatibility with external data (XML, some filesystems, FFIs)</li>
+        <li>using different cases for the same identifier can be confusing</li>
+        <li>transliterations of math formulae may be easier to read with case distinctions</li>
+        <li>more general - can write a (begin/ci ...) macro to implement the alternative</li>
+        <li>allows using separate identifiers which differ only in case (e.g., capitalizing a class but not an instance)</li></ul></div></body></html>

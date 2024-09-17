@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>VectorsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/VectorsCowan.md">VectorsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Vectors&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-12-13 11:55:11</div>
+      <div class="version">21<span class="comment"></span><a href="/wiki/VectorsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/VectorsCowan/21/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Some cleanup is needed to <a href="http://srfi.schemers.org/srfi-43/srfi-43.html">SRFI 43</a>.</p>
+      <h2 id="R7RSvs.SRFI43">R7RS vs. SRFI 43</h2>
+      <p>The R7RS procedures <span class="monospace">vector-map</span> and <span class="monospace">vector-for-each</span> are incompatible with SRFI 43; they do not pass the current index, but only the values.  This proposal modifies SRFI 43 to eliminate the problem:</p>
+      <ul>
+        <li><span class="monospace">vector-fold</span>, <span class="monospace">vector-fold-right</span>, <span class="monospace">vector-reduce</span>, <span class="monospace">vector-reduce-right</span>, <span class="monospace">vector-map</span>, <span class="monospace">vector-map!</span>, <span class="monospace">vector-for-each</span> are the R7RS-compatible versions that don't transmit index values to their procedure arguments.</li></ul>
+      <ul>
+        <li><span class="monospace">vector-fold/index</span>, <span class="monospace">vector-fold-right/index</span>, <span class="monospace">vector-map/index</span>, <span class="monospace">vector-map!/index</span>, <span class="monospace">vector-for-each/index</span> do transmit index values, and are compatible with SRFI 43 conceptually but not in name.</li></ul>
+      <h2 id="Extensions">Extensions</h2>
+      <p>Here are some additional vector procedures that might be Good Things if we are going to break SRFI 43 anyway.  Some are from Python, some from other sources.</p>
+      <h3 id="Partitioning">Partitioning</h3>
+      <p><span class="monospace">(vector-partition </span><i>pred vector</i><span class="monospace">)</span></p>
+      <p>Returns two values.  The first value is a newly allocated vector of the same length as <i>vector</i>, reordered so that the elements which satisfy <i>pred</i> appear in the first <i>n</i> elements of the vector, and the elements which do not satisfy <i>pred</i> appear in the remaining elements.  The second value is a vector index <i>n</i> which is the index of the first element not satisfying <i>pred</i>.  The ordering of the elements is preserved in all other respects .  <i>Pred</i> may be called any number of times and in any order.</p>
+      <p><span class="monospace">(vector-partition! </span><i>pred vector</i><span class="monospace">)</span></p>
+      <p>The same as <span class="monospace">vector-partition</span>, except that it mutates <i>vector</i> and returns only <i>n</i>.</p>
+      <h3 id="Appending">Appending</h3>
+      <p><span class="monospace">(vector-append-subvectors </span>( <i>vector start end</i> ) ...<span class="monospace">)</span></p>
+      <p>Returns a vector that contains every element of each <i>vector</i> from <i>start</i> to <i>end</i> in the specified order.  This procedure is a generalization of <span class="monospace">vector-copy</span>.</p>
+      <p><span class="monospace">(vector-copy-subvectors! </span><i>result</i> ( <i>at vector start end</i> ) ...<span class="monospace">)</span></p>
+      <p>Copies every element of each <i>vector</i> from <i>start</i> to <i>end</i> into the vector <i>result</i>, starting at <i>at</i>.  The source vectors are copied in the specified order.  This procedure is a generalization of <span class="monospace">vector-copy!</span>.</p>
+      <h3 id="Cumulation">Cumulation</h3>
+      <p><span class="monospace">(vector-cumulate </span><i>proc seed vector</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated vector of the same length as <i>vector</i>.  Each element is constructed by reducing (as if by <span class="monospace">vector-reduce</span>) successive prefixes of the elements of <i>vector</i>. (APL scan.)</p></div></body></html>

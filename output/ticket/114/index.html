@@ -1,0 +1,61 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>114: Require hygienic implementation of standard macros</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 114: <span class="summary">Require hygienic implementation of standard macros</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-04-17 02:05:53</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">worksforme</div>
+      <div class="source"><a href="/ticket/114/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-12-22 07:05:56</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>That is, the standard syntax forms must be implemented as if they used hygienic macros; it is not actually required that they use them.  For example, <span class="monospace">(let ((eqv? #f)) (case ...))</span> should not throw an error of the form &quot;#f is not a procedure&quot;.  A few Schemes, notably Bigloo, have this problem today.</p>
+        <p>Neither R5RS nor R6RS requires this, but I think the Principle of Least Astonishment does.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-12-23 01:24:13</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">For example, `(let ((eqv? equal?)) (case ...))` should not induce `case` to use `equal?` for its comparisons.
+
+Neither R5RS nor R6RS requires this, but I think the Principle of Least Astonishment does.</span><span class="new-value">That is, the standard syntax forms must be implemented as if they used hygienic macros; it is not actually required that they use them.  For example, `(let ((eqv? #f)) (case ...))` should not throw an error of the form &quot;#f is not a procedure&quot;.  A few Schemes, notably Bigloo, have this problem today.
+
+Neither R5RS nor R6RS requires this, but I think the Principle of Least Astonishment does.</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-01-11 06:02:11</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>To note, I would contend that both standards do require this behavior from the way that I read them. That is, each built-in form is expected to be referentially transparent, its behavior unchanging despite the context.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-04-17 02:05:53</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">worksforme</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>R5RS actually does require this:  see opening words of 4.2.  Closing this.</p></div></div></div></div></div></body></html>

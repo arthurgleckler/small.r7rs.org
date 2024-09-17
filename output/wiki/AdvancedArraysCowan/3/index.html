@@ -1,0 +1,52 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>AdvancedArraysCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/AdvancedArraysCowan.md">AdvancedArraysCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Advanced&shy;Arrays&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-10-01 10:12:52</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/AdvancedArraysCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/AdvancedArraysCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a continuation of <a href="/wiki/ArraysCowan">ArraysCowan</a>, put on a separate page for convenience.</p>
+      <h2 id="Advancedprocedures">Advanced procedures</h2>
+      <p>These procedures are mostly derived in function, and sometimes in name, from ISO/IEC 8485 and ISO 17351, which standardize basic and extended APL respectively.</p>
+      <p><span class="monospace">(array-collapse </span><i>array</i><span class="monospace"> </span><i>j</i><span class="monospace">)</span></p>
+      <p>Let <i>k</i> be the rank of <i>array</i>.  This procedure returns an array of rank <i>j</i>, which MUST be less than or equal to <i>k</i>, whose components are arrays of rank <i>k</i>-<i>j</i>.  The shape of the returned array is equal to the first <i>j</i> components of the shape of <i>array</i>, and the shapes of its subarrays are equal to the remaining <i>k</i>-<i>j</i> components.</p>
+      <p><span class="monospace">(array-explode </span><i>array</i><span class="monospace"> </span><i>j</i><span class="monospace">)</span></p>
+      <p>Let <i>k</i> be the rank of <i>array</i>.  This procedure constructs and returns an array of rank <i>j</i>, which MUST be greater than or equal to <i>k</i>.  Each component of <i>array</i> MUST be an array of rank <i>k</i>-<i>j</i>, all of which MUST have the same shape.  The shape of the returned array is the shape of <i>array</i> concatenated with the shape of any of its components, and each component is the corresponding component of the corresponding subarray of <i>array</i>.</p>
+      <p><span class="monospace">(array-reshape </span><i>shape</i><span class="monospace"> </span><i>array</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new array of shape <i>shape</i> whose components in row-major order are the components of <i>array</i> in row-major order.</p>
+      <p><span class="monospace">(array-reverse </span><i>array</i><span class="monospace"> </span><i>axis</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new array with the same shape as <i>array</i>, but whose elements on the specified <i>axis</i> are reversed.  <i>Axis</i> must be a non-negative integer less than the rank of <i>array</i>.</p>
+      <p><span class="monospace">(array-reverse! </span><i>array</i><span class="monospace"> </span><i>axis</i><span class="monospace">)</span></p>
+      <p>Overwrites <i>array</i> with the value of <span class="monospace">(array-reverse </span><i>array</i><span class="monospace"> </span><i>axis</i><span class="monospace">)</span>, but without allocating storage.</p>
+      <p><span class="monospace">(array-compress </span><i>array</i><span class="monospace"> </span><i>booleans</i><span class="monospace"> </span><i>axis</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(array-expand </span><i>array</i><span class="monospace"> </span><i>booleans</i><span class="monospace"> </span><i>axis</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(array-rearrange </span><i>array</i><span class="monospace"> </span><i>vector</i><span class="monospace"> </span><i>axis</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(array-rearrange-axes </span><i>array</i><span class="monospace"> </span><i>vector</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(subarray </span><i>array</i><span class="monospace"> </span><i>start-subscripts</i><span class="monospace"> </span><i>end-subscripts</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(array-recursive-ref </span><i>array</i><span class="monospace"> </span><i>subscript</i> ...<span class="monospace">)</span></p>
+      <p>Apply <span class="monospace">array-ref</span> to the <i>array</i> using the first <i>i</i> subscripts, where <i>i</i> is the rank of <i>array</i>.  If there are more subscripts, the result MUST be an array. Apply <span class="monospace">array-ref</span> to the result using the next <i>j</i> subscripts, where <i>j</i> is the rank of the result.  Repeat until there are no more subscripts, returning the last result.</p>
+      <h2 id="Higher-orderprocedures">Higher-order procedures</h2>
+      <p>These procedures are mostly derived in function, and sometimes in name, from ISO/IEC 8485 and ISO 17351, which standardize basic and extended APL respectively.</p>
+      <p><span class="monospace">(array-reduce </span><i>proc</i><span class="monospace"> </span><i>array</i><span class="monospace"> </span><i>axis</i><span class="monospace">)</span></p>
+      <p>Construct and return a new array whose rank is one less than the rank of <i>array</i>, by combining all the elements along <i>axis</i> using <i>proc</i>, which MUST be a two-argument procedure.  The order and number of invocations of <i>proc</i> is unspecified.  If there is only one such element, it is unchanged.</p>
+      <p><span class="monospace">(array-reduce-subarrays </span><i>proc</i><span class="monospace"> </span><i>array</i><span class="monospace"> </span><i>axis</i><span class="monospace"> </span><i>n</i><span class="monospace">)</span></p>
+      <p>Construct and return a new array with the same rank as the rank of <i>array</i>, by combining all the groups of elements of length <i>n</i> along <i>axis</i> using <i>proc</i>, which MUST be a two-argument procedure.  The order and number of invocations of <i>proc</i> is unspecified.  If there is only one such group of elements, it is unchanged.</p>
+      <p><span class="monospace">(array-scan </span><i>proc</i><span class="monospace"> </span><i>array</i><span class="monospace"> </span><i>axis</i><span class="monospace">)</span></p>
+      <p>Construct and return a new array whose shape is the same as the shape of <i>array</i>.  Each element along <i>axis</i> is constructed by reducing (as if by <span class="monospace">array-reduce</span>) successive prefixes of the elements of <i>array</i> along that axis.</p>
+      <p><span class="monospace">(array-outer-product </span><i>proc</i><span class="monospace"> </span><i>array1</i><span class="monospace"> </span><i>array2</i><span class="monospace">)</span></p>
+      <p>Construct and return a new array whose shape is the concatenation of the shapes of <i>array1</i> and <i>array2</i>.  Each component of the new array is the result of applying <i>proc</i> to every element of <i>array1</i> and every element of <i>array2</i> in unspecified order.  The order and number of invocations of <i>proc</i> is unspecified.</p>
+      <p><span class="monospace">(array-inner-product </span><i>proc1</i><span class="monospace"> </span><i>proc2</i><span class="monospace"> </span><i>array1</i><span class="monospace"> </span><i>array2</i><span class="monospace">)</span></p></div></body></html>

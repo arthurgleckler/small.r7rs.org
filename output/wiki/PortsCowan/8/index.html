@@ -1,0 +1,120 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PortsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PortsCowan.md">PortsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Ports&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-09-02 23:05:00</div>
+      <div class="version">8<span class="comment"></span><a href="/wiki/PortsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/PortsCowan/8/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Ports">Ports</h2>
+      <p>Here's my proposal for WG1 Scheme ports and I/O facilities.  It's fully upward compatible with R5RS, but takes ideas from R6RS, SRFI 91 and SRFI 6.  Many of the concepts are present in R6RS under other names.</p>
+      <p>The new features beyond R5RS are:</p>
+      <ul>
+        <li>partial control of buffering, character encoding, newline translation, and Scheme case sensitivity</li>
+        <li>string ports (SRFI-6-compatible)</li>
+        <li>binary ports and blob ports (the binary version of string ports)</li>
+        <li><span class="monospace">current-error-port</span>, <span class="monospace">flush-output-port</span>, <span class="monospace">read-line</span>, <span class="monospace">delete-file</span>, and <span class="monospace">file-exists?</span> from R6RS</li></ul>
+      <h2 id="Portmodel">Port model</h2>
+      <p>In this proposal, there are two kinds of ports, binary ports and character ports.  Unusually, <i>every binary port is automatically a character port</i>, though not vice versa.  This implies that some character encoding must be associated with each binary port so that character I/O can be performed on it.  The only encoding that implementations MUST support is ASCII, so this is relatively cost-free, since ASCII encoding does not require a separate character buffer or encoding translation table, only a few bits for newline translation and case sensitivity.</p>
+      <p>This proposal does not specify any way to create a bidirectional port, but allows for their possible existence in an implementation.  Sockets, terminals, and pipes are all examples.</p>
+      <h2 id="Filenamemodel">Filename model</h2>
+      <p>In this proposal, a filename may be specified either as a string or as a <i>settings list</i>, which is a list of alternating <i>keys</i> and <i>values</i> where every key is a symbol ending in a colon.  For convenience, these symbols are also defined as identifiers.  Implementations MUST support the following keys:</p>
+      <dl>
+        <dt><span class="monospace">path:</span></dt>
+        <dd>Specifies the filename.  The interpretation of filenames is implementation-dependent.  There is no default value, but implementations MAY accept other keys in lieu of this one for opening files or file-like objects that don't have string names.</dd>
+        <dt><span class="monospace">buffering:</span></dt>
+        <dd>Specifies what kind of buffering is present.  The value <span class="monospace">#f</span> means no buffering is employed; <span class="monospace">binary</span> means that there is a binary buffer but no character buffer; <span class="monospace">#t</span> means there are both character and binary buffering.  Other values MAY be specified by an implementation.  Buffer sizes are implementation-dependent.  The default value is implementation-dependent.</dd>
+        <dt><span class="monospace">encoding:</span></dt>
+        <dd>Specifies what character encoding to use on a binary port.  The value <span class="monospace">US-ASCII</span> MUST be supported.  The values <span class="monospace">ISO-8859-1</span> and <span class="monospace">UTF-8</span> SHOULD be supported if the implementation contains the appropriate repertoire of characters.  Other values MAY be supported, which SHOULD appear in the <a href="http://www.iana.org/assignments/character-sets">IANA list of encodings</a>.  The default value is implementation-dependent.
+If a BOM (Byte Order Mark, U+FEFF) is present at the beginning of input on a port encoded as UTF-8, it is skipped.  A BOM is not automatically written on output.  Implementations MAY provide a way around this.</dd>
+        <dt><span class="monospace">newline:</span></dt>
+        <dd>Specifies how to translate newlines.  The value <span class="monospace">#f</span> means that no translation is performed.  Any other value causes all of CR, LF, CR+LF, NEL (U+0085), CR+NEL, and LS (U+2028) to be translated to <span class="monospace">#\newline</span> on input.  On output, the translation is implementation-dependent.  Other values MAY be specified by an implementation.  The default value is implementation-dependent.</dd>
+        <dt><span class="monospace">case-sensitive:</span></dt>
+        <dd>Specifies if Scheme symbols are read from the port case-sensitively or not.  The value <span class="monospace">#f</span> means that upper-case letters in symbols are translated to lower case unless escaped; <span class="monospace">#t</span> means that no translation is done.  The default value is implementation-dependent.</dd></dl>
+      <p>Implementations MAY support other keys, SHOULD warn if they detect keys they do not understand, and MAY signal an error in such cases.</p>
+      <h2 id="Portobjectprocedures">Port object procedures</h2>
+      <p><span class="monospace">(input-port? </span><i>obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(output-port? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Same as R5RS, but also return <span class="monospace">#t</span> on bidirectional ports if the implementation provides them.</p>
+      <p><span class="monospace">(port? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Mentioned in R5RS section 3 but not in section 6.6.  Part of R6RS.</p>
+      <p><span class="monospace">(current-input-port)</span></p>
+      <p><span class="monospace">(current-output-port)</span></p>
+      <p>Same as R5RS.  These are binary ports whose character encoding is implementation-dependent.</p>
+      <p><span class="monospace">(current-error-port)</span></p>
+      <p>From R6RS.  This is a binary port whose character encoding is implementation-dependent.</p>
+      <p><span class="monospace">(flush-output-port </span> [ <i>output-port</i> ] <span class="monospace"> </span> [ <i>character-only?</i> ]<span class="monospace">)</span></p>
+      <p>Same as R6RS, except that if the <i>output-port</i> is omitted, the default port is the current output port.  Drains the character buffer of <i>output-port</i>, if any.  Then, if the port is a binary port, drains the binary buffer, if any.</p>
+      <p><span class="monospace">(close-input-port </span><i>port</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(close-output-port </span><i>port</i><span class="monospace">)</span></p>
+      <p>From R5RS.  <span class="monospace">Close-output-port</span> implicitly calls <span class="monospace">flush-output-port</span> first.</p>
+      <p><span class="monospace">(close-port)</span></p>
+      <p>Closes both sides of a bidirectional port, if the implementation provides them; otherwise the same as <span class="monospace">close-input-port</span> or <span class="monospace">close-output-port</span> as the case may be.  It is harmless to close a part, or one side of it, if it is already closed.</p>
+      <p><span class="monospace">(eof-object? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Same as R5RS.</p>
+      <h2 id="CharacterI/Oprocedures">Character I/O procedures</h2>
+      <p><span class="monospace">(character-port? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a character port.  SRFI 91 calls this <span class="monospace">char-port</span>.  Implementations may define other kinds of character ports.</p>
+      <p><span class="monospace">(read-char </span>[ <i>character-input-port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(write-char </span>[ <i>character-output-port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(newline </span>[ <i>character-output-port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(peek-char </span>[ <i>character-input-port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(char-ready? </span>[ <i>character-input-port</i> ]<span class="monospace">)</span></p>
+      <p>Same as R5RS.  It is an error to output characters not present in the encoding of a <i>character-output-port</i>.</p>
+      <p><span class="monospace">(read-line </span>[ <i>character-input-port</i> ]<span class="monospace">)</span></p>
+      <p>Same as R6RS.  Reads a line from <i>port</i> (or the current input port) terminated by a <span class="monospace">#\newline</span> character (which may be the result of newline conversion in the port). This is a convenience function.</p>
+      <p><span class="monospace">(open-input-string </span><i>string</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(open-output-string)</span></p>
+      <p><span class="monospace">(get-output-string </span><i>output-string-port</i><span class="monospace">)</span></p>
+      <p>Same as SRFI 6.</p>
+      <h2 id="BinaryI/Oprocedures">Binary I/O procedures</h2>
+      <p>Note that string ports are character ports, but not binary ports, so these procedures do not apply to them.  Implementations MAY support other kinds of binary ports such as process ports or stream socket ports.</p>
+      <p><span class="monospace">(binary-port? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a binary port.  SRFI 91 calls this <span class="monospace">byte-port?</span>.</p>
+      <p><span class="monospace">(read-u8 </span>[ <i>binary-input-port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(write-u8 </span>[ <i>binary-output-port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(peek-u8 </span>[ <i>binary-input-port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(u8-ready? </span>[ <i>binary-input-port</i> ]<span class="monospace">)</span></p>
+      <p>The direct binary analogues of <span class="monospace">read-char</span>, <span class="monospace">write-char</span>, <span class="monospace">newline</span>, <span class="monospace">peek-char</span>, and <span class="monospace">char-ready?</span> respectively.  They return an exact integer between 0 and 255 rather than a character.  SRFI 91 talks of <span class="monospace">byte</span> rather than <span class="monospace">u8</span>.</p>
+      <p><span class="monospace">(open-input-blob </span><i>blob</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(open-output-blob)</span></p>
+      <p><span class="monospace">(get-output-blob </span><i>output-blob-port</i><span class="monospace">)</span></p>
+      <p>Blobs are (possibly specialized) vectors containing integers from 0 to 255 inclusive.  These procedures are the binary analogues of the SRFI 6 string port procedures.  The term <i>blob</i> is subject to change.</p>
+      <h2 id="FileModule">File Module</h2>
+      <p>This is a separate module because some implementations will not have access to a file system.</p>
+      <p><span class="monospace">(call-with-input-file </span><i>filename</i><span class="monospace"> </span><i>proc</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(call-with-output-file </span><i>filename</i><span class="monospace"> </span><i>proc</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(with-input-from-file </span><i>filename</i><span class="monospace"> </span><i>thunk</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(with-output-to-file </span><i>filename</i><span class="monospace"> </span><i>thunk</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(open-input-file </span><i>filename</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(open-output-file </span><i>filename</i><span class="monospace">)</span></p>
+      <p>Same as R5RS, except that any <i>filename</i> argument may be a string or a settings list.</p>
+      <p><span class="monospace">(delete-file </span><i>filename</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(file-exists? </span><i>filename</i><span class="monospace">)</span></p>
+      <p>Same as R6RS.  Only string <i>filename</i>s are supported.</p>
+      <h2 id="ReadandWriteModules">Read and Write Modules</h2>
+      <p>These procedures are not in the core because many systems, especially embedded ones, don't require the ability to read or write general Scheme objects, and very small implementations may not want the overhead of a Scheme parser.  Writing may be useful even when reading is not, which is why there are two modules.</p>
+      <p>Note that implementations may provide ports that are not character ports, such as directory ports or vector ports, and extend these procedure to work on them.</p>
+      <h3 id="ReadModule">Read Module</h3>
+      <p><span class="monospace">(read </span> [ <i>input-port</i> ]<span class="monospace">)</span></p>
+      <p>Same as R5RS.</p>
+      <h3 id="WriteModule">Write Module</h3>
+      <p><span class="monospace">(write </span><i>obj</i> [ <i>output-port</i> ]<span class="monospace">)</span></p>
+      <p>Same as R5RS, but specifies that only ASCII characters may be output (for re-readability).  Non-ASCII characters in symbols, strings, and character literals MUST be escaped.</p>
+      <p><span class="monospace">(display </span><i>obj</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Same as R5RS.  It is an error to output characters not present in the encoding of <i>output-port</i>.</p>
+      <h2 id="Thanks">Thanks</h2>
+      <p>Thanks to the R5RS and R6RS editors; to Marc Feeley, author of SRFI 91 and Gambit-C; and to Will Clinger, author of SRFI 6.</p></div></body></html>

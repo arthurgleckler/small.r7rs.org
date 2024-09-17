@@ -1,0 +1,30 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PrefixedStringToNumber</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PrefixedStringToNumber.md">PrefixedStringToNumber</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Prefixed&shy;String&shy;To&shy;Number</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-05-24 13:03:42</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/PrefixedStringToNumber/history">history</a></div>
+      <div class="source"><a href="/wiki/PrefixedStringToNumber/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>I tested <span class="monospace">(string-&gt;number &quot;#x10&quot;)</span> against my usual test suite.</p>
+      <p>Racket, Gauche, MIT, Gambit, Chicken (with or without the numbers egg),
+Scheme48/scsh, Guile, SISC, Chibi, Chez, SCM, Ikarus/Vicare, Larceny,
+Ypsilon, Mosh, IronScheme, NexJ, STklos, TinyScheme, S7, Rep,
+Elk, UMB, SXI, Sizzle, Spark, Inlab, Owl Lisp, Scheme 9 all return 16.</p>
+      <p>Bigloo,
+Kawa, KSi, SigScheme, Dream, BDC, XLisp, Schemik, VX return #f.</p>
+      <p>Shoe,
+Oaklisp, MScheme, Bus don't support <span class="monospace">string-&gt;number</span>.</p></div></body></html>

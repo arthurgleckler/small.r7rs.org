@@ -1,0 +1,162 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PureDelayedGloria</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PureDelayedGloria.md">PureDelayedGloria</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Pure&shy;Delayed&shy;Gloria</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-02-17 12:55:59</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/PureDelayedGloria/history">history</a></div>
+      <div class="source"><a href="/wiki/PureDelayedGloria/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="PureDelayedEvaluation">Pure Delayed Evaluation</h1>
+      <h2 id="Rationale">Rationale</h2>
+      <p>Scheme provides delayed evaluation by the <span class="monospace">(delay ...)</span> and <span class="monospace">(force ...)</span>
+forms.  However, the small language specifications do not mention the
+interaction between delayed evaluation and threads.
+ 
+In addition, the small language specifications (by virtue of an
+example for delayed evaluation) require that promises should be
+re-entrant, such that promises may also, while being forced, cause
+themselves to be directly or indirectly forced.  However, it is not
+clear (as of R7RS draft 9) which of the values returned by a
+re-entrant delayed expression will be returned by which invocations of
+force, especially if this re-entrance is not in tail position.
+ 
+The interaction between the re-entrancy requirement and threads
+generally implies the following:</p>
+      <ol class="number">
+        <li>Since promise re-entrancy is a requirement of R7RS-small, but threads are not, then the re-entrancy requirement is more important and will be more likely to be implemented.</li>
+        <li>This can mean that, in a multithreaded Scheme implementation, if multiple threads force the same promise, the delayed expression may be executed in parallel by multiple threads.  This is because a naive implementation of delayed evaluation simply uses a flag that is toggled only when the delayed expression calls its continuation/returns a value; multiple threads may enter the force code with the flag in the &quot;not yet forced&quot; state, and thus multiple threads might execute the delayed expression.</li>
+        <li>A multithreaded Scheme implementation could set a flag that is toggled at the start of forcing instead, and to suspend other threads that attempt to force the promise when that flag is in the &quot;started forcing&quot; state; it can support direct re-entrancy by associating the flag with a thread, so that the same thread that re-enters a promise will not be suspended.  This enforces that even with multiple threads, the delayed expression will only be executed exactly once.  However, such a flag would have to be global to all promises; otherwise, consider this case: two promises p and q are re-entrant to each other (unless the specification specifically disallows mutual re-entrancy, but to require support for self-re-entrance but disallow mutual re-entrancy does not seem to fit Scheme's spirit).  Thread A starts forcing p, while thread B starts forcing q.  p's flag is set to &quot;started forcing&quot; and then associated with thread A, while q's flag is set to &quot;started forcing&quot; and then associated with thread B. Eventually, A forces q, which is in &quot;started forcing&quot; state but associated with thread B, and so suspends; thread B encounters the mirror situation.  Both threads are suspended, and the mutual re-entrancy does not follow the implications of the spec.</li></ol>
+      <p>Finally, the small language specifications require that promises may
+be used in iterative lazy algorithms, and requires the `(delay-force
+...)` form to support iterative lazy algorithms.  This, together with
+the re-entrancy requirement, constrains the possible implementations
+to be practically just the implementation shown in SRFI-45.
+ 
+This proposed library seeks to do the following:</p>
+      <ol class="number">
+        <li>It specifies a particular interaction between delayed evaluation and threads, which users of this library must observe.</li>
+        <li>It removes the re-entrancy requirement, to allow implementations other than the SRFI-45 one.</li></ol>
+      <h2 id="Specification">Specification</h2>
+      <p><span class="monospace">(pure-delay &lt;expr&gt;)</span></p>
+      <p>Creates a promise whose value can be forced by (pure-force ...).  The
+ expression is not executed immediately.
+ 
+<span class="monospace">(pure-force &lt;promise&gt;)</span></p>
+      <p>Forces the delayed expression.
+ 
+Conceptually, the user of this library can consider the promise to be
+ in one of three states:</p>
+      <ul>
+        <li>not-forced</li>
+        <li>being-forced</li>
+        <li>already-forced</li></ul>
+      <p>The pure-force procedure attempts to move the state into
+already-forced.  If the promise is already in that state, then the
+promise's value is returned directly.
+ 
+If the promise is in the not-forced state, then pure-force puts it
+into the being-forced state, and executes the delayed expression using
+the current dynamic environment.  If the expression returns normally
+(i.e. it invokes its continuation) then its return value (which must
+be a single value) is cached as the promise's value, and the promise
+is put into the already-forced state.  If the expression does not
+return normally (i.e. it invokes a continuation that is parent to the
+<span class="monospace">(pure-force ...) form)</span> then the promise is put into the not-forced
+state (this tends to exclude implementations that implement threads
+using Scheme-level continuations, however).</p>
+      <p>If the promise is in the being-forced state, then <span class="monospace">(pure-force ...)</span>
+shall suspend the current thread (to be revived later when the promise
+leaves the being-forced state) if the promise was put into the
+being-forced state by a different thread; the behavior is otherwise
+unspecified if the promise was put into that state by the current
+thread (i.e. re-entrancy, direct or indirect, is not allowed).  This
+allows single-threaded Scheme implementations considerable leeway in
+implementing pure promises (i.e. such implementations can just use
+their normal R7RS-small promises), while constraining multithreaded
+implementations to behavior that users can rely on.
+ 
+If the delayed expression returns multiple times (i.e. it saves its
+continuation and somehow causes it to be invoked multiple times) then
+the behavior is unspecified.
+ 
+<span class="monospace">(pure-delay-force &lt;expr&gt;)</span></p>
+      <p>This shall be similar to <span class="monospace">(pure-delay (pure-force &lt;expr&gt;))</span> except that
+additional space should not be retained; if called iteratively, then
+average constant space should be consumed by <span class="monospace">(pure-delay-force ...)</span></p>
+      <h2 id="SampleImplementation">Sample Implementation</h2><span class="monospace">(define-library (blah pure-delay)
+   (export pure-delay pure-force pure-delay-force)
+   (import (scheme base))
+   (import (srfi 18))
+   (begin
+ 
+(define-record-type :promise
+   (promise mtx state data)
+   promise?
+   (mtx mtx)
+   (state state state-set!)
+   (data data data-set!))
+ 
+(define (delay-force:f f)
+   (promise (make-mutex) 'not-forced f))
+ (define (delay:f f)
+   (delay-force:f (lambda () (promise (make-mutex) 'already-forced (f)))))
+ (define-syntax pure-delay
+   (syntax-rules ()
+     ((pure-delay x) (delay:f (lambda () x)))))
+ (define-syntax pure-delay-force
+   (syntax-rules ()
+     ((pure-delay-force x) (delay-force:f (lambda () x)))))
+ (define (pure-force p)
+   (define (dispatch sub-p)
+     (let ((exec
+              (begin
+                (mutex-lock! (mtx sub-p))
+                (let ((d (data sub-p)))
+                  (case (state sub-p)
+                    ((already-forced)
+                      (lambda ()
+                        (mutex-lock! (mtx p))
+                        (type-set! p 'already-forced)
+                        (data-set! p d)
+                        (mutex-unlock! (mtx p))
+                        d))
+                    ((being-forced) (lambda () (thread-sleep! 0)
+ (dispatch sub-p)))
+                    ((not-forced)
+                      (type-set! sub-p 'shared)
+                      (data-set! sub-p p)
+                      (lambda () (dispatch (d))))
+                    ((shared)
+                      (lambda () (dispatch d))))))))
+       (mutex-unlock! (mtx sub-p))
+       (exec)))
+   (let ((exec
+            (begin
+              (mutex-lock! (mtx p))
+              (let ((d (data p)))
+                (case (state p)
+                  ((already-forced) (lambda () d))
+                  ((being-forced) (lambda () (thread-sleep! 0) (pure-force p)))
+                  ((not-forced)
+                    (type-set! p 'being-forced)
+                    (data-set! p #f)
+                    (lambda () (dispatch (d))))
+                  ((shared) (lambda () (pure-force d))))))))
+     (mutex-unlock! (mtx p))
+     (exec)))
+ 
+))
+</span></div></body></html>

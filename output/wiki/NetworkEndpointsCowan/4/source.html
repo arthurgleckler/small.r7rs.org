@@ -1,0 +1,76 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki NetworkEndpointsCowan version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki NetworkEndpointsCowan version 4</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.10.177.1</pre>
+    <h2>name</h2>
+    <pre>NetworkEndpointsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Network endpoints are a disjoint type representing a network host name or address plus a port.
+
+== Definitions ==
+
+In the following descriptions, ''host'' can be:
+
+ * a string in the form of an IPv4 dotted-decimal address
+
+ * a string in the form of an IPv6 colon-hexadecimal address (if supported by the operating system)
+
+ * a string representing a host name to be looked up according to whatever operating system conventions exist, if any
+
+ * a bytevector of the appropriate length, such as 4 for IPv4 or 16 for IPv6, representing a host address in binary format.
+
+ * `#t`, which means &quot;any of the IP addresses of the local host&quot;
+
+Note that appropriate values may refer to broadcast or multicast addresses.
+
+''Network-port'' can be a positive exact integer or a string.  The meaning of a string is implementation-dependent, but is intended to be a standardized service name.  Note that these ports are not Scheme ports.
+
+== Procedures ==
+
+`(make-network-endpoint `[''host'']` `[''network-port'']`)`
+
+Returns a network endpoint, which may be newly allocated.  If ''network-port'' is omitted or 0, then it is an error unless ''host'' refers to the local host, and the endpoint specifies an unused port to be assigned by the operating system.  If ''network-port'' is present but ''host'' is omitted or has the value `#t`, the endpoint specifies the given port on the local host accessed by any address.  Otherwise, the endpoint specifies a particular host and port.  If there is just one argument, it is ''network-port'', as this is the more common case.
+
+`(network-endpoint? `''obj''`)`
+
+Returns `#t` if ''obj'' is a network endpoint and `#f` otherwise.
+
+`(network-endpoint-bytevector-address `''endpoint''`)`
+
+Returns the host specified by ''endpoint'' in bytevector format.  The value returned need not be the same as the value passed to `make-network-endpoint`, but must be acceptable to another invocation of `make-network-endpoint`.  If the host was specified as `#t`, returns `#t`.
+
+`(network-endpoint-string-address `''endpoint''`)`
+
+Returns the host specified by ''endpoint'' in dotted-decimal or dotted-hexadecimal format.  The value returned need not be the same as the value passed to `make-network-endpoint`, but must be acceptable to another invocation of `make-network-endpoint`.  If the host was specified as `#t`, returns `#t`.
+
+`(network-endpoint-host `''endpoint''`)`
+
+Returns the host specified by ''endpoint'' as a host name, or if the host name is not known or does not exist, in dotted-decimal or dotted-hexadecimal format.  The value returned need not be the same as the value passed to `make-network-endpoint`, but must be acceptable to another invocation of `make-network-endpoint`.  If the host was specified as `#t`, returns `#t`.
+
+`(network-endpoint-port `''endpoint''`)`
+
+Returns the network port specified by ''endpoint'' as a number.  The value returned need not be the same as the value passed to `make-network-endpoint`, but must be acceptable to another invocation of `make-network-endpoint`.
+</pre>
+    <h2>time</h2>
+    <pre>2014-01-10 02:57:24</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

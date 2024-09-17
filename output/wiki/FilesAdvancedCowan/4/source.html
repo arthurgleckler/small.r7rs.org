@@ -1,0 +1,114 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki FilesAdvancedCowan version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki FilesAdvancedCowan version 4</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>FilesAdvancedCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This is a WG2 proposal for a `(scheme files advanced)` library providing R6RS-equivalent file I/O operations in an upward compatible way, with the following exceptions:
+
+ * custom ports
+ * the `standard-*-port` procedures
+ * the ability to change a binary port to textual after it has been used, though the `binary` setting-list key allows mixed textual and binary operations on the same port, with limtations
+
+
+== Procedures from files library ==
+
+The procedures `open-input-file`, `open-binary-input-file`, `open-output-file`, `open-binary-output-file`, `with-input-from-file`, `with-output-from-file`, `call-with-input-file`, and `call-with-output-file` are the same as in the `(scheme files)` library, except that they accept ''settings lists'' as well as filenames.  Settings lists allow various features of the port to be set when it is opened; see SettingsListsCowan for details.
+
+The procedures `file-exists?` and `delete-file` are the same as in the `(scheme files)` library.
+
+== Additional procedures ==
+
+`(native-encoding)`
+
+Returns a symbol suitable for use in a settings list to represent the native encoding used by the implementation.
+
+`(native-newline)`
+
+Returns a symbol suitable for use in a settings list to represent the native newline translation used by the implementation.
+
+`(port-position `''port''`)`
+
+Returns the current position of ''port''.  For a binary port, returns the index of the position at which the next byte would be read from or written to the port as an non-negative exact integer. For a textual port, returns a value of some implementation-dependent type representing the port’s position; this value may be useful only as the ''position'' argument to `set-port-position!`, if the latter is supported on the port.
+
+`(can-get-port-position? `''port''`)`
+
+Returns `#t` if the port supports the `port-position` operation, and `#f` otherwise.
+
+`(set-port-position `''port''` `''position''`)`
+
+Changes the current position of ''port''.  If port is a binary port, and ''position'' is a non-negative exact integer object, it is used as the index of the position at which the next byte will be read from or written to the port. If port is a textual port, and ''position'' is the return value of a preceding call to `port-position` on ''port'', then the next character will be read or written from that position.  If ''port'' is a binary output port and the ''position'' is beyond the current end of the data, `set-port-position!` will succeed, but the contents of any intervening positions are unspecified.
+
+Calling this procedure on ''port'' resets the buffer state, allowing a binary operation to follow even if the previous operation was textual, an input operation to follow even if the previous operation was output, or an output operation to follow even if the previous operation of input.
+
+`(can-set-port-position? `''port''`)`
+
+Returns `#t` if the port supports the `set-port-position!` operation, and `#f` otherwise.
+
+`(binary-port-eof? `''port''`)`
+
+Returns `#t` if the next attempt to read a byte from ''port'' would return an eof-object, and `#f` otherwise.
+
+`(textual-port-eof? `''port''`)`
+
+Returns `#t` if the next attempt to read a character from ''port'' would return an eof-object, and `#f` otherwise.
+
+`(read-string `''n''` `[ ''port'' ]`)`
+
+Reads at most ''n'' characters from ''port'' and returns them as a newly allocated string.  If fewer characters can be read, they are returned.  If no characters can be read, an eof-object is returned.  The default port is the value of `(current-input-port)`.
+
+`(read-string! `''n''` `''string''` `''start''` `[ ''port'' ]`)`
+
+Reads at most ''n'' characters from ''port'' and places them into ''string'' starting at position ''start''.  If there is insufficient room in ''string'', it is filled up and no further characters are read.  If fewer than ''n'' characters can be read from ''port'', they are used.  If no characters at all can be read, an eof-object is returned.  The default port is the value of `(current-input-port)`.
+
+`(write-string `''string''` `''start''` `''end''` `[''port'']`)`
+
+Reads characters from ''string'' beginning at ''start'' (inclusive) and ending at ''end'' (exclusive) to ''port''.  The default port is the value of `(current-output-port)`.
+
+`(read-all-bytes ` [''port'']`)`
+
+Returns a bytevector consisting of all the bytes that can be read from ''port'' before an eof-object is returned, or an eof-object if there are none.  The default port is the value of `(current-input-port)`.
+
+`(read-all-chars ` [ ''port'' ]`)`
+
+Returns a string consisting of all the characters that can be read from ''port'' before an eof-object is returned, or an eof-object if there are none.  The default port is the value of `(current-input-port)`.
+
+`(read-al ` [ ''port'' ]`)`
+
+Returns a list consisting of all the Scheme objects that can be read from ''port'' as if by `read` before an eof-object is returned, or an eof-object if there are none.  The default port is the value of `(current-input-port)`.
+
+`(port-settings  `''port''`)`
+
+Returns an approximation to the settings list used to create ''port''.  The order of keys may not be the same, some keys may be omitted if they have no effect on the implementation or if they explicitly specify the implementation default, and some values may be different if they have the same effect on the implementation.  If no settings list was used, the list `(path `''filename''`)` is returned.
+
+`(string-&gt;bytevector `''string'' [ ''settings-list'' ]`)`
+
+Converts ''string'' to a bytevector using the keys `encoding`, `newline`, `encoding-error`, and possibly other implementation-specific keys in ''settings-list'', and returns the string.
+
+`(bytevector-&gt;string `''bytevector'' [ ''settings-list'' ]`)`
+
+Converts ''bytevector'' to a string using the keys `encoding`, `newline`, `encoding-error`, and possibly other implementation-specific keys in ''settings-list'', and returns the bytevector.</pre>
+    <h2>time</h2>
+    <pre>2012-06-17 14:34:05</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

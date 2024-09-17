@@ -1,0 +1,45 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BracketsBraces</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BracketsBraces.md">BracketsBraces</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Brackets&shy;Braces</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-09-05 11:59:24</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/BracketsBraces/history">history</a></div>
+      <div class="source"><a href="/wiki/BracketsBraces/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Here are the ways in which the test suite of Schemes interprets square brackets and curly braces.  Both are undefined in R5RS.  In R6RS, square brackets are synonyms for parentheses, but curly braces are still undefined.</p>
+      <p>Brackets are:</p>
+      <ul>
+        <li>synonyms for parentheses:  Racket, Gauche, Gambit, Chicken, SXM, Spark, Bigloo, Vicare, Larceny, Ypsilon, Mosh, IronScheme, STklos, KSi, Oaklisp, Sizzle, Guile, SISC, Chez, Elk</li></ul>
+      <ul>
+        <li>lexical syntax errors:  MIT, Scheme48/scsh, NexJ, SigScheme, Schemik, Owl Lisp, RScheme</li></ul>
+      <ul>
+        <li>vector constructors:  Rep, FemtoLisp</li></ul>
+      <ul>
+        <li>redefinable constructors:  Kawa</li></ul>
+      <ul>
+        <li>identifier characters:  SCM, Shoe, TinyScheme, Scheme 9, Dream, Scheme 7, XLisp, UMB, VX, Llava, Dfsch, Inlab, Chibi, BDC</li></ul>
+      <p>Braces are:</p>
+      <ul>
+        <li>synonyms for parentheses:  Racket, Gauche, Gambit, Chicken, SXM, Spark</li></ul>
+      <ul>
+        <li>lexical syntax errors:  MIT, Scheme48/scsh, NexJ, SigScheme, Schemik, Owl Lisp, Bigloo, Vicare, Larceny, Ypsilon, Mosh, IronScheme, STklos, KSi, Oaklisp, Sizzle</li></ul>
+      <ul>
+        <li>user-defined type literals:  Chibi</li></ul>
+      <ul>
+        <li>who-knows-what: RScheme</li></ul>
+      <ul>
+        <li>identifier characters:  SCM, Shoe, TinyScheme, Scheme 9, Dream, Scheme 7, XLisp, UMB, VX, Llava, Dfsch, Inlab, Kawa, Rep, FemtoLisp, Guile, SISC, Chez, Elk, BDC</li></ul>
+      <p>Note:  In some Schemes where these are identifier characters, they are self-delimiting: that is: <span class="monospace">{abc}</span> is equivalent to <span class="monospace">{ abc }</span>.</p></div></body></html>

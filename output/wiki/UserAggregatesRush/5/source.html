@@ -1,0 +1,79 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki UserAggregatesRush version 5</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki UserAggregatesRush version 5</h1>
+    <h2>author</h2>
+    <pre>kumoyuki</pre>
+    <h2>comment</h2>
+    <pre>formatting fixes</pre>
+    <h2>ipnr</h2>
+    <pre>62.231.48.239</pre>
+    <h2>name</h2>
+    <pre>UserAggregatesRush</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Title ==
+
+WG1 User Defined Aggregate Types
+
+== Authors ==
+
+David Rush
+
+== Abstract ==
+
+There is a significant fraction of the Scheme programming community which is looking for more expressive tools for data abstraction. When this desire is brought into contrast with the minimalist facilities of the existing Scheme Reports it can be difficult to reconcile the expectations many programmers have from more mainstream languages. SRFI-9 provides a facility which occupies a low-energy &quot;sweet spot&quot; in terms of semantic complexity and expressiveness, although it is unfortunately still somewhat primitive - lacking primarily in extensibility and integration with other Scheme facilities, most notably READ and WRITE.
+
+Since most type-checking in Scheme is performed at run-time through the evaluation of predicate functions, the issues of type extensibility and integration ultimately come down to the the relationships expressible through those type predicate functions. This leads to an examination of the type structures within Scheme and a slight reorganization of the type predicates to enable a richer data abstraction facility.
+
+== Issues ==
+
+ * generative vs named
+ * opacity of ports
+
+== Rationale ==
+
+Scheme provides a variety of primitive types from which program values are all taken. The majority (how many?) of them are atomic types, with little or no internal structure. The remaining primitive types aggregate multiple atomically typed values.
+
+== Specification ==
+
+ * make-aggregate-type &lt;name&gt; =&gt; &lt;type-id&gt;
+ * make-aggregate &lt;type-id&gt; &lt;slots&gt; =&gt; &lt;aggregate&gt;
+ * aggregate-ref &lt;aggregate&gt; &lt;slot&gt; =&gt; &lt;value&gt;
+ * aggregate-set! &lt;aggregate&gt; &lt;slot&gt; &lt;value&gt; =&gt; *undefined*
+
+ * aggregate-type &lt;pair&gt; =&gt; &lt;pair-type-id&gt;
+ * aggregate-type &lt;vector&gt; =&gt; &lt;vector-type-id&gt;
+ * aggregate-type &lt;string&gt; =&gt; &lt;string-type-id&gt;
+ * aggregate-type &lt;aggregate&gt; =&gt; &lt;type-id&gt;
+
+
+== Top-Level Programs ==
+
+== Implementation ==
+
+== Compatibility ==
+
+=== R5RS ===
+
+=== R6RS ===
+
+=== WG2 ===
+
+</pre>
+    <h2>time</h2>
+    <pre>2010-05-17 19:14:36</pre>
+    <h2>version</h2>
+    <pre>5</pre></body></html>

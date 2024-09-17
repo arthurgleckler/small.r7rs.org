@@ -1,0 +1,179 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>229: EQV? and NaN</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 229: <span class="summary">EQV? and NaN</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-09 13:47:39</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/229/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-07-11 01:41:51</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>For good reasons, <span class="monospace">+nan.0</span> is not <span class="monospace">=</span> to any other number, including itself.  However, <span class="monospace">eqv?</span> is about &quot;sameness&quot; rather than &quot;equality&quot;.  I propose that we add two clauses to the definition of <span class="monospace">eqv?</span>, one saying that if both arguments are <span class="monospace">+nan.0</span>, <span class="monospace">eqv?</span> must return <span class="monospace">#t</span>, and if one argument is <span class="monospace">+nan.0</span> and the other is not, <span class="monospace">eqv?</span> must return <span class="monospace">#f</span>.</p>
+        <p>All of my usual test Schemes already behave this way, with these exceptions:</p>
+        <ul>
+          <li>MIT, scsh, SigScheme, Scheme 9 do not have non-finite numbers.</li>
+          <li>Chicken returns <span class="monospace">#f</span> if either argument is <span class="monospace">+nan.0</span>.</li>
+          <li>SISC returns <span class="monospace">#t</span> if either argument is <span class="monospace">+nan.0</span>.</li></ul></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">aag</div>
+            <div class="time">2011-07-11 13:24:56</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>MIT Scheme does, in fact, have non-finite numbers, depending on the floating-point error mask that is set.  This isn't documented, however.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-08-18 18:27:32</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>R6RS already requires this behavior.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-11 07:46:47</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 accepted this proposal.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-11 23:29:28</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-10-08 04:16:40</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">invalid</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-10-08 04:28:12</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">invalid</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We need to re-ballot this, because of the false claim that the &quot;same&quot; semantics that people voted for was equivalent to the R6RS semantics.  Here are the new ballot positions:</p>
+              <p>Let <span class="monospace">nan</span> and <span class="monospace">nan2</span> contain NaNs, possibly but not necessarily with different bit patterns implying different origins.  In all cases, <span class="monospace">(eqv? nan x)</span>, where x is not a NaN, is required to return <span class="monospace">#f</span>, assuming that <span class="monospace">(= nan x)</span> returns <span class="monospace">#f</span> for any x even in R5RS.</p>
+              <p>The R5RS semantics requires <span class="monospace">(eqv? nan nan)</span> and <span class="monospace">(eqv? nan nan2)</span> to return <span class="monospace">#f</span>.</p>
+              <p>The R6RS semantics allows <span class="monospace">(eqv? nan nan)</span> and <span class="monospace">(eqv? nan nan2)</span> to return either <span class="monospace">#t</span> or <span class="monospace">#f</span>.</p>
+              <p>The &quot;same&quot; semantics requires <span class="monospace">(eqv? nan nan)</span> and <span class="monospace">(eqv? nan nan2)</span> to return <span class="monospace">#t</span>.</p>
+              <p>The &quot;same*&quot; semantics requires <span class="monospace">(eqv? nan nan)</span> to return <span class="monospace">#t</span> and allows <span class="monospace">(eqv? nan nan2</span>) to return either <span class="monospace">#t</span> or <span class="monospace">#f</span>.</p>
+              <p>I ran the following on my usual suite of Schemes on x86 Linux:</p><span class="monospace">(define nan (/ 0.0 0.0))
+(define inf (/ 1.0 0.0))
+(define nan2 (- inf inf))
+(list (eqv? nan nan) (eqv? nan nan2))
+</span>
+              <p>I confirmed that <span class="monospace">nan</span> and <span class="monospace">nan2</span> expand to different bit patterns using Java's <span class="monospace">Double.doubleToRawLongBits</span> method on the same system.</p>
+              <ul>
+                <li>Racket, Gambit, Guile, Kawa, SISC, Chez, SCM, Larceny, Ypsilon, Mosh, IronScheme, STklos returned <span class="monospace">(#t #t)</span>, showing that they do not distinguish between <span class="monospace">nan</span> and <span class="monospace">nan2</span>.</li></ul>
+              <ul>
+                <li>Bigloo, Chicken, Chibi, Ikarus, KSi, Elk returned <span class="monospace">(#t #f)</span>, showing that they do distinguish.  Chicken complains about division by 0.0, so I used <span class="monospace">+nan.0</span> and <span class="monospace">+inf.0</span> literals.</li></ul>
+              <ul>
+                <li>Gauche, UMB, and VX returned <span class="monospace">(#f #f)</span>, following R5RS semantics.</li></ul>
+              <ul>
+                <li>MIT, Scheme48/scsh, Scheme 9, Scheme 7, SigScheme, Oaklisp complained about the divisions by 0.0, and didn't provide any obvious workarounds.</li></ul></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-02-21 03:49:28</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Per Bothner points out that on his system (Java 1.7 on Fedora), nan and nan2 actually have the <i>same</i> bit patterns, rendering the above experiment mostly meaningless.  This makes me inclined to the R6RS semantics.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-09 22:13:54</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to leave the behavior of <span class="monospace">eqv?</span> where both arguments are <span class="monospace">+nan.0</span> explicitly undefined.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-04-09 22:27:10</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-15 01:19:12</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Reopening yet again for conspectus on <span class="monospace">eqv?</span></p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-15 01:19:17</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-25 00:27:44</div></div>
+          <div class="changes">
+            <div><span class="field">_comment0</span><span class="old-value">WG1 voted to make no change: the behavior of `eqv?` on procedures is explicitly unspecified.</span><span class="new-value">1345829336571305</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to make no change: the behavior of <span class="monospace">eqv?</span> on NaNs is explicitly unspecified.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 07:04:38</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-09 13:47:39</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

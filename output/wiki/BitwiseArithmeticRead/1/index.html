@@ -1,0 +1,35 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BitwiseArithmeticRead</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BitwiseArithmeticRead.md">BitwiseArithmeticRead</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Bitwise&shy;Arithmetic&shy;Read</h1>
+    <div class="wiki metadata">
+      <div class="author">bitwize</div>
+      <div class="time">2010-05-21 14:55:08</div>
+      <div class="version">1<span class="comment">Bitwise arithmetic proposal (WIP)</span><a href="/wiki/BitwiseArithmeticRead/history">history</a></div>
+      <div class="source"><a href="/wiki/BitwiseArithmeticRead/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>(note this is a work in progress)</p>
+      <h2 id="Introduction">Introduction</h2>
+      <p>Bitwise operations are an essential component of computing in binary. They are used in efficient implementations of data structures (sets, hash tables, etc.), in reading and writing wire protocols and file formats, in encryption algorithms and chess-playing programs. However, while previous Scheme standards have provided comprehensive support for numeric types and basic operations over these types, bitwise operations have been curiously missing from the standard until R6RS. This proposal is an attempt to standardize as much of R6RS's bitwise-arithmetic semantics as is useful in a small core language.</p>
+      <p>Most Schemes that supply bitwise operators do so using one of two conventions. The first is the Common Lisp convention where bitwise arithmetic procedures are named after their Common Lisp counterparts: <span class="monospace">logand</span>, <span class="monospace">logior</span>, etc. The second uses longer names; e.g., <span class="monospace">bitwise-and</span>, <span class="monospace">bitwise-or</span>, etc., and is shared with R6RS. It is this convention which will be specified here.</p>
+      <h2 id="TheSpecification">The Specification</h2>
+      <p>All operations are defined only over the exact integers, and assume the arguments to be semi-infinite-precision two's complement, meaning that any positive argument is considered to be padded on the left by an infinite number of 0 bits; and any negative argument is considered to be padded on the left by an infinite number of 1 bits.</p>
+      <p><span class="monospace">(bitwise-and int ...)</span></p>
+      <p>Returns the bitwise AND of its arguments. A bit is set in the result if the corresponding bit is set in all of its arguments. If called with no arguments, returns -1 (all 1 bits).</p>
+      <p><span class="monospace">(bitwise-ior int ...)</span></p>
+      <p>Returns the bitwise inclusive OR of its arguments. A bit is set in the result if the corresponding bit is set in any of its arguments. If called with no arguments, returns 0 (all 0 bits).</p>
+      <p><span class="monospace">(bitwise-xor int ...)</span></p>
+      <p>Returns the bitwise exclusive OR of its arguments. A bit is set in the result if the corresponding bit is set in an odd number of its arguments. If called with no arguments, returns 0 (all 0 bits).</p>
+      <p><span class="monospace">(bitwise-not int)</span></p>
+      <p>Returns the bitwise NOT, or complement, of its arguments. If a bit is set in the argument, the corresponding bit will be cleared in the result, and vice-versa.</p></div></body></html>

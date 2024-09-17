@@ -1,0 +1,101 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>155: Make recursively defined code an explicit error</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 155: <span class="summary">Make recursively defined code an explicit error</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-05 12:11:08</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/155/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-04-17 02:26:51</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Allowing examples like these will make code-walkers (including compilers and interpreters) excessively complicated:</p>
+        <p><a href="/ticket/1">#1</a>=(begin (display #\x) . <a href="/ticket/1">#1</a>#)</p>
+        <p>(lambda <a href="/ticket/2">#2</a>=(a b c <a href="/ticket/2">#2</a>#) ...)</p>
+        <p>(+ . <a href="/ticket/3">#3</a>=(1 2 3 . <a href="/ticket/3">#3</a>#))</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-04-17 04:36:04</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>My initial thoughts are, why? We already have non-terminating expansion, and at least one major Scheme implementation handles this by looping forever. I would think that detecting the loop is more expensive than just letting an implementation loop.</p>
+              <p>Doing this would complicate the expander, and I wonder if this is worth it. What do existing Schemes say about it?</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-04-17 04:56:39</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I'm not proposing that an error be <i>signaled</i>.  It's simply that code like the above is incorrect: you can't rely on it doing something in particular, never mind &quot;the obvious thing&quot;.  That is what &quot;is an error&quot; means in the Scheme standard.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-04-17 05:01:23</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Do we really want this to be considered an error at all? I could imagine writing a program that used such a chain, though I cannot think, at the moment why I would do that. My point is basically, does it really hurt anything to let implementation apply a reasonable semantics to it if they can find one? I like unspecified better.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-04-17 07:11:45</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>If it's a meaningful extension in some Schemes, then (as I said) code-walkers have to accommodate it.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-04-18 07:24:47</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>It is possible to construct this situation in current implementations of R5RS and R6RS, so how do code walkers handle this situation currently? It is trivial to handle this situation in a code walker by not-terminating; is this incorrect behavior? What is the current practice when dealing with these forms today? Do any of them consider this to be an explicit or implicit error situation? Neither R5RS nor R6RS handle this explicitly to my knowledge, is it worth it for us to do so? Why complicate the language with this? I don't think it is worth it and I don't think it buys us anything.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 18:13:04</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted to note this is an error.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-18 18:00:04</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-05 12:11:08</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

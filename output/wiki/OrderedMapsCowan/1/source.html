@@ -1,0 +1,84 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki OrderedMapsCowan version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki OrderedMapsCowan version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>OrderedMapsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Introduction ==
+
+This sub-proposal defines things you can do with ordered maps that are painful with hash-based mappings.  It's a cut-down version of ImmutableMapsWortman.
+
+== Rationale ==
+
+Maps designed to work with comparators that have ordering procedures can readily expose additional APIs that don't make sense for comparators using hash functions.  For example, determining the smallest key in a hash table requires at least linear time, whereas determining the smallest key in a tree of some sort generally does not.  This is a list of functions that it would be useful to expose.
+
+== Specification ==
+
+=== Accessors ===
+
+`(map-min-key `''map''`)`
+
+`(map-max-key `''map''`)`
+
+Returns the least/greatest key of ''map''.  It is an error for ''map'' to be empty. Takes O(log n) time; O(1) is optimal.
+
+`(map-min-value `''map''`)`
+
+`(map-max-value`''map''`)`
+
+Returns the value associated with the least/greatest key of ''map'' (''not'' the least/greatest value).  It is an error for ''map'' to be empty. Takes O(log n) time; O(1) is optimal.
+
+`(map-key-predecessor `''map obj failure''`)`
+
+`(map-key-successor `''map obj failure''`)`
+
+Returns the key that immediately precedes/succeeds `obj` in `map`'s ordering. If no such association exists because ''obj'' is the minimum/maximum key, or because ''map'' is empty, returns the result of invoking the thunk ''failure''. Takes O(log n) time.
+
+=== Filtering ===
+
+`(map-range= `''map obj''`)`
+
+`(map-range&lt; `''map obj''`)`
+
+`(map-range&gt; `''map obj''`)`
+
+`(map-range&lt;= `''map obj''`)`
+
+`(map-range&gt;= `''map obj''`)`
+
+Returns a map containing only the associations of `map` whose keys are equal to / less than / greater than / less than or equal to / greater than or equal to ''obj''.  Takes O(log n) time, where ''n'' is the number of associations in the map .
+
+Note that since map keys are unique, `imap-range=` returns a map with at most one association.
+
+=== Mapping and folding ===
+
+`(imap-map/monotone `''proc map'' [ ''comparator'' ]`)`
+
+Returns a map containing the result of invoking ''proc'' on every association in ''map''.  It is an error unless ''proc'' is a ''monotone'' unary procedure that preserves the order of map associations. Observe that mapping a map of unique associations with a monotone function yields a map of unique associations, so association uniqueness follows from the monotonicity assumption. If ''comparator'' is given, it is the comparator of the result; otherwise the result uses the same comparator as ''map''. Takes O(n) time.
+
+
+</pre>
+    <h2>time</h2>
+    <pre>2016-12-24 04:41:26</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

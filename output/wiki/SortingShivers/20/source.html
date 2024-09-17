@@ -1,0 +1,547 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki SortingShivers version 20</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki SortingShivers version 20</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>SortingShivers</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Title ==
+
+Sorting library
+
+== Author ==
+
+Olin Shivers (edited by John Cowan)
+
+== Issues ==
+
+1. Maybe `vector-delete-neighbor-dups!` should take a &quot;target&quot; vector to write?
+
+== Table of contents ==
+
+* Abstract
+* Procedure index
+* Editor's preface
+* Introduction
+* Design rationale
+  * What vs. how
+  * Consistency across predicate signatures
+  * Comparison parameter before data parameter
+  * Stability
+  * All vector operations accept optional subrange parameters
+  * Required vs. allowed side-effects
+  * List sorting
+* Specification
+  * Procedure naming and functionality
+  * Types of parameters and return values
+  * Predicates
+  * General sort procedures
+  * Merge procedures
+  * Deleting duplicate neighbors
+* Porting and optimisation
+* Acknowledgements
+* Copyright
+
+
+== Abstract ==
+
+This SRFI describes the API for a full-featured sort toolkit.
+The spec comes with 1200 lines of high-quality reference code: tightly
+written, highly commented, portable code, available for free.
+
+== Procedure index ==
+
+{{{
+list-sorted?			vector-sorted?
+
+list-merge			vector-merge
+list-sort			vector-sort
+list-stable-sort		vector-stable-sort
+
+list-merge!			vector-merge!
+list-sort!			vector-sort!
+list-stable-sort!		vector-stable-sort!
+
+list-delete-neighbor-dups	vector-delete-neighbor-dups
+list-delete-neighbor-dups!	vector-delete-neighbor-dups!
+}}}
+
+== Rationale ==
+
+This SRFI is a lightly edited version of [http://srfi.schemers.org/srfi-32/srfi-32.txt SRFI 32]
+by Olin Shivers, which was withdrawn twelve years ago.
+
+There are only two changes to the API.  The most important one is that the
+comparison predicate now precedes the data rather than following it.
+Most of the SRFI 32 commenters thought that this is the better order, despite
+the widespread precedent.
+The second point is that the algorithm-specific
+procedures have been removed from the public API, though not from the sample implementation.
+
+Editorially, the text has been reorganized, removing the massive redundancies.
+In accordance with R5RS and R7RS, procedures rocedures that in SRFI 32 returned zero or
+more unspecified values now return one value.  The multiple
+packages, most with only a few procedures, into which SRFI 32 is divided have been removed,
+and references to
+[http://srfi.schemers.org/srfi-95/srfi-95.html SRFI 95] and
+[http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-5.html#node_chap_4 R6RS] equivalents added.
+
+
+== Design rationale ==
+
+=== What vs. how ===
+
+In SRFI 32 there were two different interfaces: &quot;what&quot; (simple) and &quot;how&quot; (detailed).
+
+* Simple: you specified semantics: datatype (list or vector), mutability, and stability.
+
+* Detailed: you specified the actual algorithm (quick, heap, insert, merge). Different algorithms have different properties, both semantic and pragmatic, so these exports are necessary.
+
+However, the difficulty with exposing specific algorithms by name is that the
+local optima in the search space of algorithms changes over time.
+For example, the &quot;qsort&quot; in the musl C library is actually smooth sort, not
+quick sort; Python and Java have switched from quick sort to timsort;
+some implementations of the C++ STL use introsort rather than quicksort.
+Having procedure names that imply e.g. quick sort, that do not actually
+implement quick sort, is confusing.
+
+Therefore, only the &quot;what&quot; interface has been retained.  The sample implementation
+uses the original SRFI 32 algorithms, but this is not a requirement of this SRFI.
+
+
+=== Consistency across procedure signatures ===
+
+Procedures share common signatures wherever
+possible, to facilitate switching a given call from one procedure
+to another.
+	
+=== Comparison parameter before data parameter ===
+
+These procedures uniformly observe the following parameter order:
+the comparison predicate comes before the data to be sorted.
+In SRFI 32, the reverse convention was used, because it was
+consistent with all the implementations examined in 2002, with
+the sole exception of Chez Scheme.
+However, [http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-5.html#node_chap_4 R6RS] adopted
+the reverse convention, which is more consistent with other Scheme libraries that
+put the procedure first — the &quot;operation currying&quot; convention,
+as in `for-each` or `map` or `find`.
+This SRFI uses the R6RS order throughout.
+
+=== Stability ===
+
+A &quot;stable&quot; sort is one that preserves the pre-existing order of equal
+elements. Suppose, for example, that we sort a list of numbers by 
+comparing their absolute values using `abs&lt;` (defined below).
+If we sort a list that contains both 3 and -3,
+then a stable sort is an algorithm that will not swap the order
+of these two elements, that is, the answer will look like `... 3 -3 ...`,
+not `... -3 3 ...`.
+
+A &quot;stable&quot; merge is one that reliably favors one of its data sets
+when equal items appear in both data sets.
+All merge operations in this library are stable,
+breaking ties between data sets in favor
+of the first data set — elements of the first list come before equal 
+elements in the second list.
+
+So, if we are merging two lists of numbers ordered by absolute value
+using the stable merge operation `list-merge` and `abs&lt;`
+compares numbers by their absolute values, then
+
+{{{
+(list-merge abs&lt;
+            '(0 -2 4 8 -10) '(-1 3 -4 7))
+}}}
+
+reliably places the 4 of the first list before the equal-comparing -4
+of the second list: `(0 -1 -2 4 -4 7 8 -10)`.
+
+Here's a definition of `abs&lt;`, introduced just for the examples
+(it is not part of this SRFI or any SRFI):
+
+{{{
+(define (abs&lt; x y) (&lt; (abs x) (abs y))))
+}}}
+
+=== All vector operations accept optional subrange parameters ===
+
+The vector operations specified below all take optional ''start'' and ''end''
+arguments indicating a selected subrange of a vector's elements.
+
+=== Required vs. allowed side-effects ===
+
+`list-sort!` and `list-stable-sort!` are allowed, but not required,
+to alter their arguments' cons cells to construct the result list. This is
+consistent with the what-not-how character of the group of procedures
+to which they belong.
+
+The `list-delete-neighbor-dups!`, `list-merge!` and `list-sort!` procedures,
+on the other hand, provide specific algorithms, and, as such, explicitly
+commit to the use of side-effects on their input lists in order to guarantee
+their key algorithmic properties (e.g., linear-time operation, constant-space
+stack use).
+
+=== Sorting lists ===
+
+Note that sorting lists involves chasing pointers through memory, which
+can be a loser on modern machine architectures because of poor cache and
+page locality. Pointer ''writing'', which is what the `set-cdr!`s of a
+destructive list-sort algorithm do, is even worse, especially if your
+Scheme has a generational GC — the writes will thrash the write-barrier.
+Sorting vectors has inherently better locality.
+
+The reference implementation's destructive list merge and merge sort implementations are
+opportunistic — they avoid redundant `set-cdr!`s, and try to take long
+already-ordered runs of list structure as-is when doing the merges.
+
+
+== Specification ==
+
+=== Procedure naming and functionality ===
+
+Almost all of the procedures described below are variants of two basic
+operations: sorting and merging. These procedures are consistently named
+by composing a set of basic lexemes to indicate what they do.
+
+
+||Lexeme||Meaning
+||`vector`||The procedure operates upon vectors.||
+||`list`||The procedure operates upon lists.||
+||`stable`||This lexeme indicates that the sort is a stable one.||
+||`sort`||The procedure sorts its input data set by some ordering function.||
+||`merge`||The procedure merges two ordered data sets into a single ordered result.||
+||`!`||Procedures that end in `!` are allowed, and sometimes required, to reuse their input storage to construct their answer.||
+
+
+=== Types of parameters and return values ===
+
+In the procedures specified below,
+
+* A ''lis'' parameter is a list;
+
+* A ''v'' parameter is a vector;
+
+* A ''&lt;'' parameter is an ordering function.  See [http://srfi.schemers.org/srfi-128/srfi-128.html SRFI 128] for the requirements on ordering functions.
+
+* A ''start'' parameter or ''start'' and ''end'' parameter pair are exact non-negative integers such that 0 &lt;= ''start'' &lt;= ''end'' &lt;= `(vector-length `''v''`)`, where ''v'' is the related vector parameter. If not specified, they default to 0 and the length of the vector, respectively. They are interpreted to select the range [''start'', ''end''), that is, all elements from index ''start'' (inclusive) up to, but not including, index ''end''.
+
+Passing values to procedures with these parameters that do not satisfy these
+types is an error.
+
+If a procedure is said to return &quot;an unspecified value&quot;, this means that nothing at all
+is said about what the procedure returns, except that it returns one value.
+
+=== Predicates ===
+
+`(list-sorted? `''&lt; lis''`)`
+
+`(vector-sorted? `''&lt; v'' [''start'' [ ''end'' ] ]
+
+These procedures return true iff their input list or vector
+is in sorted order, as determined by ''&lt;''.
+Specifically, they return `#f` iff there is an adjacent pair ... X Y ... in the input
+list or vector such that Y &lt; X in the sense of ''&lt;''. The optional ''start'' and ''end'' range 
+arguments restrict `vector-sorted?` to examining the indicated subvector.
+
+These procedures are equivalent to the SRFI 95 `sorted?` procedure when applied to lists or vectors
+respectively, except that they do not accept a key procedure.
+
+=== General sort procedures ===
+
+These procedures provide basic sorting and merging functionality suitable for
+general programming. The procedures are named by their semantic properties,
+i.e., what they do to the data (sort, stable sort, and so forth).
+
+`(list-sort `''&lt; lis''`)`
+
+`(list-stable-sort `''&lt; lis''`)`
+
+These procedures
+do not alter their inputs and are allowed to return a value that shares 
+a common tail with a list argument.
+
+The `list-stable-sort` procedure is equivalent to the R6RS `list-sort` procedure.  It is also
+equivalent to the SRFI 95 `sort` procedure when applied to lists, except that it does not accept a key
+procedure.
+
+`(list-sort! `''&lt; lis''`)`
+
+`(list-stable-sort! `''&lt; lis''`)`
+
+These procedures
+are &quot;linear update&quot; operators — they are allowed, but not required, to
+alter the cons cells of their arguments to produce their results.
+
+The `list-stable-sort!` procedure is
+equivalent to the SRFI 95 `sort!` procedure when applied to lists, except that it does not accept a key
+procedure.
+
+`(vector-sort `''&lt; v'' [ ''start'' [ ''end'' ] ]`)`
+
+`(vector-stable-sort `''&lt; v'' [ ''start'' [ ''end'' ] ]`)`
+
+These procedures
+do not alter their inputs, but allocate a fresh vector for their result,
+of length ''end'' - ''start''.
+ 
+The `vector-stable-sort` procedure with no optional arguments
+is equivalent to the R6RS `vector-sort` procedure.    It is also
+equivalent to the SRFI 95 `sort` procedure when applied to vectors, except that it does not accept a key
+procedure.
+
+`(vector-sort! `''&lt; v'' [ ''start'' [ ''end'' ] ]`)`
+
+`(vector-stable-sort! `''&lt; v'' [ ''start'' [ ''end'' ] ]`)`
+
+These procedures
+sort their data in-place. (But note that `vector-stable-sort!` may 
+allocate temporary storage proportional to the size of the input — there are
+no known O(n lg n) stable vector sorting algorithms that
+run in constant space.)  They return an unspecified value.
+
+The `vector-sort!` procedure with no optional arguments is equivalent
+to the R6RS `vector-sort!` procedure.
+
+=== Merge procedures ===
+
+All four merge operations are stable: an element of the initial list ''lis,,1,,'' or
+vector ''v,,1,,'' will come before an equal-comparing element in the second
+list ''lis,,2,,'' or vector ''v,,2,,'' in the result.
+
+`(list-merge `''&lt; lis,,1,, lis,,2,,''`)`
+
+This procedure
+does not alter its inputs, and is allowed to return a value that shares 
+a common tail with a list argument.
+
+This procedure is equivalent to the SRFI 95 `merge` procedure when applied to lists,
+except that it does not accept a key procedure.
+
+`(list-merge! `''&lt; lis,,1,, lis,,2,,''`)`
+
+This procedure
+makes only a single, iterative, linear-time pass over its argument lists,
+using `set-cdr!`s to rearrange the cells of the lists into the list that is returned
+— they work &quot;in place.&quot; Hence, any cons cell appearing in the result must
+have originally appeared in an input.
+
+Additionally,
+`list-merge!` is iterative, not recursive — it can operate on arguments of
+arbitrary size without requiring an unbounded amount of stack space.
+The intent of this
+iterative-algorithm commitment is to allow the programmer to be sure that
+if, for example, `list-merge!` is asked to merge two ten-million-element
+lists, the operation will complete without performing some extremely
+(possibly twenty-million) deep recursion.
+
+This procedure is equivalent to the SRFI 95 `merge!` procedure when applied to lists,
+except that it does not accept a key procedure.
+
+
+`(vector-merge` ''&lt; v,,1,, v,,2,,'' [ ''start,,1,,'' [ ''end,,1,,'' [ ''start,,2,,'' [ ''end,,2,,'' ] ] ] ]`)`
+
+This procedure does not alter its inputs,
+and returns a newly allocated vector
+of length (''end,,1,,'' - ''start,,1,,'') + (''end,,2,,'' - ''start,,2,,''`)`.
+
+This procedure is equivalent to the SRFI 95 `merge` procedure when applied to vectors,
+except that it does not accept a key procedure.
+
+`(vector-merge! `''&lt; to from,,1,, from,,2,,'' [ ''start'' [ ''start,,1,,'' [ ''end,,1,,'' [ ''start,,2,,'' [ ''end,,2,,'' ] ] ] ] ]`)`
+
+This procedure writes its result into vector ''to'', beginning at index ''start'',
+for indices less than
+''end'', which is defined as ''start'' + (''end,,1,,'' - ''start,,1,,'') + (''end,,2,,'' - ''start,,2,,''`)`.
+The target subvector ''to''[''start'', ''end'') may not overlap either of the source subvectors
+''from,,1,,''[''start,,1,,'', ''end,,1,,''] and ''from,,2,,''[''start,,2,,'', ''end,,2,,''].
+It returns an unspecified value.
+
+This procedure is equivalent to the SRFI 95 `merge!` procedure when applied to lists,
+except that it does not accept a key procedure.
+
+=== Deleting duplicate neighbors ===
+
+These procedures delete adjacent duplicate elements from a list or a
+vector, using a given element-equality procedure. The first/leftmost
+element of a run of equal elements is the one that survives. The list or
+vector is not otherwise disordered.
+
+These procedures are linear time — much faster than the O(n^2^) general
+duplicate-element deletion procedures that do not assume any &quot;bunching&quot; of elements
+(such as the ones provided by [http://srfi.schemers.org/srfi-1/srfi-1.html SRFI 1]).
+If you want to delete duplicate
+elements from a large list or vector, sort the elements to bring equal
+items together, then use one of these procedures, for a total time of
+O(n lg n).
+
+The equality procedure extracted from the &lt; passed to these procedures is always
+applied as `(= x y)`, where ''x'' comes before ''y'' in the containing list or vector.
+
+`(list-delete-neighbor-dups `''&lt; v''`)`
+
+This procedure does not alter its input list; its result may share
+storage with the input list.
+
+`(list-delete-neighbor-dups! `''&lt; lis''`)`
+
+This procedure mutates its input list in order to construct its result.
+It makes only a single, iterative, linear-time pass over its
+argument, using `set-cdr!`s to rearrange the cells of the list
+into the final result — it works &quot;in place.&quot; Hence, any cons cell appearing
+in the result must have originally appeared in the input.
+
+`(vector-delete-neighbor-dups `''&lt; v'' [ ''start'' [ ''end'' ] ]`)`
+
+This procedure does not alter its input vector, but rather
+newly allocates and returns a vector to hold the result.
+
+`(vector-delete-neighbor-dups! `''&lt; v'' [ ''start'' [ ''end'' ] ]`)`
+
+This procedure reuses its input vector to hold the answer, packing its answer into the index range [start,newend), 
+where `newend` is the non-negative exact integer that is returned as its value.
+The vector is not altered outside the range [''start, newend'').
+
+Examples:
+
+{{{
+	(list-delete-neighbor-dups &lt; '(1 1 2 7 7 7 0 -2 -2))
+               =&gt; (1 2 7 0 -2)
+
+	(vector-delete-neighbor-dups &lt; '#(1 1 2 7 7 7 0 -2 -2))
+               =&gt; #(1 2 7 0 -2)
+
+	(vector-delete-neighbor-dups &lt; '#(1 1 2 7 7 7 0 -2 -2) 3 7))
+               =&gt; #(7 0 -2)
+
+;; Result left in v[3,9):
+(let ((v (vector 0 0 0 1 1 2 2 3 3 4 4 5 5 6 6)))
+  (cons (vector-delete-neighbor-dups! &lt; v 3)
+        v))
+              =&gt; (9 . #(0 0 0 1 2 3 4 5 6 4 4 5 5 6 6))
+}}}
+
+== Implementation ==
+
+The sample implementation is Olin's original from SRFI 32, with a few bug fixes from Scheme 48 and
+the functional changes mentioned above.  It is very portable and freely reusable.
+It is tightly bummed, as far as could be done in portable Scheme, and
+is commented in Olin's usual
+voluminous style, including notes on porting and implementation-specific
+optimisations.  It should be trivial to port.
+
+The code includes:
+
+* Vector insert sort (stable)
+* Vector heap sort
+* Vector quick sort (with median-of-3 pivot picking)
+* Vector merge sort (stable)
+* Pure and destructive list merge sort (stable)
+* Stable vector and list merge
+* Miscellaneous sort-related procedures: Vector and list merging, `*-sorted?` predicates, vector and list delete-equal-neighbor procedures.
+* A general, non-algorithmic set of procedure names for general sorting and merging, exposed in the API
+
+There are only four non-R4RS bits in the code:
+
+* Use of multiple-value return, with the R5RS `values` procedure, and the simple [http://srfi.schemers.org/srfi-8/srfi-8.html SRFI 8] `(receive  (`''var'' ...`)` ''mv-exp body'' ... `)` multiple-value binding macro.
+
+* A `vector-copy` procedure. This is a tiny little procedure: `(vector-copy `''v'' [ ''start'' [ ''end'' ] ]`)`.  It is part of R7RS-small.
+
+* The `let-optionals` macro from scsh to parse and default optional arguments to three routines. Again, easy to port the macro or rewrite the code to parse, default, and error check the args by hand. 
+
+* An `error` procedure for complaining about bad arguments.  It is part of R7RS-small.
+
+You could speed up the vector code a lot by error-checking the procedure
+parameters and then shifting over to fixnum-specific arithmetic and
+dangerous vector-indexing and vector-setting primitives. The comments
+in the code indicate where the initial error checks would have to be
+added. There are several `(quotient `''n''` 2)` calls that could be changed to a
+fixnum right-shift, as well, in both the list and vector code. The code
+is designed to enable this — each file usually exports one or two &quot;safe&quot;
+procedures that end up calling an internal &quot;dangerous&quot; primitive. The
+little exported cover procedures are where you move the error checks.
+
+This should provide ''big'' speedups. In fact, all the code bumming Olin did
+pretty much disappears in the noise unless you have a good compiler and also
+can dump the vector-index checks and generic arithmetic — so I've really just
+set things up for you to exploit.
+
+The optional-arg parsing, defaulting, and error checking is done with a
+portable R4RS macro. But if your Scheme has a faster mechanism (e.g., Chez),
+you should definitely port over to it. Note that argument defaulting and
+error-checking are interleaved — you don't have to error-check defaulted
+''start'' and ''end'' args to see if they are fixnums that are legal vector indices for
+the corresponding vector, etc.
+
+== Acknowledgements ==
+
+Olin thanks the authors of the open source consulted when designing this
+library, particularly Richard O'Keefe, Donovan Kolbly and the MIT Scheme Team.
+
+== Copyright ==
+
+=== SRFI text copyright ===
+
+This document is copyright (C) Olin Shivers (1998, 1999). 
+All Rights Reserved. 
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+&quot;Software&quot;), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+=== Sample implementation copyright ===
+
+Short summary: no restrictions.
+
+While Olin wrote all of this code himself, he read a lot of code before he began
+writing. However, all such code is, itself, either open source or public
+domain, rendering irrelevant any issue of &quot;copyright taint.&quot;
+
+The natural merge sorts (pure list, destructive list, and vector) are not only
+his own code, but are implementations of an algorithm of his own devising. They
+run in O(n lg n) worst case, O(n) best case, and require only a logarithmic
+number of stack frames. And they are stable. And the destructive-list variant
+allocates zero cons cells; it simply rearranges the cells of the input list.
+
+Hence the sample implementation is Copyright © 1998 by Olin Shivers
+and made available under the same copyright as the SRFI text (see above).
+
+</pre>
+    <h2>time</h2>
+    <pre>2015-12-07 10:08:37</pre>
+    <h2>version</h2>
+    <pre>20</pre></body></html>

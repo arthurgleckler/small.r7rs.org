@@ -1,0 +1,138 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki EphemeronsMitTeam version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki EphemeronsMitTeam version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>EphemeronsMitTeam</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Ephemerons ==
+
+Snapshot of [http://www.gnu.org/software/mit-scheme/documentation/mit-scheme-ref/Ephemerons.html MIT Scheme 9.1 documentation]:
+
+{{{
+#!html
+&lt;!--
+This manual documents MIT/GNU Scheme 9.1.
+
+Copyright (C) 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993,
+    1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
+    2005, 2006, 2007, 2008, 2009, 2010, 2011 Massachusetts Institute
+    of Technology
+
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with no Front-Cover Texts
+     and no Back-Cover Texts.  A copy of the license is included in the
+     section entitled ``GNU Free Documentation License.''
+   --&gt;
+&lt;style type=&quot;text/css&quot;&gt;&lt;!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--&gt;&lt;/style&gt;
+
+&lt;h3 class=&quot;section&quot;&gt;10.8 Ephemerons&lt;/h3&gt;
+
+&lt;p&gt;&lt;a name=&quot;index-ephemeron-_0028defn_0029-1571&quot;&gt;&lt;/a&gt;&lt;a name=&quot;index-ephemeron_002c-broken-1572&quot;&gt;&lt;/a&gt;&lt;a name=&quot;index-broken-ephemeron-1573&quot;&gt;&lt;/a&gt;An &lt;dfn&gt;ephemeron&lt;/dfn&gt; is an object with two weakly referenced components
+called its &lt;dfn&gt;key&lt;/dfn&gt; and &lt;dfn&gt;datum&lt;/dfn&gt;.  The garbage collector drops an
+ephemeron's references to both key and datum, rendering the ephemeron
+&lt;dfn&gt;broken&lt;/dfn&gt;, if and only if the garbage collector can prove that
+there are no strong references to the key.  In other words, an
+ephemeron is broken when nobody else cares about its key.  Note that
+an ephemeron's reference to its datum may be dropped even if the datum
+is still reachable; all that matters is whether the key is reachable. 
+Once broken, ephemerons never cease to be broken; setting the key or
+datum of a broken ephemeron with &lt;code&gt;set-ephemeron-key!&lt;/code&gt; or
+&lt;code&gt;set-ephemeron-datum!&lt;/code&gt; has no effect.
+
+   &lt;p&gt;Ephemerons are considerably heavier-weight than weak pairs, because
+garbage-collecting ephemerons is more complicated than
+garbage-collecting weak pairs.  Each ephemeron needs five words of
+storage, rather than the two words needed by a weak pair.  However,
+while the garbage collector spends more time on ephemerons than on
+other objects, the amount of time it spends on ephemerons scales
+linearly with the number of live ephemerons, which is how its running
+time scales with the total number of live objects anyway.
+
+&lt;div class=&quot;defun&quot;&gt;
+&amp;mdash; procedure: &lt;b&gt;ephemeron?&lt;/b&gt;&lt;var&gt; object&lt;a name=&quot;index-ephemeron_003f-1574&quot;&gt;&lt;/a&gt;&lt;/var&gt;&lt;br&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;a name=&quot;index-type-predicate_002c-for-ephemeron-1575&quot;&gt;&lt;/a&gt;Returns &lt;code&gt;#t&lt;/code&gt; if &lt;var&gt;object&lt;/var&gt; is a ephemeron; otherwise returns
+&lt;code&gt;#f&lt;/code&gt;. 
+&lt;/p&gt;&lt;/blockquote&gt;&lt;/div&gt;
+
+&lt;div class=&quot;defun&quot;&gt;
+&amp;mdash; procedure: &lt;b&gt;make-ephemeron&lt;/b&gt;&lt;var&gt; key datum&lt;a name=&quot;index-make_002dephemeron-1576&quot;&gt;&lt;/a&gt;&lt;/var&gt;&lt;br&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;a name=&quot;index-construction_002c-of-ephemeron-1577&quot;&gt;&lt;/a&gt;Allocates and returns a new ephemeron, with components &lt;var&gt;key&lt;/var&gt; and
+&lt;var&gt;datum&lt;/var&gt;. 
+&lt;/p&gt;&lt;/blockquote&gt;&lt;/div&gt;
+
+&lt;div class=&quot;defun&quot;&gt;
+&amp;mdash; procedure: &lt;b&gt;ephemeron-broken?&lt;/b&gt;&lt;var&gt; ephemeron&lt;a name=&quot;index-ephemeron_002dbroken_003f-1578&quot;&gt;&lt;/a&gt;&lt;/var&gt;&lt;br&gt;
+&lt;blockquote&gt;&lt;p&gt;Returns &lt;code&gt;#t&lt;/code&gt; if the garbage collector has dropped
+&lt;var&gt;ephemeron&lt;/var&gt;'s references to its key and datum; otherwise returns
+&lt;code&gt;#f&lt;/code&gt;. 
+&lt;/p&gt;&lt;/blockquote&gt;&lt;/div&gt;
+
+&lt;div class=&quot;defun&quot;&gt;
+&amp;mdash; procedure: &lt;b&gt;ephemeron-key&lt;/b&gt;&lt;var&gt; ephemeron&lt;a name=&quot;index-ephemeron_002dkey-1579&quot;&gt;&lt;/a&gt;&lt;/var&gt;&lt;br&gt;
+&amp;mdash; procedure: &lt;b&gt;ephemeron-datum&lt;/b&gt;&lt;var&gt; ephemeron&lt;a name=&quot;index-ephemeron_002ddatum-1580&quot;&gt;&lt;/a&gt;&lt;/var&gt;&lt;br&gt;
+&lt;blockquote&gt;&lt;p&gt;&lt;a name=&quot;index-selection_002c-of-ephemeron-component-1581&quot;&gt;&lt;/a&gt;&lt;a name=&quot;index-component-selection_002c-of-ephemeron-1582&quot;&gt;&lt;/a&gt;These return the key or datum component, respectively, of
+&lt;var&gt;ephemeron&lt;/var&gt;.  If &lt;var&gt;ephemeron&lt;/var&gt; has been broken, these operations
+return &lt;code&gt;#f&lt;/code&gt;, but they can also return &lt;code&gt;#f&lt;/code&gt; if that is the
+value that was stored in the key or value component. 
+&lt;/p&gt;&lt;/blockquote&gt;&lt;/div&gt;
+
+&lt;div class=&quot;defun&quot;&gt;
+&amp;mdash; procedure: &lt;b&gt;set-ephemeron-key!&lt;/b&gt;&lt;var&gt; ephemeron object&lt;a name=&quot;index-set_002dephemeron_002dkey_0021-1583&quot;&gt;&lt;/a&gt;&lt;/var&gt;&lt;br&gt;
+&amp;mdash; procedure: &lt;b&gt;set-ephemeron-datum!&lt;/b&gt;&lt;var&gt; ephemeron object&lt;a name=&quot;index-set_002dephemeron_002ddatum_0021-1584&quot;&gt;&lt;/a&gt;&lt;/var&gt;&lt;br&gt;
+&lt;blockquote&gt;&lt;p&gt;These set the key or datum component, respectively, of &lt;var&gt;ephemeron&lt;/var&gt;
+to &lt;var&gt;object&lt;/var&gt; and return an unspecified result.  If &lt;var&gt;ephemeron&lt;/var&gt;
+is broken, neither of these operations has any effect. 
+&lt;/p&gt;&lt;/blockquote&gt;&lt;/div&gt;
+
+   &lt;p&gt;Like &lt;code&gt;weak-pair/car?&lt;/code&gt;, &lt;code&gt;ephemeron-broken?&lt;/code&gt; must be used with
+care.  &lt;code&gt;Ephemeron-broken?&lt;/code&gt; on an ephemeron guarantees that any
+prior call to &lt;code&gt;ephemeron-key&lt;/code&gt; or &lt;code&gt;ephemeron-datum&lt;/code&gt; on the
+same ephemeron yielded the key or datum that was stored in the
+ephemeron, but it makes no guarantees about subsequent calls to
+&lt;code&gt;ephemeron-key&lt;/code&gt; or &lt;code&gt;ephemeron-datum&lt;/code&gt;.  Thus, the correct
+idiom to fetch an ephemeron's key and datum and use them if the
+ephemeron is not broken is
+
+&lt;pre class=&quot;example&quot;&gt;     (let ((key (ephemeron-key ephemeron))
+           (datum (ephemeron-datum ephemeron)))
+       (if (ephemeron-broken? ephemeron)
+           ... &lt;span class=&quot;roman&quot;&gt;broken case&lt;/span&gt; ...
+           ... &lt;span class=&quot;roman&quot;&gt;code using &lt;/span&gt;&lt;var&gt;key&lt;/var&gt;&lt;span class=&quot;roman&quot;&gt; and &lt;/span&gt;&lt;var&gt;datum&lt;/var&gt; ...))
+&lt;/pre&gt;
+}}}</pre>
+    <h2>time</h2>
+    <pre>2014-08-26 02:53:07</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

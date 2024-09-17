@@ -1,0 +1,37 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>TimeCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/TimeCowan.md">TimeCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Time&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-11-29 01:34:40</div>
+      <div class="version">12<span class="comment"></span><a href="/wiki/TimeCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/TimeCowan/12/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Time">Time</h2>
+      <p><span class="monospace">(current-posix-second)</span></p>
+      <p>Returns an rational number representing the current second of the Posix epoch, which began on 00:00:00 on 1 January 1970, Coordinated Universal Time but excludes all leap seconds.  Implementations SHOULD return a value that:</p>
+      <ul>
+        <li>Is as accurate as reasonably achievable.</li>
+        <li>Provides at least 1-second precision.</li>
+        <li>Provides a range of at least 2<sup>31</sup> seconds before and after the epoch.</li></ul>
+      <p>Implementations SHOULD return an inexact value, allowing programs to deal in flexible precisions.</p>
+      <p>If the implementation cannot provide the time when <span class="monospace">current-posix-seconds</span> is called (either temporarily or permanently), it MUST return <span class="monospace">#f</span>.</p>
+      <p>Assuming the number of leap seconds between 1972 and 2011 was typical (not necessarily a safe assumption), there is about a 1 in 10<sup>-8</sup> probability that a computation of elapsed time made by calling this procedure twice will be off by 1.</p>
+      <h2 id="DateandTimeArithmetic(WG2)">Date and Time Arithmetic (WG2)</h2>
+      <p>See <a href="/wiki/TimeAdvancedCowan">TimeAdvancedCowan</a>.</p>
+      <h2 id="TimeDurationsandPeriods(WG2)">Time Durations and Periods (WG2)</h2>
+      <p>See <a href="/wiki/TimePeriodsCowan">TimePeriodsCowan</a>.</p>
+      <h2 id="Timeformatting(WG2)">Time formatting (WG2)</h2>
+      <p>See TimeFormattingCowan.</p></div></body></html>

@@ -1,0 +1,113 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StandardDocket</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StandardDocket.md">StandardDocket</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Standard&shy;Docket</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-10-20 07:07:08</div>
+      <div class="version">83<span class="comment"></span><a href="/wiki/StandardDocket/history">history</a></div>
+      <div class="source"><a href="/wiki/StandardDocket/83/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="WG2StandardDocket">WG2 Standard Docket</h2>
+      <p>This is a list of work items that WG2 has voted to work on, and proposals for those work items.  If no more than one proposal gets written for an item, the item may migrate to the <a href="/wiki/ConsentDocket">ConsentDocket</a>.  See <a href="/wiki/WG2Dockets">WG2Dockets</a> for other dockets.</p>
+      <p>Applicable record instances: <a href="http://www.r6rs.org/formal-comments/comment-6.txt">R6RS formal comment</a></p>
+      <p>Assertions: <a href="http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-14.html#node_idx_750">R6RS</a>, R6RS with optional message and irritants.</p>
+      <p>Association list library: flushed (SRFI 1 does enough)</p>
+      <p>Binary heap: <a href="/wiki/BinaryHeapsCowan">BinaryHeapsCowan</a></p>
+      <p>Binary search: <a href="http://srfi.schemers.org/srfi-43/srfi-43.html">SRFI 43</a></p>
+      <p>Bitwise arithmetic: <a href="http://srfi.schemers.org/srfi-33/srfi-33.html">SRFI 33</a>, <a href="http://srfi.schemers.org/srfi-60/srfi-60.html">SRFI 60</a>, <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-12.html#node_sec_11.4">R6RS</a>, <a href="/wiki/BitwiseCowan">BitwiseCowan</a>.  See <a href="/wiki/BitwiseComparison">BitwiseComparison</a> for a detailed comparison of names and parameter order.  See also the incomplete proposal <a href="/wiki/BitwiseArithmeticRead">BitwiseArithmeticRead</a>.</p>
+      <p>Boxes/references: <a href="http://srfi.schemers.org/srfi-111/srfi-111.html">SRFI 111</a></p>
+      <p>Character encoding conversion: <a href="/wiki/CharacterConversionCowan">CharacterConversionCowan</a></p>
+      <p>Combinators: <a href="/wiki/CombinatorsCowan">CombinatorsCowan</a></p>
+      <p>Comparators: <a href="http://srfi.schemers.org/srfi-114/srfi-114.html">SRFI 114</a></p>
+      <p>Concatenation:  flushed in favor of <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a>, <a href="http://srfi.schemers.org/srfi-13/srfi-13.html">SRFI 13</a>, and <a href="/wiki/VectorsCowan">VectorsCowan</a>.</p>
+      <p><span class="monospace">cond</span> <span class="monospace">=&gt;</span> with guard as well as generator (see <a href="/ticket/89">#89</a>):  <a href="http://srfi.schemers.org/srfi-61/srfi-61.html">SRFI 61</a></p>
+      <p>Conditions: <a href="/wiki/ConditionsCowan">ConditionsCowan</a></p>
+      <p>Container conversion: See <a href="/wiki/BytevectorsCowan">BytevectorsCowan</a>, <a href="/wiki/NumericVectorsCowan">NumericVectorsCowan</a>, and <a href="/wiki/WG1Ballot6Results#a433fullconversioncycleforcontainers">WG1 ballot options</a></p>
+      <p>Continuation API:  <a href="http://repository.readscheme.org/ftp/papers/sw2001/feeley.pdf">Feeley's paper</a> (PDF)</p>
+      <p>Date and time arithmetic: <a href="/wiki/TimeAdvancedCowan">TimeAdvancedCowan</a> plus <a href="/wiki/TimePeriodsCowan">TimePeriodsCowan</a>, <a href="http://srfi.schemers.org/srfi-19/srfi-19.html">SRFI 19</a></p>
+      <p>Date-time parser: <a href="https://code.google.com/p/hato/source/browse/hato-date.scm">Hato date parser</a>, <a href="http://srfi.schemers.org/srfi-19/srfi-19.html">SRFI 19</a></p>
+      <p>Descriptive statistics:  <a href="/wiki/TallyCowan">TallyCowan</a></p>
+      <p>Dictionaries (other than hash tables): <a href="/wiki/ImmutableDataStructuresWortman">ImmutableDataStructuresWortman</a> (also includes deques and sets)</p>
+      <p>Division library: <a href="/wiki/DivisionRiastradh">DivisionRiastradh</a></p>
+      <p>Enumerations and enum-sets: <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-15.html#node_chap_14">R6RS</a> (see also http:<i>www.r6rs.org/formal-comments/comment-262.txt), <span class="monospace">define-enum</span> in the [http:</i>wiki.call-cc.org/eggref/4/miscmacros Chicken miscmacros egg], <a href="http://s48.org/1.1/manual/s48manual_46.html">Scheme48 finite record types</a>, <a href="/wiki/EnumsCowan">EnumsCowan</a></p>
+      <p>Environment enquiries: <a href="http://srfi.schemers.org/srfi-112/srfi-112.html">SRFI 112</a></p>
+      <p>Evaluator arguments to procedures like <span class="monospace">load</span>: see <a href="/ticket/277">#277</a></p>
+      <p>Extended exact numbers:  <a href="/wiki/ExtendedRationalsCowan">ExtendedRationalsCowan</a></p>
+      <p>File system directories (reading): <a href="http://www.scsh.net/docu/html/man-Z-H-4.html#node_sec_3.3">SCSH directory stream interface</a>, <a href="/wiki/DirectoryPortsCowan">DirectoryPortsCowan</a>, <span class="monospace">directory-files</span> to return a list of all files in the dir (in WG1 vote order)</p>
+      <p>File library, advanced version:  <a href="/wiki/FilesAdvancedCowan">FilesAdvancedCowan</a></p>
+      <p>File system directories (creation, removal): <a href="/wiki/DirectoriesCowan">DirectoriesCowan</a></p>
+      <p>Flonum arithmetic: <a href="/wiki/FlonumsCowan">FlonumsCowan</a></p>
+      <p>Futures:  <a href="http://docs.racket-lang.org/reference/futures.html">Racket API</a></p>
+      <p>Getters and setters: <a href="http://srfi.schemers.org/srfi-17/srfi-17.html">SRFI 17</a></p>
+      <p>Gettext (i18n of strings): <a href="http://wiki.call-cc.org/eggref/4/free-gettext">Chicken free-gettext</a>, <a href="http://srfi.schemers.org/srfi-29/srfi-29.html">SRFI 29</a> (depends on <a href="http://srfi.schemers.org/srfi-28/srfi-28.html">SRFI 28</a>)</p>
+      <p>Hash tables: <a href="http://srfi.schemers.org/srfi-69/srfi-69.html">SRFI 69</a>, <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-14.html#node_chap_13">R6RS</a> (in WG1 vote order), <a href="/wiki/HashTablesCowan">HashTablesCowan</a> (much larger API, can be layered over either of the others)</p>
+      <p><span class="monospace">hex-digit-value</span>: same as <span class="monospace">digit value</span>, but understands A-F and a-f too</p>
+      <p>Homogeneous numeric arrays: <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-3.html#node_chap_2,">R6RS</a>, <a href="http://srfi.schemers.org/srfi-4/srfi-4.html">SRFI 4</a>, <a href="http://srfi.schemers.org/srfi-63/srfi-63.html">SRFI 63</a> (supersedes SRFI 25 and SRFI 47; lexical syntax in <a href="http://srfi.schemers.org/srfi-58/srfi-58.html">SRFI 58</a>), <a href="http://srfi.schemers.org/srfi-66/srfi-66.html">SRFI 66</a>, <a href="http://srfi.schemers.org/srfi-74/srfi-74.html">SRFI 74</a>, <a href="/wiki/NumericVectorsCowan">NumericVectorsCowan</a></p>
+      <p><span class="monospace">if</span> with arbitrarily many arguments: <a href="http://dpk.io/r7rs/naryif-20130406">David Kendal's rationale</a></p>
+      <p>Immutable cyclic lists: <a href="/wiki/CyclesMedernach">CyclesMedernach</a></p>
+      <p>Integer sets:  <a href="/wiki/IntegerSetsCowan">IntegerSetsCowan</a></p>
+      <p>Library declarations: <a href="/wiki/LibraryDeclarationsCowan">LibraryDeclarationsCowan</a></p>
+      <p>Loop syntax: <a href="http://www.ccs.neu.edu/home/shivers/papers/loop.pdf">Olin Shivers's loop</a>, <a href="http://mumble.net/~campbell/scheme/foof-loop.txt">Taylor Campbell's foof-loop</a>, eager comprehensions from <a href="http://srfi.schemers.org/srfi-42/srfi-42.html">SRFI 42</a>.  See also <a href="https://groups.google.com/group/comp.lang.scheme/msg/60dcac5ea812398?dmode=source&amp;output=gplain&amp;noredirect&amp;pli=1">Alex Shinn's defense of foof-loop</a>.</p>
+      <p>Mailboxes, channels, synchronized queues: <a href="http://www.s48.org/1.9/manual/manual-Z-H-8.html#node_sec_7.8">Scheme48 from Concurrent ML</a></p>
+      <p><span class="monospace">make-error-object</span>: constructs error object without raising it</p>
+      <p>&lt;math.h&gt; (C89 or C99): <a href="/wiki/FlonumsCowan">FlonumsCowan</a></p>
+      <p>Memoization: <a href="/wiki/Memoize">Memoize</a> (not a proposal yet), <a href="http://planet.racket-lang.org/display.ss?package=memoize.plt&amp;owner=dherman">Racket</a>, <a href="http://hackage.haskell.org/package/memoize-0.1/docs/Data-Function-Memoize.html">Haskell</a></p>
+      <p>Message digests (CRC, MD5, SHA1, SHA2):</p>
+      <p>Multi-dimensional general arrays: <a href="/wiki/ArraysCowan">ArraysCowan</a></p>
+      <p>Multiple value macros (from CL): flushed</p>
+      <p>Multiple values passed through =&gt; in <span class="monospace">cond</span>: see <a href="/ticket/90">#90</a></p>
+      <p>Mutable environments for <span class="monospace">eval</span>:  <a href="/wiki/MutableEnvironmentsCurtisCowan">MutableEnvironmentsCurtisCowan</a></p>
+      <p>Mutexes, condition variables: <a href="http://srfi.schemers.org/srfi-18/srfi-18.html">SRFI 18</a></p>
+      <p>Named parameters: <a href="/wiki/NamedParametersCowan">NamedParametersCowan</a></p>
+      <p>NaN dissector API (sign, quiet/signaling status, and integer tag): <a href="/wiki/NanMedernach">NanMedernach</a></p>
+      <p>Natural number predicates (from WG1):  <span class="monospace">exact-positive-integer?</span> and <span class="monospace">exact-non-negative-integer?</span>.</p>
+      <p><span class="monospace">number-&gt;string</span> and <span class="monospace">string-&gt;number</span> with non-ASCII decimal digits: <a href="/wiki/NumberStringUnicode">NumberStringUnicode</a></p>
+      <p>Octet vectors, bytevectors, blobs: <a href="/wiki/NumericVectorsCowan">NumericVectorsCowan</a> + <a href="/wiki/StringBytevectorConversionCowan">StringBytevectorConversionCowan</a></p>
+      <p>Optional arguments (other than by <span class="monospace">case-lambda</span>): <a href="http://mumble.net/~campbell/proposals/optional.text">OptionalsRiastradh</a></p>
+      <p>Pathnames: <a href="/wiki/PathnamesCowan">PathnamesCowan</a></p>
+      <p>Pattern matching: <a href="/wiki/MatchingWise">MatchingWise</a></p>
+      <p>Port encodings, buffering, line ending control:  <a href="/wiki/SettingsListsCowan">SettingsListsCowan</a> and <a href="/wiki/FilesAdvancedCowan">FilesAdvancedCowan</a></p>
+      <p>Port functions (concatenate, join, split): <a href="/wiki/PortOperationsCowan">PortOperationsCowan</a></p>
+      <p>Procedure arity inspection: <a href="http://srfi.schemers.org/srfi-102/srfi-102.html">SRFI 102</a>, <a href="http://srfi.schemers.org/srfi-102/mail-archive/msg00011.html">Dybvig's proposal</a></p>
+      <p>Processes (system, popen, etc): <a href="/wiki/SystemCommandCowan">SystemCommandCowan</a> + <a href="/wiki/ProcessPortsCowan">ProcessPortsCowan</a></p>
+      <p>Queues:  <a href="/wiki/QueuesCowan">QueuesCowan</a></p>
+      <p>Random numbers: <a href="/wiki/RandomnessCommonLisp">RandomnessCommonLisp</a>, <a href="http://srfi.schemers.org/srfi-27/srfi-27.html">SRFI 27</a>, <a href="/wiki/RandomCowan">RandomCowan</a>, <a href="/wiki/RandomnessArcfide">RandomnessArcfide</a> (in WG1 vote order)</p>
+      <p>Raw strings:  &lt;&lt;, &quot;&quot;&quot;...&quot;&quot;&quot;, <a href="http://srfi.schemers.org/srfi-109/srfi-109.html">SRFI 109</a></p>
+      <p>Record introspection: <a href="http://srfi.schemers.org/srfi-99/srfi-99.html">SRFI 99</a></p>
+      <p><span class="monospace">Record-let</span>: <a href="/ticket/45">#45</a></p>
+      <p>REPL facilities: <a href="/wiki/ReplCowan">ReplCowan</a></p>
+      <p>Restarts:  <a href="http://www.ai.mit.edu/projects/iiip/doc/CommonLISP/HyperSpec/Body/sec_9-1-4-2.html">Common Lisp</a>, <a href="http://www.gnu.org/software/mit-scheme/documentation/mit-scheme-ref/Restarts.html">MIT</a>, <a href="http://mumble.net/~campbell/proposals/restart.text">RestartersRiastradh</a></p>
+      <p>Run-time records: <a href="http://srfi.schemers.org/srfi-99/srfi-99.html">SRFI 99</a>, possibly simplified syntax</p>
+      <p>Search and mismatch procedures:  flushed (use</p>
+      <p>Sets and bags: <a href="http://srfi.schemers.org/srfi-113/srfi-113.html">SRFI 113</a>.</p>
+      <p>Shift and reset: <a href="https://github.com/tonyg/pgg/blob/master/shift-reset.scm">Scheme48</a>, <a href="http://docs.racket-lang.org/reference/cont.html">Racket</a></p>
+      <p>Simple Posix: <a href="/wiki/SimplePosixCowan">SimplePosixCowan</a></p>
+      <p>Sorting: <a href="/wiki/SortingShivers">SortingShivers</a> (revision of <a href="http://srfi.schemers.org/srfi-32/srfi-32.html">SRFI 32</a>), <a href="http://srfi.schemers.org/srfi-95/srfi-95.html">SRFI 95</a></p>
+      <p>String encoding and decoding:  <a href="/wiki/StringBytevectorConversionCowan">StringBytevectorConversionCowan</a></p>
+      <p>String positions and slices: <a href="http://www.r6rs.org/formal-comments/comment-235.txt">R6RS formal comment #235</a></p>
+      <p>Substitution and transformation: <a href="/wiki/SubstituteCowan">SubstituteCowan</a></p>
+      <p>Syntactic closures (voted down, but restored by popular demand): <a href="http://web.mit.edu/scheme_v9.0.1/doc/mit-scheme-ref/Syntactic-Closures.html">MIT</a></p>
+      <p>Symbol library:  <a href="/wiki/SymbolsCowan">SymbolsCowan</a></p>
+      <p><span class="monospace">syntax-case</span> (voted down, but restored by popular demand): <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-13.html">R6RS</a></p>
+      <p>TCP protocol: <a href="/wiki/NetworkPortsCowan">NetworkPortsCowan</a></p>
+      <p>Thread-local storage: <a href="http://docs.oracle.com/javase/6/docs/api/java/lang/ThreadLocal.html">Java</a></p>
+      <p>Threads:  <a href="/wiki/ThreadsCowan">ThreadsCowan</a>, <a href="http://srfi.schemers.org/srfi-18/srfi-18.html">SRFI 18</a></p>
+      <p>UDP protocol:  <a href="/wiki/DatagramChannelsCowan">DatagramChannelsCowan</a></p>
+      <p>Undefined value API: see <a href="/ticket/49">#49</a></p>
+      <p>Unicode character database: <a href="/wiki/UcdCowan">UcdCowan</a></p>
+      <p>Unicode normalization: <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-2.html#node_idx_58">R6RS</a>, <span class="monospace">string-ni=?</span> and friends (from earlier R7RS-small drafts).</p>
+      <p>Vector library: <a href="http://srfi.schemers.org/srfi-43/srfi-43.html">SRFI 43</a>, <a href="/wiki/VectorsCowan">VectorsCowan</a> (extension of SRFI 43)</p>
+      <p>Weak dictionaries/hashtables:</p>
+      <p>Weak references (soft, phantom): <a href="http://www.gnu.org/software/mit-scheme/documentation/mit-scheme-ref/Ephemerons.html">MIT Scheme ephemerons</a>, <a href="http://docs.racket-lang.org/reference/ephemerons.html">Racket ephemerons</a></p></div></body></html>

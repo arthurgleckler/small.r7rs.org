@@ -1,0 +1,98 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>164: Meaning of char-numeric?</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 164: <span class="summary">Meaning of char-numeric?</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-05 12:39:55</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/164/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-04-28 09:56:34</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>The current draft, like R6RS, defines <span class="monospace">char-numeric?</span> according to the nonexistent Unicode Numeric property.  That has to be fixed.  Options:</p>
+        <ol class="number">
+          <li><span class="monospace">char-numeric?</span> returns <span class="monospace">#t</span> if the character's Numeric_Type property value is other than <span class="monospace">None</span>.  This means that many hanzi are both alphabetic and numeric.</li></ol>
+        <ol class="number" start="2">
+          <li>(Omitted, because it does not preserve IEEE Scheme)</li></ol>
+        <ol class="number" start="3">
+          <li>Define <span class="monospace">char-numeric?</span> to return <span class="monospace">#t</span> only for 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9.  This retains compatibility witht R5RS, and we can still use <span class="monospace">char-numeric?</span> to parse numbers, and safely use <span class="monospace">(- (char-&gt;integer c) (char-&gt;integer #\0))</span> to obtain the digit value the character represents.  (Note: R5RS programs that use <span class="monospace">char-numeric?</span> to parse numbers will break if we adopt the current draft's definition of <span class="monospace">char-numeric?</span>).  Gauche, Gambit, and Chicken (without the utf8 egg) work like this.</li></ol>
+        <ol class="number" start="4">
+          <li>Define <span class="monospace">char-numeric?</span> as equivalent to the Numeric_Digit property (general category value of Nd).  Guile 2.0, Kawa, Larceny, Ypsilon, Mosh, and IronScheme work like this.</li></ol>
+        <ol class="number" start="5">
+          <li>define <span class="monospace">char-numeric?</span> as equivalent to the Number property (general category values of Nd, Nl, No).  Scheme48, Chez, and Ikarus work like this.</li></ol></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-04-28 09:58:07</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">The current draft, like R6RS, defines `char-numeric?` according to the nonexistent Unicode Numeric property.  That has to be fixed.  Options:
+
+ 1. `char-numeric?` returns `#t` if the character's Numeric_Type property value is other than `None`.  This means that many hanzi are both alphabetic and numeric.
+
+ 2. (Omitted, because it does not preserve IEEE Scheme)
+
+ 3. Define char-numeric? to return #t only for 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9.  This retains compatibility witht R5RS, and we can still use `char-numeric?` to parse numbers, and safely use `(- (char-&gt;integer c) (char-&gt;integer #\0))` to obtain the digit value the character represents.  (Note: R5RS programs that use `char-numeric?` to parse numbers will break if we adopt the current draft's definition of `char-numeric?`).  Gauche, Gambit, and Chicken (without the utf8 egg) work like this.
+
+ 4. Define `char-numeric?` as equivalent to the Numeric_Digit property (general category value of Nd).  Guile 2.0, Kawa, Larceny, Ypsilon, Mosh, and IronScheme work like this.
+
+ 5. define `char-numeric?` as equivalent to the Number property (general category values of Nd, Nl, No).  Scheme48, Chez, and Ikarus work like this.
+</span><span class="new-value">The current draft, like R6RS, defines `char-numeric?` according to the nonexistent Unicode Numeric property.  That has to be fixed.  Options:
+
+ 1. `char-numeric?` returns `#t` if the character's Numeric_Type property value is other than `None`.  This means that many hanzi are both alphabetic and numeric.
+
+ 2. (Omitted, because it does not preserve IEEE Scheme)
+
+ 3. Define `char-numeric?` to return `#t` only for 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9.  This retains compatibility witht R5RS, and we can still use `char-numeric?` to parse numbers, and safely use `(- (char-&gt;integer c) (char-&gt;integer #\0))` to obtain the digit value the character represents.  (Note: R5RS programs that use `char-numeric?` to parse numbers will break if we adopt the current draft's definition of `char-numeric?`).  Gauche, Gambit, and Chicken (without the utf8 egg) work like this.
+
+ 4. Define `char-numeric?` as equivalent to the Numeric_Digit property (general category value of Nd).  Guile 2.0, Kawa, Larceny, Ypsilon, Mosh, and IronScheme work like this.
+
+ 5. define `char-numeric?` as equivalent to the Number property (general category values of Nd, Nl, No).  Scheme48, Chez, and Ikarus work like this.
+</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 18:19:08</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted for the Numeric_Digit property.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-07-11 04:45:25</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-05 12:39:55</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

@@ -1,0 +1,35 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>LetSettingsKendal</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/LetSettingsKendal.md">LetSettingsKendal</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Let&shy;Settings&shy;Kendal</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-03-15 23:52:42</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/LetSettingsKendal/history">history</a></div>
+      <div class="source"><a href="/wiki/LetSettingsKendal/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p><a href="/wiki/SettingsListsCowan">SettingsListsCowan</a> is nice, but would be even better with some syntax for using settings lists in
+one's own procedures, perhaps:</p>
+      <p><span class="monospace">(let-settings (</span><i>keywords</i><span class="monospace"> </span><i>settings-list</i><span class="monospace">) . </span><i>body</i><span class="monospace">)</span></p>
+      <p>where <i>keywords</i> is a list of symbol names to extract from the <i>settings-list</i>,
+which will be bound to the named values in the current environment. The
+<span class="monospace">open-input-process</span> procedures from <a href="/wiki/ProcessPortsCowan">ProcessPortsCowan</a> might then be defined thus
+for the case where their <i>filename</i> argument is a list:</p><span class="monospace">   (define (open-[input|output|input/output]-process filename)
+     (let-settings ((path arguments environment
+                     stdin-redirection stdout-redirection) filename)
+       ...
+       (execvp path arguments environment) ; or whatever
+       ...))
+</span>
+      <p>(It could be written in terms of a <span class="monospace">call-with-settings</span> procedure, of course.)</p></div></body></html>

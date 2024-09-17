@@ -1,0 +1,123 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>SetsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/SetsCowan.md">SetsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Sets&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-04-28 23:54:26</div>
+      <div class="version">27<span class="comment"></span><a href="/wiki/SetsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/SetsCowan/27/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Sets,bags,integersets,andenumerationsets">Sets, bags, integer sets, and enumeration sets</h2>
+      <p>Sets and bags (multisets) are mutable collections that can contain any Scheme object.  Integer sets are mutable collections that can contain non-negative exact integers that are less than a maximum value specified when the integer set is created.  Enumeration sets are mutable collections that can contain symbols chosen from a set of symbols represented by an enumeration type.</p>
+      <p>Sets and bags are intended to be a thin veneer over hashtables, and integer sets are a thin veneer over bytevectors.  It is implementation-dependent whether an integer set packs eight values into each bytevector element or (as the reference implementation does) just one.  In turn, enumeration sets are a thin veneer over integer sets.  Consequently, the <span class="monospace">-member?</span>, <span class="monospace">-add!</span>, and <span class="monospace">-remove!</span> procedures are required to have an amortized cost of O(1).</p>
+      <p>Sets, bags, integer sets, enumeration sets, and enumeration types are mutually disjoint, and disjoint from other types of Scheme objects.</p>
+      <h2 id="Setprocedures">Set procedures</h2>
+      <p>It is an error to operate on sets with different equality procedures.</p>
+      <p><span class="monospace">(make-set </span><i>=</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated empty set.  <i>=</i> is the equality procedure for the set.  If <i>=</i> is other than <span class="monospace">eq?</span>, <span class="monospace">equal</span>, <span class="monospace">string=?</span>, or <span class="monospace">string-ci=?</span>, the implementation MAY signal an error.</p>
+      <p><span class="monospace">(set </span><i>=</i><span class="monospace"> </span><i>element</i><span class="monospace"> ...)</span></p>
+      <p>Returns a newly allocated set with equality procedure <i>=</i> and containing the <i>elements</i>.</p>
+      <p><span class="monospace">(set-copy </span><i>set</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated set containing the elements of <i>set</i>, with the same equality procedure.</p>
+      <p><span class="monospace">(set? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a set, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(set-length? </span><i>set</i><span class="monospace">)</span></p>
+      <p>Returns the number of elements in <i>set</i>.</p>
+      <p><span class="monospace">(set-member? </span><i>set</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>element</i> is a member of <i>set</i> and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(set-add! </span><i>set</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Adds <i>element</i> to <i>set</i> unless it is already a member.  Returns an unspecified value.</p>
+      <p><span class="monospace">(set-remove! </span><i>set</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Removes <i>element</i> from <i>set</i> unless it is not a member.  Returns <span class="monospace">#t</span> if the element was a member, <span class="monospace">#f</span> if not.</p>
+      <p><span class="monospace">(set-map </span><i>=</i><span class="monospace"> </span><i>proc</i><span class="monospace"> </span><i>set</i><span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to each element of <i>set</i> in arbitrary order and returns a newly allocated set with the equality predicate <i>=</i> which contains the results of the applications.</p>
+      <p><span class="monospace">(set-for-each </span><i>proc</i><span class="monospace"> </span><i>set</i><span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to <i>set</i> in arbitrary order, discarding the returned values.  Returns unspecified results.</p>
+      <p><span class="monospace">(set-fold </span><i>proc</i><span class="monospace"> </span><i>nil</i><span class="monospace"> </span><i>set</i><span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> on each member of <i>set</i> in arbitrary order, passing the result of the previous invocation as a second argument.  For the first invocation, <i>nil</i> is used as the second argument.  Returns the result of the last invocation.</p>
+      <p><span class="monospace">(set-&gt;list </span><i>set</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated list containing the members of <i>set</i> in unspecified order.  However, repeated calls to this procedure will return a list in the same order until the set is mutated.</p>
+      <p><span class="monospace">(list-&gt;set </span><i>= list</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated set with equality predicate <i>=</i> containing the elements of <i>list</i>.</p>
+      <p><span class="monospace">(set=? </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> contains the same elements.</p>
+      <p><span class="monospace">(set&lt;? </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> other than the last is a proper subset of the following <i>set</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(set&gt;? </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> other than the last is a proper superset of the following <i>set</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(set&lt;=? </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> other than the last is a subset of the following <i>set</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(set&gt;=? </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> other than the last is a superset of the following <i>set</i>, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(set-union </span><i>set<sub>1</sub></i><span class="monospace"> </span><i>set<sub>2</sub></i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated set that is the union of the <i>sets</i>.  It is an error if the sets do not have the same equality predicate.</p>
+      <p><span class="monospace">(set-intersection </span><i>set<sub>1</sub></i><span class="monospace"> </span><i>set<sub>2</sub></i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated set that is the intersection of the <i>sets</i>.  It is an error if the sets do not have the same equality predicate.</p>
+      <p><span class="monospace">(set-difference </span><i>set<sub>1</sub></i><span class="monospace"> </span><i>set<sub>2</sub></i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated set that is the asymmetric difference of <i>set<sub>1</sub></i> and the union of the other arguments.  It is an error if the sets do not have the same equality predicate.</p>
+      <p><span class="monospace">(set-xor </span><i>set<sub>1</sub></i><span class="monospace"> </span><i>set<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated set that is the xor (symmetric difference) of <i>set<sub>1</sub></i> and <i>set<sub>2</sub></i>.</p>
+      <p><span class="monospace">(set-union! </span><i>set<sub>1</sub></i><span class="monospace"> </span><i>set<sub>2</sub></i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(set-intersection! </span><i>set<sub>1</sub></i><span class="monospace"> </span>set,,2,,'' ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(set-difference! </span><i>set<sub>1</sub></i><span class="monospace"> </span><i>set<sub>2</sub></i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(set-xor! </span><i>set<sub>1</sub></i><span class="monospace"> </span><i>set<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>The same as <span class="monospace">set-union</span>, <span class="monospace">set-intersection</span>, <span class="monospace">set-difference</span>, and <span class="monospace">set-xor</span> respectively, but may destroy the <i>set<sub>1</sub></i> argument.</p>
+      <h2 id="Bagprocedures">Bag procedures</h2>
+      <p>The procedures for creating and manipulating bags are the same as those for sets, except that <span class="monospace">set</span> is replaced by <span class="monospace">bag</span> in their names, and that adding an element to a bag is effective even if the bag already contains the element.  However, <span class="monospace">bag-xor</span> and <span class="monospace">bag-xor!</span> do not exist.</p>
+      <p><span class="monospace">(bag-count </span><i>bag</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns an exact integer representing the number of times that <i>element</i> appears in <i>bag</i>; if it does not appear, returns 0.</p>
+      <p><span class="monospace">(bag-increment! </span><i>bag<span class="monospace"> </span>element<span class="monospace"> </span>count</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(bag-decrement! </span><i>bag<span class="monospace"> </span>element<span class="monospace"> </span>count</i><span class="monospace">)</span></p>
+      <p>Increases or decreases the count of <i>element</i> in <i>bag</i> by the exact integer <i>count</i>.  If <i>element</i> does not exist, its value is assumed to be 0.</p>
+      <h2 id="Integersetprocedures">Integer set procedures</h2>
+      <p>Except as noted below, the procedures for creating and manipulating integer sets are the same as those for sets, except that <span class="monospace">set</span> is replaced by <span class="monospace">integer-set</span> in their names, and references to equality predicates are replaced by limits, as the equality function is always <span class="monospace">=</span>.  Wherever a newly allocated integer set is returned, it has the same limit as the source sets.  It is an error to operate on integer sets with different limits.</p>
+      <p><span class="monospace">(make-integer-set </span><i>limit</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated integer set.  The possible elements of the set are the exact integers from 0 to <i>limit</i> - 1, where <i>limit</i> is an exact non-negative integer.  The set is empty.</p>
+      <p><span class="monospace">(make-universal-integer-set </span><i>limit</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated integer set.  The possible elements of the set are the exact integers from 0 to <i>limit</i> - 1, where <i>limit</i> is an exact non-negative integer.  The set contains all possible elements.</p>
+      <p><span class="monospace">(integer-set-complement </span><i>integer-set</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated integer set that is the complement of <i>integer-set</i>.</p>
+      <p><span class="monospace">(integer-set-complement! </span><i>integer-set</i><span class="monospace">)</span></p>
+      <p>Mutates <i>integer-set</i> to a new set that is the complement of <i>integer-set</i>.</p>
+      <p><span class="monospace">(integer-set-min </span><i>integer-set</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(integer-set-max </span><i>integer-set</i><span class="monospace">)</span></p>
+      <p>Returns the smallest or largest integer in `<span class="monospace">integer-set</span><span class="monospace">, or </span>#f` if there is none.</p>
+      <p><span class="monospace">(integer-set-min! </span><i>integer-set</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(integer-set-max! </span><i>integer-set</i><span class="monospace">)</span></p>
+      <p>Removes and returns the smallest or largest integer in `<span class="monospace">integer-set</span><span class="monospace">, or </span>#f` if there is none.</p>
+      <h2 id="Enumerationsets">Enumeration sets</h2>
+      <p>Except as noted below, the procedures for creating and manipulating enumeration sets are the same as those for sets, except that <span class="monospace">set</span> is replaced by <span class="monospace">enum-set</span> in their names.  Wherever a newly allocated enumeration set is returned, it has the same enumeration type as the source sets.  It is an error to operate on enumeration sets of different types.</p>
+      <p><span class="monospace">(make-enum-type </span><i>symbol-list</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration type suitable for constructing enumeration sets whose members are the symbols in <i>symbol-list</i>.  These symbols are said to be <i>in the enumeration type</i>.</p>
+      <p><span class="monospace">(enum-type-symbols </span><i>enum-type</i><span class="monospace">)</span></p>
+      <p>Return a newly allocated list of the symbols in <i>enum-type</i> in the original order.</p>
+      <p><span class="monospace">(make-enum-set </span><i>enum-type</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <i>enum-type</i>.  The set is empty.</p>
+      <p><span class="monospace">(make-universal-enum-set </span><i>enum-type</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <i>enum-type</i>.  The set contains all possible elements.</p>
+      <p><span class="monospace">(enum-set </span><i>enum-type</i><span class="monospace"> </span><i>element</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <i>enum-type</i>. The set is initialized to contain the <i>elements</i>.</p>
+      <p><span class="monospace">(list-&gt;enum-set </span><i>enum-type</i><span class="monospace"> </span><i>list</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in <i>enum-type</i>. The set is initialized to contain the elements of <i>list</i>.</p>
+      <p><span class="monospace">(enum-set-complement </span><i>enum-set</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set that is the complement of <i>enum-set</i>.</p>
+      <p><span class="monospace">(enum-set-projection </span><i>enum-set</i><span class="monospace"> </span><i>enum-type</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated enumeration set of type <i>enum-type</i>.  Its elements are the symbols belonging to <i>enum-set</i>, ignoring any symbols which are not in <i>enum-type</i>.</p>
+      <h2 id="Issues">Issues</h2>
+      <p>Consider adding <span class="monospace">eqv?</span> to the list of equality predicates guaranteed valid.  For some bizarre reason, R6RS does not support it.</p>
+      <p>R6RS provides <span class="monospace">define-enumeration</span> to help set up enumeration types.  Is this worth having?  Possible syntax is:</p>
+      <p><span class="monospace">(define-enumeration </span>&lt;type-name&gt;<span class="monospace"> (</span>&lt;symbol&gt; ...<span class="monospace">)</span> &lt;constructor&gt;<span class="monospace">)</span></p>
+      <p>Should there be a mechanism to convert between integer sets and integers as bitvectors, as defined in SRFI 33, SRFI 60, and R6RS?</p>
+      <p>Currently you can convert one set type to another via lists.  Are conversions directly through sets (or bags) useful enough to justify enlarging the SRFI?  What about other types of direct conversions?</p></div></body></html>

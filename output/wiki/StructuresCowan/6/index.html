@@ -1,0 +1,82 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StructuresCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StructuresCowan.md">StructuresCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Structures&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-03-19 21:44:01</div>
+      <div class="version">6<span class="comment"></span><a href="/wiki/StructuresCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/StructuresCowan/6/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Structures are an extension of the representation types of <a href="/wiki/NumericVectorsCowan">NumericVectorsCowan</a>.  A structure is created by specifying a named sequence of representation types, each with a name and a repetition count, in the manner of a C struct; the repetition count corresponds to the size of an array within the structure.  This representation type can then be mapped onto a bytevector, allowing the bytevector to be manipulated as if it were a Scheme record or a vector of such records.</p>
+      <h2 id="Structuredescriptors">Structure descriptors</h2>
+      <p><span class="monospace">(make-structure-descriptor </span><i>name fieldspecs</i> [ <i>pad?</i> ] <span class="monospace">)</span></p>
+      <p><i>Name</i> is a symbol used for documentation purposes only.  <i>Fieldspecs</i> is a vector each of whose elements is a list of three elements, a symbol denoting a name (again, for documentation purposes only), another symbol denoting a representation type and an exact non-negative integer denoting a repetition count.  The valid types are those of ByteVectorsCowan, plus the following:</p>
+      <ul>
+        <li><span class="monospace">char8</span>, <span class="monospace">char16</span>, char16-be<span class="monospace">, char16-le</span>, <span class="monospace">char32</span>, <span class="monospace">char32-be</span>, <span class="monospace">char32-le</span> are equivalent to <span class="monospace">u8</span>, <span class="monospace">u16</span>, <span class="monospace">u16-be</span>, <span class="monospace">u16-le</span>, <span class="monospace">u32</span>, <span class="monospace">u32-le</span>, <span class="monospace">u32-be</span> respectively, but are interpreted as characters when converting to and from Scheme, using the same conventions as <span class="monospace">char-&gt;integer</span> and <span class="monospace">integer-&gt;char</span></li></ul>
+      <ul>
+        <li><span class="monospace">bool8</span>, <span class="monospace">bool16</span>, <span class="monospace">bool16-be</span>, <span class="monospace">bool16-le</span>, <span class="monospace">bool32-be</span>, <span class="monospace">bool32-le</span>, <span class="monospace">bool32</span> are also equivalent to <span class="monospace">u8</span>, <span class="monospace">u16</span>, <span class="monospace">u16-be</span>, <span class="monospace">u16-le</span>, <span class="monospace">u32-be</span>, <span class="monospace">u32-le</span>, <span class="monospace">u32</span>, but are interpreted as booleans when converting to and from Scheme, using the convention that 0 is <span class="monospace">#f</span> and any other value is <span class="monospace">#t</span></li></ul>
+      <p>The result is a newly allocated immutable object of a disjoint type from which <i>name</i> can be retrieved, called a structure descriptor.  It is also possible to retrieve fields, which are objects representing the name, type, repetition count, and the computed byte offset from the beginning of a struct to each field.  Fields may or may not be a disjoint type.</p>
+      <p>If <i>pad?</i> is true, implementations should pad offsets as necessary in order to achieve the same layout as the dominant C implementation on the same platform.  Otherwise, implementations may not insert padding bytes.</p>
+      <p><span class="monospace">(structure-descriptor? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a structure descriptor and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(structure-descriptor-name </span><i>structure-type</i><span class="monospace">)</span></p>
+      <p>Returns the name of <i>structure-type</i>.</p>
+      <p><span class="monospace">(structure-descriptor-field </span><i>structure-type obj</i><span class="monospace">)</span></p>
+      <p>If <i>obj</i> is an exact integer, returns the <i>obj</i>th field from <i>structure-type</i>.  If <i>obj</i> is a symbol, returns the field whose name is <i>obj</i>.</p>
+      <p><span class="monospace">(structure-length </span><i>structure-type</i><span class="monospace">)</span></p>
+      <p>Returns the length of all the fields in bytes including any intermediate or trailing padding.</p>
+      <h2 id="Structurefields">Structure fields</h2>
+      <p><span class="monospace">(structure-field-name </span><i>field</i><span class="monospace">)</span></p>
+      <p>Returns the name associated with <i>field</i>.</p>
+      <p><span class="monospace">(structure-field-type </span><i>field</i><span class="monospace">)</span></p>
+      <p>Returns the symbol representing the representation type of <i>field</i>.</p>
+      <p><span class="monospace">(structure-field-count </span><i>field</i><span class="monospace">)</span></p>
+      <p>Returns the non-negative exact integer representing the repetition count of <i>field</i>.</p>
+      <p><span class="monospace">(structure-field-offset </span><i>field</i><span class="monospace">)</span></p>
+      <p>Returns the non-negative exact integer representing the byte offset of <i>field</i>.</p>
+      <p><span class="monospace">(structure-field-structure-descriptor </span><i>field</i><span class="monospace">)</span></p>
+      <p>Returns the structure descriptor to which <i>field</i> belongs.</p>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(make-structure </span> <i>structure-descriptor</i> [ <i>k</i> ] <span class="monospace">)</span></p>
+      <p>Returns a newly allocated bytevector whose length is equal to the length of <i>structure-descriptor</i> times <i>k</i> (default 1).  The initial values of the fields are implementation-dependent.</p>
+      <p><span class="monospace">(structure </span> <i>structure-descriptor</i> <i>value</i> ... <span class="monospace">)</span></p>
+      <p>Returns a newly allocated bytevector whose length is equal to the length of <i>structure-descriptor</i>.  The bytes are initialized based on converting the values sequentially, based on the representation types in <i>structure-descriptor</i>.  A field with a repetition count other than 1 is initialized from a vector of numbers, a string, or a vector of booleans of appropriate length depending on the field's representation type.  If the fields have been exhausted and more values are available, the fields begin again, thus making it possible to return a vector of structures.</p>
+      <h2 id="Accessors">Accessors</h2>
+      <p><span class="monospace">(structure-ref </span><i>bytevector field</i> [ <i>index</i> ] <span class="monospace">)</span></p>
+      <p>Fetches the <i>index</i>th repetition (0 by default) of <i>field</i> found by mapping the structure descriptor of <i>field</i> onto the bytes of <i>bytevector</i>.  The result is a Scheme number, character, or boolean.</p>
+      <p><span class="monospace">(bytevector-structure-ref </span><i>bytevector k field</i> [ <i>index</i> ] <span class="monospace">)</span></p>
+      <p>The same as <span class="monospace">structure-ref</span>, but rather than mapping the structure to the beginning of <i>bytevector</i>, it is mapped starting at the <i>k</i>th byte of <i>bytevector</i>.  This is appropriate when the structure is embedded at an arbitrary point in the bytevector.</p>
+      <p><span class="monospace">(structure-vector-ref </span><i>bytevector k field</i> [ <i>index</i> ] <span class="monospace">)</span></p>
+      <p>The same as <span class="monospace">bytevector-structure-ref</span>, except that <i>k</i> is multiplied by the length of the structure definition to which <i>field</i> belongs.  This is appropriate when the bytevector is being viewed as a homogeneous array of structures.</p>
+      <h2 id="Mutators">Mutators</h2>
+      <p><span class="monospace">(structure-set! </span><i>bytevector field</i> [ <i>index</i> ] <i>obj</i> <span class="monospace">)</span></p>
+      <p>Sets the <i>index</i>th repetition (0 by default) of <i>field</i> found by mapping the structure descriptor of <i>field</i> onto the bytes of <i>bytevector</i> to the Scheme number, character, or boolean <i>obj</i>.  In the case of a boolean field, any object other than <span class="monospace">#f</span> is treated as <span class="monospace">#t</span>.</p>
+      <p><span class="monospace">(bytevector-structure-set! </span><i>bytevector k field</i> [ <i>index</i> ] <i>obj</i> <span class="monospace">)</span></p>
+      <p>The same as <span class="monospace">structure-set!</span>, but rather than mapping the structure to the beginning of <i>bytevector</i>, it is mapped starting at the <i>k</i>th byte of <i>bytevector</i>.  This is appropriate when the structure is embedded at an arbitrary point in the bytevector.</p>
+      <p><span class="monospace">(structure-vector-set! </span><i>bytevector k field</i> [ <i>index</i> ] <i>obj</i> <span class="monospace">)</span></p>
+      <p>The same as <span class="monospace">bytevector-structure-set!</span>, except that <i>k</i> is multiplied by the length of the structure definition to which <i>field</i> belongs.  This is appropriate when the bytevector is being viewed as a homogeneous array of structures.</p>
+      <h2 id="Conversion">Conversion</h2>
+      <p><span class="monospace">(vector-&gt;structure </span><i>structure-descriptor bytevector</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(list-&gt;structure </span><i>structure-descriptor bytevector</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated bytevector which, when viewed as one or more structures specified by <i>structure-descriptor</i>, has the same elements as <i>vector</i> or <i>list</i>.  The conversion is done as specified in the description of the <span class="monospace">structure</span> procedure.  An error is signaled if an element of <i>vector</i> or <i>list</i> cannot be accurately converted to the appropriate type.</p>
+      <p><span class="monospace">(structure-&gt;vector </span><i>structure-descriptor bytevector</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(structure-&gt;list </span><i>structure-descriptor bytevector</i><span class="monospace">)</span></p>
+      <p>Returns a vector or list with the same elements as <i>bytevector</i> viewed as one or more structures as specified by <i>structure-descriptor</i>.</p>
+      <h2 id="Structuredefinitionmacro">Structure definition macro</h2>
+      <p><span class="monospace">(define-structure </span><i>name</i> <span class="monospace">(</span><i>fieldname type</i> [ <i>count</i> ] [ <i>accessor</i> [ <i>mutator</i> ] ] <span class="monospace">)</span> ... <span class="monospace">)</span></p>
+      <p>Invokes <span class="monospace">make-structure</span> on <i>name</i> and a vector of fieldspecs constructed from the quoted name, representation type and repetition count specifiers.  The default repetition count is 1.  <i>Pad?</i> is set to true.</p>
+      <p>The variable <i>name</i> is then bound to the resulting structure type and the <i>fieldname</i> variables to the fields as if by <span class="monospace">define</span>.  Any <i>accessor</i> variables present are bound to procedures which accept a bytevector and an optional index, and behave like <span class="monospace">structure-ref</span>.  Any <i>mutator</i> variables present are bound to procedures which accept a bytevector, an optional index, and a value, and behave like <span class="monospace">structure-set!</span>.</p>
+      <h2 id="Issues">Issues</h2>
+      <p>The <i>fieldspecs</i> argument of <span class="monospace">make-structure-descriptor</span> is a vector for the sake of compatibility with SRFI 99.  If we decide to change that, we ought to change this too.</p></div></body></html>

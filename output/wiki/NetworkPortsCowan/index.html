@@ -1,0 +1,45 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NetworkPortsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NetworkPortsCowan.md">NetworkPortsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Network&shy;Ports&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-01-10 13:07:51</div>
+      <div class="version">7<span class="comment"></span><a href="/wiki/NetworkPortsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/NetworkPortsCowan/7/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="NetworkPorts">Network Ports</h2>
+      <p>Network ports are a mild abstraction of TCP sockets. They are a subtype of ports.</p>
+      <p>This proposal depends on <a href="/wiki/SettingsListsCowan">SettingsListsCowan</a>.  Settings lists passed to procedures in this proposal MUST NOT contain the <span class="monospace">path</span> key, but MAY contain the keys <span class="monospace">host</span> and <span class="monospace">port</span> defined below.</p>
+      <h2 id="ClientProcedures">Client Procedures</h2>
+      <p>The procedures in this section take a specification for a TCP socket and return a input/output port connected to the socket.</p>
+      <p><span class="monospace">(open-network-client </span><i>settings-list</i><span class="monospace">)</span></p>
+      <p>Returns an input/output port connected to the host and port specified by <i>settings-list</i>.</p>
+      <h2 id="ServerProcedures">Server Procedures</h2>
+      <p><span class="monospace">(make-network-listener </span><i>settings-list</i><span class="monospace">)</span></p>
+      <p>Returns an opaque <i>listener</i> object (which may be of any type) that will accept connections to the port and host (which must be a local address) specified in <i>settings-list</i>.  If the host is not specified, the listener will accept connections that are made to <i>port</i> on any local address.</p>
+      <p><span class="monospace">(open-network-server </span><i>listener</i><span class="monospace">)</span></p>
+      <p>Waits for a client to connect to <i>listener</i>, and returns an input/output port connected to that client.  When the port is closed, this procedure may be invoked again on the same listener.</p>
+      <p><span class="monospace">(close-network-listener </span><i>listener</i><span class="monospace">)</span></p>
+      <p>Close <i>listener</i> and abandon any further attempts to listen for collections.</p>
+      <h2 id="Settings-listKeys">Settings-list Keys</h2>
+      <p>Implementations MUST support the following keys:</p>
+      <dl>
+        <dt><span class="monospace">host</span></dt>
+        <dd>Specifies the host as a string.  It may be an IPv4 dotted-decimal address, an IPv6 colon-hexadecimal address if supported by the operating system, or a host name to be looked up according to whatever operating system conventions exist, if any.  Appropriate strings may refer to broadcast or multicast addresses.
+The host can also be specified as a bytevector of length 4 or 16.</dd>
+        <dt><span class="monospace">port</span></dt>
+        <dd>Specifies the port number as an exact integer or the port name as a string.  The meaning of a string is implementation-dependent, but is intended to be a standardized service name.</dd>
+        <dt><span class="monospace">network-endpoint</span></dt>
+        <dd>Specifies both the host and the port number in the form of a network endpoint object.  See <a href="/wiki/NetworkEndpointsCowan">NetworkEndpointsCowan</a>.</dd></dl></div></body></html>

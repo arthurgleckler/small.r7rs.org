@@ -1,0 +1,31 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StringBytevectorConversionCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StringBytevectorConversionCowan.md">StringBytevectorConversionCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">String&shy;Bytevector&shy;Conversion&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-23 01:32:32</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/StringBytevectorConversionCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/StringBytevectorConversionCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This proposal extends the <span class="monospace">(scheme base)</span> procedures <span class="monospace">utf8-&gt;string</span> and <span class="monospace">string-&gt;utf8</span> to additional encodings, providing procedures that translate between strings and bytevectors that encode those strings using the UTF-16, UTF-16LE, and UTF-16BE encodings.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(utf16-&gt;string </span><i>bytevector start end</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(utf16le-&gt;string </span><i>bytevector start end</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(utf16be-&gt;string </span><i>bytevector start end</i><span class="monospace">)</span></p>
+      <p>Decodes the bytes of <i>bytevector</i> between <i>start</i> and <i>end</i> and returns the corresponding string.  It is an error for <i>bytevector</i> to contain byte sequences representing characters which are forbidden in strings.  If the first two bytes of the bytevector are either <span class="monospace">#xFE #xFF</span> or <span class="monospace">#xFF #xFE</span>, then <span class="monospace">utf16-&gt;string</span> interprets them as a byte order mark, and uses that to interpret the rest of the bytevector as little-endian or big-endian respectively.  If no byte order mark is present, the assumed byte order is implementation-defined.  The other two procedures always interpret the encoded form as little-endian or big-endian respectively, and do not recognize any byte order mark.</p>
+      <p><span class="monospace">(string-&gt;utf16 </span><i>string start end</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-&gt;utf16le </span><i>string start end</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(string-&gt;utf16be </span><i>string start end</i><span class="monospace">)</span></p>
+      <p>Encodes the characters of <i>string</i> between <i>start</i> and <i>end</i> and returns the corresponding bytevector.  <span class="monospace">String-&gt;utf16</span> always generates a byte order mark, but the byte order it generates is implementation-defined.  The other two procedures always generate the encoded form as little-endian or big-endian respectively, and do not generate any byte order mark.</p></div></body></html>

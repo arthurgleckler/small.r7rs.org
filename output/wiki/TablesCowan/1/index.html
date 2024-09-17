@@ -1,0 +1,72 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>TablesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/TablesCowan.md">TablesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Tables&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-08-27 20:14:09</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/TablesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/TablesCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Tables">Tables</h2>
+      <p>This proposal defines an interface to tables, which are widely recognized as a fundamental data structure for a wide variety of applications.  A table is a data structure that:</p>
+      <ol class="number">
+        <li>Is disjoint from all other types.</li>
+        <li>Provides a mapping from some set of <i>keys</i> to some set of <i>values</i> associated to those keys.  Keys and values may be any Scheme objects.</li>
+        <li>Provides an <i>equivalence function</i> which defines when a proposed key is the same as an existing key.  No table may contain more than one value for a given key.</li>
+        <li>Supports mutation as the primary means of setting the contents of a table.</li>
+        <li>Assumes that keys are immutable; mutating a key leads to unspecified behavior.</li></ol>
+      <p>No particular implementation such as a-lists, red-black trees, or hash tables is mandated by this proposal.  Implementations SHOULD provide the most efficient implementation in time or space or both possible that is consistent with their larger goals; this may mean different implementations for tables of different lengths.</p>
+      <p>Incorporating this proposal as a standard feature in WG1 Scheme implementations makes it possible to write efficient and portable programs that use tables.</p>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(make-table </span>[<i>equivalence-function</i>]<span class="monospace"> . </span><i>args</i><span class="monospace">)</span></p>
+      <p>Creates a new table with no associations. <i>Equivalence-function</i> is a predicate that should accept two keys and return a boolean telling whether they denote the same key value; it defaults to <span class="monospace">equal?</span>.</p>
+      <p>Implementations MAY use the <i>args</i> for implementation-specific extensions.</p>
+      <p><span class="monospace">(table </span>[<i>key</i> <i>value</i>] ... <span class="monospace">)</span></p>
+      <p>Creates a new table and populates it with the associations based on the successive <i>key</i> and <i>value</i> arguments.  The implementation may take the arguments into account in deciding which what kind of table to create.</p>
+      <p><span class="monospace">(list-&gt;</span><i>table</i><span class="monospace"> </span><i>alist</i> . <span class="monospace">''args''</span>)`</p>
+      <p>Creates a new table which maps the car of every element in <i>alist</i> to the cdr of the same element.  The <i>args</i> are interpreted as in <span class="monospace">make-table</span>. If some key occurs multiple times in alist, the value in the first association will take precedence over later ones.</p>
+      <h2 id="Predicates">Predicates</h2>
+      <p><span class="monospace">(table? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a table.</p>
+      <p><span class="monospace">(table-exists? </span><i>table</i><span class="monospace"> </span><i>key</i>`)'</p>
+      <p>Returns <span class="monospace">#t</span> if there is any association to <i>key</i> in <i>table</i>.</p>
+      <h2 id="Accessors">Accessors</h2>
+      <p><span class="monospace">(table-ref </span><i>table</i><span class="monospace"> </span><i>key</i> [ <i>thunk</i> ]<span class="monospace">)</span></p>
+      <p>Returns the value associated to <i>key</i> in <i>table</i>. If no value is associated to <i>key</i> and <i>thunk</i> is given, it is called with no arguments and its value is returned; if <i>thunk</i> is not given, an error is signalled.</p>
+      <p><span class="monospace">(table-length </span><i>table</i><span class="monospace">)</span></p>
+      <p>Returns the number of associations in table.</p>
+      <p><span class="monospace">(table-keys </span><i>table</i><span class="monospace">)</span></p>
+      <p>Returns a list of the keys in <i>table</i>. The order of the keys is unspecified.</p>
+      <p><span class="monospace">(table-values</span><i>table</i><span class="monospace">)</span></p>
+      <p>Returns a list of the values in <i>table</i>. The order of the keys is unspecified, and may be inconsistent with the results of <span class="monospace">table-keys</span>.</p>
+      <p><span class="monospace">(table-equivalence-function </span>''table<span class="monospace">)</span></p>
+      <p>Returns the equivalence function of <i>table</i>.</p>
+      <h2 id="Mutators">Mutators</h2>
+      <p><span class="monospace">(table-set! </span><i>table</i><span class="monospace"> </span><i>key</i><span class="monospace"> </span><i>value</i><span class="monospace">)</span></p>
+      <p>Sets the <i>value</i> associated to <i>key</i> in <i>table</i>. The previous association (if any) is removed.</p>
+      <p><span class="monospace">(table-delete! </span><i>table</i><span class="monospace"> </span><i>key</i><span class="monospace">)</span></p>
+      <p>Removes any association to <i>key</i> in <i>table</i>. It is not an error if no association for that <i>key</i> exists; in this case, nothing is done.</p>
+      <p><span class="monospace">(table-update! </span><i>table</i><span class="monospace"> </span><i>key</i><span class="monospace"> </span><i>function</i> [ <i>thunk</i> ]<span class="monospace">)</span></p>
+      <p>Semantically equivalent to, but may be implemented more efficiently than, the following code:</p>
+      <p><span class="monospace">(table-set! </span><i>table</i><span class="monospace"> </span><i>key</i><span class="monospace"> (function (table-ref </span><i>table</i><span class="monospace"> </span><i>key</i><span class="monospace"> </span><i>thunk</i><span class="monospace">)))</span></p>
+      <h2 id="Iterators">Iterators</h2>
+      <p><span class="monospace">(table-map </span><i>table</i><span class="monospace"> </span><i>procedure</i> . <span class="monospace">''args''</span>)`</p>
+      <p>Returns a new table as if by invoking <span class="monospace">(make-table . </span><i>args</i>`).  The new table is the result of mapping <i>procedure</i>, which takes two arguments, over <i>table</i>.  It is applied to the key and value of each association in <i>table</i>, and returns two values, the key and value to be placed in the new table.</p>
+      <p><span class="monospace">(table-for-each </span><i>table</i><span class="monospace"> </span><i>procedure</i><span class="monospace">)</span></p>
+      <p>The same as <span class="monospace">table-map</span>, except that no new table is constructed; returns undefined values.</p>
+      <p><span class="monospace">(table-&gt;list </span><i>table</i><span class="monospace">)</span></p>
+      <p>Returns an association list such that the car of each element is a key in <i>table</i> and the corresponding cdr of is the value associated to the key.  The order of the elements is unspecified.</p>
+      <p><span class="monospace">(table-copy </span><i>table</i><span class="monospace">)</span></p>
+      <p>Returns a new table with the same equivalence predicate, associations, and implementation-dependent properties (if any) as <i>table</i>.</p></div></body></html>

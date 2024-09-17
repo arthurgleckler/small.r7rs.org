@@ -1,0 +1,38 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki CyclicListsCowan version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki CyclicListsCowan version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>98.14.172.204</pre>
+    <h2>name</h2>
+    <pre>CyclicListsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Circular lists ==
+
+`(encycle! `''list''` `''head-size''` `''cycle-size''`)`
+
+''Head-size'' and ''cycle-size'' MUST be exact non-negative integers. The (possibly improper) ''list'' MUST contain at least ''head-size'' + ''cycle-size'' pairs.  If ''cycle-size'' = 0, does nothing. If ''cycle-size'' &gt; 0, mutates ''list'' to have a cyclic prefix of length ''head-size'' and cycle length ''cycle-size'', by setting the `cdr` of the (''head-size'' + ''cycle-size'')th pair in the list to refer to the (''head-size''+ 1)th pair in the list.  Returns unspecified values.
+
+What else should go here depends on what WG1 decides to do about circular lists generally.
+</pre>
+    <h2>time</h2>
+    <pre>2010-09-27 01:11:59</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

@@ -1,0 +1,71 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>106: conditional code selection</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 106: <span class="summary">conditional code selection</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-01-24 06:54:00</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/106/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-11-30 13:04:16</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>As discussed in</p>
+        <p>https://groups.google.com/group/scheme-reports-wg1/browse_thread/thread/99c05dcb6a500183</p>
+        <p>users invariably want some way to conditionally
+select code depending on the implementation and/or
+feature set available.  SRFI-0 provides <span class="monospace">cond-expand</span>,
+R6RS implementations informally provide a library
+naming hack, and numerous other personal hacks exist.</p>
+        <p>Do we want to include something along these lines
+in WG1 Scheme?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">medernac</div>
+            <div class="time">2010-11-30 16:04:44</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Definitely yes, we need a standard way to inspect the availability
+of optional features and select code accordingly. There already are many existing proposals, this is either a module feature or a meta-language feature:</p>
+              <ul>
+                <li>SRFI-0 defines a registry of &quot;feature identifiers&quot; and a 'cond-expand' form.</li>
+                <li>SRFI-55 has 'require-extension'</li>
+                <li>SLIB has 'require / provided? / provide' forms</li>
+                <li>Modules systems have their import mechanism</li>
+                <li>There are also configuration languages such as Scheme48, Racket, etc.</li></ul></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-12-17 15:51:09</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I want to mention <a href="http://www.scheme.com/csug8/syntax.html#./syntax:h9">meta-cond</a> which I think is a particularly nice and general solution. I think we could make it work.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 06:54:00</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 decided to go with <a href="/wiki/CondExpandCowan">CondExpandCowan</a>.</p></div></div></div></div></div></body></html>

@@ -1,0 +1,54 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImmutablePairsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImmutablePairsCowan.md">ImmutablePairsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Immutable&shy;Pairs&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-06-16 10:03:11</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/ImmutablePairsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ImmutablePairsCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Rationale">Rationale</h2>
+      <p>This library provides immutable pairs.  Note that they are simply immutable and make no special provisions for functional update: there are no analogues of <span class="monospace">set-car!</span> and <span class="monospace">set-cdr!</span>.  They are also unrelated to ordinary Scheme pairs.</p>
+      <p>From immutable pairs plus the empty list we can build immutable lists.  Note that the empty list can be safely used in both mutable and immutable lists, because it itself is immutable.</p>
+      <h2 id="Issues">Issues</h2>
+      <ol class="number">
+        <li>Should there be a lexical syntax for <span class="monospace">iquote</span>, analogous to <span class="monospace">'</span> for <span class="monospace">quote</span>?  One possibility would be <span class="monospace">#i</span>, which means &quot;inexact&quot; when used before a number, but nothing special when it precedes a literal list.</li></ol>
+      <ol class="number" start="2">
+        <li>In SRFI 1, <span class="monospace">length</span> is R5RS <span class="monospace">length</span> (which may loop on circular structure) and <span class="monospace">length+</span> is R6RS/R7RS-small <span class="monospace">length</span> (which must not).  Both have their uses, and whatever is done for R7RS-large should be done here too.</li></ol>
+      <h2 id="Syntax">Syntax</h2>
+      <p><span class="monospace">(iquote </span>&lt;list&gt;<span class="monospace">)</span></p>
+      <p>Returns an immutable version of &lt;list&gt;.  If &lt;list&gt; is not a pair, it is returned.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p>The following procedures are renamed from those in <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a>.  They are a superset of those in R5RS and R7RS-small.  The intention is to make immutable lists as close to a drop-in replacement for ordinary lists as possible.  Each one does exactly what you'd expect from reading SRFI 1.</p>
+      <p>Constructors:</p>
+      <p><span class="monospace">icons ilist ixcons icons* make-ilist ilist-tabulate ilist-copy circular-ilist ilist-iota</span></p>
+      <p>Predicates:</p>
+      <p><span class="monospace">ipair? ilist? proper-ilist? circular-ilist? dotted-ilist? null-ilist? ilist=</span></p>
+      <p>Selectors:</p>
+      <p><span class="monospace">icar icdr</span> ... <span class="monospace">icddadr icddddr ilist-ref icar+icdr ilist-take ilist-drop</span> (also known as <span class="monospace">ilist-tail</span>) <span class="monospace">ilist-take-right ilist-drop-right split-at ilist-last ilist-last-pair</span></p>
+      <p>Miscellaneous:</p>
+      <p><span class="monospace">ilist-length ilist-append ilist-concatenate ilist-reverse ilist-append-reverse ilist-zip ilist-unzip1 ilist-unzip2 ilist-unzip3 ilist-unzip4 ilist-unzip5 ilist-count</span></p>
+      <p>Fold, unfold &amp; map:</p>
+      <p><span class="monospace">ilist-map ilist-for-each ilist-fold ilist-unfold ilist-pair-fold ilist-reduce ilist-fold-right ilist-unfold-right ipair-fold-right ilist-reduce-right ilist-append-map ilist-pair-for-each ilist-filter-map ilist-map-in-order</span></p>
+      <p>Filtering &amp; partitioning:</p>
+      <p><span class="monospace">ilist-filter ilist-partition ilist-remove</span></p>
+      <p>Searching:</p>
+      <p><span class="monospace">ilist-member ilist-memq ilist-memv ilist-find ilist-find-tail ilist-any ilist-every ilist-index ilist-take-while ilist-drop-while ilist-span ilist-break</span></p>
+      <p>Deleting:</p>
+      <p><span class="monospace">ilist-delete ilist-delete-duplicates</span></p>
+      <p>Immutable association lists:</p>
+      <p><span class="monospace">ilist-assoc ilist-assq ilist-assv ialist-cons ialist-copy ialist-delete</span></p>
+      <p>Set operations on immutable lists:</p>
+      <p><span class="monospace">ilist-set&lt;= ilist-set= ilist-set-adjoin ilist-set-union ilist-set-intersection ilist-set-difference ilist-set-xor ilist-set-diff+intersection</span></p></div></body></html>

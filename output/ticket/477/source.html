@@ -1,0 +1,302 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #477</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #477</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-12-07 00:23:11</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Submitter's name: Mark H Weaver
+
+Submitter's email: mhw at netris.org
+
+Relevant draft: R7RS draft 7
+
+Type: defect
+
+Priority: major
+
+Relevant section of draft: Equivalence predicates
+
+Summary: Memoization is not possible in portable R7RS.
+
+== Introduction ==
+
+Memoization requires an equality predicate that is guaranteed to return `#f` when its arguments are not operationally equivalent. The R6RS provides such a predicate (`eqv?`), but the R7RS draft does not.
+
+The R7RS draft `eqv?` provides the needed guarantee only for IEEE-style flonums.  For other inexact representations, the R7RS draft imposes a requirement that may conflict with the needed guarantee: it requires that if its arguments are non-IEEE-style inexact numbers and not both !NaNs, then `=` and `eqv?` must agree.
+
+== Conflict Example 1: Signed zeroes ==
+
+Signed zeroes are meant to preserve the sign in case of a numerical underflow, so that the correct branch is selected along a branch cut. For example, although `(= -1.0+0.0i -1.0-0.0i)` =&gt; `#t` :
+
+{{{
+  (log -1.0+0.0i) =&gt; +πi
+  (log -1.0-0.0i)` =&gt; -πi
+}}}
+
+This ensures that, in some numerical process, if variable ''z'' approaches -1.0 from the negative imaginary side, (log z) will not abruptly change from -''π''i to +''π''i when the imaginary part of ''z'' underflows.
+
+More generally, the usual convention is that `(f +0.0)` evaluates the limit of `(f x)` where ''x'' approaches zero from above, and `(f -0.0)` evaluates the same limit from below.
+
+Although the signed zeroes are traditionally associated with IEEE 754, they are a useful concept that might be included in any other inexact numerical representation.
+
+In order to memoize `log` properly, it must be possible to distinguish `-1.0+0.0i` from `-1.0-0.0i`, although those two numbers are ''=''.
+
+== Conflict Example 2: Multiple precision arithmetic ==
+
+Implementations may provide multiple representations of inexact numbers with different precisions, and primitive arithmetic operations may compute a result whose precision depends on the precision of the arguments.  For example `(sqrt x)`, where `(= x 2.0)`, may yield a different result depending on the precision of ''x''.
+
+In order to memoize `sqrt` properly, it must be possible to distinguish a low-precision representation of 2.0 from a high-precision representation of 2.0, although those two numbers are `=`.
+
+== History of eqv? on numbers ==
+
+The [http://dspace.mit.edu/bitstream/handle/1721.1/5600/AIM-848.pdf RRRS] was the first Scheme report to define `eqv?` (page 24).  It defined `eqv?` on inexact numbers as follows (this is actually from its definition of `eq?`, but `eqv?` was defined as being the same as `eq?` for inexact numbers):
+
+   Returns `#!true` if ''obj,,1,,'' is identical in all respects to ''obj,,2,,'', otherwise returns `#!false`.  If there is any way at all that a user can distinguish ''obj,,1,,'' and ''obj,,2,,'', then eq? will return `#!false`.
+
+The [http://people.csail.mit.edu/jaffer/r3rs_8.html R3RS] explicitly defined EQV? in terms of operational equivalence:
+
+   The eqv? procedure implements an approximation to the relation of    operational equivalence.  It returns #t if it can prove that ''obj,,1,,'' and ''obj,,2,,'' are operationally equivalent.  If it can't, it always errs on the conservative side and returns `#f`.
+
+Here's the R3RS definition of operational equivalence:
+
+   Two objects are operationally equivalent if and only if there is no way that they can be distinguished, using Scheme primitives other than `eqv?` or `eq?` or those like `memq` and `assv` whose meaning is defined explicitly in terms of `eqv?` or `eq?`.  It is guaranteed that objects maintain their operational identity despite being named by variables or fetched from or stored into data structures.
+
+It then elaborates what this means for various types, including numbers:
+
+   Two numbers are operationally equivalent if they are numerically equal (see `=`, section see section 6.5.4 Numerical operations) and are either both exact or both inexact (see section see section 6.5.2 Exactness).
+
+This elaboration is all that remained in the R4RS and R5RS.
+
+The R6RS was the first report to explicitly discuss IEEE floating point numbers, signed zeroes, and multiple precisions.  The authors recognized the inadequacy of the R5RS definition of `eqv?` in the presence of these new numbers, and changed the definition of `eqv?` on inexact numbers to one based on operational equivalence.
+
+The R7RS working group has also recognized the inadequacy of the R5RS `eqv?`, and adopted language that provides the needed guarantee for IEEE-style floating point numbers.  However, the current draft requires that implementations violate the needed guarantee for many types of non-IEEE numbers.
+
+== Proposed solutions ==
+
+ 1. Adopt the definition of `eqv?` on numbers attached below.
+
+ 2.  Remove the clauses of the R7RS `eqv?` definition pertaining to non-IEEE-style inexact numbers, thus eliminating the conflict that prohibits implementations from providing the guarantee needed to implement portable memoization.
+
+== Proposed R7RS definition for `eqv?` on numbers ==
+
+Objects ''obj,,1,,'' and ''obj,,2,,'' are ''substantially different'' if and only if one of the following holds:
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are both numbers, at least one is numerically equal to itself (see `=`), and they are not numerically equal (see `=`) to each other.
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are not both numbers, and they are different (in the sense of `eqv?`).
+
+Inexact numbers ''z,,1,,'' and ''z,,2,,'' are ''operationally equivalent'' if and only if for all procedures ''f'' that can be defined as a finite composition of the standard numerical operations specified in section 6.2.6, `(f z1)` and `(f z2)` either both raise exceptions or yield results that are not substantially different.
+
+The `eqv?` procedure returns `#t` if one of the following holds:
+
+[...]
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are both exact numbers and are numerically equal (see `=`).
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are both inexact numbers, at least one is numerically equal to itself (see `=`), and the implementation is able to prove that ''obj,,1,,'' and ''obj,,2,,'' are operationally equivalent.  Implementations must be able to prove that two inexact numbers with the same internal representation are operationally equivalent.
+
+The `eqv?` procedure returns `#f` if one of the following holds:
+
+[...]
+
+* One of ''obj,,1,,'' and ''obj,,2,,'' is an exact number but the other is an inexact number.
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are exact numbers for which the `=` procedure returns `#f`.
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are inexact numbers, at least one is numerically equal to itself (see `=`), and the implementation is unable to prove that ''obj,,1,,'' and ''obj,,2,,'' are operationally equivalent.
+
+== Rationale for the above definition ==
+
+The novel feature of this definition is the auxiliary predicate ''substantially different'', which is needed to gracefully avoid circularities and the problems associated with !NaNs, both of which plagued the R6RS definition.
+
+The circularity problem is addressed by defining substantially different on numbers in terms of `=` instead of `eqv?`.  The NaN problem (see below) is addressed by making sure that two numbers can only be substantially different from each other if at least one of them is `=` to itself.
+
+Note that there is considerable freedom in how &quot;substantially different&quot; is defined.  As long as it is capable of making the most coarse distinctions between numbers, that's good enough, because it should always be possible to choose a procedure ''f'' that amplifies even the finest distinction between any two inexact numbers that are not operationally equivalent.
+
+For example, suppose that in addition to the usual `+0.0` and `-0.0`, an experimental numeric representation was able to distinguish (x/y+0.0) from (x/y-0.0) for any exact rational x/y.  It would still be possible to amplify that distinction to an infinite difference by subtracting x/y and then taking the reciprocal.
+
+Note also that there is considerable freedom in the choice of procedures to allow in the construction of ''f''.  The main requirements are that they are sufficient to amplify arbitrary fine distinctions into coarse ones that are substantially different, and that the procedures are pure functions, i.e. they must not use `eqv?` or `eq?` (directly or indirectly), they must not cause visible side effects, and their return values must depend only on their arguments.  It needn't be a comprehensive set.
+
+== The NaN problem ==
+
+Alex Shinn has brought it to my attention that the R6RS definition of `eqv?` has a fatal flaw.  It is ''never'' required to return `#true` when applied to inexact number objects, even if both arguments are the same object.
+
+Here is the relevant excerpt from section 11.5 of the R6RS (page 37 of the PDF):
+
+The `eqv?` procedure returns `#t` if one of the following holds:
+
+[...]
+
+* ''Obj,,1,,'' and ''obj,,2,,'' are both inexact number objects, are numerically equal (see `=`, section 11.7), and yield the same results (in the sense of `eqv?`) when passed as arguments to any other procedure that can be defined as a finite composition of Scheme’s standard arithmetic procedures.
+
+The problem has to do with !NaNs.  Since `(= obj1 obj2)` is needed for the above condition to apply, and a NaN object is not `=` to itself, it follows that `(let ((x +nan.0)) (eqv? x x))` =&gt; unspecified.
+
+Now consider an arbitrary finite inexact number object ''z''.  The R6RS only requires `(eqv? z z)` =&gt; `#t` if the above condition applies, which in turn requires that `(eqv? (f z) (f z))` =&gt; `#t` for any procedure ''f'' which is &quot;a finite composition of Scheme's standard arithmetic procedures.&quot;
+
+This condition is never satisfied, because it is trivial to produce an ''f'' that meets the above requirements and yet always returns `+nan.0`, e.g.:
+
+{{{
+  (lambda (z) (/ (* z 0.0) 0.0))
+  (lambda (z) +nan.0)
+}}}</pre>
+    <h2>id</h2>
+    <pre>477</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Formal Objection: Memoization is not possible in portable R7RS</pre>
+    <h2>time</h2>
+    <pre>2012-11-25 09:54:17</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-12-07 00:23:11</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The R6RS semantics was adopted by the WG.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1354810991085114</pre>
+    <h2>ticket</h2>
+    <pre>477</pre>
+    <h2>time</h2>
+    <pre>2012-12-07 00:23:11</pre>
+    <h2>Change at time 2012-12-07 00:23:11</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1354810991085114</pre>
+    <h2>ticket</h2>
+    <pre>477</pre>
+    <h2>time</h2>
+    <pre>2012-12-07 00:23:11</pre>
+    <h2>Change at time 2012-12-07 00:23:11</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>accepted</pre>
+    <h2>raw-time</h2>
+    <pre>1354810991085114</pre>
+    <h2>ticket</h2>
+    <pre>477</pre>
+    <h2>time</h2>
+    <pre>2012-12-07 00:23:11</pre>
+    <h2>Change at time 2012-11-25 12:08:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1353816497859237</pre>
+    <h2>ticket</h2>
+    <pre>477</pre>
+    <h2>time</h2>
+    <pre>2012-11-25 12:08:17</pre>
+    <h2>Change at time 2012-11-25 12:08:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>summary</pre>
+    <h2>newvalue</h2>
+    <pre>Formal Objection: Memoization is not possible in portable R7RS</pre>
+    <h2>oldvalue</h2>
+    <pre>Formal Comment: Memoization is not possible in portable R7RS</pre>
+    <h2>raw-time</h2>
+    <pre>1353816497859237</pre>
+    <h2>ticket</h2>
+    <pre>477</pre>
+    <h2>time</h2>
+    <pre>2012-11-25 12:08:17</pre>
+    <h2>Change at time 2012-11-25 09:54:33</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1353808473108971</pre>
+    <h2>ticket</h2>
+    <pre>477</pre>
+    <h2>time</h2>
+    <pre>2012-11-25 09:54:33</pre>
+    <h2>Change at time 2012-11-25 09:54:33</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1353808473108971</pre>
+    <h2>ticket</h2>
+    <pre>477</pre>
+    <h2>time</h2>
+    <pre>2012-11-25 09:54:33</pre>
+    <h2>Change at time 2012-11-25 09:54:33</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>accepted</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1353808473108971</pre>
+    <h2>ticket</h2>
+    <pre>477</pre>
+    <h2>time</h2>
+    <pre>2012-11-25 09:54:33</pre></body></html>

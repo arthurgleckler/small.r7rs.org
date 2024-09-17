@@ -1,0 +1,49 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki NumericTower version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki NumericTower version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>69.195.52.55</pre>
+    <h2>name</h2>
+    <pre>NumericTower</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== The numeric tower ==
+
+This is an analysis of the R5RS provision that the full numeric tower may be subsetted.  Four boolean feature settings characterize different kinds of numeric towers: `exactness-preserving`, `ratios`, `inexact`, and `complex`, which refer to the closure of exact numbers under rational operations (except `/`), exact non-integer values, inexact rationals, and non-real numbers, respectively.  A priori, any combination of these feature groups might be implemented, except that `ratios` makes no sense without `exactness-preserving`.  I also assume that `complex` makes no sense without either `ratios` or `inexact`: Gaussian integers by themselves are of little use.
+
+So here are ten possible numeric towers.  I use `+` if a feature is present and `-` if it is absent, and give a general description of the resulting tower.
+
+
+||exactness-preserving||ratios||inexact||complex||Description||
+||-||-||-||-||A &quot;toy&quot; Scheme with fixnums (bounded exact integers) only.  Appropriate where no numerical work will be done.||
+||-||-||+||-||A Scheme where all numbers are real and all arithmetic happens in essentially constant time.  Most non-Lisp languages are like this, except that their fixnums wrap instead of switching to flonums.  Chicken uses this.||
+||-||-||+||+||The complex-number equivalent of the preceding.  Non-real numbers are typically inexact/inexact.||
+||+||-||-||-||Unlimited-precision integers only.  Possibly usable for crypto work.  Fortunately, ratios are fairly cheap given bignums.||
+||+||-||+||-||A good all-round compromise, providing exact integers and inexact real numbers.  ISLisp uses this.  Many people seem to like this design.||
+||+||-||+||+||The same as the preceding, but with inexact/inexact non-real numbers as well.||
+||+||+||-||-||Exact numbers only.  Reasonable for some purposes, but will often run very slowly without inexact support, so unsuitable for scientific-type work.||
+||+||-||+||+||The same as the preceding, but with exact general complex numbers.  Even less suitable for scientific-type work, given that in practice non-real numbers are usually inexact/inexact.||
+||+||+||+||-||Full numeric tower for real numbers only.||
+||+||+||+||+||Full numeric tower.  R6RS requires this.||
+</pre>
+    <h2>time</h2>
+    <pre>2010-12-24 14:14:23</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

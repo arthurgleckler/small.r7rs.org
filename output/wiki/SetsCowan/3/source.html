@@ -1,0 +1,166 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki SetsCowan version 3</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki SetsCowan version 3</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>98.14.172.204</pre>
+    <h2>name</h2>
+    <pre>SetsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Sets, bags, and integer sets ==
+
+Sets and bags (multisets) are mutable collections that can contain any Scheme object.  Integer sets are mutable collections that can contain non-negative integers from 0 to a value ''n'' that is specified when the integer set is created.
+
+Sets and bags (multisets) are intended to be a thin veneer over hashtables, and integer sets are a thin veneer over bit vectors.  Consequently, the `-member?`, `-add!`, and `-remove!` procedures are required to have an amortized cost of O(1).
+
+Sets, bags, and integer sets are mutually disjoint and disjoint from other types of Scheme objects.
+
+== Basic set procedures ==
+
+`(make-set `''proc''`)`
+
+Constructs and returns a new empty set.  ''Proc'' is the equality procedure for the set, which must be consistent with `eq?`.  If ''proc'' is other than `eq?`, `eqv?`, `equal`, or `string-ci=?`, the implementation MAY signal an error.
+
+`(set `''element''` ...)`
+
+Constructs and returns a new set containing the ''elements''.
+
+`(copy-set `''set''`)`
+
+Constructs and returns a new set containing the elements of ''set''.
+
+`(set? `''obj''`)`
+
+Returns `#t` if ''obj'' is a set, and `#f` otherwise.
+
+`(set-length? `''set''`)`
+
+Returns the number of elements in ''set''.
+
+`(set-member? `''set''` `''element''`)`
+
+Returns `#t` if ''element'' is a member of ''set'' and `#f` otherwise.
+
+`(set-add! `''set''` `''element''`)`
+
+Adds ''element'' to ''set'' unless it is already a member.  Returns unspecified values.
+
+`(set-remove! `''set''` `''element''`)`
+
+Removes ''element'' from ''set'' unless it is not a member.  Returns unspecified values.
+
+`(set-map `''proc''` `''set'' ...`)`
+
+Applies ''proc'' to the ''sets'' and constructs and returns a new set containing the values of the applications.
+
+`(set-for-each `''proc''` `''set'' ...`)`
+
+Applies ''proc'' to the ''sets'', discarding the returned values.  Returns unspecified results.
+
+`(set-&gt;list `''set''`)`
+
+Constructs and returns a new list containing the members of ''set'' in unspecified order.
+
+`(list-&gt;set `''list''`)`
+
+Constructs and returns a new set containing the elements of ''list''.
+
+`(set-&gt;vector `''set''`)`
+
+Constructs and returns a new vector containing the elements of ''set'' in unspecified order.
+
+`(vector-&gt;set `''vector''`)`
+
+Constructs and returns a new set containing the elements of ''vector''.
+
+== Advanced set procedures ==
+
+`(set&lt;= `''set'' ...`)`
+
+Returns `#t` if each ''set'' other than the last is a subset of the following ''set'', and `#f` otherwise.  All the ''sets'' must share the same equality predicate.
+
+`(set= `''set'' ...`)`
+
+Returns `#t` if each ''set'' contains the same elements.  All the ''sets'' must share the same equality predicate.
+
+`(set-union `''set'' ...`)`
+
+Constructs and returns a new set that is the union of the ''sets''.
+
+`(set-intersection `''set'' ...`)`
+
+Constructs and returns a new set that is the intersection of the ''sets''.
+
+`(set-difference `''set'' ...`)`
+
+Constructs and returns a new set that is the difference of the ''sets''.
+
+`(set-xor `''set'' ...`)`
+
+Constructs and returns a new set that is the xor (symmetric difference) of the ''sets''.
+
+`(set-union! `''set''` `''other-set'' ...`)`
+
+Mutates ''set'' to a new set that is the union of ''set'' and the ''other-sets''.
+
+`(set-intersection! `''set''` `''other-set'' ...`)`
+
+Mutates ''set'' to a new set that is the difference of ''set'' and the ''other-sets''.
+
+`(set-difference! `''set''` `''other-set'' ...`)`
+
+Mutates ''set'' to a new set that is the difference of ''set'' and the ''other-sets''.
+
+`(set-xor! `''set''` `''other-set'' ...`)`
+
+Mutates ''set'' to a new set that is the xor (symmetric difference) of ''set'' and the ''other-sets''.
+
+== Bag procedures ==
+
+The procedures for creating and manipulating bags are the same as those for sets, except that `set` is replaced by `bag` in their names, and that adding an element to a bag is effective even if the bag already contains the element.
+
+== Integer set procedures ==
+
+`(make-integer-set `''n''`)`
+
+Constructs and returns a new empty integer set.  The possible elements of the set are the exact integers from 0 to ''n'' - 1.
+
+`(integer-set `''n''` `''element'' ...`)`
+
+Constructs and returns a new integer set.  The possible elements of the set are the exact integers from 0 to ''n'' - 1. The set is initialized to contain the ''elements''.
+
+`(list-&gt;integer-set `''n''` `''list''`)`
+
+Constructs and returns a new integer set.  The possible elements of the set are the exact integers from 0 to ''n'' - 1. The set is initialized to contain the elements of ''list''.
+
+`(vector-&gt;integer-set `''n''` `''list''`)`
+
+Constructs and returns a new integer set.  The possible elements of the set are the exact integers from 0 to ''n'' - 1. The set is initialized to contain the elements of ''vector''.
+
+The other integer set procedures are the same as those for sets, except that `set` is replaced by `integer-set` in their names.  
+
+== Conversions ==
+
+`set-&gt;bag`, `bag-&gt;set`, `integer-set-&gt;bag`, and `integer-set-&gt;set` take one argument and do the obvious thing.  `bag-&gt;integer-set` and `set-&gt;integer-set` take two arguments, ''n'' and the set or bag, and also do the obvious thing.
+</pre>
+    <h2>time</h2>
+    <pre>2010-09-23 10:06:24</pre>
+    <h2>version</h2>
+    <pre>3</pre></body></html>

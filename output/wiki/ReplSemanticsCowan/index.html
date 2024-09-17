@@ -1,0 +1,34 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ReplSemanticsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ReplSemanticsCowan.md">ReplSemanticsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Repl&shy;Semantics&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-09-28 22:17:03</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ReplSemanticsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ReplSemanticsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="REPLsemantics">REPL semantics</h2>
+      <p>WG1 Scheme implementations SHOULD provide a REPL.</p>
+      <p>At startup, a REPL MUST import the core module and MAY import an implementation-defined list of other modules.  Implementations SHOULD allow this list to be changed in advance.</p>
+      <p>A REPL MUST allow other modules to be imported using the same syntax as is used when one module imports another.  Imports may be performed at any time during the life of the REPL.  It is undefined how many times an imported module is instantiated.</p>
+      <p>Definitions and expressions to be evaluated MAY be intermixed freely.  Identifiers and syntax keywords MAY be redefined, subject to the following rules:</p>
+      <ul>
+        <li>If the definition of <i>id1</i> refers to <i>id2</i> other than inside a lambda abstraction, redefining <i>id2</i> does not affect the value of that expression.</li></ul>
+      <ul>
+        <li>If <i>id</i> appears in the procedure position of an invocation that is inside a lambda abstraction, applying that abstraction will invoke the procedure bound to the most recent definition of <i>id</i>.  (No inlining of procedure calls at the REPL.)</li></ul>
+      <ul>
+        <li>If an expression uses a syntax keyword, redefinition of that keyword will not affect the value of the expression.  (Syntax keywords are effectively inlined.)</li></ul>
+      <p>A REPL MUST provide the syntax <span class="monospace">(include </span><i>filename</i><span class="monospace">)</span>, which causes the declarations and expressions in <i>filename</i> to be processed exactly as if they had been input directly to the REPL.</p>
+      <p>A REPL MAY provide a means of loading modules or include files that have been compiled by a compiler associated with the implementation.</p></div></body></html>

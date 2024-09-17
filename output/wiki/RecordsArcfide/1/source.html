@@ -1,0 +1,71 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki RecordsArcfide version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki RecordsArcfide version 1</h1>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>140.182.225.201</pre>
+    <h2>name</h2>
+    <pre>RecordsArcfide</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= Record Proposal = 
+
+By Aaron W. Hsu
+
+== Overview ==
+
+WG1 is tasked with defining a record form suitable for its language. To that end, I feel that the following features are basic and fundamental to records and should be provided for and enabled in the WG1 record specification:
+
+  * The creation of disjoint types hierarchies, including inheritance
+  * The abstraction over a finite set of data
+  * Efficient implementation in even simple Scheme implementations
+
+To this end, I propose the following WG1 Record specification, which has as its goals the following:
+
+  * Efficiency
+  * Simplicity
+  * Extensibility
+
+== Specification ==
+
+I propose that the WG1 standardize only a syntactic record definition consisting of a subset of R6RS' functionality, which is syntactically compatible therewith.
+
+`(define-record-type (&lt;name&gt; &lt;constructor&gt; &lt;predicate&gt;) &lt;clause&gt; ...)`
+
+Where `&lt;name&gt;` is an identifier indicating the record type, and `&lt;constructor&gt;` and `&lt;predicate&gt;` will both be names bound to the record constructor and predicate, respectively. Each `&lt;clause&gt;` is one of the following forms:
+
+`(parent &lt;parent-rtd&gt; ...)`
+`(fields &lt;field-spec&gt; ...)`
+
+For parent clauses, I propose that we permit multiple parents to be defined, but define and specify behavior for only one parent. The `&lt;parent-rtd&gt;` should be an identifier defined by `define-record-type` `&lt;name&gt;`. 
+
+for field clauses, each `&lt;field-spec&gt;` takes one of the following forms:
+
+`(immutable &lt;field-name&gt; &lt;field-accessor&gt;)`
+`(mutable &lt;field-name&gt; &lt;field-accessor&gt; &lt;field-mutator&gt;)`
+
+== Rationale ==
+
+This is the simplest record type definition that is easily extended to include other features in a nice interface. While it may be attractive to standardize on a procedural interface as the underlying core, it is my belief that the WG1 Charter is for the creation of a practical language, intended to be used in real work, where a small language is desirable, and not as an underlying assembly language for the construction of other forms that are more useful. To this end, it is expected that more people use a syntactic interface, and this represents the basic, largest common set of functionality that people use. particularly, this is a readily usable form, and has the necessary flexibility, and can be readily implemented in an efficient manner.
+
+</pre>
+    <h2>time</h2>
+    <pre>2010-04-02 04:45:00</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

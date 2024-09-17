@@ -1,0 +1,56 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>UniqueTypesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/UniqueTypesCowan.md">UniqueTypesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Unique&shy;Types&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-06-27 07:45:41</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/UniqueTypesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/UniqueTypesCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Unique run-time types</p>
+      <h2 id="Abstract">Abstract</h2>
+      <p>This SRFI is intended to standardize a primitive run-time mechanism to create disjoint types.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>This SRFI provides a simple hook to create new data types at run time that are disjoint from all existing types.  allowing portable libraries to implement SRFI 9, SRFI 99, SRFI 131, SRFI 135, R6RS records, Chicken records, CLOS, persistent databases, remote access to data on servers, and the like on top of it.  It is also portably implementable and usable entirely separately from any of these.</p>
+      <p>Note that there is no concept of a type object here: a type is simply a name for a group of closely linked procedures that allow the creation and manipulation of type instances (which are objects) and subtypes.  This SRFI exposes no ambient authority, and relies entirely on module exports for access control.  It is based on a less radical proposal by Alaric Snell-Pym, <a href="/wiki/UniqueTypesSnellPym">UniqueTypesSnellPym</a>.</p>
+      <h2 id="Specification">Specification</h2>
+      <h3 id="Make-type">Make-type</h3>
+      <p><span class="monospace">(make-type </span> <i>type-payload</i><span class="monospace">)</span> → <i>type-accessor constructor predicate accessor make-subtype</i></p>
+      <p>Calling <span class="monospace">make-type</span> on <i>type-payload</i>, which can be any Scheme object, returns five values, all of which are procedures.  They are distinct (in the sense of <span class="monospace">eqv?</span>) from each other and from any other procedures returned by other calls to <span class="monospace">make-type</span>.  In brief, the five functions:</p>
+      <ul>
+        <li>return <i>type-payload</i></li></ul>
+      <ul>
+        <li>return newly allocated objects of a disjoint type known as <i>instances</i>, each associated with an <i>instance payload</i></li></ul>
+      <ul>
+        <li>return <span class="monospace">#t</span> iff an object is an instance of this type</li></ul>
+      <ul>
+        <li>return the instance payload</li></ul>
+      <ul>
+        <li>return five more procedures associated with a subtype of this type</li></ul>
+      <p>Details are given for a sample type in the next section.</p>
+      <h2 id="Sampleproceduresforatype">Sample procedures for a type</h2>
+      <p>For the purposes of this section, we will suppose that <span class="monospace">(define-values (reia-payload make-reia reia? reia-ref make-reia-subtype) (make-type 'reia))</span> has been evaluated, and document each of the five variables that it binds.  &quot;Reia&quot; is an acronym for &quot;remarkably 'evil' in appearance&quot;, and has no particular significance.  Fnord!</p>
+      <p><span class="monospace">(reia-payload)</span> → <i>object</i></p>
+      <p>Returns the symbol 'reia'.  In an actual application, this object would contain useful information associated with the <span class="monospace">reia</span> type as a whole.</p>
+      <p><span class="monospace">(make-reia </span><i>instance-payload</i><span class="monospace">)</span>→ <i>reia</i></p>
+      <p>Returns a newly allocated instance associated with <i>instance-payload</i>.  This association is single and immutable, but it is possible to make use of an appropriate container payload in order to effectively associate the instance with more than one value.  To make the association effectively mutable, use a mutable payload such as a box, list or vector.  Instances belong to a type that is disjoint from any existing Scheme type, including types created by other calls to <span class="monospace">make-type</span>.</p>
+      <p><span class="monospace">(reia? </span><i>object</i><span class="monospace">)</span>→ <i>boolean</i></p>
+      <p>Returns <span class="monospace">#t</span>  iff <i>object</i> was returned by a call to <span class="monospace">make-reia</span> or any constructor created by a direct or indirect subtype of the <span class="monospace">reia</span> type.</p>
+      <p><span class="monospace">(reia-ref </span><i>reia</i><span class="monospace">)</span>→ <i>object</i></p>
+      <p>Returns the instance payload of <i>reia</i>.  It is an error if <i>reia</i> does not satisfy <span class="monospace">reia?</span>.</p>
+      <p><span class="monospace">(make-reia-subtype </span><i>type-payload</i><span class="monospace">)</span>→ <i>type-accessor constructor predicate accessor make-subtype</i></p>
+      <p>Returns five new procedures with the same semantics as <span class="monospace">make-type</span>, such that the objects returned by <i>constructor</i> satisfy <span class="monospace">reia?</span>.</p>
+      <h2 id="Implementation">Implementation</h2>
+      <p>TBD</p></div></body></html>

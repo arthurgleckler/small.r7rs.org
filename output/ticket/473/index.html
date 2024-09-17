@@ -1,0 +1,84 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>473: library declaration locations in top-level</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 473: <span class="summary">library declaration locations in top-level</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 02:22:27</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/473/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-09-13 21:13:27</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>R6RS allows only a single library declaration, <span class="monospace">import</span>,
+at the beginning of a program body, and this must
+contain all imported libraries.</p>
+        <p>Pending the result of ticket <a href="/ticket/472">#472</a> we may also allow
+<span class="monospace">include(-ci)</span> and <span class="monospace">cond-expand</span> to expand into
+imports, and so the single form restriction would not
+make sense.  However, it would be reasonable to
+restrict all library declarations to the beginning of
+a program - the first non-declaration would begin
+the real body.  This is the <span class="monospace">beginning-only</span> option.</p>
+        <p>The advantage of the <span class="monospace">r6rs</span> proposal is that it would
+not require any changes in existing R6RS program
+loading implementations to support.  If the result of
+ticket <a href="/ticket/472">#472</a> indicates multiple declaration types are
+available this option would automatically become
+invalid, so you don't need to vote against it on those
+grounds.</p>
+        <p>The advantage of the <span class="monospace">beginning-only</span> option is
+that it becomes possible to statically determine
+all program imports without expansion, which was
+the primary motivation of a static library system.</p>
+        <p>The final alternative is <span class="monospace">any-top-level</span>, which
+allows these forms anywhere at the top-level,
+possibly interspersed with definitions.  The advantage
+of this is that you can cut&amp;paste repl sessions
+(for which interspersed imports are always allowed)
+as a program.  The disadvantage is that programs
+can no longer be resolved separately from expansion.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-03 01:10:13</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to adopt the <span class="monospace">beginning-only</span> alternative.  This means that programs (but not libraries or the REPL) must have all their <span class="monospace">import</span> declarations appear at the beginning of the program.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-04 21:37:37</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 02:22:27</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

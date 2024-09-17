@@ -1,0 +1,26 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImplicitLetNilArcfide</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImplicitLetNilArcfide.md">ImplicitLetNilArcfide</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Implicit&shy;Let&shy;Nil&shy;Arcfide</h1>
+    <div class="wiki metadata">
+      <div class="author">arcfide</div>
+      <div class="time">2010-05-02 09:57:00</div>
+      <div class="version">1<span class="comment">Add in the initial proposal.</span><a href="/wiki/ImplicitLetNilArcfide/history">history</a></div>
+      <div class="source"><a href="/wiki/ImplicitLetNilArcfide/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="ImplictLet-niltoreplaceimplicitBegin">Implict Let-nil to replace implicit Begin</h1>
+      <h2 id="Proposal">Proposal</h2>
+      <p>Certain forms, such as <span class="monospace">case</span>, <span class="monospace">cond</span>, <span class="monospace">when</span>, and <span class="monospace">unless</span> allow for multiple expressions to all follow one after another in certain parts of their syntax. These expressions are currently wrapped implicitly, in a <span class="monospace">begin</span> form. This proposal suggests that we change this to an implicit LET-NIL wrapping.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>While preserving backwards compatibility, this change allows for internal definitions to occur conveniently within certain expressions, where they would otherwise not be allowed. This suits some programmer's styles, and makes some things convenient without breaking anything else.</p></div></body></html>

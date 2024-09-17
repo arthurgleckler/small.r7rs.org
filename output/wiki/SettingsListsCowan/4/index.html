@@ -1,0 +1,50 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>SettingsListsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/SettingsListsCowan.md">SettingsListsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Settings&shy;Lists&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-04-29 00:24:40</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/SettingsListsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/SettingsListsCowan/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Settingslists">Settings lists</h2>
+      <p>In this proposal, a filename passed to any of <span class="monospace">open-input-file</span>, <span class="monospace">open-binary-input-file</span>, <span class="monospace">open-output-file</span>, <span class="monospace">open-binary-output-file</span>, <span class="monospace">with-input-from-file</span>, <span class="monospace">with-output-from-file</span>, <span class="monospace">call-with-input-file</span>, and <span class="monospace">call-with-output-file</span> may be specified either as a string (as in R7RS-small) or as a <i>settings list</i>, which is a list of alternating <i>keys</i> and <i>values</i> where every key is a symbol.  Quasiquote syntax is useful in creating settings lists.  Specifying a string is equivalent to specifying the settings list <span class="monospace">(path </span><i>string</i><span class="monospace">)</span>.  The following keys are defined by this proposal:</p>
+      <dl>
+        <dt><span class="monospace">path</span></dt>
+        <dd>Specifies the filename to be opened.  The interpretation of filenames is implementation-dependent.  There is no default value, but implementations MAY accept other keys in lieu of this one for opening files or file-like objects that don't have string names.  In particular, filenames on Posix are really u8-vectors with some u8 values disallowed, and filenames on Windows are really u16-vectors with some u16 values disallowed, and while most names of actual files are representable as strings, some may not be.</dd>
+        <dt><span class="monospace">binary</span></dt>
+        <dd>If the value of this key is true, then a call to <span class="monospace">open-input-file</span>, <span class="monospace">open-output-file</span>, <span class="monospace">with-input-from-file</span>, <span class="monospace">with-output-from-file</span>, <span class="monospace">call-with-input-file</span>, or <span class="monospace">call-with-output-file</span> will respond <span class="monospace">#t</span> to both <span class="monospace">textual-port?</span> and <span class="monospace">binary-port?</span>, and allows binary as well as textual input and output operations.  However, a textual operation may not be followed immediately by a binary operation unless the value of the <span class="monospace">char-buffer</span> key is <span class="monospace">none</span>; an intervening call to <span class="monospace">set-port-position!</span> will suffice.  It is an error to specify the value as <span class="monospace">#f</span> on calls to <span class="monospace">open-binary-input-file</span> or <span class="monospace">open-binary-output-file</span>; otherwise, the value <span class="monospace">#f</span> causes the key to be ignored.</dd>
+        <dt><span class="monospace">bidirectional</span></dt>
+        <dd>Specifies that the port will respond <span class="monospace">#t</span> to both <span class="monospace">input-port?</span> and <span class="monospace">output-port?</span>, and both input and output operations are accepted.  However, an input operation may not be followed immediately by an output operation, nor vice versa; an intervening call to <span class="monospace">set-port-position!</span> will suffice.  The input and output side of the port may be closed separately using <span class="monospace">close-input-port</span> and <span class="monospace">close-output-port</span>; <span class="monospace">close-port</span> will close both sides.</dd>
+        <dt><span class="monospace">append</span></dt>
+        <dd>If the value of this key is true, the file pointer is moved to the end of file before every write operation.  This is POSIX and Win32 O_APPEND.</dd>
+        <dt><span class="monospace">create</span></dt>
+        <dd>If the value of this key is true, and the file specified by <span class="monospace">path</span> does not exist, it will be created.  This is POSIX and Win32 O_CREAT.</dd>
+        <dt><span class="monospace">exclusive</span></dt>
+        <dd>If the value of this key is true, and the file specified by <span class="monospace">path</span> exists, an error is signalled.  This is only effective if the value of the <span class="monospace">create</span> key is also true.  This is POSIX and Win32 O_EXCL.</dd>
+        <dt><span class="monospace">truncate</span></dt>
+        <dd>If the value of this key is true, and the file specified by 'path' exists, it is truncated to zero length.  This is only effective if the file is being opened for output.  This is POSIX and Win32 O_TRUNC.</dd>
+        <dt><span class="monospace">buffer</span></dt>
+        <dd>Specifies what kind of binary buffering is present.  The value <span class="monospace">none</span> means there is no buffering; the value 'block' means block buffering is provided.  Buffer sizes are implementation-dependent.  The default value is implementation-dependent.</dd>
+        <dt><span class="monospace">char-buffer</span></dt>
+        <dd>Specifies what kind of character buffering is present.  Character buffering affects how much translation between characters and bytes is done all at once.  The value <span class="monospace">none</span> means no character buffering is employed; the value <span class="monospace">block</span> means there is a buffer for translation.  The value <span class="monospace">line</span> is the same as <span class="monospace">block</span>, except that on output, the character buffer as well as the binary buffer (if any) is flushed after each newline is output.  Other values MAY be supported by an implementation.  Buffer sizes are implementation-dependent.  The default value is implementation-dependent.</dd>
+        <dt><span class="monospace">encoding</span></dt>
+        <dd>Specifies what character encoding to use on a textual port.  The (case insensitive) value <span class="monospace">us-ascii</span> MUST be supported.  The values <span class="monospace">iso-8859-1</span> and <span class="monospace">utf-8</span> SHOULD be supported if the implementation contains the appropriate repertoire of characters.  Other values MAY be supported; they SHOULD appear in the <a href="http://www.iana.org/assignments/character-sets">IANA list of encodings</a>.  The default value is implementation-dependent.
+If a BOM (Byte Order Mark, U+FEFF) is present at the beginning of input on a port encoded as UTF-8, it is skipped.  A BOM is not automatically written on output.  Implementations MAY provide a way around this.</dd>
+        <dt><span class="monospace">newline</span></dt>
+        <dd>Specifies how to translate newlines.  The value <span class="monospace">none</span> means that no translation is performed.  The values <span class="monospace">cr</span>, <span class="monospace">lf</span>, and <span class="monospace">crlf</span> cause <span class="monospace">#\newline</span> to be translated to CR, LF, or CR+LF on output; all of them cause all of CR, LF, and CR+LF to be translated to <span class="monospace">#\newline</span> on input.  Other values MAY be supported by an implementation.  The default value is implementation-dependent.</dd>
+        <dt><span class="monospace">encoding-error</span></dt>
+        <dd>Specifies what action to take if a character cannot be encoded as bytes or a sequence of bytes cannot be decoded as a character in the specified encoding.  The value <span class="monospace">ignore</span> means that the untranslatable byte or character is ignored.  The value <span class="monospace">raise</span> means that an error is signalled.  The value <span class="monospace">replace</span> means that an untranslatable byte is replaced by <span class="monospace">#\xFFFD;</span> if that character is available in the implementation, or <span class="monospace">#\?</span> if not, and an untranslatable character is replaced by the byte encoding of <span class="monospace">#xFFFD;</span> if there is one, or <span class="monospace">#\?</span> if not.  The default value is implementation-dependent.</dd></dl>
+      <p>Implementations MAY support other keys, SHOULD warn if they detect keys or values they do not understand or implement, and MAY signal an error in such cases.</p></div></body></html>

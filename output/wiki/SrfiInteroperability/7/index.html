@@ -1,0 +1,211 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>SrfiInteroperability</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/SrfiInteroperability.md">SrfiInteroperability</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Srfi&shy;Interoperability</h1>
+    <div class="wiki metadata">
+      <div class="author">WillClinger</div>
+      <div class="time">2015-06-05 22:48:58</div>
+      <div class="version">7<span class="comment"></span><a href="/wiki/SrfiInteroperability/history">history</a></div>
+      <div class="source"><a href="/wiki/SrfiInteroperability/7/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Some SRFIs export identifiers that are exported by <span class="monospace">(scheme base)</span> or by another SRFI.  When the libraries that export an identifier give it the same or a compatible semantics, there need not be any conflict; all libraries that export the identifier can export the same binding, with its most general semantics.  When two libraries export the same identifier with truly incompatible semantics, however, the conflict is real and cannot be resolved without renaming or other workarounds.</p>
+      <p>In the table below, an identifier whose SRFI semantics generalizes its R7RS semantics is counted as a real conflict.  When an identifier's R7RS semantics generalizes its SRFI semantics, the conflict is counted as superficial.</p>
+      <table><tr><td class="default">
+            <p><b>SRFI</b></p></td><td class="default">
+            <p><b>real conflicts with R7RS</b></p></td><td class="default">
+            <p><b>real conflicts with R6RS</b></p></td><td class="default">
+            <p><b>real conflicts with SRFIs</b></p></td><td class="default">
+            <p><b>superficial conflicts with R7RS</b></p></td></tr><tr><td class="default">
+            <p>SRFI 0</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">cond-expand</span></p></td></tr><tr><td class="default">
+            <p>SRFI 1</p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">assoc</span> <span class="monospace">member</span> <span class="monospace">for-each</span> <span class="monospace">map</span> <span class="monospace">make-list</span> <span class="monospace">list-copy</span></p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">cons</span> <span class="monospace">list</span> <span class="monospace">make-list</span> <span class="monospace">list-copy</span> <span class="monospace">pair?</span> <span class="monospace">null?</span> <span class="monospace">car</span> <span class="monospace">cdr</span> ... <span class="monospace">cddddr</span> <span class="monospace">list-ref</span> <span class="monospace">length</span> <span class="monospace">append</span> <span class="monospace">reverse</span> <span class="monospace">map</span> <span class="monospace">for-each</span> <span class="monospace">member</span> <span class="monospace">memq</span> <span class="monospace">memv</span> <span class="monospace">assoc</span> <span class="monospace">assq</span> <span class="monospace">assv</span> <span class="monospace">set-car!</span> <span class="monospace">set-cdr!</span></p></td></tr><tr><td class="default">
+            <p>SRFI 2</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 4</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 5</p></td><td class="default">
+            <p><span class="monospace">let</span></p></td><td class="default">
+            <p><span class="monospace">let</span></p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 6</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 7</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 8</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 9</p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">define-record-type</span></p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">define-record-type</span></p></td></tr><tr><td class="default">
+            <p>SRFI 10</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 11</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 13</p></td><td class="default">
+            <p><span class="monospace">string-downcase</span> <span class="monospace">string-upcase</span> <span class="monospace">string-for-each</span> <span class="monospace">string-map</span></p></td><td class="default">
+            <p>(many)</p></td><td class="default">
+            <p><span class="monospace">string-hash</span> <span class="monospace">string-hash-ci</span> <span class="monospace">string-compare</span> <span class="monospace">string-compare-ci</span></p></td><td class="default">
+            <p><span class="monospace">string?</span> <span class="monospace">make-string</span> <span class="monospace">string</span> <span class="monospace">string-&gt;list</span> <span class="monospace">list-&gt;string</span> <span class="monospace">string-length</span> <span class="monospace">string-ref</span> <span class="monospace">string-copy</span> <span class="monospace">string-copy</span> <span class="monospace">string-set!</span> <span class="monospace">string-fill!</span> <span class="monospace">string-append</span></p></td></tr><tr><td class="default">
+            <p>SRFI 14</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 16</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 17</p></td><td class="default">
+            <p><span class="monospace">set!</span></p></td><td class="default">
+            <p><span class="monospace">set!</span></p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 18</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">current-time</span> <span class="monospace">time?</span></p></td><td class="default">
+            <p><span class="monospace">with-exception-handler</span> <span class="monospace">raise</span></p></td></tr><tr><td class="default">
+            <p>SRFI 19</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">current-time</span> <span class="monospace">time?</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 21</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">current-time</span> <span class="monospace">time?</span></p></td><td class="default">
+            <p><span class="monospace">with-exception-handler</span> <span class="monospace">raise</span></p></td></tr><tr><td class="default">
+            <p>SRFI 22</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 23</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">error</span></p></td></tr><tr><td class="default">
+            <p>SRFI 25</p></td><td class="default">
+            <p><span class="monospace">equal?</span></p></td><td class="default">
+            <p><span class="monospace">equal?</span></p></td><td class="default">
+            <p><span class="monospace">equal?</span> <span class="monospace">make-array</span> <span class="monospace">array-rank</span> <span class="monospace">array-ref</span> <span class="monospace">array-set!</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 26</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 27</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 28</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">format</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 29</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">format</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 30</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 31</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 34</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">with-exception-handler</span> <span class="monospace">guard</span> <span class="monospace">raise</span></p></td></tr><tr><td class="default">
+            <p>SRFI 35</p></td><td class="default"></td><td class="default">
+            <p>(??)</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 36</p></td><td class="default"></td><td class="default">
+            <p>(??)</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 37</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 38</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 39</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">make-parameter</span> <span class="monospace">parameterize</span></p></td></tr><tr><td class="default">
+            <p>SRFI 40</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p>(deprecated by SRFI 41)</p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 41</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 42</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 43</p></td><td class="default">
+            <p><span class="monospace">vector-copy</span></p></td><td class="default">
+            <p><span class="monospace">vector-&gt;list</span> <span class="monospace">vector-fill!</span></p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">make-vector</span> <span class="monospace">vector</span> <span class="monospace">vector-append</span> <span class="monospace">vector?</span> <span class="monospace">vector-ref</span> <span class="monospace">vector-length</span> <span class="monospace">vector-map</span> <span class="monospace">vector-for-each</span> <span class="monospace">vector-set!</span> <span class="monospace">vector-fill!</span> <span class="monospace">vector-copy!</span> <span class="monospace">vector-&gt;list</span> <span class="monospace">list-&gt;vector</span></p></td></tr><tr><td class="default">
+            <p>SRFI 44</p></td><td class="default">
+            <p><span class="monospace">equal?</span> <span class="monospace">string-set!</span> <span class="monospace">vector-set!</span></p></td><td class="default">
+            <p><span class="monospace">equal?</span> <span class="monospace">string-set!</span> <span class="monospace">vector-set!</span></p></td><td class="default">
+            <p><span class="monospace">set?</span> <span class="monospace">set-contains?</span> <span class="monospace">set-delete</span> <span class="monospace">set-delete!</span> <span class="monospace">set-union</span> <span class="monospace">set-union!</span> <span class="monospace">set-intersection</span> <span class="monospace">set-intersection!</span> <span class="monospace">set-difference</span> <span class="monospace">set-difference</span> (etc)</p></td><td class="default">
+            <p><span class="monospace">make-list</span> <span class="monospace">list</span> <span class="monospace">list?</span> <span class="monospace">list-ref</span> <span class="monospace">make-vector</span> <span class="monospace">vector</span> <span class="monospace">vector-copy</span> <span class="monospace">vector-&gt;list</span> <span class="monospace">vector?</span> <span class="monospace">vector-ref</span> <span class="monospace">vector-set!</span> <span class="monospace">make-string</span> <span class="monospace">string</span> <span class="monospace">string-copy</span> <span class="monospace">string-&gt;list</span> <span class="monospace">string?</span> <span class="monospace">string-ref</span> <span class="monospace">string-set!</span></p></td></tr><tr><td class="default">
+            <p>SRFI 45</p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">delay</span> <span class="monospace">force</span></p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">delay</span> <span class="monospace">force</span></p></td></tr><tr><td class="default">
+            <p>SRFI 46</p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">syntax-rules</span></p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">syntax-rules</span></p></td></tr><tr><td class="default">
+            <p>SRFI 47</p></td><td class="default">
+            <p><span class="monospace">equal?</span></p></td><td class="default">
+            <p><span class="monospace">equal?</span></p></td><td class="default">
+            <p>(superseded by SRFI 63)</p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 48</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">format</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 49</p></td><td class="default">
+            <p>alternative lexical syntax</p></td><td class="default">
+            <p>alternative lexical syntax</p></td><td class="default">
+            <p>(yes)</p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 51</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 54</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 55</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 57</p></td><td class="default">
+            <p><span class="monospace">define-record-type</span></p></td><td class="default">
+            <p><span class="monospace">define-record-type</span></p></td><td class="default">
+            <p><span class="monospace">define-record-type</span></p></td></tr><tr><td class="default">
+            <p>SRFI 58</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 59</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 60</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 61</p></td><td class="default">
+            <p><span class="monospace">cond</span></p></td><td class="default">
+            <p><span class="monospace">cond</span></p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 62</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 63</p></td><td class="default">
+            <p><span class="monospace">equal?</span></p></td><td class="default">
+            <p><span class="monospace">equal?</span></p></td><td class="default">
+            <p>(supersedes SRFI 47)</p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 64</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 66</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 67</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">string-compare</span> <span class="monospace">string-compare-ci</span> <span class="monospace">if3</span> <span class="monospace">if=?</span> <span class="monospace">if&lt;?</span> <span class="monospace">if&gt;?</span> <span class="monospace">if&lt;=?</span> <span class="monospace">if&gt;=?</span> <span class="monospace">if-not=?</span> <span class="monospace">=?</span> <span class="monospace">&lt;?</span> <span class="monospace">&gt;?</span> <span class="monospace">&lt;=?</span> <span class="monospace">&gt;=?</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 69</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">string-hash</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 70</p></td><td class="default">
+            <p>lexical syntax for NaNs; <span class="monospace">quotient</span> <span class="monospace">remainder</span> <span class="monospace">modulo</span> <span class="monospace">gcd</span> <span class="monospace">lcm</span> <span class="monospace">expt</span></p></td><td class="default">
+            <p>lexical syntax for NaNs; <span class="monospace">quotient</span> <span class="monospace">remainder</span> <span class="monospace">modulo</span>  <span class="monospace">gcd</span> <span class="monospace">lcm</span> <span class="monospace">expt</span></p></td><td class="default"></td><td class="default">
+            <p>(many)</p></td></tr><tr><td class="default">
+            <p>SRFI 71</p></td><td class="default">
+            <p><span class="monospace">let</span> <span class="monospace">let*</span> <span class="monospace">letrec</span></p></td><td class="default">
+            <p><span class="monospace">let</span> <span class="monospace">let*</span> <span class="monospace">letrec</span></p></td><td class="default">
+            <p><span class="monospace">let</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 72</p></td><td class="default">
+            <p><span class="monospace">define-syntax</span> <span class="monospace">let-syntax</span> <span class="monospace">letrec-syntax</span> <span class="monospace">syntax-rules</span></p></td><td class="default">
+            <p><span class="monospace">define-syntax</span> <span class="monospace">let-syntax</span> <span class="monospace">letrec-syntax</span> <span class="monospace">syntax-rules</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 74</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 78</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 86</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 87</p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">case</span></p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">case</span></p></td></tr><tr><td class="default">
+            <p>SRFI 88</p></td><td class="default">
+            <p>alters lexical syntax, lambda semantics</p></td><td class="default">
+            <p>alters lexical syntax, lambda semantics</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 89</p></td><td class="default">
+            <p>extends <span class="monospace">begin</span> syntax</p></td><td class="default">
+            <p>extends <span class="monospace">begin</span> syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 90</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 94</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 95</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 98</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">get-environment-variable</span> <span class="monospace">get-environment-variables</span></p></td></tr><tr><td class="default">
+            <p>SRFI 99</p></td><td class="default">
+            <p><span class="monospace">define-record-type</span></p></td><td class="default">
+            <p><span class="monospace">define-record-type</span></p></td><td class="default">
+            <p><span class="monospace">define-record-type</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 100</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 101</p></td><td class="default">
+            <p><span class="monospace">quote</span> <span class="monospace">cons</span> <span class="monospace">list</span> <span class="monospace">make-list</span> <span class="monospace">pair?</span> <span class="monospace">null?</span> <span class="monospace">list?</span> <span class="monospace">car</span> <span class="monospace">cdr</span> <span class="monospace">caar</span> ... <span class="monospace">cddddr</span> <span class="monospace">list-ref</span> <span class="monospace">list-tail</span> <span class="monospace">length</span> <span class="monospace">append</span> <span class="monospace">reverse</span> <span class="monospace">for-each</span> <span class="monospace">map</span></p></td><td class="default">
+            <p>(ditto)</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 105</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 106</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 107</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 108</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 109</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 110</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 111</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 112</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 113</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">set?</span> <span class="monospace">set-contains?</span> <span class="monospace">set-delete</span> <span class="monospace">set-delete!</span> <span class="monospace">set-union</span> <span class="monospace">set-union!</span> <span class="monospace">set-intersection</span> <span class="monospace">set-intersection!</span> <span class="monospace">set-difference</span> <span class="monospace">set-difference</span> (etc)</p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 114</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">if3</span> <span class="monospace">if=?</span> <span class="monospace">if&lt;?</span> <span class="monospace">if&gt;?</span> <span class="monospace">if&lt;=?</span> <span class="monospace">if&gt;=?</span> <span class="monospace">if-not=?</span> <span class="monospace">=?</span> <span class="monospace">&lt;?</span> <span class="monospace">&gt;?</span> <span class="monospace">&lt;=?</span> <span class="monospace">&gt;=?</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 115</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 116</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr></table></div></body></html>

@@ -1,0 +1,98 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>370: Log of exact and inexact zero</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 370: <span class="summary">Log of exact and inexact zero</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-09 00:50:06</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/370/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-03-29 04:13:29</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>R5RS and draft 6 of R7RS don't say what <span class="monospace">(log 0.0)</span> and <span class="monospace">(log 0)</span> return.  R6RS requires <span class="monospace">-inf.0</span> and an exception respectively.  The proposal is to say that <span class="monospace">(log 0.0)</span> returns <span class="monospace">-inf.0</span> on systems that have <span class="monospace">+inf.0</span>, and that <span class="monospace">(log 0)</span> is an error.</p>
+        <p>In Racket, Gambit, Chicken (with the numbers egg), Guile, Chibi, Chez, Ikarus/Vicare, Larceny, Ypsilon, Mosh, IronScheme, STklos, Spark, <span class="monospace">(log 0.0)</span> returns <span class="monospace">-inf.0</span> and <span class="monospace">(log 0)</span> raises an exception.</p>
+        <p>Gauche, MIT, Chicken (without the numbers egg), Bigloo, Scheme48/scsh, Kawa, SISC, SCM, NexJ, KSi, RScheme, XLisp, Rep, VX, SXM, Inlab return <span class="monospace">-inf.0</span> in both cases.</p>
+        <p>Elk, UMB, Oaklisp raise an exception in both cases.</p>
+        <p>Scheme 7 returns the wrong answer in both cases.</p>
+        <p>SigScheme, Shoe, TinyScheme, Dream, BDC, Owl Lisp don't support <span class="monospace">log</span>.</p>
+        <p>Scheme 9 apparently goes into an infinite loop in both cases.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-29 05:11:17</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">R5RS and draft 6 of R7RS don't say what `(log 0.0)` and `(log 0)` return.  R6RS requires `-inf.0` and an exception respectively.  The proposal is to say that `(log 0.0)` returns `-inf.0` on systems that have `+inf.0`, and that `(log 0)` is an error.
+
+In Racket, Gambit, Chicken (with the numbers egg), Guile, Chibi, Chez, !Ikarus/Vicare, Larceny, Ypsilon, Mosh, !IronScheme, STklos, Spark, `(log 0.0)` returns `-inf.0` and `(log 0)` raises an exception.
+
+Gauche, Chicken (without the numbers egg), Bigloo, Scheme48/scsh, Kawa, SISC, SCM, NexJ, KSi, RScheme, XLisp, Rep, VX, SXM, Inlab return `+inf.0` in both cases.
+
+Elk, UMB, Oaklisp raise an exception in both cases.
+
+Scheme 7 returns the wrong answer in both cases.
+
+!SigScheme, Shoe, !TinyScheme, Dream, BDC, Owl Lisp don't support `log`.
+
+Scheme 9 apparently goes into an infinite loop in both cases.
+
+I don't know how to shut off floating-point traps in MIT.</span><span class="new-value">R5RS and draft 6 of R7RS don't say what `(log 0.0)` and `(log 0)` return.  R6RS requires `-inf.0` and an exception respectively.  The proposal is to say that `(log 0.0)` returns `-inf.0` on systems that have `+inf.0`, and that `(log 0)` is an error.
+
+In Racket, Gambit, Chicken (with the numbers egg), Guile, Chibi, Chez, !Ikarus/Vicare, Larceny, Ypsilon, Mosh, !IronScheme, STklos, Spark, `(log 0.0)` returns `-inf.0` and `(log 0)` raises an exception.
+
+Gauche, MIT, Chicken (without the numbers egg), Bigloo, Scheme48/scsh, Kawa, SISC, SCM, NexJ, KSi, RScheme, XLisp, Rep, VX, SXM, Inlab return `-inf.0` in both cases.
+
+Elk, UMB, Oaklisp raise an exception in both cases.
+
+Scheme 7 returns the wrong answer in both cases.
+
+!SigScheme, Shoe, !TinyScheme, Dream, BDC, Owl Lisp don't support `log`.
+
+Scheme 9 apparently goes into an infinite loop in both cases.
+</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 03:03:53</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to adopt this proposal.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 09:45:13</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-09 00:50:06</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

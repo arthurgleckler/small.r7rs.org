@@ -1,0 +1,37 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>DivisionUseCases</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/DivisionUseCases.md">DivisionUseCases</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Division&shy;Use&shy;Cases</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-03-22 04:31:23</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/DivisionUseCases/history">history</a></div>
+      <div class="source"><a href="/wiki/DivisionUseCases/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="UsecasesforthesixdivisionfunctionsofR7RSdraft6">Use cases for the six division functions of R7RS draft 6</h2>
+      <h3 id="Truncate">Truncate</h3>
+      <p>Truncate is really not defensible, but it's everywhere, including R5RS.  If you want to transcribe an algorithm from some computer language that doesn't have exact rationals, it will usually have truncating division, and it pays to have a way to express this.  On the other hand, when you use truncating division, you usually ought to be using something else, and maybe you should rethink the algorithm.</p>
+      <p>By rule, bowling averages are truncated.  There may be other domain-specific uses.</p>
+      <h3 id="Floor">Floor</h3>
+      <p>The floor function is almost always used for integer division if truncation isn't: for example, the Basic <span class="monospace">int()</span> function is <span class="monospace">floor-quotient</span>.  Therefore it too is useful for algorithmic conversion.  It is generally felt to be better than truncation.  There are a number of mathematical applications given on <a href="http://en.wikipedia.org/wiki/Floor_and_ceiling_functions">the Wikipedia page</a>.</p>
+      <p>The R5RS <span class="monospace">modulo</span> is the flooring remainder, on the assumption that <span class="monospace">(modulo (/ n d))</span> is the residue of <span class="monospace">n</span> mod <span class="monospace">d</span>.  However, that doesn't work if <span class="monospace">d</span> is negative; the <span class="monospace">euclidean-remainder</span> does what you want in this case.</p>
+      <h3 id="Ceiling">Ceiling</h3>
+      <p>If you want to know how many fixed-sized containers that hold (physically or conceptually) <span class="monospace">d</span> items each you need to hold <span class="monospace">n</span> items altogether, you want <span class="monospace">(ceiling-quotient (/ n d))</span>.</p>
+      <p>Similarly, if items are 3 for $1.00, then they are normally $0.34 per item, a variant of the same notion.  This prevents customers from making three transactions at $0.33 each in order to save a penny.</p>
+      <h3 id="Round">Round</h3>
+      <p>Rounding is important when multiple calculations are being done, because it is as close to unbiased as possible.  IEEE floating-point operations report rounded versions of transcendental numbers so that errors will be likely to offset one another rather than accumulate.</p>
+      <h3 id="Euclidean">Euclidean</h3>
+      <p>Euclidean division is useful for reducing a hash value safely.  If we have a signed number <span class="monospace">p</span> and wish to reduce it mod <span class="monospace">q</span>, then <span class="monospace">(euclidean-remainder (/ n d))</span> is guaranteed to produce a non-negative number <span class="monospace">r</span> such that <span class="monospace">(&lt; 0 r (abs d))</span> , no matter the signs of <span class="monospace">n</span> and <span class="monospace">d</span>.</p>
+      <h3 id="Centered">Centered</h3>
+      <p>Centered division is analogous to Euclidean division, except that the remainder satisfies <span class="monospace">(&lt; (- (abs (/ q 2))) r (abs (/ q 2)))</span>.  When d is 2<sup>k</sup> for some <i>k</i>, this is the interval of integers representable in two's-complement with <span class="monospace">(- k 1)</span> bits.</p></div></body></html>

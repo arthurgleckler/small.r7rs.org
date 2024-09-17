@@ -1,0 +1,46 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WG1Ballot8Results</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WG1Ballot8Results.md">WG1Ballot8Results</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">WG1Ballot8Results</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-10-29 12:52:51</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/WG1Ballot8Results/history">history</a></div>
+      <div class="source"><a href="/wiki/WG1Ballot8Results/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Ballot 8 was conducted informally on <a href="https://groups.google.com/forum/?fromgroups=#!topic/scheme-reports-wg1/-Z65vUeerPk">a poll thread</a> of the WG1 mailing list.</p>
+      <h1 id="WG1BallotItemsToFinalizeByOct.29">WG1 Ballot Items To Finalize By Oct. 29</h1>
+      <h3 id="#315nullcharactermaynotbeusableinstrings"><a href="/ticket/315">#315</a> null character may not be usable in strings</h3>
+      <p>The original proposal was to make <span class="monospace">(string-set! str n #\null)</span> unspecified, which was rejected, at least partly on the ground that R7RS implementations can already forbid specified characters from appearing in strings.  However, the ASCII character set (which includes <span class="monospace">#\null</span>) could not be forbidden, per <a href="/wiki/UnicodeCowan">UnicodeCowan</a>.  Consequently, the rationale given by several voters that there was no need to make a special case for <span class="monospace">#\null</span> was incorrect.  The WG therefore chose from the following options:</p>
+      <p><span class="monospace">forbid-nothing</span>: every character supported by the implementation must be allowed to appear in strings.</p>
+      <p><span class="monospace">forbid-any-but-128</span>: every ASCII character <i>including</i> <span class="monospace">#\null</span> must be allowed in strings.  (This is the default, corresponding to the <span class="monospace">no</span> vote on Ballot 5.)</p>
+      <p><span class="monospace">forbid-any-but-127</span>: every ASCII character <i>excluding</i> <span class="monospace">#\null</span> must be allowed in strings.</p>
+      <p><span class="monospace">forbid-any-but-97</span>: every printable ASCII character plus <span class="monospace">#\space</span>, <span class="monospace">#\tab</span>, and <span class="monospace">#\newline</span> must be allowed in strings.</p>
+      <p><span class="monospace">open</span>: any character may be forbidden in strings.</p>
+      <p><span class="monospace">reader</span>: the characters required by the reader, plus <span class="monospace">[A-Za-z]</span>, must be allowed in strings.</p>
+      <p><span class="monospace">unspecified</span>: say nothing.</p>
+      <ul>
+        <li><b>Options:</b> forbid-nothing, forbid-any-but-128, forbid-any-but-127, forbid-any-but-96, open, reader, unspecified, undecided</li>
+        <li><b>Default:</b> forbid-any-but-128</li>
+        <li><b>Voters:</b>
+          <ul>
+            <li>Cowan: forbid-any-but-127</li>
+            <li>Ganz: forbid-any-but-127</li>
+            <li>Gleckler: forbid-any-but-127</li>
+            <li>Hsu: forbid-nothing</li>
+            <li>Medernach: forbid-any-but-127</li>
+            <li>Read: forbid-all-but-127</li>
+            <li>Shinn: open, forbid-any-but-127, forbid-nothing, forbid-any-but-128</li>
+            <li>SnellPym: forbid-any-but-128</li></ul></li>
+        <li><b>Results:</b> <b>forbid-any-but-127</b></li></ul></div></body></html>

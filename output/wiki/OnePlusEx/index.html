@@ -1,0 +1,29 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>OnePlusEx</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/OnePlusEx.md">OnePlusEx</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">One&shy;Plus&shy;Ex</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-07-06 00:13:30</div>
+      <div class="version">5<span class="comment"></span><a href="/wiki/OnePlusEx/history">history</a></div>
+      <div class="source"><a href="/wiki/OnePlusEx/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This experiment finds out whether <span class="monospace">1+x</span> and <span class="monospace">1+</span> are valid identifiers in the Scheme implementations.  They are invalid in all versions of the Scheme standard.  We also investigate whether <span class="monospace">1+</span> and <span class="monospace">add1</span> are known procedures.</p>
+      <p><span class="monospace">1+x</span> is valid, <span class="monospace">1+</span> is defined, <span class="monospace">add1</span> is defined:  Chez, Sizzle</p>
+      <p><span class="monospace">1+x</span> is valid, <span class="monospace">1+</span> is not defined, <span class="monospace">add1</span> is defined:  Racket, Chicken, SISC</p>
+      <p><span class="monospace">1+x</span> is valid, <span class="monospace">1+</span> is defined, <span class="monospace">add1</span> is not defined:  MIT, Guile, SCM, XLisp, Rep, Elk, FemtoLisp, Inlab</p>
+      <p><span class="monospace">1+x</span> is valid, <span class="monospace">1+</span> is not defined, <span class="monospace">add1</span> is not defined:  Gauche, Gambit, Bigloo, Kawa, JScheme, STklos, Shoe, TinyScheme, Scheme 9, BDC, Schemik, Llava, Sagittarius</p>
+      <p><span class="monospace">1+x</span> and <span class="monospace">1+</span> are syntax errors, <span class="monospace">add1</span> is defined:  Vicare, IronScheme, RScheme, SXM</p>
+      <p><span class="monospace">1+x</span> and <span class="monospace">1+</span> are syntax errors, <span class="monospace">add1</span> is not defined:  Scheme48/scsh, Larceny, Ypsilon, Mosh, KSi, SigScheme, UMB, Dfsch, Foment, Chibi</p>
+      <p><span class="monospace">1+x</span> is read as <span class="monospace">1 +x</span>, <span class="monospace">1+</span> is read as <span class="monospace">1 +</span>, <span class="monospace">add1</span> is not defined:  NexJ, Picrin, Owl Lisp</p></div></body></html>

@@ -1,0 +1,158 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki BottomScheme version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki BottomScheme version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>BottomScheme</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Bottom Scheme is a tiny subset of R7RS-small.  It is not really a Scheme at all, because it omits assignment, macros, modules, proper tail calls except in named `let`, multiple values, `call/cc`, `dynamic-wind`, mutable pairs and strings, I/O (except for `read-char` and `write-char`), and essentially all non-primitive procedures.
+
+== Specification ==
+
+This list is organized according to the R7RS-small report.
+
+2.1 Identifiers
+
+No case-folding directives.
+
+2.2 Whitespace
+
+Only `;` comments.
+
+2.3 Other notations
+
+Parens, apostrophe, quoted strings, `#t` and `#f`, and number, vector, and bytevector constants.  No backquoting, character constants, number bases, or labels.
+
+4.1 Primitive expression types
+
+Variables, constants, procedure calls, `lambda` without improper formals, `if`.
+
+4.2 Derived expression types
+
+Only `cond` without `=&gt;`, `and`, `or`, `let`, `letrec`, `begin`, and named `let` (with the restriction that the bound procedure can only be invoked in tail positions within the lexical scope of the `let`).
+
+5.5 Record-type definitions
+
+Full support for `define-record-type`.
+
+6.1 Equivalence predicates
+
+Only `eqv?` (for which `eq?` is a synonym).  Programmers are encouraged to provide their own definition of `equal?`.
+
+6.2.1 Numerical types
+
+All types are supported.
+
+6.2.2 Exactness
+
+The only exact numbers are integers within a fixed range.
+
+6.2.4 Implementation extensions
+
+Inexact real numbers are IEEE doubles; inexact complex numbers are pairs of IEEE doubles in the rectangular representation.
+
+6.2.5 Syntax of numerical constants
+
+`/` is not supported, because all exact numbers are integers.  Base and exactness prefixes are not supported.  The notations `-0.0`, `+inf.0`, `-inf.0`, and `+nan.0` are supported.
+
+6.2.6 Numerical operations
+
+Predicates:  `number?`, `real?`, `exact?`, `inexact?`.  Arithmetic:  `+`, `-`, `*`, `/` with two arguments only; `/` always returns an inexact value.  Transcendental functions:  `exp`, `log` (one argument), `sin`, `cos`, `tan`, `asin`, `acos`, `atan` (one argument), `sqrt`, `expt` always return complex numbers.  Complex: `make-rectangular`, `real-part`, `imag-part`.  Conversion: `exact`, `inexact`.
+
+As an enhancement to R7RS-small, the non-generic arithmetic functions `fx+`, `fx-`, `fx*`, `fl+`, `fl-`, `fl*`, `fl/`, `cx+`, `cx-`, `cx*`, `cx/` are provided.
+
+6.3 Booleans
+
+Only `#t` and `#f` notations, `not`, `boolean?`.
+
+6.4 Pairs and lists
+
+Pairs are immutable.  Only `pair?`, `cons`, `car`, `cdr`, `null?`
+
+6.5 Symbols
+
+Only `symbol?`, `symbol-&gt;string`, `string-&gt;symbol`.
+
+6.6 Characters
+
+Not supported; use single-character strings instead.
+
+6.7 Strings
+
+Full support for string literals.  Strings are immutable.  All Unicode characters are supported except U+0000 (NUL).  Only `string?`, `string-length`, `string=?`, `string&lt;?`, `string&gt;?`, `substring`, `list-&gt;string`.
+
+6.8 Vectors
+
+Full support for vector literals.  Only `vector?`, `make-vector` (one argument), `vector-length`, `vector-ref`, `vector-set!`.
+
+6.9 Bytevectors
+
+Full support for bytevector literals.  Only `bytevector?`, `make-bytevector` (one argument), `bytevector-length`, `bytevector-u8-ref`, `bytevector-u8-set!`.
+
+6.10 Control features
+
+Only `procedure?`, `apply`.
+
+6.11 Exceptions
+
+Only `error`.
+
+6.13 Input and output
+
+Only `read-char` (no arguments), `eof-object`, `eof-object?`, `write-char` (no arguments), `display` (mostly for debugging).
+
+== Implementation ==
+
+These notes assume a 64-bit system.
+
+With the basic object 64 bits in size, NaN-boxing is a plausible technique.  In this scheme, IEEE doubles are represented as immediates, and all other objects are stuffed into the signaling NaN space (high-order bit is 0, next 11 bits are 1, next bit is 1).  This limits them to 52 bits in size, which is enough to hold 64-bit pointers in current architectures, since they are only 47 bits in size (excluding the kernel area).  Because a pointer to a 64-bit value always has the low-order three bits zero, they can be used for the following tagging scheme:
+
+ * 000 - 48-bit fixnum
+ * 001 - pointer to compnum
+ * 010 - immediate `#t`, `#f`, end of file object, and undefined-value pseudo-object
+ * 011 - pointer to vector (the -1 element is a 48-bit fixnum length)
+ * 100 - pointer to Scheme pair (direct dereference gets the cdr)
+ * 101 - pointer to bytevector (padded to multiple of 64 bits, preceded by a 48-bit fixnum length)
+ * 110 - pointer to string (padded to multiple of 64 bits, preceded by a 48-bit fixnum length)
+ * 111 - pointer to procedure, symbol, or record (first word points to a type object)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+    <h2>time</h2>
+    <pre>2015-04-17 00:16:04</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

@@ -1,0 +1,107 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NumericVectorsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NumericVectorsCowan.md">NumericVectorsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Numeric&shy;Vectors&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-23 07:13:08</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/NumericVectorsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/NumericVectorsCowan/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a proposal for a WG2 numeric vector API.  The conceit is that we provide what appear to be a set of specialized numeric-only vectors, but there really is only one underlying type, the bytevector.  This makes it easy to see a single byte sequence in a variety of ways, not just as a homogeneous vector.</p>
+      <p>This design subsumes <a href="http://srfi.schemers.org/srfi-4/srfi-4.html">SRFI 4</a> with the exception of its type predicates.  It differs from related designs such as SRFI 63, SRFI 66, and R6RS in that each procedure listed below actually represents many procedures, one for each defined representation type.  This makes for a <i>lot</i> of procedures, but many of them can be easily inlined by even a very dumb compiler, providing high efficiency.</p>
+      <h2 id="Representationtypes">Representation types</h2>
+      <p>A &lt;type&gt; consists of a &lt;principal type&gt; followed by an &lt;endianism&gt;.</p>
+      <p>The &lt;principal type&gt; values are:</p>
+      <dl>
+        <dt><span class="monospace">u8</span></dt>
+        <dd>unsigned 8-bit integer</dd>
+        <dt><span class="monospace">s8</span></dt>
+        <dd>signed 8-bit integer</dd>
+        <dt><span class="monospace">u16</span></dt>
+        <dd>unsigned 16-bit integer</dd>
+        <dt><span class="monospace">s16</span></dt>
+        <dd>signed 16-bit integer</dd>
+        <dt><span class="monospace">u32</span></dt>
+        <dd>unsigned 32-bit integer</dd>
+        <dt><span class="monospace">s32</span></dt>
+        <dd>signed 32-bit integer</dd>
+        <dt><span class="monospace">u64</span></dt>
+        <dd>unsigned 64-bit integer</dd>
+        <dt><span class="monospace">s64</span></dt>
+        <dd>signed 64-bit integer</dd>
+        <dt><span class="monospace">u128</span></dt>
+        <dd>unsigned 128-bit integer</dd>
+        <dt><span class="monospace">s128</span></dt>
+        <dd>signed 128-bit integer</dd>
+        <dt><span class="monospace">f32</span></dt>
+        <dd>32-bit float</dd>
+        <dt><span class="monospace">f64</span></dt>
+        <dd>64-bit float</dd>
+        <dt><span class="monospace">c64</span></dt>
+        <dd>64-bit complex number (two 32-bit floats, real followed by imaginary)</dd>
+        <dt><span class="monospace">c128</span></dt>
+        <dd>128-bit complex number (two 64-bit floats, real followed by imaginary)</dd></dl>
+      <p>The &lt;endianism&gt; values are:</p>
+      <dl>
+        <dt>(empty)</dt>
+        <dd>Native representations (system-dependent)</dd>
+        <dt><span class="monospace">le</span></dt>
+        <dd>Little-endian (for float and complex, IEEE format)</dd>
+        <dt><span class="monospace">be</span></dt>
+        <dd>Big-endian (for float and complex, IEEE format)</dd></dl>
+      <p>Endianism is not applicable to the <span class="monospace">u8</span> and <span class="monospace">s8</span> types.  Thus there are 3 * 14 - 4, or 38, representation types altogether.</p>
+      <h2 id="Constructors">Constructors</h2>
+      <p><span class="monospace">(make-&lt;type&gt;vector </span><i>k</i><span class="monospace"> </span> [ <i>fill</i> ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated bytevector of length <i>k * b</i>, where <i>b</i> is the number of bytes specified by &lt;type&gt;.  <i>Fill</i> is converted to a binary value according to &lt;type&gt; and used to fill the bytevector; the default is implementation-defined.  An error is signaled if <i>fill</i> cannot be accurately converted to <span class="monospace">&lt;type&gt;</span>.</p>
+      <p><span class="monospace">(&lt;type&gt;vector </span> <i>v</i> ... <span class="monospace">)</span></p>
+      <p>Returns a newly allocated bytevector of length <i>k * b</i>, where <i>k</i> is the number of arguments to the procedure and <i>b</i> is the number of bytes specified by &lt;type&gt;.  It is filled with the binary values resulting from encoding the arguments according to &lt;type&gt;.  An error is signaled if an argument cannot be accurately converted to <span class="monospace">&lt;type&gt;</span>.</p>
+      <h2 id="Selectors">Selectors</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-length </span> <i>bytevector</i><span class="monospace">)</span></p>
+      <p>Returns the length of <i>bytevector</i> divided by <i>b</i>, where <i>b</i> is the number of bytes specified by &lt;type&gt;, and rounded toward zero.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-ref</span> <i>bytevector k</i><span class="monospace">)</span></p>
+      <p>Returns a Scheme number corresponding to the binary value encoded according to &lt;type&gt; beginning at offset <i>k * b</i> in <i>bytevector</i>, where <i>b</i> is the number of bytes specified by &lt;type&gt;.  This procedure treats <i>bytevector</i> as a uniformly typed vector.</p>
+      <p><span class="monospace">(bytevector-&lt;type&gt;-ref</span> <i>bytevector k</i><span class="monospace">)</span></p>
+      <p>Returns a Scheme number corresponding to the binary value encoded according to &lt;type&gt; beginning at offset <i>k</i> in <i>bytevector</i>.  This procedure treats <i>bytevector</i> as potentially containing more than one type.</p>
+      <p>Since <span class="monospace">bytevector-u8-ref</span> is defined in the small language, it is excluded here.</p>
+      <h2 id="Mutators">Mutators</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-set!</span> <i>bytevector k v</i><span class="monospace">)</span></p>
+      <p>Converts <i>v</i> to a binary value encoded according to &lt;type&gt; and places it into <i>bytevector</i> beginning at offset <i>k * b</i>, where <i>b</i> is the number of bytes specified by &lt;type&gt;.  This procedure treats <i>bytevector</i> as a uniformly typed vector.  An error is signaled if <i>v</i> cannot be accurately converted to <span class="monospace">&lt;type&gt;</span>.</p>
+      <p><span class="monospace">(bytevector-&lt;type&gt;-set!</span> <i>bytevector k v</i><span class="monospace">)</span></p>
+      <p>Converts <i>v</i> to a binary value encoded according to &lt;type&gt; and places it into <i>bytevector</i> beginning at offset <i>k</i>.  This procedure treats <i>bytevector</i> as potentially containing more than one type.  An error is signaled if <i>v</i> cannot be accurately converted to <span class="monospace">&lt;type&gt;</span>.</p>
+      <p>Since <span class="monospace">bytevector-u8-set!</span> is defined in the small language, it is excluded here.</p>
+      <h2 id="Conversions">Conversions</h2>
+      <p><span class="monospace">(vector-&gt;&lt;type&gt;vector </span><i>vector</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(list-&gt;&lt;type&gt;vector </span><i>vector</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated bytevector which, when viewed as a &lt;type&gt;vector, has the same elements as <i>vector</i> or <i>list</i>.  An error is signaled if an element of <i>vector</i> or <i>list</i> cannot be accurately converted to <span class="monospace">&lt;type&gt;</span>.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-&gt;vector </span><i>bytevector</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(&lt;type&gt;vector-&gt;list </span><i>bytevector</i><span class="monospace">)</span></p>
+      <p>Returns a vector or list with the same elements as <i>bytevector</i> viewed as a &lt;type&gt;vector.</p>
+      <h2 id="Copying,appending,andfilling">Copying, appending, and filling</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-copy </span>[ [ <i>start</i> ] <i>end</i> ] <span class="monospace">)</span></p>
+      <p>These procedures are equivalent to calling <span class="monospace">bytevector-copy</span> with the <i>start</i> and <i>end</i> arguments multiplied by <i>b</i>, where <i>b</i> is the number of bytes specified by &lt;type&gt;.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-copy! </span><i>to at from</i> [ [ <i>start</i> ] <i>end</i> ] <span class="monospace">)</span></p>
+      <p>These procedures are equivalent to calling <span class="monospace">bytevector-copy!</span> with the <i>start</i>, <i>end</i>, and <i>at</i> arguments multiplied by <i>b</i>, where <i>b</i> is the number of bytes specified by &lt;type&gt;.</p>
+      <p>There are no <span class="monospace">&lt;type&gt;vector-append</span> procedures, as <span class="monospace">bytevector-append</span> is sufficient.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-fill! </span><i>bytevector fill</i> [ [ <i>start</i> ] <i>end</i> ] <span class="monospace">)</span></p>
+      <p>Stores <i>fill</i> in the elements of <i>bytevector</i> viewed as a &lt;type&gt;vector from <i>start</i> to <i>end</i>. An error is signaled if <i>fill</i> cannot be accurately converted to <span class="monospace">&lt;type&gt;</span>.</p>
+      <h2 id="Mapping">Mapping</h2>
+      <p><span class="monospace">(&lt;type&gt;vector-map </span><i>proc bytevector1 bytevector2</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated bytevector which, when viewed as a &lt;type&gt;vector, contains the results of applying <i>proc</i> to the elements of the <i>bytevector</i>s when viewed as &lt;type&gt;vectors.</p>
+      <p><span class="monospace">(&lt;type&gt;vector-for-each </span><i>proc bytevector1 bytevector2</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to the elements of the <i>bytevector</i>s when viewed as &lt;type&gt;vectors.  Returns an unspecified value.</p>
+      <h2 id="Moreprocedures">More procedures</h2>
+      <p>See <a href="/wiki/NumericVectorsAdvancedCowan">NumericVectorsAdvancedCowan</a>.</p>
+      <h2 id="Structuredrepresentationtypes">Structured representation types</h2>
+      <p>For mapping C structs onto bytevectors, see <a href="/wiki/StructuresCowan">StructuresCowan</a>.</p></div></body></html>

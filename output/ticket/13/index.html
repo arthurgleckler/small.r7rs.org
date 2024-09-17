@@ -1,0 +1,88 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>13: [brackets] as (parens)</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 13: <span class="summary">[brackets] as (parens)</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-01-24 08:19:36</div>
+      <div class="component">WG1 - Reader Syntax</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/13/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-02-23 16:31:16</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>R6RS allows [] brackets as identical to parenthesis,
+with the condition that they must balance.  Do we
+accept this extension, propose some other use for
+brackets, or leave them unspecified?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-03-01 13:39:21</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>MzScheme, Gauche, Gambit, Chicken, Bigloo, SISC, Chez, SSCM, VSCM, and the R6RS Schemes support [+ 1 2] =&gt; 3.</p>
+              <p>MIT, Scheme48/scsh, Guile, Kawa, SCM, Scheme 9, Scheme 7, SXM, Chibi don't.  Some throw lexical-syntax errors when they read the [, others complain that [+ is not a defined symbol.</p>
+              <p>I recommend that brackets mean the same as parens.  I recommend against Interlisp-style closing of )s with ] and vice versa.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">kumoyuki</div>
+            <div class="time">2010-03-16 06:25:36</div></div>
+          <div class="changes">
+            <div><span class="field">milestone</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>ick. but probably livable. Why can't people just use real editors?</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-03-18 10:52:16</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Used to hate the idea, and now I really like them. YMMV.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-10-18 03:04:36</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG voted to reject this feature.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 08:18:46</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-01-24 08:19:36</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

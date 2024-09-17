@@ -1,0 +1,430 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #83</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #83</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-05 06:29:45</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>R6RS and R5RS have different behaviors for auxiliary keywords. Do we use symbolic keywords as in R5RS or do we use auxiliary keywords identifiers and implicit keywords as in R6RS?
+
+
+Syntaxes like COND and CASE
+have what are called auxiliary keywords, or auxiliary syntax. TSPL4 calles
+them keywords, R6RS calls them a combination of literal identifiers and
+auxiliary syntax depending on what the context of the discussion is. In
+terms of SYNTAX-RULES, the form has something like this syntax:
+
+(syntax-rules (&lt;literal&gt; ...) &lt;clause&gt; &lt;clause&gt; ...)
+
+Now, in the above, the literals are auxiliary syntax keywords. The rules
+for matching literals in a SYNTAX pattern are as follows, quoted from
+the R6RS document:
+
+       A literal identifier matches an input subform if and only if the
+       input subform is an identifier and either both its occurrence in
+       the input expression and its occurrence in the list of literals
+       have the same lexical binding, or the two identifiers have the
+       same name and both have no lexical binding.
+
+Now, the TSPL4 has some more to say about this:
+
+       Literals serve as auxiliary keywords, such as else in case and
+       cond expressions.
+
+       [...]
+
+       An input form F matches a pattern P if and only if [...] P is a
+       literal identifier and F is an identifier with the same binding
+       as determined by the predicate free-identifier=?.
+
+This is further described in Section 8.3.
+
+       free-identifier=? is used to determine whether two identifiers
+       would be equivalent if they were to appear as free identifiers
+       in the output of a transformer. Because identifier references
+       are lexically scoped, this means (free-identifier=? id1 id2)
+       is true if and only if the identifiers id1 and id2 refer
+       to the same binding. (For this comparison, two like-named
+       identifiers are assumed to have the same binding if neither is
+       bound.) Literal identifiers (auxiliary keywords) appearing in
+       syntax-case patterns (such as else in case and cond) are matched
+       with free-identifier=?.
+
+R6RS further goes on to export, explicitly, the auxilary keywords ELSE
+and others. This gives some benefits which are actually quite nice in
+some cases. What this permits is for you to have a number of additiona
+bindings for that auxiliary keyword, and it also allows you to use
+keywords internally that are not visible outside of a module or library
+form. In general, I'm in favor of this form, having used it a bit.
+
+What isn't as fortunate, or what some people don't like, is that it
+makes the forms of COND and CASE, for example, sensitive to to their
+lexical environments. So, something like this isn't going to work in
+the way that some people expect:
+
+(let ([else #f])
+       (cond [else 'a]))
+
+This will actually evaluate to an unspecified value, because the else
+there is not the same else as what COND expects. In something like R5RS,
+this could have returned 'a.
+
+One place where you can use this is if you want to use a different word
+for else. You can name it to the Chinese word for else, if you so feel
+like it.
+
+The ticket is basically, do we use the lexical keywords, or symbolic
+ones? My vote is for the lexical ones.
+</pre>
+    <h2>id</h2>
+    <pre>83</pre>
+    <h2>keywords</h2>
+    <pre>keyword,auxilary</pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>arcfide</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Auxiliary Keywords</pre>
+    <h2>time</h2>
+    <pre>2010-10-16 00:12:57</pre>
+    <h2>type</h2>
+    <pre>task</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-05 06:29:45</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>6</pre>
+    <h2>raw-time</h2>
+    <pre>1349393385994109</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 06:29:45</pre>
+    <h2>Change at time 2012-10-05 06:29:45</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349393385994109</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 06:29:45</pre>
+    <h2>Change at time 2012-10-05 06:29:45</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349393385994109</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 06:29:45</pre>
+    <h2>Change at time 2011-07-18 17:27:21</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>5</pre>
+    <h2>raw-time</h2>
+    <pre>1310984841000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2011-07-18 17:27:21</pre>
+    <h2>Change at time 2011-07-18 17:27:21</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1310984841000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2011-07-18 17:27:21</pre>
+    <h2>Change at time 2011-07-10 18:28:58</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>We voted to make these bound.</pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1310297338000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:28:58</pre>
+    <h2>Change at time 2011-07-10 18:28:58</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>reopened</pre>
+    <h2>raw-time</h2>
+    <pre>1310297338000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:28:58</pre>
+    <h2>Change at time 2011-05-19 15:40:52</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Many new issues pertaining to this ticket have been
+brought up on the public discussion list, so we are
+re-opening.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1305794452000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2011-05-19 15:40:52</pre>
+    <h2>Change at time 2011-05-19 15:40:52</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>fixed</pre>
+    <h2>raw-time</h2>
+    <pre>1305794452000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2011-05-19 15:40:52</pre>
+    <h2>Change at time 2011-05-19 15:40:52</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>reopened</pre>
+    <h2>oldvalue</h2>
+    <pre>closed</pre>
+    <h2>raw-time</h2>
+    <pre>1305794452000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2011-05-19 15:40:52</pre>
+    <h2>Change at time 2011-01-24 06:51:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 voted to leave them unbound.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1295823089000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:51:29</pre>
+    <h2>Change at time 2011-01-24 06:51:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1295823089000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:51:29</pre>
+    <h2>Change at time 2011-01-24 06:51:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1295823089000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2011-01-24 06:51:29</pre>
+    <h2>Change at time 2010-10-16 02:33:25</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1287171205000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2010-10-16 02:33:25</pre>
+    <h2>Change at time 2010-10-16 02:33:25</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>summary</pre>
+    <h2>newvalue</h2>
+    <pre>Auxiliary Keywords</pre>
+    <h2>oldvalue</h2>
+    <pre>Auxilary Keywords</pre>
+    <h2>raw-time</h2>
+    <pre>1287171205000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2010-10-16 02:33:25</pre>
+    <h2>Change at time 2010-10-16 02:33:25</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>R6RS and R5RS have different behaviors for auxiliary keywords. Do we use symbolic keywords as in R5RS or do we use auxiliary keywords identifiers and implicit keywords as in R6RS?
+
+
+Syntaxes like COND and CASE
+have what are called auxiliary keywords, or auxiliary syntax. TSPL4 calles
+them keywords, R6RS calls them a combination of literal identifiers and
+auxiliary syntax depending on what the context of the discussion is. In
+terms of SYNTAX-RULES, the form has something like this syntax:
+
+(syntax-rules (&lt;literal&gt; ...) &lt;clause&gt; &lt;clause&gt; ...)
+
+Now, in the above, the literals are auxiliary syntax keywords. The rules
+for matching literals in a SYNTAX pattern are as follows, quoted from
+the R6RS document:
+
+       A literal identifier matches an input subform if and only if the
+       input subform is an identifier and either both its occurrence in
+       the input expression and its occurrence in the list of literals
+       have the same lexical binding, or the two identifiers have the
+       same name and both have no lexical binding.
+
+Now, the TSPL4 has some more to say about this:
+
+       Literals serve as auxiliary keywords, such as else in case and
+       cond expressions.
+
+       [...]
+
+       An input form F matches a pattern P if and only if [...] P is a
+       literal identifier and F is an identifier with the same binding
+       as determined by the predicate free-identifier=?.
+
+This is further described in Section 8.3.
+
+       free-identifier=? is used to determine whether two identifiers
+       would be equivalent if they were to appear as free identifiers
+       in the output of a transformer. Because identifier references
+       are lexically scoped, this means (free-identifier=? id1 id2)
+       is true if and only if the identifiers id1 and id2 refer
+       to the same binding. (For this comparison, two like-named
+       identifiers are assumed to have the same binding if neither is
+       bound.) Literal identifiers (auxiliary keywords) appearing in
+       syntax-case patterns (such as else in case and cond) are matched
+       with free-identifier=?.
+
+R6RS further goes on to export, explicitly, the auxilary keywords ELSE
+and others. This gives some benefits which are actually quite nice in
+some cases. What this permits is for you to have a number of additiona
+bindings for that auxiliary keyword, and it also allows you to use
+keywords internally that are not visible outside of a module or library
+form. In general, I'm in favor of this form, having used it a bit.
+
+What isn't as fortunate, or what some people don't like, is that it
+makes the forms of COND and CASE, for example, sensitive to to their
+lexical environments. So, something like this isn't going to work in
+the way that some people expect:
+
+(let ([else #f])
+       (cond [else 'a]))
+
+This will actually evaluate to an unspecified value, because the else
+there is not the same else as what COND expects. In something like R5RS,
+this could have returned 'a.
+
+One place where you can use this is if you want to use a different word
+for else. You can name it to the Chinese word for else, if you so feel
+like it.
+
+The ticket is basically, do we use the lexical keywords, or symbolic
+ones? My vote is for the lexical ones.
+</pre>
+    <h2>oldvalue</h2>
+    <pre>R6RS and R5RS have different behaviors for auxilary keywords. Do we use symbolic keywords as in R5RS or do we use auxiliary keywords identifiers and implicit keywords as in R6RS?</pre>
+    <h2>raw-time</h2>
+    <pre>1287171205000000</pre>
+    <h2>ticket</h2>
+    <pre>83</pre>
+    <h2>time</h2>
+    <pre>2010-10-16 02:33:25</pre></body></html>

@@ -1,0 +1,59 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CyclesMedernach</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CyclesMedernach.md">CyclesMedernach</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Cycles&shy;Medernach</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-05-20 22:11:11</div>
+      <div class="version">5<span class="comment"></span><a href="/wiki/CyclesMedernach/history">history</a></div>
+      <div class="source"><a href="/wiki/CyclesMedernach/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Cycletype">Cycle type</h2>
+      <p>Cycles are an immutable ordered, but unindexed, container type similar to circular lists.</p>
+      <p>The idea is to make a cycle type disjoint from the other types, only interface is standardized. Scheme implementations are free to use any underlying structure to achieve it.</p>
+      <h3 id="Constructorandtypeconversion">Constructor and type conversion</h3>
+      <p><span class="monospace">(make-cycle </span><i>list</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new cycle whose elements are the elements of <i>list</i>.</p>
+      <p><span class="monospace">(cycle </span><i>element</i> ...<span class="monospace">)</span></p>
+      <p>Constructs and returns a new cycle containing <i>elements</i>.</p>
+      <p><span class="monospace">(cycle-&gt;list </span><i>cycle</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a list whose elements are those of <i>cycle</i>.</p>
+      <h3 id="Predicate">Predicate</h3>
+      <p><span class="monospace">(cycle? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if obj is a cycle, and otherwise returns <span class="monospace">#f</span>.</p>
+      <h3 id="Associatedprocedures">Associated procedures</h3>
+      <p><span class="monospace">(cycle-length </span><i>cycle</i><span class="monospace">)</span></p>
+      <p>Returns the number of elements in <i>cycle</i>.</p>
+      <p><span class="monospace">(cycle-front </span><i>cycle</i><span class="monospace">)</span></p>
+      <p>Returns the element in front of <i>cycle</i>.</p>
+      <p><span class="monospace">(cycle-remove-front </span><i>cycle</i><span class="monospace">)</span></p>
+      <p><i>cycle-remove-front</i> returns a cycle obtained from <i>cycle</i> where the front element has been removed.</p>
+      <p><span class="monospace">(cycle-rotate </span><i>cycle</i><span class="monospace"> </span><i>k</i><span class="monospace">)</span></p>
+      <p><i>cycle-rotate</i> returns a cycle obtained from <i>cycle</i> by a rotation of <i>k</i>, which is an exact integer.  If <i>k</i> is positive, the rotation is forward; if <i>k</i> is negative, the rotation is backward; if <i>k</i> is zero, there is no rotation.</p>
+      <p><span class="monospace">(cycle-insert </span><i>cycle</i><span class="monospace"> </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Return a cycle where <i>obj</i> is put in front in <i>cycle</i>.</p>
+      <p><span class="monospace">(cycle=? </span><i>equivalence cycle<sub>1</sub> cycle<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Return <span class="monospace">#t</span> if <i>cycle<sub>1</sub></i> and <i>cycle<sub>2</sub></i> contain the same values (in the sense of the <i>equivalence</i> predicate) in the same order, independent of their rotations; otherwise return <span class="monospace">#f</span>.</p>
+      <p>Example:  <span class="monospace">(cycle=? (make-cycle 1 2 3) (make-cycle 3 1 2)) =&gt; t</span></p>
+      <p><span class="monospace">(cycle-map </span><i>proc</i><span class="monospace"> </span><i>cycle</i> ...<span class="monospace">)</span></p>
+      <p>All cycles must have the same length, and <i>proc</i> must be a procedure taking as many arguments as there are <i>cycles</i> and returning a single value. <span class="monospace">cycle-map</span> applies <i>proc</i> to the elements of the cycle(s) and returns a newly allocated cycle of the corresponding results.</p>
+      <p><span class="monospace">(cycle-for-each </span><i>proc</i><span class="monospace"> </span><i>cycle</i> ...<span class="monospace">)</span></p>
+      <p>All cycles must have the same length, and <i>proc</i> must be a procedure taking as many arguments as there are <i>cycles</i>. <span class="monospace">cycle-for-each</span> applies <i>proc</i> to the elements of the cycle(s) and discards any results.</p>
+      <p><span class="monospace">(cycle-fold </span><i>proc</i><span class="monospace"> </span><i>nil</i><span class="monospace"> </span><i>cycle</i> ...<span class="monospace">)</span></p>
+      <p>All cycles must have the same length, and <i>proc</i> must be a procedure taking as many arguments as there are <i>cycles</i>, plus one additional argument, and returning a single value. <span class="monospace">cycle-fold</span> applies <i>proc</i> to the elements of the cycle(s) and the value previously returned by <i>proc</i>.  On the first call to <i>proc</i>, the additional argument is <i>nil</i>.  Returns the result of the final call to <i>proc</i>.</p>
+      <p><span class="monospace">(cycle-unfold </span><i>continue? successor mapper seed</i><span class="monospace">)</span></p>
+      <p>Start with an empty list.  If the result of applying the predicate <i>continue?</i> to <i>seed</i> is <span class="monospace">#f</span>, apply <span class="monospace">make-cycle</span> to the reversed list and return the result.  Otherwise, apply the procedure <i>mapper</i> to <i>seed</i>.  The value of <i>mapper</i> is prepended onto the list.  Then get a new seed by applying the procedure <i>successor</i> to <i>seed</i>, and repeat this algorithm.</p>
+      <h3 id="Externalrepresentations">External representations</h3>
+      <p>The cycle composed of elements 1, 2 and 3 with 1 in front can be written as following:</p>
+      <p><span class="monospace">#cycle(1 2 3)</span></p></div></body></html>

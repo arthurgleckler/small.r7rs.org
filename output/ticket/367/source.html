@@ -1,0 +1,170 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #367</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #367</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-08-27 07:15:45</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Draft 6 says that it's an error for an argument of `/` (other than the first) to be an exact zero.  R6RS, however, says that it's an error only if ''all'' the arguments are exact.  In other words, `(/ 2.0 0)` is an error according to the draft, but in R6RS it returns `+inf.0` (assuming the implementation supports it).  The proposal is to adopt the R6RS wording.
+
+I tested `(/ 2.0 0)` in the usual set of Schemes:
+
+ * Racket, Gambit, Chicken (with the numbers egg), Guile, Chibi, Elk, Spark report an error.
+ * Gauche, Bigloo, Scheme48/scsh, Kawa, SISC, Chez, SCM, !Ikarus/Vicare, Larceny, Ypsilon, Mosh, !IronScheme, NexJ, STklos, RScheme, BDC, UMB, VX return `+inf.0`.
+ * MIT, scsh, Shoe, !TinyScheme, Scheme 7, XLisp, Rep, Schemik, Inlab always report an error when dividing by zero, exact or inexact.
+ * KSi, Scheme 9 produce incorrect results.
+ * !SigScheme, Dream, Oaklisp, Owl Lisp don't support inexact numbers.</pre>
+    <h2>id</h2>
+    <pre>367</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Inexact division by exact zero</pre>
+    <h2>time</h2>
+    <pre>2012-03-28 00:38:17</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-08-27 07:15:45</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1346026545394434</pre>
+    <h2>ticket</h2>
+    <pre>367</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 07:15:45</pre>
+    <h2>Change at time 2012-08-27 07:15:45</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1346026545394434</pre>
+    <h2>ticket</h2>
+    <pre>367</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 07:15:45</pre>
+    <h2>Change at time 2012-08-27 07:15:45</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1346026545394434</pre>
+    <h2>ticket</h2>
+    <pre>367</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 07:15:45</pre>
+    <h2>Change at time 2012-08-25 00:33:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 decided to make no change, keeping the R5RS rules.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1345829609432653</pre>
+    <h2>ticket</h2>
+    <pre>367</pre>
+    <h2>time</h2>
+    <pre>2012-08-25 00:33:29</pre>
+    <h2>Change at time 2012-08-25 00:33:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1345829609432653</pre>
+    <h2>ticket</h2>
+    <pre>367</pre>
+    <h2>time</h2>
+    <pre>2012-08-25 00:33:29</pre>
+    <h2>Change at time 2012-03-30 00:42:36</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Here is a Galilean dialogue between Sixer, a proponent of the R6RS rule, and Fiver, a proponent of the R5RS rule, which is the same as that of R7RS draft 6.
+
+Sixer:  Why shouldn't `/` should do inexact contagion, just like the other arithmetic operations?
+
+Fiver:  Because an inexact operation may return an exact result if it can prove that the inexactness can't affect the result, like `(* 1.0 0)` returning `0` rather than `0.0`.
+
+Sixer:  Certainly.  But what has that to do with it?
+
+Fiver: Dividing by exact 0 doesn't care about the inexactness of the other arguments.  There is no exact infinity in Scheme, so it's more appropriate to report an error representing the non-existent value.  Since we don't require errors to be signalled except in a few circumstances, &quot;is an error&quot; is the appropriate phrase.
+
+Sixer: The value `+inf.0` can be understood as covering both overflow and positive affine infinity.  Surely that's the least surprising result when inexact numbers are involved?
+
+Fiver: But why should the result of dividing by an exact 0 be positive rather than negative? Zero, after all, is neither.
+
+Sixer: [http://en.wikipedia.org/wiki/Discordianism#Philosophy I don't know, man, I didn't do it], but IEEE 754 says so.
+
+Fiver: Well, anyway, &quot;is an error&quot; covers both raising an exception and returning `+inf.0`.
+
+Sixer: True, but numerical programmers expect to be able to rely on the IEEE rules, instead of the bad old days when division by zero always crashed your program.
+
+Fiver: Then let them avoid exact numbers.
+
+Sixer: Maybe. Is that realistic?  I don't know.
+
+Fiver: Me either.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1333042956478863</pre>
+    <h2>ticket</h2>
+    <pre>367</pre>
+    <h2>time</h2>
+    <pre>2012-03-30 00:42:36</pre></body></html>

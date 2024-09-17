@@ -1,0 +1,64 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki RecordBindersArcfide version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki RecordBindersArcfide version 4</h1>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>70.246.129.70</pre>
+    <h2>name</h2>
+    <pre>RecordBindersArcfide</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>There has been some talk discussing record let. Obviously there is a solution already that works with procedural interfaces. There are a few options. Most people have suggested something along the lines of a `LET-RECORD` form that takes either a record object or a record object and its RTD.
+
+`(let-record &lt;record-spec&gt; &lt;bindings&gt; &lt;body&gt; ...)`
+
+Where &lt;record-spec&gt; is one of the following:
+
+`&lt;identifier-to-record&gt;`
+`(&lt;identifier-to-record&gt; &lt;record-rtd&gt;)`
+
+And &lt;bindings&gt; is a list of binding forms of the following form:
+
+`(&lt;name&gt; &lt;field&gt;)`
+
+Now, if we allow only the `&lt;identifier-to-record&gt;` syntax, then we force, I believe, the general case of this macro to break down to the procedural layer. This may not be effecient if the distance and barriers of the original record definition and the use are great enough. If we allow the `(&lt;identifier-to-record&gt; &lt;record-rtd&gt;)` form, then it is possible to do this at a purely syntactic level, and potentially generate better code even despite a large number of barriers.
+
+There is another option that has not been mentioned, and I thought I would just bring it up. I have rarely seen `LET-RECORD` in the Scheme code I have read, so unless someone presents a strong case for its general ubiquity or popularity, then it may be better to leave such forms to WG2. In any case, it is also possible to specify that any given record definition (syntactic) could also have an additional specification to bind the name of a `LET-RECORD` form.
+
+{{{ 
+(define-record-type MY-RECORD
+  (fields X Y Z)
+  (parent pnt)
+  (binder LET-MY-RECORD))
+
+; Whereupon we may do something as follows:
+
+(define Z (make-my-record 1 2 3))
+(let-my-record z ([A z] [B y] [C x]) (list a b c))
+
+; =&gt; (3 2 1) 
+}}}
+
+This has the benefits that the syntactic form above has, namely, of compile-time error checking and efficiency, but also has the nicer form of the run-time version above. One disadvantage of this approach is that you would not be able to use the same binder on different types of records. I actually think that this may be a good thing. Any time that I have two records that share a common interface, I use a parent type to encapsulate that common functionality. I wonder about the actual utility of accepting any field name for determination of correctness at run-time. At any rate, if we have a procedural layer, then doing a run-time version of `LET-RECORD` is a simple exercize in macros for any user, whereas it is not so easy for an user to create a purely syntactic version of `LET-RECORD` if it is not standardized.
+
+Just another thought.</pre>
+    <h2>time</h2>
+    <pre>2010-03-18 10:48:49</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

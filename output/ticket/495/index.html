@@ -1,0 +1,50 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>495: The draft lacks many important libraries</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 495: <span class="summary">The draft lacks many important libraries</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:20:44</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/495/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-12 23:31:50</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>John David Stone writes:</p>
+        <p>R6RS provides libraries for hash tables and bitwise operators — very good!  Its <span class="monospace">(rnrs lists)</span> library standardizes the names and interfaces of some very important higher-order procedures — <span class="monospace">for-all</span>, <span class="monospace">exists</span>, <span class="monospace">filter</span>, <span class="monospace">fold-left</span>, <span class="monospace">fold-right</span> — while the proposed R7RS doesn't support any of these.  Of course, we teachers can always write our own libraries to support them, as apparently we're going to have to continue to do for random-number generation.  My guess is that the implementers will do at least as good a job.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-12 23:40:24</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>This objection ignores the existence of useful and relevant SRFIs that support these things: specifically <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> for lists, <a href="http://srfi.schemers.org/srfi-33/srfi-33.html">SRFI 33</a> and <a href="http://srfi.schemers.org/srfi-60/srfi-60.html">SRFI 60</a> for bitwise operations on integers (see <a href="/wiki/BitwiseComparison">BitwiseComparison</a> for a comparison of both with R6RS), and <a href="http://srfi.schemers.org/srfi-69/srfi-69.html">SRFI 69</a> for hash tables.  All of these come with highly portable implementations, though SRFI 69 is better implemented as a facade on top of native or R6RS hash tables.  I will match Olin Shivers's highly bummed code for SRFIs 1 and 33 against any implementer ever born, although Alex Shinn's implementation of SRFI 1 is also worthy, given the overriding goal of his Scheme, which is compactness.</p>
+              <p>Unfortunately, what R6RS chose to standardize was filled with intentional and, to my mind, gratuitous deviations from these SRFIs, of which SRFI 1 at least is a <i>de facto</i> standard for Scheme programming.  The large language will include at least SRFI 1 directly as a standard library, making it a <i>de jure</i> standard as well.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:20:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG decided by unanimous consent to take no action on this ticket.</p></div></div></div></div></div></body></html>

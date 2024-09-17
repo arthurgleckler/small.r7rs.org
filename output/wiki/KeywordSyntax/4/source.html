@@ -1,0 +1,51 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki KeywordSyntax version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki KeywordSyntax version 4</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>72.14.228.137</pre>
+    <h2>name</h2>
+    <pre>KeywordSyntax</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Keywords look like `:foo`, `foo:`, or `#:foo`, depending on the Scheme implementation:
+
+ * Gauche (and Common Lisp) support `:foo`.
+
+ * Gambit, Kawa (and DSSSL, SRFI 88) support `foo:`.
+
+ * Bigloo, STklos supports both `foo:` and `:foo` and treats them as the same (in the sense of `eqv?`).
+
+ * Scheme 7 supports both `foo:` and `:foo` and treats them as distinct (in the sense of `eqv?`).
+
+ * PLT supports `#:foo`.
+
+ * Chicken, Guile supports `#:foo` always, and also allows either `foo:` or `:foo` depending on the setting of a parameter or a startup option.
+
+ * MIT, Scheme48/scsh, SISC, Chez, SCM, Ikarus, Larceny, Mosh, Scheme 9, SSCM, SXM, VSCM, Chibi don't support any of them.
+
+If we adopt the :foo style, Gauche, Bigloo, Scheme 7, STklos will work out of the box, and Chicken and Guile will support it with an option.
+
+If we adopt the foo: style, Gambit, Chicken, Kawa, STklos, Bigloo, Scheme 7 will work out of the box, and Guile will support it with an option.
+
+If we adopt the #:foo style, PLT, Chicken, Bigloo, Guile, Scheme 7 will work out of the box.</pre>
+    <h2>time</h2>
+    <pre>2010-03-19 00:50:19</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

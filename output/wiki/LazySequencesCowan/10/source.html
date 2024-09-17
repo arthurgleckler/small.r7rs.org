@@ -1,0 +1,1590 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki LazySequencesCowan version 10</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki LazySequencesCowan version 10</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>LazySequencesCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre> `
+{{{
+#!html
+&lt;h1&gt;Table of contents&lt;/h1&gt;
+
+&lt;ul id=&quot;toc-table&quot;&gt;
+&lt;li&gt;&lt;a href=&quot;#Abstract&quot;&gt;Abstract&lt;/a&gt;
+&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Rationale&quot;&gt;Rationale&lt;/a&gt;
+&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#ProcedureIndex&quot;&gt;Procedure index&lt;/a&gt;
+&lt;li&gt;&lt;a href=&quot;#Quotation&quot;&gt;Quotation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#TheProcedures&quot;&gt;The procedures&lt;/a&gt;
+  &lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#Constructors&quot;&gt;Constructors&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Predicates&quot;&gt;Predicates&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Selectors&quot;&gt;Selectors&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Whole&quot;&gt;The whole lazy sequence&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#FoldingMapping&quot;&gt;Folding and mapping&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#FilteringPartitioning&quot;&gt;Filtering and partitioning&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Searching&quot;&gt;Searching&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Deletion&quot;&gt;Deletion&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#lseq-mmutableassociationLists&quot;&gt;Immutable association lists&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Conversion&quot;&gt;Conversion&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Comparators&quot;&gt;Comparators&lt;/a&gt;
+  &lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Realization&quot;&gt;Realization&lt;/a&gt;
+  &lt;/li&gt;&lt;/ul&gt;
+&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#SampleImplementation&quot;&gt;Sample Implementation&lt;/a&gt;
+&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Acknowledgements&quot;&gt;Acknowledgements&lt;/a&gt;
+&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#ReferencesLinks&quot;&gt;References &amp;amp; links&lt;/a&gt;
+&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;#Copyright&quot;&gt;Copyright&lt;/a&gt;
+&lt;/li&gt;&lt;/ul&gt;
+
+
+&lt;!--========================================================================--&gt;
+&lt;h1&gt;&lt;a name=&quot;Abstract&quot;&gt;Abstract&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;
+ABSTRACT&lt;/p&gt;
+
+&lt;h1&gt;&lt;a name=&quot;Rationale&quot;&gt;Rationale&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;RATIONALE&lt;/p&gt;
+&lt;p&gt;
+Note:  In the prose, lazy sequences are known as lseqs throughout.
+&lt;/p&gt;
+&lt;!--========================================================================--&gt;
+&lt;h1&gt;&lt;a name=&quot;ProcedureIndex&quot;&gt;Procedure Index&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;
+Here is a short list of the procedures provided by this SRFI.
+
+&lt;/p&gt;&lt;div class=&quot;indent&quot;&gt;
+&lt;dl&gt;
+&lt;dt class=&quot;proc-index&quot;&gt; Constructors
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;&lt;a href=&quot;#lseq&quot;&gt;lseq&lt;/a&gt;          &lt;a href=&quot;#lseq*&quot;&gt;lseq*&lt;/a&gt;        &lt;a href=&quot;#list-&gt;lseq&quot;&gt;list-&gt;lseq&lt;/a&gt; 
+&lt;a href=&quot;#vector-&gt;lseq&quot;&gt;vector-&gt;lseq&lt;/a&gt;  &lt;a href=&quot;#string-&gt;lseq&quot;&gt;string-&gt;lseq&lt;/a&gt; &lt;a href=&quot;#generator-&gt;lseq&quot;&gt;generator-&gt;lseq&lt;/a&gt; 
+&lt;a href=&quot;#lseq-unfold&quot;&gt;lseq-unfold&lt;/a&gt;   &lt;a href=&quot;#lseq-unfold-right&quot;&gt;lseq-unfold-right&lt;/a&gt;
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; Predicates
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;
+&lt;a href=&quot;#lseq-p&quot;&gt;lseq?&lt;/a&gt;         &lt;a href=&quot;#null-lseq-p&quot;&gt;null-lseq?&lt;/a&gt;   &lt;a href=&quot;#lseq=&quot;&gt;lseq=&lt;/a&gt;
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; Selectors
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;
+&lt;a href=&quot;#lseq-first&quot;&gt;lseq-first&lt;/a&gt; &lt;a href=&quot;#lseq-second&quot;&gt;lseq-second&lt;/a&gt;  &lt;a href=&quot;#lseq-third&quot;&gt;lseq-third&lt;/a&gt; &lt;a href=&quot;#lseq-fourth&quot;&gt;lseq-fourth&lt;/a&gt; &lt;a href=&quot;#lseq-fifth&quot;&gt;lseq-fifth&lt;/a&gt;
+&lt;a href=&quot;#lseq-sixth&quot;&gt;lseq-sixth&lt;/a&gt; &lt;a href=&quot;#lseq-seventh&quot;&gt;lseq-seventh&lt;/a&gt; &lt;a href=&quot;#lseq-eighth&quot;&gt;lseq-eighth&lt;/a&gt; &lt;a href=&quot;#lseq-ninth&quot;&gt;lseq-ninth&lt;/a&gt; &lt;a href=&quot;#lseq-tenth&quot;&gt;lseq-tenth&lt;/a&gt;
+&lt;a href=&quot;#lseq-last&quot;&gt;lseq-last&lt;/a&gt;  &lt;a href=&quot;#lseq-rest&quot;&gt;lseq-rest&lt;/a&gt;    &lt;a href=&quot;#lseq-ref&quot;&gt;lseq-ref&lt;/a&gt;
+&lt;a href=&quot;#lseq-take&quot;&gt;lseq-take&lt;/a&gt;       &lt;a href=&quot;#lseq-drop&quot;&gt;lseq-drop&lt;/a&gt;
+&lt;a href=&quot;#lseq-take-right&quot;&gt;lseq-take-right&lt;/a&gt; &lt;a href=&quot;#lseq-drop-right&quot;&gt;lseq-drop-right&lt;/a&gt;
+&lt;a href=&quot;#lseq-split-at&quot;&gt;isplit-at&lt;/a&gt;   
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; The whole lazy sequence
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;&lt;a href=&quot;#lseq-length&quot;&gt;lseq-length&lt;/a&gt; 
+&lt;a href=&quot;#lseq-append&quot;&gt;lseq-append&lt;/a&gt;  &lt;a href=&quot;#lseq-concatenate&quot;&gt;lseq-concatenate&lt;/a&gt;  &lt;a href=&quot;#lseq-reverse&quot;&gt;lseq-reverse&lt;/a&gt;
+&lt;a href=&quot;#lseq-zip&quot;&gt;lseq-zip&lt;/a&gt;     &lt;a href=&quot;#lseq-unzip1&quot;&gt;lseq-unzip1&lt;/a&gt; &lt;a href=&quot;#lseq-unzip2&quot;&gt;lseq-unzip2&lt;/a&gt; &lt;a href=&quot;#lseq-unzip3&quot;&gt;lseq-unzip3&lt;/a&gt; &lt;a href=&quot;#lseq-unzip4&quot;&gt;lseq-unzip4&lt;/a&gt; &lt;a href=&quot;#lseq-unzip5&quot;&gt;lseq-unzip5&lt;/a&gt;
+&lt;a href=&quot;#lseq-count&quot;&gt;lseq-count&lt;/a&gt;
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; Folding and mapping
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;&lt;a href=&quot;#lseq-map&quot;&gt;lseq-map&lt;/a&gt;        &lt;a href=&quot;#lseq-for-each&quot;&gt;lseq-for-each&lt;/a&gt;
+&lt;a href=&quot;#lseq-fold&quot;&gt;lseq-fold&lt;/a&gt;       &lt;a href=&quot;#lseq-fold-right&quot;&gt;lseq-fold-right&lt;/a&gt;
+&lt;a href=&quot;#lseq-fold-subseq&quot;&gt;lseq-fold&lt;/a&gt;       &lt;a href=&quot;#lseq-fold-subseq-right&quot;&gt;lseq-fold-right&lt;/a&gt;
+&lt;a href=&quot;#lseq-reduce&quot;&gt;lseq-reduce&lt;/a&gt;     &lt;a href=&quot;#lseq-reduce-right&quot;&gt;lseq-reduce-right&lt;/a&gt; 
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; Filtering and partitioning
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;&lt;a href=&quot;#lseq-filter&quot;&gt;lseq-filter&lt;/a&gt;     &lt;a href=&quot;#lseq-partition&quot;&gt;lseq-partition&lt;/a&gt;  &lt;a href=&quot;#lseq-remove&quot;&gt;lseq-remove&lt;/a&gt;
+
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; Searching
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;&lt;pre class=&quot;proc-index&quot;&gt;
+&lt;a href=&quot;#lseq-member&quot;&gt;lseq-member&lt;/a&gt;       &lt;a href=&quot;#lseq-memq&quot;&gt;lseq-memq&lt;/a&gt;     &lt;a href=&quot;#lseq-memv&quot;&gt;lseq-memv&lt;/a&gt;
+&lt;a href=&quot;#lseq-find&quot;&gt;lseq-find&lt;/a&gt;         &lt;a href=&quot;#lseq-find-rest&quot;&gt;lseq-find-rest&lt;/a&gt; 
+&lt;a href=&quot;#lseq-any&quot;&gt;lseq-any&lt;/a&gt;          &lt;a href=&quot;#lseq-every&quot;&gt;lseq-every&lt;/a&gt;
+&lt;a href=&quot;#lseq-index&quot;&gt;lseq-index&lt;/a&gt;
+&lt;a href=&quot;#lseq-take-while&quot;&gt;lseq-take-while&lt;/a&gt;   &lt;a href=&quot;#lseq-drop-while&quot;&gt;lseq-drop-while&lt;/a&gt;
+&lt;a href=&quot;#lseq-span&quot;&gt;lseq-span&lt;/a&gt;         &lt;a href=&quot;#lseq-break&quot;&gt;lseq-break&lt;/a&gt;
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; Deleting
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;&lt;a href=&quot;#lseq-delete&quot;&gt;lseq-delete&lt;/a&gt;       &lt;a href=&quot;#lseq-delete-neighbor-dups&quot;&gt;lseq-delete-neighbor-dups&lt;/a&gt; 
+
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; Lazy association lists
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;&lt;a href=&quot;#lseq-assoc&quot;&gt;lseq-assoc&lt;/a&gt;        &lt;a href=&quot;#lseq-assq&quot;&gt;lseq-assq&lt;/a&gt;       &lt;a href=&quot;#lseq-assv&quot;&gt;lseq-assv&lt;/a&gt;
+&lt;a href=&quot;#lseq-alist-cons&quot;&gt;lseq-alist-cons&lt;/a&gt;   &lt;a href=&quot;#lseq-alist-delete&quot;&gt;lseq-alist-delete&lt;/a&gt;
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; Conversion
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;&lt;a href=&quot;#lseq-&gt;list&quot;&gt;lseq-&gt;list&lt;/a&gt;        &lt;a href=&quot;#lseq-&gt;vector&quot;&gt;lseq-vector&lt;/a&gt;
+&lt;a href=&quot;#lseq-&gt;string&quot;&gt;lseq-&gt;string&lt;/a&gt;      &lt;a href=&quot;lseq-&gt;generator&quot;&gt;lseq-&gt;generator&lt;/a&gt;
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; Comparators
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;&lt;a href=&quot;#lseq-comparator&quot;&gt;lseq-comparator&lt;/a&gt;   &lt;a href=&quot;#make-lseq-comparator&quot;&gt;make-lseq-comparator&lt;/a&gt;
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;dt class=&quot;proc-index&quot;&gt; Realization
+&lt;/dt&gt;&lt;dd class=&quot;proc-index&quot;&gt;
+&lt;pre class=&quot;proc-index&quot;&gt;&lt;a href=&quot;#lseq-realize&quot;&gt;lseq-realize!&lt;/a&gt;              &lt;a href=&quot;#lseq-realize-once&quot;&gt;lseq-realize-once!&lt;/a&gt;
+&lt;a href=&quot;#lseq-realize-steps&quot;&gt;lseq-realize-steps!&lt;/a&gt;        &lt;a href=&quot;#lseq-realize-until&quot;&gt;lseq-realize-until!&lt;/a&gt;
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;/dl&gt;
+&lt;/div&gt;
+
+&lt;h1&gt;&lt;a name=&quot;Quotation&quot;&gt;Quotation&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;The syntax keyword &lt;code&gt;lq&lt;/code&gt; is
+provided as part of this SRFI.  It is analogous to &lt;code&gt;quote&lt;/code&gt;,
+taking an arbitrary number of literals and constructing an lseq from them,
+with any pairs in the literals converted to ipairs. It is useful
+for providing constant lazy sequences.&lt;/p&gt;
+
+
+&lt;!--========================================================================--&gt;
+&lt;h1&gt;&lt;a name=&quot;TheProcedures&quot;&gt;The procedures&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;
+The templates given below obey the following conventions for procedure formals:
+&lt;/p&gt;&lt;table&gt;
+&lt;tbody&gt;&lt;tr valign=&quot;baseline&quot;&gt;&lt;th align=&quot;left&quot;&gt; &lt;var&gt;lseq&lt;/var&gt;	
+    &lt;/th&gt;&lt;td&gt; A lazy sequence
+&lt;/td&gt;&lt;/tr&gt;&lt;tr valign=&quot;baseline&quot;&gt;
+    &lt;th align=&quot;left&quot;&gt; &lt;var&gt;x&lt;/var&gt;, &lt;var&gt;y&lt;/var&gt;, &lt;var&gt;d&lt;/var&gt;, &lt;var&gt;a&lt;/var&gt;
+    &lt;/th&gt;&lt;td&gt; Any value
+&lt;/td&gt;&lt;/tr&gt;&lt;tr valign=&quot;baseline&quot;&gt;&lt;th align=&quot;left&quot;&gt; &lt;var&gt;object&lt;/var&gt;, &lt;var&gt;value&lt;/var&gt;
+    &lt;/th&gt;&lt;td&gt; Any value
+&lt;/td&gt;&lt;/tr&gt;&lt;tr valign=&quot;baseline&quot;&gt;&lt;th align=&quot;left&quot;&gt; &lt;var&gt;n&lt;/var&gt;, &lt;var&gt;i&lt;/var&gt;
+    &lt;/th&gt;&lt;td&gt; A natural number (an integer &amp;gt;= 0)
+&lt;/td&gt;&lt;/tr&gt;&lt;tr valign=&quot;baseline&quot;&gt;&lt;th align=&quot;left&quot;&gt; &lt;var&gt;proc&lt;/var&gt;
+    &lt;/th&gt;&lt;td&gt; A procedure
+&lt;/td&gt;&lt;/tr&gt;&lt;tr valign=&quot;baseline&quot;&gt;&lt;th align=&quot;left&quot;&gt; &lt;var&gt;pred&lt;/var&gt;
+    &lt;/th&gt;&lt;td&gt; A procedure whose return value is treated as a boolean
+&lt;/td&gt;&lt;/tr&gt;&lt;tr valign=&quot;baseline&quot;&gt;&lt;th align=&quot;left&quot;&gt; &lt;var&gt;generator&lt;/var&gt;
+    &lt;/th&gt;&lt;td&gt; A procedure with no arguments that returns a sequence of values
+&lt;/td&gt;&lt;/tr&gt;&lt;tr valign=&quot;baseline&quot;&gt;&lt;th align=&quot;left&quot;&gt; &lt;var&gt;=&lt;/var&gt;
+    &lt;/th&gt;&lt;td&gt; A boolean procedure taking two arguments
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;To interpret the examples, pretend that they are executed on a Scheme that prints lazy sequences with the syntax of lists.
+
+&lt;!--========================================================================--&gt;
+&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;Constructors&quot;&gt;Constructors&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;
+
+&lt;/p&gt;&lt;dl&gt;
+
+&lt;!--
+==== lseq
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq&lt;/code&gt; &lt;var&gt;object ... -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    
+    &lt;p&gt;Returns a newly allocated lseq of its arguments.&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(lseq 'a (+ 3 4) 'c) =&amp;gt;  (a 7 c)
+(lseq)               =&amp;gt;  ()
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq*
+============================================================================--&gt;
+&lt;a name=&quot;lseq*&quot;&gt;&lt;/a&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;&lt;code class=&quot;proc-def&quot;&gt;lseq*&lt;/code&gt;&lt;var&gt; elt&lt;sub&gt;1&lt;/sub&gt; elt&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+
+    &lt;p&gt;Like &lt;code&gt;lseq&lt;/code&gt;, 
+    but the last argument is an lseq.&lt;/p&gt;
+       
+&lt;pre class=&quot;code-example&quot;&gt;(lseq* 1 2 3 (lseq 4)) =&amp;gt; (1 2 3 4)
+&lt;/pre&gt;
+
+&lt;!--
+==== list-&gt;lseq, vector-&gt;lseq, string-&gt;lseq, generator-&gt;lseq
+============================================================================--&gt;
+&lt;a name=&quot;list-&gt;lseq&quot;&gt;&lt;/a&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def1&quot;&gt; &lt;code class=&quot;proc-def&quot;&gt;list-&gt;lseq&lt;/code&gt; &lt;var&gt;list -&amp;gt; lseq&lt;/var&gt;
+&lt;a name=&quot;vector-&gt;lseq&quot;&gt;&lt;/a&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-defn&quot;&gt; &lt;code class=&quot;proc-def&quot;&gt;vector-&gt;lseq&lt;/code&gt; &lt;var&gt;vector -&amp;gt; lseq&lt;/var&gt;
+&lt;a name=&quot;string-&gt;lseq&quot;&gt;&lt;/a&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-defn&quot;&gt; &lt;code class=&quot;proc-def&quot;&gt;string-&gt;lseq&lt;/code&gt; &lt;var&gt;string -&amp;gt; lseq&lt;/var&gt;
+&lt;a name=&quot;generator-&gt;lseq&quot;&gt;&lt;/a&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt; &lt;code class=&quot;proc-def&quot;&gt;generator-&gt;lseq&lt;/code&gt; &lt;var&gt;generator -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;Returns an lseq
+    whose elements are the elements of &lt;var&gt;list, vector, string&lt;/var&gt;,
+    or the values generated by &lt;var&gt;generator&lt;/var&gt;.&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;
+(list-&gt;lseq '(c c c c c)) =&amp;gt; (c c c c)
+(vector-&gt;lseq #(c c c c c)) =&amp;gt; (c c c c)
+(string-&gt;lseq &quot;cccc&quot;) =&amp;gt; (#\c #\c #\c #\c)
+(generator-&gt;lseq (circular-generator 'c)) =&amp;gt; (c c c ...)
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-unfold
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-unfold&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-unfold&lt;/code&gt;&lt;var&gt; stop? mapper successor seed -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;&lt;p&gt;
+Creates a newly allocated lseq, and performs the following algorithm with the current seed set to &lt;var&gt;seed&lt;/var&gt;:
+
+If the result of applying the predicate &lt;var&gt;stop?&lt;/var&gt; to the current seed is true, return the lseq. Otherwise, apply the procedure &lt;var&gt;mapper&lt;/var&gt; to the current seed, returning a value which is appended to the lseq. Then get a new seed by applying the procedure &lt;var&gt;successor&lt;/var&gt; to the current seed, and repeat this algorithm. 
+
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;;; Lseq of squares: 1^2 ... 10^2
+(lseq-unfold (lambda (x) (&amp;gt; x 10))
+        (lambda (x) (* x x))
+	(lambda (x) (+ x 1))
+	1)
+&lt;/pre&gt;
+		
+&lt;!--
+==== lseq-unfold-right
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-unfold-right&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-unfold-right&lt;/code&gt;&lt;var&gt; stop? mapper successor seed -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;&lt;p&gt;
+Creates a newly allocated lseq, and performs the following algorithm with the current seed set to &lt;var&gt;seed&lt;/var&gt;:
+
+If the result of applying the predicate &lt;var&gt;stop?&lt;/var&gt; to the current seed is true, return the lseq. Otherwise, apply the procedure &lt;var&gt;mapper&lt;/var&gt; to the current seed, returning a value which is prepended to the lseq. Then get a new seed by applying the procedure &lt;var&gt;successor&lt;/var&gt; to the current seed, and repeat this algorithm. 
+
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;;; Lseq of squares: 10^2 ... 1^2
+(lseq-unfold (lambda (x) (&amp;gt; x 10))
+        (lambda (x) (* x x))
+	(lambda (x) (+ x 1))
+	1)
+&lt;/pre&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+&lt;!--========================================================================--&gt;
+&lt;h2&gt;&lt;a name=&quot;Predicates&quot;&gt;Predicates&lt;/a&gt;&lt;/h2&gt;
+&lt;dl&gt;
+&lt;!--
+==== lseq?
+============================================================================--&gt;
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq?&lt;/code&gt;&lt;var&gt; x -&amp;gt; boolean&lt;/var&gt;
+&lt;a name=&quot;lseq-p&quot;&gt;&lt;/a&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;Returns &lt;code&gt;#t&lt;/code&gt; iff &lt;var&gt;x&lt;/var&gt; is an lseq, otherwise &lt;code&gt;#f&lt;/code&gt;.&lt;/p&gt;
+
+
+&lt;!--
+==== null-lseq?
+============================================================================--&gt;
+&lt;a name=&quot;null-lseq-p&quot;&gt;&lt;/a&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;&lt;code class=&quot;proc-def&quot;&gt;null-lseq?&lt;/code&gt;&lt;var&gt; lseq -&amp;gt; boolean&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;This procedure returns &lt;code&gt;#t&lt;/code&gt; if
+    the argument is the empty lseq, and &lt;code&gt;#f&lt;/code&gt; otherwise.&lt;/p&gt;
+
+&lt;!--
+==== lseq=
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;list=&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq=&lt;/code&gt;&lt;var&gt; elt= lseq&lt;sub&gt;1&lt;/sub&gt; ... -&amp;gt; boolean&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;Determines lseq equality, given an element-equality procedure.
+    The lseq &lt;var&gt;A&lt;/var&gt; equals the lseq &lt;var&gt;B&lt;/var&gt; 
+    if they are of the same length,
+    and their corresponding elements are equal, 
+    as determined by &lt;var&gt;elt=&lt;/var&gt;. 
+    If the element-comparison procedure's first argument is
+    from &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt;, 
+    then its second argument is from &lt;var&gt;lseq&lt;sub&gt;i+1&lt;/sub&gt;&lt;/var&gt;, 
+    &lt;em&gt;i.e.&lt;/em&gt; it is always called as
+        &lt;code&gt;(&lt;var&gt;elt=&lt;/var&gt; &lt;var&gt;a&lt;/var&gt; &lt;var&gt;b&lt;/var&gt;)&lt;/code&gt;
+    for &lt;var&gt;a&lt;/var&gt; an element of lseq &lt;var&gt;A&lt;/var&gt;, 
+    and &lt;var&gt;b&lt;/var&gt; an element of lseq &lt;var&gt;B&lt;/var&gt;.&lt;/p&gt;
+&lt;p&gt;
+    In the &lt;var&gt;n&lt;/var&gt;-ary case, 
+    every &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; is compared to 
+    &lt;var&gt;lseq&lt;sub&gt;i+1&lt;/sub&gt;&lt;/var&gt; 
+    (as opposed, for example, to comparing 
+    &lt;var&gt;lseq&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; to    &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt;, 
+    for &lt;var&gt;i&lt;/var&gt;&amp;gt;1). 
+    If there are no lseq arguments at all, 
+    &lt;code&gt;lseq=&lt;/code&gt; simply returns true.
+&lt;/p&gt;&lt;p&gt;
+    Note that the dynamic order in which the &lt;var&gt;elt=&lt;/var&gt; procedure is
+    applied to pairs of elements is not specified. 
+    For example, if &lt;code&gt;lseq=&lt;/code&gt; is applied
+    to three lseqs, &lt;var&gt;A&lt;/var&gt;, &lt;var&gt;B&lt;/var&gt;, and &lt;var&gt;C&lt;/var&gt;, 
+    it may first completely compare &lt;var&gt;A&lt;/var&gt; to &lt;var&gt;B&lt;/var&gt;,
+    then compare &lt;var&gt;B&lt;/var&gt; to &lt;var&gt;C&lt;/var&gt;, 
+    or it may compare the first elements of &lt;var&gt;A&lt;/var&gt; and &lt;var&gt;B&lt;/var&gt;,
+    then the first elements of &lt;var&gt;B&lt;/var&gt; and &lt;var&gt;C&lt;/var&gt;, 
+    then the second elements of &lt;var&gt;A&lt;/var&gt; and &lt;var&gt;B&lt;/var&gt;, and so forth.
+&lt;/p&gt;&lt;p&gt;
+    The equality procedure must be consistent with &lt;code&gt;eq?&lt;/code&gt;. 
+    That is, it must be the case that
+&lt;/p&gt;&lt;div class=&quot;indent&quot;&gt;
+        &lt;code&gt;(eq? &lt;var&gt;x&lt;/var&gt; &lt;var&gt;y&lt;/var&gt;)&lt;/code&gt; =&amp;gt; &lt;code&gt;(&lt;var&gt;elt=&lt;/var&gt; &lt;var&gt;x&lt;/var&gt; &lt;var&gt;y&lt;/var&gt;)&lt;/code&gt;.
+&lt;/div&gt;
+    &lt;p&gt;Note that this implies that two lseqs which are &lt;code&gt;eq?&lt;/code&gt; 
+    are always &lt;code&gt;lseq=&lt;/code&gt;, as well; implementations may exploit this
+    fact to &quot;short-cut&quot; the element-by-element comparisons.&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(lseq= eq?) =&amp;gt; #t       ; Trivial cases
+(lseq= eq? (lq a)) =&amp;gt; #t
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;/dl&gt;
+
+
+&lt;!--========================================================================--&gt;
+&lt;h2&gt;&lt;a name=&quot;Selectors&quot;&gt;Selectors&lt;/a&gt;&lt;/h2&gt;
+&lt;dl&gt;
+
+&lt;!--
+==== lseq-tenth
+==== lseq-ninth
+==== lseq-eighth
+==== lseq-seventh
+==== lseq-sixth
+==== lseq-fifth
+==== lseq-fourth
+==== lseq-third
+==== lseq-second
+==== lseq-first
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def1&quot;&gt;
+&lt;a name=&quot;lseq-first&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-first&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object &lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-second&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-second&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object &lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-third&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-third&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object &lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-fourth&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-fourth&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object &lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-fifth&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-fifth&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object &lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-sixth&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-sixth&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object &lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-seventh&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-seventh&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object &lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-eighth&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-eighth&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object &lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-ninth&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-ninth&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object &lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-tenth&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-tenth&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object  &lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defn&quot;&gt;
+&lt;a name=&quot;lseq-last&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-last&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; object  &lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;Returns the first, second, ..., tenth, last element of &lt;var&gt;lseq&lt;/var&gt;.&lt;/p&gt; 
+
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-third (lq a b c d e)) =&amp;gt; c
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-rest
+============================================================================--&gt;
+&lt;a name=&quot;lseq-rest&quot;&gt;&lt;/a&gt;
+&lt;dt class=&quot;proc-def&quot;&gt;&lt;code class=&quot;proc-def&quot;&gt;lseq-rest&lt;/code&gt;&lt;var&gt; lseq -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    
+    &lt;p&gt;Returns an lseq with the contents of &lt;var&gt;lseq&lt;/i&gt; except for the
+    first element.
+    Note that it is an error to apply it to the empty lseq.&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-first (lq a b c))       =&amp;gt;  a        (lseq-rest (lq a b c))     =&amp;gt;  (b c)  
+(lseq-first (lq (a) b c d))   =&amp;gt;  (a)	     (lseq-rest (lq (a) b c d)) =&amp;gt;  (b c d)
+(lseq-first (lseq-pair 1 2))      =&amp;gt;  1	     (lseq-rest (lseq-pair 1 2))    =&amp;gt;  2      
+(lseq-first '())              =&amp;gt;  *error*  (lseq-rest '())            =&amp;gt;  *error*
+&lt;/pre&gt;
+
+
+
+&lt;!--
+==== lseq-ref
+============================================================================--&gt;
+&lt;a name=&quot;lseq-ref&quot;&gt;&lt;/a&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;&lt;code class=&quot;proc-def&quot;&gt;lseq-ref&lt;/code&gt;&lt;var&gt; lseq i -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    
+    &lt;p&gt;Returns the &lt;var&gt;i&lt;/var&gt;&lt;sup&gt;th&lt;/sup&gt; element of &lt;var&gt;lseq&lt;/var&gt;.  
+    (This is the same as 
+        &lt;code&gt;(lseq-first (lseq-drop &lt;var&gt;lseq&lt;/var&gt; &lt;var&gt;i&lt;/var&gt;))&lt;/code&gt;.)
+    It is an error if &lt;var&gt;i&lt;/var&gt; &amp;gt;= &lt;var&gt;n&lt;/var&gt;, 
+    where &lt;var&gt;n&lt;/var&gt; is the length of &lt;var&gt;lseq&lt;/var&gt;.&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;    
+(lseq-ref (lq a b c d) 2) =&amp;gt; c
+&lt;/pre&gt;    
+
+&lt;!--
+==== lseq-drop
+==== lseq-take
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def1&quot;&gt;
+&lt;a name=&quot;lseq-take&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-take&lt;/code&gt;&lt;var&gt; lseq i -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-drop&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-drop&lt;/code&gt;&lt;var&gt; lseq i -&amp;gt; object&lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;&lt;code&gt;lseq-take&lt;/code&gt; returns the first &lt;var&gt;i&lt;/var&gt; elements of &lt;var&gt;lseq&lt;/var&gt;.&lt;br/&gt;
+    &lt;code&gt;lseq-drop&lt;/code&gt; returns all but the first &lt;var&gt;i&lt;/var&gt; elements of &lt;var&gt;lseq&lt;/var&gt;.&lt;br/&gt;&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-take (lq a b c d e)  2) =&amp;gt; (a b)
+(lseq-drop (lq a b c d e)  2) =&amp;gt; (c d e)
+&lt;/pre&gt;
+    &lt;p&gt;For a legal &lt;var&gt;i&lt;/var&gt;, &lt;code&gt;lseq-take&lt;/code&gt; and &lt;code&gt;lseq-drop&lt;/code&gt; partition &lt;var&gt;lseq&lt;/var&gt; in a manner which
+    can be inverted with &lt;code&gt;lseq-append&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-append (lseq-take &lt;var&gt;lseq&lt;/var&gt; &lt;var&gt;i&lt;/var&gt;) (lseq-drop &lt;var&gt;lseq&lt;/var&gt; &lt;var&gt;i&lt;/var&gt;)) = &lt;var&gt;lseq&lt;/var&gt;
+&lt;/pre&gt;
+    &lt;p&gt;&lt;code&gt;lseq-drop&lt;/code&gt; is exactly equivalent to performing &lt;var&gt;i&lt;/var&gt; &lt;code&gt;lseq-rest&lt;/code&gt; operations on &lt;var&gt;lseq&lt;/var&gt;.&lt;/p&gt;
+
+
+&lt;!--
+==== lseq-drop-right
+==== lseq-take-right
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def1&quot;&gt;
+&lt;a name=&quot;lseq-take-right&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-take-right&lt;/code&gt;&lt;var&gt; lseq i -&amp;gt; object&lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defn&quot;&gt;
+&lt;a name=&quot;lseq-drop-right&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-drop-right&lt;/code&gt;&lt;var&gt; lseq i -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;&lt;code&gt;lseq-take-right&lt;/code&gt; returns the last &lt;var&gt;i&lt;/var&gt; elements of &lt;var&gt;lseq&lt;/var&gt;.&lt;br/&gt;
+    &lt;code&gt;lseq-drop-right&lt;/code&gt; returns all but the last &lt;var&gt;i&lt;/var&gt; elements of &lt;var&gt;lseq&lt;/var&gt;.&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-take-right (lq a b c d e) 2) =&amp;gt; (d e)
+(lseq-drop-right (lq a b c d e) 2) =&amp;gt; (a b c)
+&lt;/pre&gt;
+    &lt;p&gt;For a legal &lt;var&gt;i&lt;/var&gt;, &lt;code&gt;lseq-take-right&lt;/code&gt; and &lt;code&gt;lseq-drop-right&lt;/code&gt; partition &lt;var&gt;lseq&lt;/var&gt; in a manner 
+    which can be inverted with &lt;code&gt;lseq-append&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-append (lseq-take &lt;var&gt;lseq&lt;/var&gt; &lt;var&gt;i&lt;/var&gt;) (lseq-drop &lt;var&gt;lseq&lt;/var&gt; &lt;var&gt;i&lt;/var&gt;)) = &lt;var&gt;lseq&lt;/var&gt;
+&lt;/pre&gt;
+    &lt;p&gt;&lt;code&gt;lseq-take-right&lt;/code&gt;'s return value is guaranteed to share a common tail with &lt;var&gt;lseq&lt;/var&gt;.&lt;/p&gt;
+
+ 
+&lt;!--
+==== lseq-split-at
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-split-at&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-split-at&amp;nbsp;&lt;/code&gt;&lt;var&gt; lseq i -&amp;gt; [lseq object]&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;Splits the lseq &lt;var&gt;lseq&lt;/var&gt; 
+    at index &lt;var&gt;i&lt;/var&gt;, returning two values, an lseq of the 
+    first &lt;var&gt;i&lt;/var&gt; elements, and an lseq of the remaining tail. It is equivalent
+    to&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(values (lseq-take lseq i) (lseq-drop lseq i))
+&lt;/pre&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;!--========================================================================--&gt;
+&lt;h2&gt;&lt;a name=&quot;Whole&quot;&gt;The whole lazy sequence&lt;/a&gt;&lt;/h2&gt;
+
+&lt;dl&gt;
+&lt;!--
+==== lseq-length
+============================================================================--&gt;
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-length&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-length&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq -&amp;gt; integer&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;Returns the length of its argument, which is the non-negative integer &lt;var&gt;n&lt;/var&gt; such that &lt;code&gt;lseq-last&lt;/code&gt; 
+    applied &lt;var&gt;n&lt;/var&gt; times to the lseq produces the empty lseq.&lt;/p&gt;
+
+
+&lt;!--
+==== lseq-append
+============================================================================--&gt;
+&lt;/p&gt;&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-append&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;iappend&amp;nbsp;&lt;/code&gt;&lt;var&gt; lseq&lt;sub&gt;1&lt;/sub&gt; ... -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    
+    &lt;p&gt;Returns an lseq consisting of the elements 
+    of &lt;var&gt;lseq&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt;
+    followed by the elements of the other lseq parameters.&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-append (lq x) (lq y))        =&amp;gt;  (x y)
+(lseq-append (lq a) (lq b c d))    =&amp;gt;  (a b c d)
+(lseq-append (lq a (b)) (lq (c)))  =&amp;gt;  (a (b) (c))
+&lt;/pre&gt;
+    &lt;p&gt;The resulting lseq is always newly allocated, except that it
+    shares structure with the final &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; argument.&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-append (lq a b) (lseq-pair 'c 'd))  =&amp;gt;  (a b c . d)
+(lseq-append '() 'a)           =&amp;gt;  a
+(lseq-append (lq x y))         =&amp;gt;  (x y)
+(lseq-append)                  =&amp;gt;  ()
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-concatenate 
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-concatenate&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;iconcatenate&amp;nbsp;&lt;/code&gt;&lt;var&gt; list-of-lseqs -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;Appends the elements of its argument together.&lt;/p&gt; 
+&lt;p&gt;
+    Note that some Scheme implementations do not support passing more than a
+    certain number (&lt;em&gt;e.g.&lt;/em&gt;, 64) of arguments to an n-ary procedure.  
+    In these implementations, the &lt;code&gt;(lseq-apply iappend ...)&lt;/code&gt; idiom
+    would fail when applied to long lists, 
+    but &lt;code&gt;lseq-concatenate&lt;/code&gt; would continue to function properly.
+
+&lt;/p&gt;&lt;p&gt;
+    As with &lt;code&gt;lseq-append&lt;/code&gt;, 
+    the last element of the input list may be any value at all.
+
+&lt;!--
+==== lseq-reverse
+============================================================================--&gt;
+&lt;/p&gt;&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-reverse&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ireverse&amp;nbsp;&lt;/code&gt;&lt;var&gt; lseq -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    
+
+    &lt;p&gt;Returns a newly allocated lseq consisting of
+    the elements of &lt;var&gt;lseq&lt;/var&gt; in reverse order.&lt;/p&gt;
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-reverse (lq a b c)) =&amp;gt;  (c b a)
+(lseq-reverse (lq a (b c) d (e (f))))
+    =&amp;gt;  ((e (f)) d (b c) a)
+&lt;/pre&gt;
+
+
+&lt;!--
+==== lseq-append-reverse
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-append-reverse&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;iappend-reverse&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;rev-head tail -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;&lt;code&gt;lseq-append-reverse&lt;/code&gt; returns
+	&lt;code&gt;(lseq-append (lseq-reverse &lt;var&gt;rev-head&lt;/var&gt;) &lt;var&gt;tail&lt;/var&gt;)&lt;/code&gt;.
+    It is provided because it is a common operation — a common
+    list-processing style calls for this exact operation to transfer values
+    accumulated in reverse order onto the front of another lseq, and because
+    the implementation is significantly more efficient than the simple
+    composition it replaces. (But note that this pattern of iterative 
+    computation followed by a reverse can frequently be rewritten as a 
+    recursion, dispensing with the &lt;code&gt;reverse&lt;/code&gt; and &lt;code&gt;lseq-append-reverse&lt;/code&gt; steps, and 
+    shifting temporary, intermediate storage from the heap to the stack, 
+    which is typically a win for reasons of cache locality and eager storage 
+    reclamation.)&lt;/p&gt;
+
+
+&lt;!--
+==== lseq-zip
+============================================================================--&gt;
+&lt;a name=&quot;lseq-zip&quot;&gt;&lt;/a&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;&lt;code class=&quot;proc-def&quot;&gt;izip&lt;/code&gt; &lt;var&gt;lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+&lt;pre&gt;(lambda lseqs (lseq-apply imap lseq lseqs))
+&lt;/pre&gt;
+    &lt;p&gt;If &lt;code&gt;lseq-zip&lt;/code&gt; is passed &lt;var&gt;n&lt;/var&gt; lseqs, it returns an lseq as long as the shortest
+    of these lseqs, each element of which is an &lt;var&gt;n&lt;/var&gt;-element list comprised
+    of the corresponding elements from the arguments.&lt;/p&gt;
+
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-zip (lq one two three) 
+     (lq 1 2 3)
+     (lq odd even odd even odd even odd even))
+    =&amp;gt; ((one 1 odd) (two 2 even) (three 3 odd))
+
+(lseq-zip (lq 1 2 3)) =&amp;gt; ((1) (2) (3))
+&lt;/pre&gt;
+    
+&lt;!--
+==== lseq-unzip5
+==== lseq-unzip4
+==== lseq-unzip3
+==== lseq-unzip2
+==== lseq-unzip1
+============================================================================--&gt;
+&lt;a name=&quot;lseq-unzip1&quot;&gt;&lt;/a&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def1&quot;&gt;  &lt;code class=&quot;proc-def&quot;&gt;lseq-unzip1&lt;/code&gt;&lt;var&gt; list-of-lseqs -&amp;gt; lseq&lt;/var&gt;
+&lt;a name=&quot;lseq-unzip2&quot;&gt;&lt;/a&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt; &lt;code class=&quot;proc-def&quot;&gt;lseq-unzip2&lt;/code&gt;&lt;var&gt; list-of-lseqs -&amp;gt; [lseq lseq]&lt;/var&gt;
+&lt;a name=&quot;lseq-unzip3&quot;&gt;&lt;/a&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt; &lt;code class=&quot;proc-def&quot;&gt;lseq-unzip3&lt;/code&gt;&lt;var&gt; list-of-lseqs -&amp;gt; [lseq lseq lseq]&lt;/var&gt;
+&lt;a name=&quot;lseq-unzip4&quot;&gt;&lt;/a&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt; &lt;code class=&quot;proc-def&quot;&gt;lseq-unzip4&lt;/code&gt;&lt;var&gt; list-of-lseqs -&amp;gt; [lseq lseq lseq lseq]&lt;/var&gt;
+&lt;a name=&quot;lseq-unzip5&quot;&gt;&lt;/a&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defn&quot;&gt; &lt;code class=&quot;proc-def&quot;&gt;lseq-unzip5&lt;/code&gt;&lt;var&gt; lslist-of-lseqs eq -&amp;gt; [lseq lseq lseq lseq lseq]&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;&lt;code&gt;lseq-unzip1&lt;/code&gt; takes a list of lseqs, 
+    where every lseq must contain at least one element, 
+    and returns an lseq containing the initial element of each such lseq. 
+    That is, it returns &lt;code&gt;(lseq-map lseq-first lseqs)&lt;/code&gt;.  
+    &lt;code&gt;lseq-unzip2&lt;/code&gt; takes a list of lseqs, where every lseq must contain at least
+    two elements, and returns two values: an lseq of the first elements,
+    and an lseq of the second elements. &lt;code&gt;lseq-unzip3&lt;/code&gt; does the same for the first
+    three elements of the lseqs, and so forth.&lt;/p&gt;
+
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-unzip2 (list (lq 1 one) (lq 2 two) (lq 3 three))) =&amp;gt;
+    (1 2 3) 
+    (one two three)
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-count
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-count&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-count&lt;/code&gt;&lt;var&gt; pred lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; integer&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;p&gt;&lt;var&gt;pred&lt;/var&gt; is a procedure taking as many arguments as there
+    are lseqs and returning a single value. It is applied 
+    element-wise to the elements of the &lt;var&gt;lseq&lt;/var&gt;s, and a count is
+    tallied of the number of elements that produce a true value. This count
+    is returned. &lt;code&gt;count&lt;/code&gt; is &quot;iterative&quot; in that it is guaranteed
+    to apply &lt;var&gt;pred&lt;/var&gt; to the &lt;var&gt;lseq&lt;/var&gt; elements in a
+    left-to-right order.
+    The counting stops when the shortest lseq expires.
+&lt;pre class=&quot;code-example&quot;&gt;(count even? (lq 3 1 4 1 5 9 2 5 6)) =&amp;gt; 3
+(count &amp;lt; (lq 1 2 4 8) (lq 2 4 6 8 10 12 14 16)) =&amp;gt; 3
+&lt;/pre&gt;
+    
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;!--========================================================================--&gt;
+&lt;h2&gt;&lt;a name=&quot;FoldingMapping&quot;&gt;Folding and mapping&lt;/a&gt;&lt;/h2&gt;
+&lt;dl&gt;
+&lt;!--
+==== lseq-fold
+============================================================================--&gt;
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-fold&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ifold&lt;/code&gt;&lt;var&gt; kons knil lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    The fundamental lseq iterator. 
+&lt;p&gt;
+    First, consider the single lseq-parameter case. If &lt;var&gt;lseq&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; = (&lt;var&gt;e&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;2&lt;/sub&gt;&lt;/var&gt; ... &lt;var&gt;e&lt;sub&gt;n&lt;/sub&gt;&lt;/var&gt;),
+    then this procedure returns
+&lt;/p&gt;&lt;div class=&quot;indent&quot;&gt;
+&lt;code&gt;(&lt;var&gt;kons&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;n&lt;/sub&gt;&lt;/var&gt; ... (&lt;var&gt;kons&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;2&lt;/sub&gt;&lt;/var&gt; (&lt;var&gt;kons&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt;)) ... )&lt;/code&gt;
+&lt;/div&gt;
+    That is, it obeys the (tail) recursion
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-fold &lt;var&gt;kons&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt; &lt;var&gt;lis&lt;/var&gt;) = (lseq-fold &lt;var&gt;kons&lt;/var&gt; (&lt;var&gt;kons&lt;/var&gt; (lseq-first &lt;var&gt;lis&lt;/var&gt;) &lt;var&gt;knil&lt;/var&gt;) (lseq-last &lt;var&gt;lis&lt;/var&gt;))
+(lseq-fold &lt;var&gt;kons&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt; '()) = &lt;var&gt;knil&lt;/var&gt;
+&lt;/pre&gt;
+
+    Examples:
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-fold + 0 lis)			; Add up the elements of LIS.
+
+(lseq-fold ipair '() lis)		; Reverse LIS.
+
+(lseq-fold ipair tail rev-head)	; See APPEND-REVERSE.
+
+;; How many symbols in LIS?
+(lseq-fold (lambda (x count) (if (symbol? x) (+ count 1) count))
+      0
+      lis)
+
+;; Length of the longest string in LIS:
+(lseq-fold (lambda (s max-len) (max max-len (string-length s)))
+      0
+      lis)
+&lt;/pre&gt;
+
+    If &lt;var&gt;n&lt;/var&gt; lseq arguments are provided, then the &lt;var&gt;kons&lt;/var&gt; function must take
+    &lt;var&gt;n&lt;/var&gt;+1 parameters: one element from each lseq, and the &quot;seed&quot; or fold
+    state, which is initially &lt;var&gt;knil&lt;/var&gt;. The fold operation terminates when
+    the shortest lseq runs out of values:
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-fold ipair* '() (lq a b c) (lq 1 2 3 4 5)) =&amp;gt; (c 3 b 2 a 1)
+&lt;/pre&gt;
+   
+&lt;!--
+==== lseq-fold-right
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-fold-right&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ifold-right&lt;/code&gt;&lt;var&gt; kons knil lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    The fundamental lseq recursion operator. 
+&lt;p&gt;
+    First, consider the single lseq-parameter case. If &lt;var&gt;lseq&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; = &lt;code&gt;(&lt;var&gt;e&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;2&lt;/sub&gt;&lt;/var&gt; ... &lt;var&gt;e&lt;sub&gt;n&lt;/sub&gt;&lt;/var&gt;)&lt;/code&gt;, 
+    then this procedure returns
+&lt;/p&gt;&lt;div class=&quot;indent&quot;&gt;&lt;code&gt;
+(&lt;var&gt;kons&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; (&lt;var&gt;kons&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;2&lt;/sub&gt;&lt;/var&gt; ... (&lt;var&gt;kons&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;n&lt;/sub&gt;&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt;)))
+&lt;/code&gt;&lt;/div&gt;
+    That is, it obeys the recursion
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-fold-right &lt;var&gt;kons&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt; &lt;var&gt;lis&lt;/var&gt;) = (&lt;var&gt;kons&lt;/var&gt; (lseq-first &lt;var&gt;lis&lt;/var&gt;) (lseq-fold-right &lt;var&gt;kons&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt; (lseq-last &lt;var&gt;lis&lt;/var&gt;)))
+(lseq-fold-right &lt;var&gt;kons&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt; '()) = &lt;var&gt;knil&lt;/var&gt;
+&lt;/pre&gt;
+        
+    Examples:
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-fold-right ipair '() lis)		; Copy LIS.
+
+;; Filter the even numbers out of LIS.
+(lseq-fold-right (lambda (x l) (if (even? x) (lseq-pair x l) l)) '() lis))
+&lt;/pre&gt;
+
+    If &lt;var&gt;n&lt;/var&gt; lseq arguments are provided, then the &lt;var&gt;kons&lt;/var&gt; procedure must take
+    &lt;var&gt;n&lt;/var&gt;+1 parameters: one element from each lseq, and the &quot;seed&quot; or fold
+    state, which is initially &lt;var&gt;knil&lt;/var&gt;. The fold operation terminates when
+    the shortest lseq runs out of values:
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-fold-right ipair* '() (lq a b c) (lq 1 2 3 4 5)) =&amp;gt; (a 1 b 2 c 3)
+&lt;/pre&gt;
+ 
+&lt;!--
+==== lseq-pair-fold
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-pair-fold&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ipair-fold&lt;/code&gt;&lt;var&gt; kons knil lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Analogous to &lt;code&gt;fold&lt;/code&gt;, but &lt;var&gt;kons&lt;/var&gt; is applied to successive sub-lseqs of the 
+    lseqs, rather than successive elements — that is, &lt;var&gt;kons&lt;/var&gt; is applied to the
+    ipairs making up the lists, giving this (tail) recursion:
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-pair-fold &lt;var&gt;kons&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt; &lt;var&gt;lis&lt;/var&gt;) = (let ((tail (lseq-last &lt;var&gt;lis&lt;/var&gt;)))
+                              (lseq-pair-fold &lt;var&gt;kons&lt;/var&gt; (&lt;var&gt;kons&lt;/var&gt; &lt;var&gt;lis&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt;) tail))
+(lseq-pair-fold &lt;var&gt;kons&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt; &lt;code&gt;'()&lt;/code&gt;) = &lt;var&gt;knil&lt;/var&gt;
+&lt;/pre&gt;
+&lt;p&gt;
+    Example:
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(lseq-pair-fold ipair '() (lq a b c)) =&amp;gt; ((c) (b c) (a b c))
+&lt;/pre&gt;
+
+    
+&lt;!--
+==== lseq-pair-fold-right
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-pair-fold-right&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ipair-fold-right&lt;/code&gt;&lt;var&gt; kons knil lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Holds the same relationship with &lt;code&gt;lseq-fold-right&lt;/code&gt; that &lt;code&gt;lseq-pair-fold&lt;/code&gt; holds with &lt;code&gt;lseq-fold&lt;/code&gt;.
+    Obeys the recursion
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-pair-fold-right &lt;var&gt;kons&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt; &lt;var&gt;lis&lt;/var&gt;) = 
+    (&lt;var&gt;kons&lt;/var&gt; &lt;var&gt;lis&lt;/var&gt; (lseq-pair-fold-right &lt;var&gt;kons&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt; (lseq-last &lt;var&gt;lis&lt;/var&gt;)))
+(lseq-pair-fold-right &lt;var&gt;kons&lt;/var&gt; &lt;var&gt;knil&lt;/var&gt; &lt;code&gt;'()&lt;/code&gt;) = &lt;var&gt;knil&lt;/var&gt;
+&lt;/pre&gt;
+    
+    Example:
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-pair-fold-right ipair '() (lq a b c)) =&amp;gt; ((a b c) (b c) (c))
+&lt;/pre&gt;
+&lt;!--
+==== lseq-reduce
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-reduce&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ireduce&lt;/code&gt;&lt;var&gt; f ridentity lseq -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;code&gt;lseq-reduce&lt;/code&gt; is a variant of &lt;code&gt;lseq-fold&lt;/code&gt;. 
+&lt;p&gt;
+    &lt;var&gt;ridentity&lt;/var&gt; should be a &quot;right identity&quot; of the procedure &lt;var&gt;f&lt;/var&gt; — that is, 
+    for any value &lt;var&gt;x&lt;/var&gt; acceptable to &lt;var&gt;f&lt;/var&gt;,
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(&lt;var&gt;f&lt;/var&gt; &lt;var&gt;x&lt;/var&gt; &lt;var&gt;ridentity&lt;/var&gt;) = &lt;var&gt;x&lt;/var&gt;
+&lt;/pre&gt;
+    
+    &lt;code&gt;lseq-reduce&lt;/code&gt; has the following definition:
+&lt;div class=&quot;indent&quot;&gt;
+If &lt;var&gt;lseq&lt;/var&gt; = (),  return &lt;var&gt;ridentity&lt;/var&gt;;&lt;br/&gt;
+Otherwise,    return &lt;code&gt;(lseq-fold &lt;var&gt;f&lt;/var&gt; (lseq-first &lt;var&gt;lseq&lt;/var&gt;) (lseq-last &lt;var&gt;lseq&lt;/var&gt;))&lt;/code&gt;.
+&lt;/div&gt;
+    ...in other words, we compute 
+    &lt;code&gt;(lseq-fold &lt;var&gt;f&lt;/var&gt; &lt;var&gt;ridentity&lt;/var&gt; &lt;var&gt;lseq&lt;/var&gt;)&lt;/code&gt;.
+&lt;p&gt;
+    Note that &lt;var&gt;ridentity&lt;/var&gt; is used &lt;em&gt;only&lt;/em&gt; in the empty-list case.
+    You typically use &lt;code&gt;lseq-reduce&lt;/code&gt; when applying &lt;var&gt;f&lt;/var&gt; is expensive and you'd
+    like to avoid the extra application incurred when &lt;code&gt;lseq-fold&lt;/code&gt; applies
+    &lt;var&gt;f&lt;/var&gt; to the head of &lt;var&gt;lseq&lt;/var&gt; and the identity value,
+    redundantly producing the same value passed in to &lt;var&gt;f&lt;/var&gt;. 
+    For example, if &lt;var&gt;f&lt;/var&gt; involves searching a file directory or 
+    performing a database query, this can be significant. 
+    In general, however, &lt;code&gt;lseq-fold&lt;/code&gt; is useful in many contexts where &lt;code&gt;lseq-reduce&lt;/code&gt; is not
+    (consider the examples given in the &lt;code&gt;lseq-fold&lt;/code&gt; definition — only one of the
+    five folds uses a function with a right identity. 
+    The other four may not be performed with &lt;code&gt;lseq-reduce&lt;/code&gt;).
+
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;;; take the max of an lseq of non-negative integers.
+(lseq-reduce max 0 nums) ; i.e., (lseq-apply max 0 nums)
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-reduce-right
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-reduce-right&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ireduce-right&lt;/code&gt;&lt;var&gt; f ridentity lseq -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;code&gt;lseq-reduce-right&lt;/code&gt; is the fold-right variant of &lt;code&gt;lseq-reduce&lt;/code&gt;.
+    It obeys the following definition:
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-reduce-right &lt;var&gt;f&lt;/var&gt; &lt;var&gt;ridentity&lt;/var&gt; '()) = &lt;var&gt;ridentity&lt;/var&gt;
+(lseq-reduce-right &lt;var&gt;f&lt;/var&gt; &lt;var&gt;ridentity&lt;/var&gt; (lq &lt;var&gt;e&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt;)) = (&lt;var&gt;f&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; &lt;var&gt;ridentity&lt;/var&gt;) = &lt;var&gt;e&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt;
+(lseq-reduce-right &lt;var&gt;f&lt;/var&gt; &lt;var&gt;ridentity&lt;/var&gt; (lq &lt;var&gt;e&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;2&lt;/sub&gt;&lt;/var&gt; ...)) =
+    (&lt;var&gt;f&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; (lseq-reduce &lt;var&gt;f&lt;/var&gt; &lt;var&gt;ridentity&lt;/var&gt; (&lt;var&gt;e&lt;sub&gt;2&lt;/sub&gt;&lt;/var&gt; ...)))
+&lt;/pre&gt;
+    ...in other words, we compute 
+    &lt;code&gt;(lseq-fold-right &lt;var&gt;f&lt;/var&gt; &lt;var&gt;ridentity&lt;/var&gt; &lt;var&gt;lseq&lt;/var&gt;)&lt;/code&gt;.
+    
+&lt;pre class=&quot;code-example&quot;&gt;;; Append a bunch of lseqs together.
+;; I.e., (lseq-apply iappend lseq-of-lseqs)
+(lseq-reduce-right iappend '() lseq-of-lseqs)
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-map
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-map&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;imap&lt;/code&gt;&lt;var&gt; proc lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    
+
+     &lt;var&gt;proc&lt;/var&gt; is a procedure taking as many arguments 
+     as there are lseq arguments and returning a single value.  
+     &lt;code&gt;lseq-map&lt;/code&gt; applies &lt;var&gt;proc&lt;/var&gt; element-wise to the elements
+     of the lseqs and returns an lseq of the results, 
+     in order.  
+     The dynamic order in which &lt;var&gt;proc&lt;/var&gt; 
+     is applied to the elements of the lseqs is unspecified.
+    
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-map icadr (lq (a b) (d e) (g h))) =&amp;gt;  (b e h)
+
+(lseq-map (lambda (n) (expt n n))
+     (lq 1 2 3 4 5))
+    =&amp;gt;  (1 4 27 256 3125)
+
+(lseq-map + (lq 1 2 3) (lq 4 5 6)) =&amp;gt;  (5 7 9)
+
+(let ((count 0))
+  (lseq-map (lambda (lseq-gnored)
+         (set! count (+ count 1))
+         count)
+       (lq a b))) =&amp;gt;  (1 2) &lt;em&gt;or&lt;/em&gt; (2 1)
+&lt;/pre&gt;
+
+ &lt;p&gt;
+    
+&lt;!--
+==== lseq-for-each
+============================================================================--&gt;
+&lt;/p&gt;&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-for-each&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ifor-each&lt;/code&gt;&lt;var&gt; proc lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; unspecified&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+     
+
+     The arguments to &lt;code&gt;lseq-for-each&lt;/code&gt; are like the arguments to 
+     &lt;code&gt;lseq-map&lt;/code&gt;, but
+     &lt;code&gt;lseq-for-each&lt;/code&gt; calls &lt;var&gt;proc&lt;/var&gt; for its side effects rather
+     than for its values.  
+     Unlike &lt;code&gt;lseq-map&lt;/code&gt;, &lt;code&gt;lseq-for-each&lt;/code&gt; is guaranteed to call 
+     &lt;var&gt;proc&lt;/var&gt; on the elements of the lseqs in order from the first
+     element(s) to the last, 
+     and the value returned by &lt;code&gt;lseq-for-each&lt;/code&gt; is unspecified.
+&lt;pre class=&quot;code-example&quot;&gt;(let ((v (make-vector 5)))
+  (lseq-for-each (lambda (lseq-)
+              (vector-set! v i (* i i)))
+            (lq 0 1 2 3 4))
+  v)  =&amp;gt;  #(0 1 4 9 16)
+&lt;/pre&gt;
+ &lt;p&gt;
+  
+&lt;!--
+==== lseq-append-map
+============================================================================--&gt;
+&lt;/p&gt;&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-append-map&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;iappend-map&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;f lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Equivalent to 
+&lt;div class=&quot;indent&quot;&gt;&lt;code&gt;
+(lseq-apply iappend  (lseq-map &lt;var&gt;f&lt;/var&gt; &lt;var&gt;lseq&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; &lt;var&gt;lseq&lt;sub&gt;2&lt;/sub&gt;&lt;/var&gt; ...))
+&lt;/code&gt;&lt;/div&gt;
+    and
+&lt;div class=&quot;indent&quot;&gt;&lt;code&gt;
+(lseq-apply iappend (lseq-map &lt;var&gt;f&lt;/var&gt; &lt;var&gt;lseq&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; &lt;var&gt;lseq&lt;sub&gt;2&lt;/sub&gt;&lt;/var&gt; ...))
+&lt;/code&gt;&lt;/div&gt;
+
+    Map &lt;var&gt;f&lt;/var&gt; over the elements of the lseqs, just as in the &lt;code&gt;lseq-map&lt;/code&gt; function.
+    However, the results of the applications are appended together (using &lt;code&gt;lseq-append&lt;/code&gt;) to
+    make the final result. 
+&lt;p&gt;
+    The dynamic order in which the various applications of &lt;var&gt;f&lt;/var&gt; are made is
+    not specified.
+&lt;/p&gt;&lt;p&gt;
+    Example:
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(lseq-append-map (lambda (x) (lseq x (- x))) (lq 1 3 8))
+    =&amp;gt; (1 -1 3 -3 8 -8)
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;!--========================================================================--&gt;
+&lt;h2&gt;&lt;a name=&quot;FilteringPartitioning&quot;&gt;Filtering &amp;amp; partitioning&lt;/a&gt;&lt;/h2&gt;
+&lt;dl&gt;
+
+&lt;!--
+==== lseq-filter
+============================================================================--&gt;
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-filter&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ifilter&lt;/code&gt;&lt;var&gt; pred lseq -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Return all the elements of &lt;var&gt;lseq&lt;/var&gt; that satisfy predicate &lt;var&gt;pred&lt;/var&gt;.
+    The lseq is not disordered — elements that appear in the result lseq
+    occur in the same order as they occur in the argument lseq.
+    The returned lseq may share a common tail with the argument lseq.
+    The dynamic order in which the various applications of &lt;var&gt;pred&lt;/var&gt; are made is
+    not specified.
+    
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-filter even? (lq 0 7 8 8 43 -4)) =&amp;gt; (0 8 8 -4)
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-partition
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-partition&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ipartition&lt;/code&gt;&lt;var&gt; pred lseq -&amp;gt; [lseq lseq]&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Partitions the elements of &lt;var&gt;lseq&lt;/var&gt; with predicate &lt;var&gt;pred&lt;/var&gt;, and returns two
+    values: the lseq of in-elements and the lseq of out-elements.
+    The lseq is not disordered — elements occur in the result lseqs
+    in the same order as they occur in the argument lseq.
+    The dynamic order in which the various applications of &lt;var&gt;pred&lt;/var&gt; are made is
+    not specified. One of the returned lseqs may share a common tail with the
+    argument lseq.
+
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-partition symbol? (lq one 2 3 four five 6)) =&amp;gt; 
+    (one four five)
+    (2 3 6)
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-remove
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-remove&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;iremove&lt;/code&gt;&lt;var&gt; pred lseq -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Returns &lt;var&gt;lseq&lt;/var&gt; without the elements that satisfy predicate &lt;var&gt;pred&lt;/var&gt;:
+&lt;pre class=&quot;code-example&quot;&gt;(lambda (pred lseq) (lseq-filter (lambda (x) (not (pred x))) lseq))
+&lt;/pre&gt;
+    The lseq is not disordered — elements that appear in the result lseq
+    occur in the same order as they occur in the argument lseq.
+    The returned lseq may share a common tail with the argument lseq.
+    The dynamic order in which the various applications of &lt;var&gt;pred&lt;/var&gt; are made is 
+    not specified.
+    
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-remove even? (lq 0 7 8 8 43 -4)) =&amp;gt; (7 43)
+&lt;/pre&gt;
+
+
+&lt;!--========================================================================--&gt;
+&lt;/dd&gt;&lt;/dl&gt;&lt;h2&gt;&lt;a name=&quot;Searching&quot;&gt;Searching&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;
+
+The following procedures all search lseqs for the leftmost element satisfying
+some criteria. 
+
+&lt;!--
+==== lseq-find
+============================================================================--&gt;
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-find&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ifind&lt;/code&gt;&lt;var&gt; pred lseq -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Return the first element of &lt;var&gt;lseq&lt;/var&gt; that satisfies predicate &lt;var&gt;pred&lt;/var&gt;;
+    false if no element does.
+
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-find even? (lq 3 1 4 1 5 9)) =&amp;gt; 4
+&lt;/pre&gt;
+
+    Note that &lt;code&gt;lseq-find&lt;/code&gt; has an ambiguity in its lookup semantics — if &lt;code&gt;lseq-find&lt;/code&gt;
+    returns &lt;code&gt;#f&lt;/code&gt;, you cannot tell (lseq-n general) if it found a &lt;code&gt;#f&lt;/code&gt; element
+    that satisfied &lt;var&gt;pred&lt;/var&gt;, or if it did not find any element at all. In
+    many situations, this ambiguity cannot arise — either the lseq being
+    searched is known not to contain any &lt;code&gt;#f&lt;/code&gt; elements, or the lseq is
+    guaranteed to have an element satisfying &lt;var&gt;pred&lt;/var&gt;. However, in cases
+    where this ambiguity can arise, you should use &lt;code&gt;lseq-find-tail&lt;/code&gt; instead of
+    &lt;code&gt;lseq-find&lt;/code&gt; — &lt;code&gt;lseq-find-tail&lt;/code&gt; has no such ambiguity:
+&lt;pre class=&quot;code-example&quot;&gt;(cond ((lseq-find-tail pred lis) =&amp;gt; (lambda (lseq-pair) ...)) ; Handle (lseq-first ipair)
+      (else ...)) ; Search failed.
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-find-tail
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-find-tail&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ifind-tail&lt;/code&gt;&lt;var&gt; pred lseq -&amp;gt; ipair or false&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Return the first ipair of &lt;var&gt;lseq&lt;/var&gt; whose icar satisfies &lt;var&gt;pred&lt;/var&gt;. If no ipair does,
+    return false.
+&lt;p&gt;
+    &lt;code&gt;lseq-find-tail&lt;/code&gt; can be viewed as a general-predicate variant of the &lt;code&gt;lseq-member&lt;/code&gt;
+    function.
+&lt;/p&gt;&lt;p&gt;
+    Examples: 
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(lseq-find-tail even? (lq 3 1 37 -8 -5 0 0)) =&amp;gt; (-8 -5 0 0)
+(lseq-find-tail even? (lq 3 1 37 -5)) =&amp;gt; #f
+
+;; IMEMBER X LIS:
+(lseq-find-tail (lambda (elt) (equal? x elt)) lis)
+&lt;/pre&gt;
+
+&lt;p&gt;
+    &lt;code&gt;lseq-find-tail&lt;/code&gt; is essentially &lt;code&gt;lseq-drop-while&lt;/code&gt;, 
+    where the sense of the predicate is inverted: 
+    &lt;code&gt;lseq-find-tail&lt;/code&gt; searches until it finds an element satisfying
+    the predicate; &lt;code&gt;lseq-drop-while&lt;/code&gt; searches until it finds an 
+    element that &lt;em&gt;doesn't&lt;/em&gt; satisfy the predicate.
+
+&lt;!--
+==== lseq-take-while
+============================================================================--&gt;
+&lt;/p&gt;&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-take-while&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;itake-while&amp;nbsp;&lt;/code&gt;&lt;var&gt; pred lseq -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+
+Returns the longest initial prefix of &lt;var&gt;lseq&lt;/var&gt; whose elements all
+satisfy the predicate &lt;var&gt;pred&lt;/var&gt;.
+
+&lt;p&gt;
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(lseq-take-while even? (lq 2 18 3 10 22 9)) =&amp;gt; (2 18)
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-drop-while
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-drop-while&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;idrop-while&lt;/code&gt;&lt;var&gt; pred lseq -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+idrops the longest initial prefix of &lt;var&gt;lseq&lt;/var&gt; whose elements all
+satisfy the predicate &lt;var&gt;pred&lt;/var&gt;, and returns the rest of the lseq.
+
+&lt;pre class=&quot;code-example&quot;&gt;(lseq-drop-while even? (lq 2 18 3 10 22 9)) =&amp;gt; (3 10 22 9)
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-span ibreak
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def1&quot;&gt;
+&lt;a name=&quot;lseq-span&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ispan&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt; pred lseq -&amp;gt; [lseq lseq]&lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defn&quot;&gt;
+&lt;a name=&quot;lseq-break&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ibreak&amp;nbsp;&lt;/code&gt;&lt;var&gt; pred lseq -&amp;gt; [lseq lseq]&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+
+&lt;code&gt;lseq-span&lt;/code&gt; splits the lseq into the longest initial prefix whose
+elements all satisfy &lt;var&gt;pred&lt;/var&gt;, and the remaining tail. 
+&lt;code&gt;lseq-break&lt;/code&gt; inverts the sense of the predicate: 
+the tail commences with the first element of the input lseq
+that satisfies the predicate.
+
+&lt;p&gt;
+In other words: 
+&lt;code&gt;lseq-span&lt;/code&gt; finds the initial span of elements 
+satisfying &lt;var&gt;pred&lt;/var&gt;, 
+and &lt;code&gt;lseq-break&lt;/code&gt; breaks the lseq at the first element satisfying 
+&lt;var&gt;pred&lt;/var&gt;.
+
+&lt;/p&gt;&lt;p&gt;
+&lt;code&gt;lseq-span&lt;/code&gt; is equivalent to 
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(values (lseq-take-while &lt;var&gt;pred&lt;/var&gt; &lt;var&gt;lseq&lt;/var&gt;) 
+        (lseq-drop-while &lt;var&gt;pred&lt;/var&gt; &lt;var&gt;lseq&lt;/var&gt;))
+&lt;/pre&gt;
+
+&lt;p&gt;
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(lseq-span even? (lq 2 18 3 10 22 9)) =&amp;gt;
+  (2 18)
+  (3 10 22 9)
+
+(lseq-break even? (lq 3 1 4 1 5 9)) =&amp;gt;
+  (3 1)
+  (4 1 5 9)
+&lt;/pre&gt;
+
+
+&lt;!--
+==== lseq-any
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-any&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;iany&lt;/code&gt;&lt;var&gt; pred lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Applies the predicate across the lseqs, returning true if the predicate
+    returns true on any application.
+&lt;p&gt;
+    If there are &lt;var&gt;n&lt;/var&gt; lseq arguments &lt;var&gt;lseq&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; ... &lt;var&gt;lseq&lt;sub&gt;n&lt;/sub&gt;&lt;/var&gt;, then &lt;var&gt;pred&lt;/var&gt; must be a
+    procedure taking &lt;var&gt;n&lt;/var&gt; arguments and returning a boolean result.
+&lt;/p&gt;&lt;p&gt;
+    &lt;code&gt;lseq-any&lt;/code&gt; applies &lt;var&gt;pred&lt;/var&gt; to the first elements of the &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; parameters.
+    If this application returns a true value, &lt;code&gt;lseq-any&lt;/code&gt; immediately returns
+    that value. Otherwise, it iterates, applying &lt;var&gt;pred&lt;/var&gt; to the second
+    elements of the &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; parameters, then the third, and so forth.
+    The iteration stops when a true value is produced or one of the lseqs runs
+    out of values; in
+    the latter case, &lt;code&gt;lseq-any&lt;/code&gt; returns &lt;code&gt;#f&lt;/code&gt;. 
+    The application of &lt;var&gt;pred&lt;/var&gt; to the last element of the
+    lseqs is a tail call.
+&lt;/p&gt;&lt;p&gt;
+    Note the difference between &lt;code&gt;lseq-find&lt;/code&gt; and &lt;code&gt;lseq-any&lt;/code&gt; — &lt;code&gt;lseq-find&lt;/code&gt; returns the element
+    that satisfied the predicate; &lt;code&gt;lseq-any&lt;/code&gt; returns the true value that the
+    predicate produced.
+&lt;/p&gt;&lt;p&gt;
+    Like &lt;code&gt;lseq-every&lt;/code&gt;, &lt;code&gt;lseq-any&lt;/code&gt;'s name does not end with a question mark — this is to
+    indicate that it does not return a simple boolean (&lt;code&gt;#t&lt;/code&gt; or &lt;code&gt;#f&lt;/code&gt;), but a
+    general value.
+
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(lseq-any integer? (lq a 3 b 2.7))   =&amp;gt; #t
+(lseq-any integer? (lq a 3.1 b 2.7)) =&amp;gt; #f
+(lseq-any &amp;lt; (lq 3 1 4 1 5)
+       (lq 2 7 1 8 2)) =&amp;gt; #t
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-every
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-every&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ievery&lt;/code&gt;&lt;var&gt; pred lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; value&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Applies the predicate across the lseqs, returning true if the predicate
+    returns true on every application.
+&lt;p&gt;
+    If there are &lt;var&gt;n&lt;/var&gt; lseq arguments &lt;var&gt;lseq&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; ... &lt;var&gt;lseq&lt;sub&gt;n&lt;/sub&gt;&lt;/var&gt;, then &lt;var&gt;pred&lt;/var&gt; must be a
+    procedure taking &lt;var&gt;n&lt;/var&gt; arguments and returning a boolean result.
+&lt;/p&gt;&lt;p&gt;
+    &lt;code&gt;lseq-every&lt;/code&gt; applies &lt;var&gt;pred&lt;/var&gt; to the first elements of the &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; parameters.
+    If this application returns false, &lt;code&gt;lseq-every&lt;/code&gt; immediately returns false.
+    Otherwise, it iterates, applying &lt;var&gt;pred&lt;/var&gt; to the second elements of the
+    &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; parameters, then the third, and so forth. The iteration stops
+    when a false value is produced or one of the lseqs runs out of values.
+    In the latter case, &lt;code&gt;lseq-every&lt;/code&gt; returns
+    the true value produced by its final application of &lt;var&gt;pred&lt;/var&gt;. 
+    The application of &lt;var&gt;pred&lt;/var&gt; to the last element of the lseqs 
+    is a tail call.
+&lt;/p&gt;&lt;p&gt;
+    If one of the &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; has no elements, &lt;code&gt;lseq-every&lt;/code&gt; simply returns &lt;code&gt;#t&lt;/code&gt;.
+&lt;/p&gt;&lt;p&gt;
+    Like &lt;code&gt;lseq-any&lt;/code&gt;, &lt;code&gt;lseq-every&lt;/code&gt;'s name does not end with a question mark — this is to
+    indicate that it does not return a simple boolean (&lt;code&gt;#t&lt;/code&gt; or &lt;code&gt;#f&lt;/code&gt;), but a
+    general value.
+
+&lt;!--
+==== lseq-index
+============================================================================--&gt;
+&lt;/p&gt;&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-index&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-index&lt;/code&gt;&lt;var&gt; pred lseq&lt;sub&gt;1&lt;/sub&gt; lseq&lt;sub&gt;2&lt;/sub&gt; ... -&amp;gt; integer or false&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    Return the index of the leftmost element that satisfies &lt;var&gt;pred&lt;/var&gt;.
+&lt;p&gt;
+    If there are &lt;var&gt;n&lt;/var&gt; lseq arguments &lt;var&gt;lseq&lt;sub&gt;1&lt;/sub&gt;&lt;/var&gt; ... &lt;var&gt;lseq&lt;sub&gt;n&lt;/sub&gt;&lt;/var&gt;, then &lt;var&gt;pred&lt;/var&gt; must be a
+    function taking &lt;var&gt;n&lt;/var&gt; arguments and returning a boolean result.
+&lt;/p&gt;&lt;p&gt;
+    &lt;code&gt;lseq-index&lt;/code&gt; applies &lt;var&gt;pred&lt;/var&gt; to the first elements of the &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; parameters.
+    If this application returns true, &lt;code&gt;lseq-index&lt;/code&gt; immediately returns zero.
+    Otherwise, it iterates, applying &lt;var&gt;pred&lt;/var&gt; to the second elements of the
+    &lt;var&gt;lseq&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; parameters, then the third, and so forth. When it finds a tuple of
+    lseq elements that cause &lt;var&gt;pred&lt;/var&gt; to return true, it stops and returns the
+    zero-based index of that position in the lseqs.
+&lt;/p&gt;&lt;p&gt;
+    The iteration stops when one of the lseqs runs out of values; in this
+    case, &lt;code&gt;lseq-index&lt;/code&gt; returns &lt;code&gt;#f&lt;/code&gt;.
+
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(lseq-index even? (lq 3 1 4 1 5 9)) =&amp;gt; 2
+(lseq-index &amp;lt; (lq 3 1 4 1 5 9 2 5 6) (lq 2 7 1 8 2)) =&amp;gt; 1
+(lseq-index = (lq 3 1 4 1 5 9 2 5 6) (lq 2 7 1 8 2)) =&amp;gt; #f
+&lt;/pre&gt;
+
+&lt;!--
+==== lseq-member imemq imemv
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def1&quot;&gt;
+&lt;a name=&quot;lseq-member&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;imember&lt;/code&gt;&lt;var&gt; x lseq [=] -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-memq&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;imemq&lt;/code&gt;&lt;var&gt; x lseq -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defn&quot;&gt;
+&lt;a name=&quot;lseq-memv&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;imemv&lt;/code&gt;&lt;var&gt; x lseq -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+     
+
+    These procedures return the first sub-lseq of &lt;var&gt;lseq&lt;/var&gt; whose icar is
+    &lt;var&gt;x&lt;/var&gt;, where the sub-lseqs of &lt;var&gt;lseq&lt;/var&gt; are the 
+    non-empty lseqs returned by 
+        &lt;code&gt;(lseq-drop &lt;var&gt;lseq&lt;/var&gt; &lt;var&gt;i&lt;/var&gt;)&lt;/code&gt;
+    for &lt;var&gt;i&lt;/var&gt; less than the length of &lt;var&gt;lseq&lt;/var&gt;.  
+    If &lt;var&gt;x&lt;/var&gt; does
+    not occur in &lt;var&gt;lseq&lt;/var&gt;, then &lt;code&gt;#f&lt;/code&gt; is returned.  
+    &lt;code&gt;lseq-memq&lt;/code&gt; uses &lt;code&gt;eq?&lt;/code&gt; to compare &lt;var&gt;x&lt;/var&gt;
+    with the elements of &lt;var&gt;lseq&lt;/var&gt;, 
+    while &lt;code&gt;lseq-memv&lt;/code&gt; uses &lt;code&gt;eqv?&lt;/code&gt;, and
+    &lt;code&gt;lseq-member&lt;/code&gt; uses &lt;code&gt;equal?&lt;/code&gt;.
+
+&lt;pre class=&quot;code-example&quot;&gt;    (lseq-memq 'a (lq a b c))           =&amp;gt;  (a b c)
+    (lseq-memq 'b (lq a b c))           =&amp;gt;  (b c)
+    (lseq-memq 'a (lq b c d))           =&amp;gt;  #f
+    (lseq-memq (lseq 'a) (lq b (a) c)) =&amp;gt;  #f
+    (lseq-member (lseq 'a)
+            (lq b (a) c))           =&amp;gt;  ((a) c)
+    (lseq-memq 101 (lq 100 101 102))    =&amp;gt;  *unspecified*
+    (lseq-memv 101 (lq 100 101 102))    =&amp;gt;  (101 102)
+&lt;/pre&gt;
+
+    
+&lt;p&gt;
+    The comparison procedure is used to compare the elements &lt;var&gt;e&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; of &lt;var&gt;lseq&lt;/var&gt;
+    to the key &lt;var&gt;x&lt;/var&gt; in this way:
+&lt;/p&gt;&lt;div class=&quot;indent&quot;&gt;&lt;code&gt;
+(= &lt;var&gt;x&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt;)		; lseq is (E1 ... En)
+&lt;/code&gt;&lt;/div&gt;
+    That is, the first argument is always &lt;var&gt;x&lt;/var&gt;, and the second argument is
+    one of the lseq elements. Thus one can reliably find the first element
+    of &lt;var&gt;lseq&lt;/var&gt; that is greater than five with
+	&lt;code&gt;(lseq-member 5 &lt;var&gt;lseq&lt;/var&gt; &amp;lt;)&lt;/code&gt;
+
+&lt;p&gt;
+    Note that fully general lseq searching may be performed with
+    the &lt;code&gt;lseq-find-tail&lt;/code&gt; and &lt;code&gt;lseq-find&lt;/code&gt; procedures, &lt;em&gt;e.g.&lt;/em&gt;
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(lseq-find-tail even? lseq) ; Find the first elt with an even key.
+&lt;/pre&gt;
+
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;!--========================================================================--&gt;
+&lt;h2&gt;&lt;a name=&quot;Deletion&quot;&gt;Deletion&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;
+
+&lt;/p&gt;&lt;dl&gt;
+&lt;!--
+==== lseq-delete
+============================================================================--&gt;
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-delete&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;idelete&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;x lseq [=] -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;code&gt;lseq-delete&lt;/code&gt; uses the comparison procedure =, which defaults to &lt;code&gt;equal?&lt;/code&gt;, to find
+    all elements of &lt;var&gt;lseq&lt;/var&gt; that are equal to &lt;var&gt;x&lt;/var&gt;, and deletes them from &lt;var&gt;lseq&lt;/var&gt;. The
+    dynamic order in which the various applications of &lt;var&gt;=&lt;/var&gt; are made is not
+    specified.
+
+&lt;p&gt;
+    The lseq is not disordered — elements that appear in the result lseq
+    occur in the same order as they occur in the argument lseq.
+    The result may share a common tail with the argument lseq.
+
+&lt;/p&gt;&lt;p&gt;
+    Note that fully general element deletion can be performed with the &lt;code&gt;lseq-remove&lt;/code&gt;
+    procedures, &lt;em&gt;e.g.&lt;/em&gt;:
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;;; idelete all the even elements from LIS:
+(lseq-remove even? lis)
+&lt;/pre&gt;
+
+    The comparison procedure is used in this way:
+	&lt;code&gt;(= &lt;var&gt;x&lt;/var&gt; &lt;var&gt;e&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt;)&lt;/code&gt;.
+    That is, &lt;var&gt;x&lt;/var&gt; is always the first argument, 
+    and an lseq element is always the
+    second argument. The comparison procedure will be used to compare each
+    element of &lt;var&gt;lseq&lt;/var&gt; exactly once; the order in which it is applied to the
+    various &lt;var&gt;e&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; is not specified.  Thus, one can reliably remove all the
+    numbers greater than five from an lseq with
+	&lt;code&gt;(lseq-delete 5 lseq &amp;lt;)&lt;/code&gt;
+
+
+&lt;!--
+==== lseq-delete-duplicates
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-delete-duplicates&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;idelete-duplicates&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;lseq [=] -&amp;gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;code&gt;lseq-delete-duplicates&lt;/code&gt; removes duplicate elements from the
+    lseq argument.
+    If there are multiple equal elements in the argument lseq, the result lseq
+    only contains the first or leftmost of these elements in the result.
+    The order of these surviving elements is the same as in the original
+    lseq — &lt;code&gt;lseq-delete-duplicates&lt;/code&gt; does not disorder the lseq (hence it is useful
+    for &quot;cleaning up&quot; immutable association lists).
+&lt;p&gt;
+    The &lt;var&gt;=&lt;/var&gt; parameter is used to compare the elements of the lseq; it defaults
+    to &lt;code&gt;equal?&lt;/code&gt;. If &lt;var&gt;x&lt;/var&gt; comes before &lt;var&gt;y&lt;/var&gt; in &lt;var&gt;lseq&lt;/var&gt;, then the comparison is performed 
+	&lt;code&gt;(= &lt;var&gt;x&lt;/var&gt; &lt;var&gt;y&lt;/var&gt;)&lt;/code&gt;.
+    The comparison procedure will be used to compare each pair of elements in 
+    &lt;var&gt;lseq&lt;/var&gt; no more than once; 
+    the order in which it is applied to the various pairs is not specified.
+&lt;/p&gt;&lt;p&gt;
+    Implementations of &lt;code&gt;lseq-delete-duplicates&lt;/code&gt;
+    are allowed to share common tails
+    between argument and result lseqs — for example, if the lseq argument
+    contains only unique elements, it may simply return exactly
+    this lseq.
+&lt;/p&gt;&lt;p&gt;
+    Be aware that, in general, &lt;code&gt;lseq-delete-duplicates&lt;/code&gt;
+    runs in time O(n&lt;sup&gt;2&lt;/sup&gt;) for &lt;var&gt;n&lt;/var&gt;-element lseqs.
+    Uniquifying long lseqs can be accomplished in O(n lg n) time by sorting
+    the lseq to bring equal elements together, then using a linear-time
+    algorithm to remove equal elements. Alternatively, one can use algorithms
+    based on element-marking, with linear-time results.
+
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;(lseq-delete-duplicates (lq a b a c a b c z)) =&amp;gt; (a b c z)
+
+;; Clean up an lazy alist:
+(lseq-delete-duplicates (lq (a . 3) (b . 7) (a . 9) (c . 1))
+                   (lambda (x y) (eq? (lseq-first x) (lseq-first y))))
+    =&amp;gt; ((a . 3) (b . 7) (c . 1))
+&lt;/pre&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;!--========================================================================--&gt;
+&lt;h2&gt;&lt;a name=&quot;lseq-mmutableassociationLists&quot;&gt;Immutable association lists&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;
+An &quot;immutable association list&quot; (or &quot;lazy alist&quot;) is an lseq of ipairs. The icar of each ipair
+contains a key value, and the icdr contains the associated data value. They can
+be used to construct simple look-up tables in Scheme. Note that lazy alists are probably inappropriate for performance-critical use on large data;
+in these cases, immutable maps or some other alternative should be employed.
+
+&lt;/p&gt;&lt;dl&gt;
+&lt;!--
+==== lseq-assoc iassq iassv
+============================================================================--&gt;
+&lt;dt class=&quot;proc-def1&quot;&gt;
+&lt;a name=&quot;lseq-assoc&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;iassoc&lt;/code&gt;&lt;var&gt; key lazy alist [=] -&amp;gt; ipair or #f&lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-assq&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;iassq&lt;/code&gt;&lt;var&gt; key lazy alist -&amp;gt; ipair or #f&lt;/var&gt;
+&lt;/dt&gt;&lt;dt class=&quot;proc-defn&quot;&gt;
+&lt;a name=&quot;lseq-assv&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;iassv&lt;/code&gt;&lt;var&gt; key lazy alist -&amp;gt; ipair or #f&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+
+  
+    &lt;var&gt;lazy alist&lt;/var&gt; must be an immutable association list — an lseq of ipairs.  
+    These procedures
+    find the first ipair in &lt;var&gt;lazy alist&lt;/var&gt; whose icar field is &lt;var&gt;key&lt;/var&gt;, 
+    and returns that ipair.  
+    If no ipair in &lt;var&gt;lazy alist&lt;/var&gt; has &lt;var&gt;key&lt;/var&gt; as its icar, 
+    then &lt;code&gt;#f&lt;/code&gt; is returned.  
+    &lt;code&gt;lseq-assq&lt;/code&gt; uses &lt;code&gt;eq?&lt;/code&gt; to compare &lt;var&gt;key&lt;/var&gt; 
+    with the icar fields of the ipairs in &lt;var&gt;lazy alist&lt;/var&gt;, 
+    while &lt;code&gt;lseq-assv&lt;/code&gt; uses &lt;code&gt;eqv?&lt;/code&gt; 
+    and &lt;code&gt;lseq-assoc&lt;/code&gt; uses &lt;code&gt;equal?&lt;/code&gt;.
+&lt;pre class=&quot;code-example&quot;&gt;(define e (lq (a 1) (b 2) (c 3)))
+(lseq-assq 'a e)                               =&amp;gt;  (a 1)
+(lseq-assq 'b e)                               =&amp;gt;  (b 2)
+(lseq-assq 'd e)                               =&amp;gt;  #f
+(lseq-assq (lseq 'a) (lq ((a)) ((b)) ((c))))  =&amp;gt;  #f
+(lseq-assoc (lseq 'a) (lq ((a)) ((b)) ((c)))) =&amp;gt;  ((a))
+(lseq-assq 5 (lq (2 3) (5 7) (11 13)))	   =&amp;gt;  *unspecified*
+(lseq-assv 5 (lq (2 3) (5 7) (11 13)))	   =&amp;gt;  (5 7)
+&lt;/pre&gt;
+&lt;p&gt;
+    The comparison procedure is used to compare the elements &lt;var&gt;e&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; of &lt;var&gt;lseq&lt;/var&gt;
+    to the &lt;var&gt;key&lt;/var&gt; parameter in this way:
+&lt;/p&gt;&lt;div class=&quot;indent&quot;&gt;&lt;code&gt;
+(= &lt;var&gt;key&lt;/var&gt; (lseq-first &lt;var&gt;e&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt;))	; lseq is (E1 ... En)
+&lt;/code&gt;&lt;/div&gt;
+    That is, the first argument is always &lt;var&gt;key&lt;/var&gt;, 
+    and the second argument is one of the lseq elements. 
+    Thus one can reliably find the first entry
+    of &lt;var&gt;lazy alist&lt;/var&gt; whose key is greater than five with
+	&lt;code&gt;(lseq-assoc 5 &lt;var&gt;lazy alist&lt;/var&gt; &amp;lt;)&lt;/code&gt;
+     
+&lt;p&gt;
+    Note that fully general lazy alist searching may be performed with
+    the &lt;code&gt;lseq-find-tail&lt;/code&gt; and &lt;code&gt;lseq-find&lt;/code&gt; procedures, &lt;em&gt;e.g.&lt;/em&gt;
+&lt;/p&gt;&lt;pre class=&quot;code-example&quot;&gt;;; Look up the first association in &lt;var&gt;lazy alist&lt;/var&gt; with an even key:
+(lseq-find (lambda (a) (even? (lseq-first a))) lazy alist)
+&lt;/pre&gt;
+
+
+&lt;!--
+==== lseq-alist-cons
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-alist-cons&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lazy alist-cons&lt;/code&gt;&lt;var&gt; key datum lazy alist -&amp;gt; lazy alist&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+&lt;pre&gt;(lambda (key datum lazy alist) (lseq-pair (lseq-pair key datum) lazy alist))
+&lt;/pre&gt;
+    Construct a new lazy alist entry mapping &lt;var&gt;key&lt;/var&gt; -&amp;gt; &lt;var&gt;datum&lt;/var&gt; onto &lt;var&gt;lazy alist&lt;/var&gt;.
+
+&lt;!--
+==== lseq-alist-delete
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-alist-delete&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lazy alist-delete&amp;nbsp;&amp;nbsp;&lt;/code&gt;&lt;var&gt;key lazy alist [=] -&amp;gt; lazy alist&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+    &lt;code&gt;lseq-alist-delete&lt;/code&gt; deletes all associations from &lt;var&gt;lazy alist&lt;/var&gt; with the given &lt;var&gt;key&lt;/var&gt;, 
+    using key-comparison procedure =, which defaults to &lt;code&gt;equal?&lt;/code&gt;. 
+    The dynamic order in which the various applications of &lt;var&gt;=&lt;/var&gt; are made is not 
+    specified. 
+&lt;p&gt;
+    Return values may share common tails with the &lt;var&gt;lazy alist&lt;/var&gt; argument.
+    The lazy alist is not disordered — elements that appear in the result lazy alist
+    occur in the same order as they occur in the argument lazy alist.
+&lt;/p&gt;&lt;p&gt;
+    The comparison procedure is used to compare the element keys &lt;var&gt;k&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt; of &lt;var&gt;lazy alist&lt;/var&gt;'s
+    entries to the &lt;var&gt;key&lt;/var&gt; parameter in this way:
+	&lt;code&gt;(= &lt;var&gt;key&lt;/var&gt; &lt;var&gt;k&lt;sub&gt;i&lt;/sub&gt;&lt;/var&gt;)&lt;/code&gt;.
+    Thus, one can reliably remove all entries of &lt;var&gt;lazy alist&lt;/var&gt; whose key is greater
+    than five with
+	&lt;code&gt;(lseq-alist-delete 5 &lt;var&gt;lazy alist&lt;/var&gt; &amp;lt;)&lt;/code&gt;
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+
+&lt;!--========================================================================--&gt;
+&lt;h2&gt;&lt;a name=&quot;Conversion&quot;&gt;Conversion&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;
+These procedures convert between mutable and immutable pair structures.
+
+&lt;/p&gt;&lt;dl&gt;
+&lt;!--
+==== lseq-&gt;list lseq-&gt;vector lseq-&gt;string lseq-&gt;enerator
+============================================================================--&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-def1&quot;&gt;
+&lt;a name=&quot;lseq-&gt;list&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-&gt;list&lt;/code&gt;&lt;var&gt; lseq -&amp;gt; list&lt;/var&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-&gt;vector&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-&gt;vector&lt;/code&gt;&lt;var&gt; lseq -&amp;gt; vector&lt;/var&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-defi&quot;&gt;
+&lt;a name=&quot;lseq-&gt;string&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-&gt;string&lt;/code&gt;&lt;var&gt; lseq -&amp;gt; string&lt;/var&gt;
+&lt;/dd&gt;&lt;dt class=&quot;proc-defn&quot;&gt;
+&lt;a name=&quot;lseq-&gt;generator&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;lseq-&gt;generator&lt;/code&gt;&lt;var&gt; lseq -&amp;gt; generator&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+     
+     &lt;p&gt;These procedures return a list, a vector, a string, or a generator that have the same
+     elements as the argument.&lt;/p&gt;
+
+&lt;/dd&gt;&lt;/dl&gt;
+&lt;!--========================================================================--&gt;
+&lt;h2&gt;&lt;a name=&quot;Comparators&quot;&gt;Comparators&lt;/a&gt;&lt;/h2&gt;
+
+&lt;dl&gt;
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;lseq-comparator&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;ipair-comparator&lt;/code&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+     
+     &lt;p&gt;The &lt;code&gt;lseq-comparator&lt;/code&gt; object is a SRFI-114 comparator suitable for comparing lseqs.
+     Note that it is &lt;em&gt;not&lt;/em&gt; a procedure.
+     It compares lseqs using &lt;code&gt;default-comparator&lt;/code&gt; on their first elements.  If they are not equal, that value is returned.  If they are equal, &lt;code&gt;lseq-comparator&lt;/code&gt; is used on the &lt;code&gt;lseq-rest&lt;/code&gt; of the lseqs and that value is returned.&lt;/p&gt;
+&lt;/dd&gt;
+ 
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;make-lseq-comparator&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;make-lseq-comparator&lt;/code&gt;&lt;var&gt; comparator -&amp;gt; comparator&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+     
+     &lt;p&gt;The &lt;code&gt;make-lseq-comparator&lt;/code&gt; procedure returns a comparator suitable for comparing lseqs
+     using &lt;var&gt;element-comparator&lt;/var&gt; to compare the elements.&lt;/p&gt;
+&lt;/dd&gt;
+ 
+&lt;/dl&gt;
+ 
+&lt;!--========================================================================--&gt;
+&lt;h2&gt;&lt;a name=&quot;Realization&quot;&gt;Realization&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;These procedures have no directly visible effects on their lseq arguments.
+However, they force the generator inside the lazy sequence to produce all its
+arguments and store them internally, which means that later operations may be
+faster, particularly if the generator is slow.  They return an unspecified value.&lt;/p&gt;
+
+&lt;dl&gt;
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;realize&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;realize!&lt;/code&gt;&lt;var&gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+     
+     &lt;p&gt;Realizes all the values of &lt;var&gt;lseq&lt;/var&gt;.&lt;/p&gt;
+&lt;/dd&gt;
+ 
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;realize&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;realize-once!&lt;/code&gt;&lt;var&gt; lseq&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+     
+     &lt;p&gt;Realizes exactly one additional value of &lt;var&gt;lseq&lt;/var&gt;.  If no additional
+values are available, does nothing.&lt;/p&gt;
+&lt;/dd&gt;
+ 
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;realize&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;realize-steps!&lt;/code&gt;&lt;var&gt; lseq n&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+     
+     &lt;p&gt;Realizes at most &lt;var&gt;n&lt;/var&gt; values of &lt;var&gt;lseq&lt;/var&gt;.&lt;/p&gt;
+&lt;/dd&gt;
+ 
+&lt;dt class=&quot;proc-def&quot;&gt;
+&lt;a name=&quot;realize&quot;&gt;&lt;/a&gt;
+&lt;code class=&quot;proc-def&quot;&gt;realize-until!&lt;/code&gt;&lt;var&gt; lseq pred&lt;/var&gt;
+&lt;/dt&gt;&lt;dd class=&quot;proc-def&quot;&gt;
+     
+     &lt;p&gt;Realizes values of &lt;var&gt;lseq&lt;/var&gt; until at least one value satisfies &lt;var&gt;pred&lt;/var&gt;.&lt;/p&gt;
+&lt;/dd&gt;
+ 
+&lt;/dl&gt;
+ 
+&lt;!--========================================================================--&gt;
+&lt;h1&gt;&lt;a name=&quot;SampleImplementation&quot;&gt;Sample Implementation&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;An lseq is a &lt;a href=&quot;http://srfi.schemers.org/srfi-117/srfi-117.html&quot;&gt;SRFI 117&lt;/a&gt; queue plus a generator. Queues can be shared between lseqs, which means that you are not allowed to remove anything from them, and the only addition operation is &lt;code&gt;lseq-realize-once!&lt;/code&gt;, which realizes one value and adds it to the back of the queue.&lt;/p&gt;
+&lt;p&gt;The sample implementation of this SRFI depends on SRFI 9 (or R7RS) records.  The files in the implementation are as follows:&lt;/p&gt;
+
+&lt;p&gt;FIXME&lt;/p&gt;
+
+
+
+&lt;!--========================================================================--&gt;
+&lt;h1&gt;&lt;a name=&quot;Acknowledgements&quot;&gt;Acknowledgements&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;
+Without the work of Olin Shivers on &lt;a href=&quot;http://srfi.schemers.org/srfi-1/srfi-1.html&quot;&gt;SRFI 1&lt;/a&gt;,
+this SRFI would not exist. Everyone acknowledged there is transitively acknowledged here.
+This is not to imply that either Olin or anyone else necessarily endorses the final
+results, of course. 
+
+
+}}}</pre>
+    <h2>time</h2>
+    <pre>2015-01-09 06:00:51</pre>
+    <h2>version</h2>
+    <pre>10</pre></body></html>

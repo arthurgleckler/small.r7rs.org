@@ -1,0 +1,578 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #229</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #229</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-09 13:47:39</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>For good reasons, `+nan.0` is not `=` to any other number, including itself.  However, `eqv?` is about &quot;sameness&quot; rather than &quot;equality&quot;.  I propose that we add two clauses to the definition of `eqv?`, one saying that if both arguments are `+nan.0`, `eqv?` must return `#t`, and if one argument is `+nan.0` and the other is not, `eqv?` must return `#f`.
+
+All of my usual test Schemes already behave this way, with these exceptions:
+
+ * MIT, scsh, SigScheme, Scheme 9 do not have non-finite numbers.
+ * Chicken returns `#f` if either argument is `+nan.0`.
+ * SISC returns `#t` if either argument is `+nan.0`.</pre>
+    <h2>id</h2>
+    <pre>229</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>EQV? and NaN</pre>
+    <h2>time</h2>
+    <pre>2011-07-11 01:41:51</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-09 13:47:39</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>14</pre>
+    <h2>raw-time</h2>
+    <pre>1349765259614993</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 13:47:39</pre>
+    <h2>Change at time 2012-10-09 13:47:39</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349765259614993</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 13:47:39</pre>
+    <h2>Change at time 2012-10-09 13:47:39</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349765259614993</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 13:47:39</pre>
+    <h2>Change at time 2012-08-27 07:04:38</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>13</pre>
+    <h2>raw-time</h2>
+    <pre>1346025878529299</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 07:04:38</pre>
+    <h2>Change at time 2012-08-27 07:04:38</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1346025878529299</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 07:04:38</pre>
+    <h2>Change at time 2012-08-25 00:27:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>_comment0</pre>
+    <h2>newvalue</h2>
+    <pre>1345829336571305</pre>
+    <h2>oldvalue</h2>
+    <pre>WG1 voted to make no change: the behavior of `eqv?` on procedures is explicitly unspecified.</pre>
+    <h2>raw-time</h2>
+    <pre>1345829264709953</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-08-25 00:27:44</pre>
+    <h2>Change at time 2012-08-25 00:27:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 voted to make no change: the behavior of `eqv?` on !NaNs is explicitly unspecified.</pre>
+    <h2>oldvalue</h2>
+    <pre>12</pre>
+    <h2>raw-time</h2>
+    <pre>1345829264709953</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-08-25 00:27:44</pre>
+    <h2>Change at time 2012-08-25 00:27:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>reopened</pre>
+    <h2>raw-time</h2>
+    <pre>1345829264709953</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-08-25 00:27:44</pre>
+    <h2>Change at time 2012-07-15 01:19:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>11</pre>
+    <h2>raw-time</h2>
+    <pre>1342289957996047</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-07-15 01:19:17</pre>
+    <h2>Change at time 2012-07-15 01:19:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>fixed</pre>
+    <h2>raw-time</h2>
+    <pre>1342289957996047</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-07-15 01:19:17</pre>
+    <h2>Change at time 2012-07-15 01:19:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>reopened</pre>
+    <h2>oldvalue</h2>
+    <pre>closed</pre>
+    <h2>raw-time</h2>
+    <pre>1342289957996047</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-07-15 01:19:17</pre>
+    <h2>Change at time 2012-07-15 01:19:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Reopening yet again for conspectus on `eqv?`</pre>
+    <h2>oldvalue</h2>
+    <pre>10</pre>
+    <h2>raw-time</h2>
+    <pre>1342289952744370</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-07-15 01:19:12</pre>
+    <h2>Change at time 2012-07-15 01:19:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1342289952744370</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-07-15 01:19:12</pre>
+    <h2>Change at time 2012-07-15 01:19:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1342289952744370</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-07-15 01:19:12</pre>
+    <h2>Change at time 2012-04-09 22:27:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>9</pre>
+    <h2>raw-time</h2>
+    <pre>1333985230351401</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:27:10</pre>
+    <h2>Change at time 2012-04-09 22:27:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1333985230351401</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:27:10</pre>
+    <h2>Change at time 2012-04-09 22:13:54</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG voted to leave the behavior of `eqv?` where both arguments are `+nan.0` explicitly undefined.</pre>
+    <h2>oldvalue</h2>
+    <pre>8</pre>
+    <h2>raw-time</h2>
+    <pre>1333984434409019</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:13:54</pre>
+    <h2>Change at time 2012-04-09 22:13:54</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>reopened</pre>
+    <h2>raw-time</h2>
+    <pre>1333984434409019</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:13:54</pre>
+    <h2>Change at time 2012-02-21 03:49:28</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Per Bothner points out that on his system (Java 1.7 on Fedora), nan and nan2 actually have the ''same'' bit patterns, rendering the above experiment mostly meaningless.  This makes me inclined to the R6RS semantics.</pre>
+    <h2>oldvalue</h2>
+    <pre>7</pre>
+    <h2>raw-time</h2>
+    <pre>1329767368871453</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2012-02-21 03:49:28</pre>
+    <h2>Change at time 2011-10-08 04:28:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>We need to re-ballot this, because of the false claim that the &quot;same&quot; semantics that people voted for was equivalent to the R6RS semantics.  Here are the new ballot positions:
+
+Let `nan` and `nan2` contain !NaNs, possibly but not necessarily with different bit patterns implying different origins.  In all cases, `(eqv? nan x)`, where x is not a NaN, is required to return `#f`, assuming that `(= nan x)` returns `#f` for any x even in R5RS.
+
+The R5RS semantics requires `(eqv? nan nan)` and `(eqv? nan nan2)` to return `#f`.
+
+The R6RS semantics allows `(eqv? nan nan)` and `(eqv? nan nan2)` to return either `#t` or `#f`.
+
+The &quot;same&quot; semantics requires `(eqv? nan nan)` and `(eqv? nan nan2)` to return `#t`.  
+
+The &quot;same*&quot; semantics requires `(eqv? nan nan)` to return `#t` and allows `(eqv? nan nan2`) to return either `#t` or `#f`.
+
+I ran the following on my usual suite of Schemes on x86 Linux:
+
+{{{
+(define nan (/ 0.0 0.0))
+(define inf (/ 1.0 0.0))
+(define nan2 (- inf inf))
+(list (eqv? nan nan) (eqv? nan nan2))
+}}}
+
+I confirmed that `nan` and `nan2` expand to different bit patterns using Java's `Double.doubleToRawLongBits` method on the same system.  
+
+ * Racket, Gambit, Guile, Kawa, SISC, Chez, SCM, Larceny, Ypsilon, Mosh, !IronScheme, STklos returned `(#t #t)`, showing that they do not distinguish between `nan` and `nan2`.
+
+ * Bigloo, Chicken, Chibi, Ikarus, KSi, Elk returned `(#t #f)`, showing that they do distinguish.  Chicken complains about division by 0.0, so I used `+nan.0` and `+inf.0` literals.
+
+ * Gauche, UMB, and VX returned `(#f #f)`, following R5RS semantics.
+
+ * MIT, Scheme48/scsh, Scheme 9, Scheme 7, !SigScheme, Oaklisp complained about the divisions by 0.0, and didn't provide any obvious workarounds.</pre>
+    <h2>oldvalue</h2>
+    <pre>6</pre>
+    <h2>raw-time</h2>
+    <pre>1318022892000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-10-08 04:28:12</pre>
+    <h2>Change at time 2011-10-08 04:28:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>invalid</pre>
+    <h2>raw-time</h2>
+    <pre>1318022892000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-10-08 04:28:12</pre>
+    <h2>Change at time 2011-10-08 04:28:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>reopened</pre>
+    <h2>oldvalue</h2>
+    <pre>closed</pre>
+    <h2>raw-time</h2>
+    <pre>1318022892000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-10-08 04:28:12</pre>
+    <h2>Change at time 2011-10-08 04:16:40</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>5</pre>
+    <h2>raw-time</h2>
+    <pre>1318022200000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-10-08 04:16:40</pre>
+    <h2>Change at time 2011-10-08 04:16:40</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>invalid</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1318022200000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-10-08 04:16:40</pre>
+    <h2>Change at time 2011-10-08 04:16:40</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1318022200000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-10-08 04:16:40</pre>
+    <h2>Change at time 2011-09-11 23:29:28</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1315758568000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-09-11 23:29:28</pre>
+    <h2>Change at time 2011-09-11 23:29:28</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1315758568000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-09-11 23:29:28</pre>
+    <h2>Change at time 2011-09-11 23:29:28</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1315758568000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-09-11 23:29:28</pre>
+    <h2>Change at time 2011-09-11 07:46:47</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 accepted this proposal.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1315702007000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-09-11 07:46:47</pre>
+    <h2>Change at time 2011-09-11 07:46:47</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1315702007000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-09-11 07:46:47</pre>
+    <h2>Change at time 2011-09-11 07:46:47</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1315702007000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-09-11 07:46:47</pre>
+    <h2>Change at time 2011-08-18 18:27:32</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>R6RS already requires this behavior.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1313666852000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-08-18 18:27:32</pre>
+    <h2>Change at time 2011-07-11 13:24:56</h2>
+    <h2>author</h2>
+    <pre>aag</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>MIT Scheme does, in fact, have non-finite numbers, depending on the floating-point error mask that is set.  This isn't documented, however.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1310365496000000</pre>
+    <h2>ticket</h2>
+    <pre>229</pre>
+    <h2>time</h2>
+    <pre>2011-07-11 13:24:56</pre></body></html>

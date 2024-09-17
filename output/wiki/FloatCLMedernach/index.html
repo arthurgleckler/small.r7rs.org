@@ -1,0 +1,52 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>FloatCLMedernach</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/FloatCLMedernach.md">FloatCLMedernach</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Float&shy;CLMedernach</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-09-15 03:33:01</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/FloatCLMedernach/history">history</a></div>
+      <div class="source"><a href="/wiki/FloatCLMedernach/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h3 id="Decodingflonums">Decoding flonums</h3>
+      <p>decode-float float =&gt; significand, exponent, sign</p>
+      <p>scale-float float integer =&gt; scaled-float</p>
+      <p>float-radix float =&gt; float-radix</p>
+      <p>float-sign float-1 &amp;optional float-2 =&gt; signed-float</p>
+      <p>float-digits float =&gt; digits1</p>
+      <p>float-precision float =&gt; digits2</p>
+      <p>integer-decode-float float =&gt; significand, exponent, integer-sign</p>
+      <p>Description:</p>
+      <p>decode-float computes three values that characterize float. The first value is of the same type as float and represents the significand. The second value represents the exponent to which the radix (notated in this description by b) must be raised to obtain the value that, when multiplied with the first result, produces the absolute value of float. If float is zero, any integer value may be returned, provided that the identity shown for scale-float holds. The third value is of the same type as float and is 1.0 if float is greater than or equal to zero or -1.0 otherwise.</p>
+      <p>decode-float divides float by an integral power of b so as to bring its value between 1/b (inclusive) and 1 (exclusive), and returns the quotient as the first value. If float is zero, however, the result equals the absolute value of float (that is, if there is a negative zero, its significand is considered to be a positive zero).</p>
+      <p>scale-float returns <span class="monospace">(* float (expt (float b float) integer))</span>, where b is the radix of the floating-point representation. float is not necessarily between 1/b and 1.</p>
+      <p>float-radix returns the radix of float.</p>
+      <p>float-sign returns a number z such that z and float-1 have the same sign and also such that z and float-2 have the same absolute value. If float-2 is not supplied, its value is <span class="monospace">(float 1 float-1)</span>. If an implementation has distinct representations for negative zero and positive zero, then <span class="monospace">(float-sign -0.0) =&gt; -1.0</span>.</p>
+      <p>float-digits returns the number of radix b digits used in the representation of float (including any implicit digits, such as a ``hidden bit'').</p>
+      <p>float-precision returns the number of significant radix b digits present in float; if float is a float zero, then the result is an integer zero.</p>
+      <p>For normalized floats, the results of float-digits and float-precision are the same, but the precision is less than the number of representation digits for a denormalized or zero number.</p>
+      <p>integer-decode-float computes three values that characterize float - the significand scaled so as to be an integer, and the same last two values that are returned by decode-float. If float is zero, integer-decode-float returns zero as the first value. The second value bears the same relationship to the first value as for decode-float:</p><span class="monospace"> (multiple-value-bind (signif expon sign)
+                      (integer-decode-float f)
+   (scale-float (float signif f) expon)) ==  (abs f)
+</span>
+      <h3 id="NaNfunctions">NaN functions</h3>
+      <p>The following functions are applicable not only to flonum NaNs but to all inexact real NaNs, which is why their names do not begin with <span class="monospace">fl</span>.</p>
+      <p><span class="monospace">(make-nan </span><i>payload</i><span class="monospace">)</span></p>
+      <p>Returns a NaN, using the exact integer <i>payload</i> in an implementation-defined way to generate the payload bits.  In particular, the sign bit of the NaN is set from the sign of <span class="monospace">payload</span>.  If the implementation does not support NaNs, it is an error.</p>
+      <p><span class="monospace">(nan-payload </span><i>nan</i><span class="monospace">)</span></p>
+      <p>Returns the payload of <i>nan</i>.</p>
+      <p><span class="monospace">(nan-signaling? </span><i>nan</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>nan</i> is a signaling NaN, and <span class="monospace">#f</span> otherwise.  This function is required because different floating-point processors implement the signaling bit in different ways: on most processors, the most significant bit of the payload is clear if the NaN is signaling, but on the PA-RISC and MIPS processors it is set.</p>
+      <p><span class="monospace">(nan= </span><i>x y</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>x</i> and <i>y</i> are both NaNs the same payload.</p></div></body></html>

@@ -1,0 +1,49 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BitVectorsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BitVectorsCowan.md">BitVectorsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Bit&shy;Vectors&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-08-09 03:40:55</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/BitVectorsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/BitVectorsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Specification">Specification</h2>
+      <h3 id="Constructor">Constructor</h3>
+      <p><span class="monospace">(make-bitvector </span> [ <i>size</i> [ <i>fill</i> ] ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated bitvector.  If <i>fill</i> is omitted or <span class="monospace">#f</span>, then all the bits are <span class="monospace">#f</span>; if <i>fill</i> is <span class="monospace">#t</span>, the the first <i>size</i> bits are <span class="monospace">#t</span> and all other bits are <span class="monospace">#f</span>.</p>
+      <h3 id="Predicate">Predicate</h3>
+      <p><span class="monospace">(bitvector? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a bitvector, and <span class="monospace">#f</span> otherwise.</p>
+      <h3 id="Bitwiseoperations">Bitwise operations</h3>
+      <p>Same as <a href="/wiki/BitwiseCowan">BitwiseCowan</a>, with appropriate name changes.</p>
+      <h3 id="Mutators">Mutators</h3>
+      <p>Issue:  Linear update, or guaranteed mutation?</p><span class="monospace">bitvector-not!
+bitvector-and!   bitvector-ior!
+bitvector-xor!   bitvector-eqv!
+bitvector-nand!  bitvector-nor! 
+bitvector-andc1! bitvector-andc2!
+bitvector-orc1!  bitvector-orc2! 
+
+copy-bit!      bit-swap!
+
+bitvector-field-clear!   bitvector-field-set
+bitvector-field-replace  bitvector-field-replace-same
+bitvector-field-rotate!  bitvector-field-reverse
+</span>
+      <h3 id="Conversion">Conversion</h3>
+      <p><span class="monospace">(bitvector-&gt;vector </span><i>bv</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(vector-&gt;bitvector </span><i>vec</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(bitvector-&gt;integer </span><i>bv</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(integer-&gt;bitvector </span><i>integer</i><span class="monospace">)</span></p></div></body></html>

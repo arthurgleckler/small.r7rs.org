@@ -1,0 +1,38 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Optionality</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/Optionality.md">Optionality</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Optionality</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-04-22 20:31:52</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/Optionality/history">history</a></div>
+      <div class="source"><a href="/wiki/Optionality/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is an explanation of what's optional in IEEE and R5RS Scheme, grouped for ease of understanding.</p>
+      <h3 id="NotpresentinIEEE,requiredinR5RS">Not present in IEEE, required in R5RS</h3>
+      <p>Laziness: <span class="monospace">delay, force</span></p>
+      <p>Macros: <span class="monospace">define-syntax, let-syntax, letrec-syntax</span></p>
+      <p>Lists: <span class="monospace">list-ref, list-tail</span></p>
+      <p>Strings: <span class="monospace">list-&gt;string, string-&gt;list, string-copy, string-fill!</span></p>
+      <p>Vectors: <span class="monospace">list-&gt;vector, vector-&gt;list, vector-fill!</span></p>
+      <p>Multiple values: <span class="monospace">call-with-values, values</span></p>
+      <p>Eval: <span class="monospace">eval, null-environment, scheme-report-environment</span></p>
+      <h3 id="NotpresentinIEEE,optionalinR5RS">Not present in IEEE, optional in R5RS</h3>
+      <p>Arithmetic: Subtraction and division with more than two arguments</p>
+      <p>REPL: <span class="monospace">interaction-environment</span></p>
+      <p>Files: <span class="monospace">with-input-to-file, with-output-to-file</span></p>
+      <p>Loading: <span class="monospace">load</span></p>
+      <h3 id="OptionalinbothIEEEandR5RS">Optional in both IEEE and R5RS</h3>
+      <p>Inexact rationals: <span class="monospace">exp, log, sin, cos, tan, asin, acos, atan, sqrt</span></p>
+      <p>Complex numbers: <span class="monospace">angle, imag-part, magnitude, make-polar, make-rectangular, real-part</span></p></div></body></html>

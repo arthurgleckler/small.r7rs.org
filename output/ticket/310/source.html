@@ -1,0 +1,229 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #310</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #310</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-08 23:32:12</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>When we approved CompleteSequenceCowan in ticket #64, we adopted [http://srfi.schemers.org/srfi-43/srfi-43.html#vector-fill-bang SRFI 43] syntax and semantics for `vector-copy`, meaning that it takes optional ''start, end, fill'' arguments.  This is inconsistent with various other copier procedures in R7RS as inherited from R5RS, as well as what is provided in SRFI 43 and its relatives [http://srfi.schemers.org/srfi-1/srfi-1.html SRFI 1] (for lists) and [http://srfi.schemers.org/srfi-13/srfi-13.html SRFI 13] (for strings).  I see four plausible courses of action:
+
+''Do nothing'' (default):  The only virtue here is that it requires the least thinking and editing.  It's fugly and I don't want to go (or rather stay) there.
+
+''R5RS:''  Claw back ``vector-copy`` to just accept the source vector, all of which is to be copied.  This provides self-consistency, consistency with R5RS, and maximum simplicity.  The SRFIs will be provided as R7RS-large packages which will export the more complex and powerful versions.
+
+''SRFIs:''  Enhance `vector-fill!`, `vector-&gt;list`, `string-&gt;list`, `string-copy`, `string-fill!` to support optional ''start'' and ''end'' arguments.  This provides some self-consistency, backward compatibility with R5RS, consistency with the SRFIs, and some loss of simplicity.
+
+''SRFIs-plus:''  Same as ''SRFIs'', but also add optional ''start, end, fill'' arguments to `list-copy` and optional ''fill'' argument to `string-copy`.  This provides maximal function, full self-consistency, backward compatibility with R5RS, and backward compatibility with the SRFIs.</pre>
+    <h2>id</h2>
+    <pre>310</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Rationalize start/end/(fill) arguments in sequence procedures</pre>
+    <h2>time</h2>
+    <pre>2011-12-03 03:17:54</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-08 23:32:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1349713932950115</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-10-08 23:32:12</pre>
+    <h2>Change at time 2012-10-08 23:32:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349713932950115</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-10-08 23:32:12</pre>
+    <h2>Change at time 2012-10-08 23:32:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349713932950115</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-10-08 23:32:12</pre>
+    <h2>Change at time 2012-04-10 00:20:06</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1333992006790540</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-04-10 00:20:06</pre>
+    <h2>Change at time 2012-04-10 00:20:06</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1333992006790540</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-04-10 00:20:06</pre>
+    <h2>Change at time 2012-04-10 00:20:06</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1333992006790540</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-04-10 00:20:06</pre>
+    <h2>Change at time 2012-04-09 22:02:35</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG decided to adopt the &quot;SRFIs&quot; option above.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1333983755779138</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:02:35</pre>
+    <h2>Change at time 2012-04-09 22:02:35</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1333983755779138</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-04-09 22:02:35</pre>
+    <h2>Change at time 2012-01-26 05:09:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>I mean to say that the SRFIs will be provided in R7RS-large in any case, as WG2 has already voted them in.  That part does not depend on our choice here.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1327525752515625</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-01-26 05:09:12</pre>
+    <h2>Change at time 2012-01-26 05:09:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>summary</pre>
+    <h2>newvalue</h2>
+    <pre>Rationalize start/end/(fill) arguments in sequence procedures</pre>
+    <h2>oldvalue</h2>
+    <pre>Remove start, end, fill arguments from VECTOR-COPY</pre>
+    <h2>raw-time</h2>
+    <pre>1327525752515625</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-01-26 05:09:12</pre>
+    <h2>Change at time 2012-01-26 05:09:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>When we approved CompleteSequenceCowan in ticket #64, we adopted [http://srfi.schemers.org/srfi-43/srfi-43.html#vector-fill-bang SRFI 43] syntax and semantics for `vector-copy`, meaning that it takes optional ''start, end, fill'' arguments.  This is inconsistent with various other copier procedures in R7RS as inherited from R5RS, as well as what is provided in SRFI 43 and its relatives [http://srfi.schemers.org/srfi-1/srfi-1.html SRFI 1] (for lists) and [http://srfi.schemers.org/srfi-13/srfi-13.html SRFI 13] (for strings).  I see four plausible courses of action:
+
+''Do nothing'' (default):  The only virtue here is that it requires the least thinking and editing.  It's fugly and I don't want to go (or rather stay) there.
+
+''R5RS:''  Claw back ``vector-copy`` to just accept the source vector, all of which is to be copied.  This provides self-consistency, consistency with R5RS, and maximum simplicity.  The SRFIs will be provided as R7RS-large packages which will export the more complex and powerful versions.
+
+''SRFIs:''  Enhance `vector-fill!`, `vector-&gt;list`, `string-&gt;list`, `string-copy`, `string-fill!` to support optional ''start'' and ''end'' arguments.  This provides some self-consistency, backward compatibility with R5RS, consistency with the SRFIs, and some loss of simplicity.
+
+''SRFIs-plus:''  Same as ''SRFIs'', but also add optional ''start, end, fill'' arguments to `list-copy` and optional ''fill'' argument to `string-copy`.  This provides maximal function, full self-consistency, backward compatibility with R5RS, and backward compatibility with the SRFIs.</pre>
+    <h2>oldvalue</h2>
+    <pre>When we approved CompleteSequenceCowan in ticket #64, we adopted SRFI 43 syntax and semantics for `vector-copy`, meaning that it takes optional ''start, end, fill'' arguments.  This ticket would undo that in favor of a simple copier.  SRFI 43 will be part of R7RS-large, so R7RS-large implementations would have the enhanced versions.</pre>
+    <h2>raw-time</h2>
+    <pre>1327525752515625</pre>
+    <h2>ticket</h2>
+    <pre>310</pre>
+    <h2>time</h2>
+    <pre>2012-01-26 05:09:12</pre></body></html>

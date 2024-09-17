@@ -1,0 +1,69 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki RedundantImports version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki RedundantImports version 1</h1>
+    <h2>author</h2>
+    <pre>WillClinger</pre>
+    <h2>comment</h2>
+    <pre>created page</pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>RedundantImports</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Importing two or more different libraries that export the same identifier with the same binding is okay in both R7RS and R6RS libraries and programs.  Importing the same identifier with different bindings is an error in R7RS and signals an error in R6RS systems, but should be permitted by an R7RS REPL (R7RS section 5.2).  This is tested by the following program:
+{{{
+(define-library (local 0)
+  (export list car cdr x y)
+  (import (scheme base))
+  (define x 101)
+  (define y 202))
+(define-library (local x)
+  (export car x)
+  (import (scheme base) (local xy)))
+(define-library (local y)
+  (export cdr y))
+  (import (scheme base) (local xy)))
+(import (scheme write) (local x) (local y))
+(write (list x (car (cdr (list x y)))))
+(newline)
+}}}
+For R6RS, change `define-library` to `library`, `(scheme base)` to `(rnrs base)`, and `(scheme write)` to `(rnrs io simple)`.  To test different bindings, add new definitions of `x` and `y` to `(local x)` and `(local y)` respectively.
+
+||'''system'''||'''version'''||'''mode'''||'''same binding'''||'''different binding'''||'''REPL'''||
+||Chibi|| 0.7 || r7rs || okay || ? || ? ||
+||Chicken|| 4.9.0.1 || r7rs || ? || ? || ? ||
+||Foment|| 0.4 (debug) || r7rs || ? || ? || ? ||
+||Gauche|| 0.9.4 || r7rs || ? || ? || ? ||
+||Kawa|| 2.0 || r7rs || ? || ? || ? ||
+||Larceny|| 0.98 || r7rs || okay || rejected || okay ||
+||Petit Larceny|| 0.98 || r7rs || okay || rejected || okay ||
+||Sagittarius|| 0.6.4 || r7rs || ? || ? || ? ||
+||Larceny|| 0.98 || r6rs || okay || rejected || n/a ||
+||Petit Larceny|| 0.98 || r6rs || okay || rejected || n/a ||
+||Petite Chez|| 8.4 || r6rs || okay || rejected ? || n/a ||
+||Racket|| 6.1.1 || r6rs || okay || rejected ? || n/a ||
+||Sagittarius|| 0.6.4 || r6rs || okay || rejected ? || n/a ||
+||Vicare|| 0.3d7 || r6rs || okay || rejected ? || n/a ||
+
+The R6RS effectively forbids REPLs.
+
+(I'll update this table when I next have access to my benchmarking machine.)
+</pre>
+    <h2>time</h2>
+    <pre>2015-06-01 20:26:36</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

@@ -1,0 +1,102 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ModulesAndPackagesArcfide version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ModulesAndPackagesArcfide version 2</h1>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>99.31.12.53</pre>
+    <h2>name</h2>
+    <pre>ModulesAndPackagesArcfide</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= Modules and Packages in Scheme =
+
+'''An analysis by Aaron W. Hsu'''
+
+''Please note that these are just ideas and a tentative proposal. More discussion and debate may reveal a more preferable course of action.''
+
+== Introduction ==
+
+One of the biggest issues I think the Working Groups face is how we deal with modules. I have argued that a syntactic module system is sufficient^[1]^. While I have gone back and forth on this issue, the more and more I discuss things, the more it seems that making modules syntax instead of a sort of out-of-band library form as R6RS has real merit. Moreover, I believe that all of my previous concerns about packaging system concerns are properly answerable (discussions have yielded convincing enough arguments for their implementability) provided that we agree that all libraries that are useful to use are those which have terminating expansions.
+
+== Define Module... ==
+
+What are the needs of a module system? What is a module system? At its heart a module system is a means of abstracting and hiding code from other code that interacts with a given body of code via a specific set of usually limited bindings. These bindings are both syntax and run-time variables. They allow for better syntactic abstraction and are essentially forms for controlling scope and visibility for both run-time and expansion time bindings. 
+
+== Existing Systems ==
+
+Java's packaging format, Scheme48's module system, and R6RS' library format are arguably forms of static, out-of-band systems. R6RS however, suffers from requiring evaluation of the source code. PLT has units, and Chez Scheme has its module format, the former being an example of run-time modules (a la ML's functors), and the later being an example of syntactic modules.
+
+There are three interesting module systems I would like to examine. R6RS and Scheme48 modules are relatively static, while Chez Scheme modules presents a fairly different bent. R6RS libraries are a half-in half-out sort of part of the language. They are not language forms in the sense that any macro may generate them. However, there is not built in standard means of separating a code's implementation from its interface. Thus, in R6RS libraries, you must include the code along with the interface to the code in a single top-level form that has a special meaning to implementations. Scheme48's module system is a little more outside of the system in that it has a separate means of defining interface and implementation of an interface, and is almost a mini-language or packaging system that happens to reference or potentially embed some code. Chez Scheme's module system is a syntactic form that is used by the expander to control visibility of bindings. It support separate compilation, but does not support separate interfaces and implementation by default. However, because Chez Scheme's modules do not suffer from the top-level only status of R6RS libraries, it is possible to extend Chez Scheme's modules to support the separation of interface from implementation. In fact, it is possible to use modules in any sort of macro expansion in many interesting ways.
+
+Another interesting point of R6RS libraries is their use of implicit exports. Because macro bindings in the `export` form of an R6RS library are not marked as syntax explicitly, it is almost impossible for an implementation to statically analyze what additional bindings must be visible to the outside world in the case that the given exported macro expands to these definitions. This makes it very difficult for implementations to identify certain code in a library as unused, and hence, eliminate it upon compilation, resulting in potentially much smaller compiled files. Implicit exports do not see very widespread support, and indeed, R6RS libraries are the only place where I am aware that they see popular use.
+
+== Proposal ==
+
+The following proposal is based on the Chez Scheme module form.
+
+=== Module Syntax ===
+
+''module'' ---&gt; `(module` [''library-name''] `(` ''export-spec'' ...`)` ''definitions'' ... ''expressions'' ...`)`[[BR]]
+''import'' ---&gt; `(`[`import` | `import-only`] ''import-spec'' ...`)`[[BR]]
+''library-name'' ---&gt; ''identifier''[[BR]]
+''export-spec'' ---&gt; ''identifier'' | `(`''identifier'' ...`)`[[BR]]
+''import-spec'' ---&gt; ''library-name'' [[BR]]
+                | `(only` ''import-spec'' ''identifier'' ...`)` [[BR]]
+                | `(except` ''import-spec'' ''identifier'' ...`)` [[BR]]
+                | `(add-prefix` ''import-spec'' ''identifier''`)` [[BR]]
+                | `(drop-prefix` ''import-spec'' ''identifier''`)`[[BR]]
+                | `(alias` ''import-spec'' `(`''identifier,,1,,'' ''identifier,,2,,''`)` ...`)`[[BR]]
+                | `(rename` ''import-spec'' `(`''identifier,,1,,'' ''identifier,,2,,''`)` ...`)`
+
+=== Description ===
+
+Please see the [http://www.scheme.com/csug8/syntax.html#./syntax:h5 Chez Scheme User's Guide Version 8] for more information about the currently proposed semantics.
+
+=== Accompanying Proposals ===
+
+  * MetaArcfide
+  * LetSyntaxArcfide
+  * IncludeArcfide
+  * EnvironmentsArcfide
+
+== Rationale ==
+
+The `module` form is significantly simpler than R6RS' module form, but is capable of expressing the same sorts of abstractions. It is easier to compile, extensible, supports separate compilation and phase separation. It is possible for an implementation to support other features that are desirable from other module systems as well, such as evaluating code inside the environment of a module, or grabing the exported environment of a module. 
+
+== Unanswered Questions ==
+
+  * How easy is it to convert code using R6RS libraries to this module form?
+  * Should a syntax which supports library versions and list based library names be used?
+  * Should WG2 devise a specific behavior for searching and loading code that enables automatic importing for modules?
+
+== Further Reading ==
+
+Oscar Waddell and R. Kent Dybvig, [http://www.cs.indiana.edu/~dyb/pubs/popl99.pdf Extending the scope of syntactic abstraction]. Conference Record of POPL'99: The 26th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages. January 1999
+
+  The benefits of module systems and lexically scoped syntactic abstraction (macro) facilities are well-established in the literature. This paper presents a system that seamlessly integrates modules and lexically scoped macros. The system is fully static, permits mutually recursive modules, and supports separate compilation. We show that more dynamic module facilities are easily implemented at the source level in the extended language supported by the system.
+
+-----
+
+== References ==
+
+[1] http://my.opera.com/arcfide/blog/2009/10/14/a-philosophy-on-scheme-modules</pre>
+    <h2>time</h2>
+    <pre>2010-02-20 15:10:45</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

@@ -1,0 +1,111 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImmutableDequesWortman</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImmutableDequesWortman.md">ImmutableDequesWortman</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Immutable&shy;Deques&shy;Wortman</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-12-10 10:59:30</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ImmutableDequesWortman/history">history</a></div>
+      <div class="source"><a href="/wiki/ImmutableDequesWortman/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Introduction">Introduction</h2>
+      <p>This SRFI defines immutable deques. A structure is immutable when all its operations leave the structure unchanged. Note that none of the procedures specified here ends with a <span class="monospace">!</span>.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>Immutable structures are sometimes called <i>persistent</i> and are closely related to <i>pure-functional</i> (a.k.a. <i>pure</i>) structures. The availability of immutable data structures facilitates writing efficient programs in the pure-functional style.  Unlike the immutable lists of <a href="http://srfi.schemers.org/srfi-117/srfi-117.html">SRFI 117</a>, it is possible to efficiently return an updated version of a deque without disturbing any earlier versions of it.</p>
+      <h2 id="Specification">Specification</h2>
+      <p>We specify required time efficiency upper bounds using big-O notation. We note when, in some cases, there is &quot;slack&quot; between the required bound and the theoretically optimal bound for an operation. Implementations may use data structures with amortized time bounds, but should document which bounds hold in only an amortized sense. The use of randomized data structures with expected time bounds is discouraged.</p>
+      <p>Deques are disjoint from all other Scheme types.</p>
+      <h3 id="Constructors">Constructors</h3>
+      <p><span class="monospace">(ideque </span>[ <i>element</i> ...]<span class="monospace">)</span></p>
+      <p>Returns a deque containing the <i>elements</i>. The leftmost element (if any) will be at the front of the deque and the rightmost element (if any) will be at the back. Takes O(n) time, where <i>n</i> is the number of elements.</p>
+      <p><span class="monospace">(ideque-unfold </span><i>stop? mapper successor seed</i><span class="monospace">)</span></p>
+      <p>Invokes the predicate <i>stop?</i> on <i>seed</i>.  If it returns false, generate the next result by applying <i>mapper</i> to <i>seed</i>, generate the next seed by applying <i>successor</i> to <i>seed</i>, and repeat this algorithm with the new seed.  If <i>stop?</i> returns true, return a deque containing the results in order of accumulation.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-unfold-right </span><i>stop? mapper successor seed</i><span class="monospace">)</span></p>
+      <p>Invokes the predicate <i>stop?</i> on <i>seed</i>.  If it returns false, generate the next result by applying <i>mapper</i> to <i>seed</i>, generate the next seed by applying <i>successor</i> to <i>seed</i>, and repeat the algorithm with the new seed.  If <i>stop?</i> returns true, return a deque containing the results in reverse order of accumulation.  Takes O(n) time.</p>
+      <h3 id="Predicates">Predicates</h3>
+      <p><span class="monospace">(ideque? </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>x</i> is a deque, and <span class="monospace">#f</span> otherwise.  Takes O(1) time.</p>
+      <p><span class="monospace">(ideque-empty? </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>deque</i> contains zero elements, and <span class="monospace">#f</span> otherwise.  Takes O(1) time.</p>
+      <h3 id="Queueoperations">Queue operations</h3>
+      <p><span class="monospace">(ideque-front </span><i>deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-back </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Returns the front/back element of <i>deque</i>. It is an error for <i>deque</i> to be empty. Takes O(1) time.</p>
+      <p><span class="monospace">(ideque-remove-front </span><i>deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-remove-back </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Returns a deque with the front/back element of <i>deque</i> removed. It is an error for <i>deque</i> to be empty. Takes O(1) time.</p>
+      <p><span class="monospace">(ideque-add-front </span><i>deque obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-add-back </span><i>deque obj</i><span class="monospace">)</span></p>
+      <p>Returns a deque with <i>obj</i> pushed to the front/back of <i>deque</i>. Takes O(1) time.</p>
+      <h3 id="Otheraccessors">Other accessors</h3>
+      <p><span class="monospace">(ideque-take </span><i>deque n</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-take-right </span><i>deque n</i><span class="monospace">)</span></p>
+      <p>Returns a deque containing the first/last <i>n</i> elements of <i>deque</i>.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-drop </span><i>deque n</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-drop-right </span><i>deque n</i><span class="monospace">)</span></p>
+      <p>Returns a deque containing all but the first/last <i>n</i> elements of <i>deque</i>.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-split-at </span><i>deque n</i><span class="monospace">)</span></p>
+      <p>Returns two values, the results of <span class="monospace">(ideque-take </span><i>deque n</i><span class="monospace">)</span> and <span class="monospace">(ideque-drop </span><i>deque n</i><span class="monospace">)</span> respectively, but may be more efficient.  Takes O(n) time.</p>
+      <h3 id="Thewholedeque">The whole deque</h3>
+      <p><span class="monospace">(ideque-length </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Returns the length of <i>deque</i> as an exact integer.  May take O(n) time, though O(1) is optimal.</p>
+      <p><span class="monospace">(ideque-append </span><i>deque</i> ...<span class="monospace">)</span></p>
+      <p>Returns a deque with the contents of the first argument deque followed by the others. Takes O(kn) time, where k is the number of deques and n is the number of elements involved, though O(k log n) is possible.</p>
+      <p><span class="monospace">(ideque-concatenate </span><i>list-of-deques</i><span class="monospace">)</span></p>
+      <p>Returns a deque with the contents of the first deque in <i>list-of-deques</i> followed by the others. This is provided for Schemes in which the number of arguments which can be passed to <span class="monospace">apply</span> is limited.  Takes O(kn) time, where k is the number of deques and n is the number of elements involved, though O(k log n) is possible.</p>
+      <p><span class="monospace">(ideque-reverse </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Returns a deque containing the elements of <i>deque</i> in reverse order.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-count </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p>Returns the number of elements of <i>deque</i> which satisfy <i>pred</i> as an exact integer.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-zip </span><i>deque</i> ...<span class="monospace">)</span></p>
+      <p>Returns a deque of lists (not deques) each of which contains the corresponding elements of the argument deques in the order specified.  Processing stops when all the elements of any deque have been seen. Takes O(kn) time, where <i>k</i> is the number of deques and <i>n</i> is the number of elements involved.</p>
+      <h3 id="Mapping">Mapping</h3>
+      <p><span class="monospace">(ideque-map </span><i>proc deque</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to the corresponding elements of <i>deques</i> and returns a deque containing the results in order.  Terminates when any deque is finished.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-for-each </span><i>proc deque</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to the corresponding elements of <i>deques</i> in order and returns an unspecified result.  Terminates when any deque is finished.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-fold </span><i>proc nil deque</i> ...<span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-fold-right </span><i>proc nil deque</i> ...<span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> on the corresponding elements of <i>deques</i> in forward/reverse order, passing the result of the previous invocation as a second argument. For the first invocation, <i>nil</i> is used as the second argument. Returns the result of the last invocation, or <i>nil</i> if there was no invocation.  Terminates when any deque is finished.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-append-map </span><i>proc deque</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to the corresponding elements of <i>deques</i>.  It is an error if the result is not a list.  Returns a deque containing the elements of the lists in order.  Terminates when any deque is finished.  Takes O(n) time.</p>
+      <h3 id="Filtering">Filtering</h3>
+      <p><span class="monospace">(ideque-filter </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-remove </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p>Returns a deque which contains the elements of <i>deque</i> that do/do not satisfy <i>pred</i>.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-partition </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p>Returns two values, the results of <span class="monospace">(ideque-filter </span><i>pred deque</i><span class="monospace">)</span> and <span class="monospace">(ideque-remove </span><i>pred deque</i><span class="monospace">)</span> respectively, but may be more efficient.  Takes O(n) time.</p>
+      <h3 id="Searching">Searching</h3>
+      <p><span class="monospace">(ideque-find </span><i>pred deque failure</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-find-right </span><i>pred deque failure</i><span class="monospace">)</span></p>
+      <p>Returns the first/last element of <i>deque</i> that satisfies <i>pred</i>.  If there is no such element, returns the result of invoking the thunk <i>failure</i> .  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-take-while </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-take-while-right </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p>Returns a deque containing the longest initial/final prefix of elements in <i>deque</i> all of which satisfy <i>pred</i>.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-drop-while </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-drop-while-right </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p>Returns a deque which omits the longest initial/final prefix of elements in <i>deque</i> all of which satisfy <i>pred</i>, but includes all other elements of <i>deque</i>.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-span </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-break </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p>Returns two values, the initial prefix of the elements of <i>deque</i> which do/do not satisfy <i>pred</i>, and the remaining elements.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-any </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-every </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p>Invokes <i>pred</i> on the elements of <i>deque</i> in order until one of them returns a true/false value, which is then returned.  If there are no such elements, returns <span class="monospace">#f</span>/<span class="monospace">#t</span>.  Takes O(n) time.</p>
+      <h3 id="Conversion">Conversion</h3>
+      <p><span class="monospace">(list-&gt;ideque </span><i>list</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-&gt;list </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Conversion between deque and list structures. FIFO order is preserved, so the front of a list corresponds to the front of a deque. Each operation takes O(n) time.</p>
+      <p><span class="monospace">(generator-&gt;ideque </span><i>generator</i>`)</p>
+      <p><span class="monospace">(ideque-&gt;generator </span><i>ideque</i><span class="monospace">)</span></p>
+      <p>Converts a <a href="http://srfi.schemers.org/srfi-121/srfi-121.html">SRFI 121</a> generator to and from a deque.</p></div></body></html>

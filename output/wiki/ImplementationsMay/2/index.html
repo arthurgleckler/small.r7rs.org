@@ -1,0 +1,78 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImplementationsMay</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImplementationsMay.md">ImplementationsMay</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Implementations&shy;May</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-07-07 05:00:58</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/ImplementationsMay/history">history</a></div>
+      <div class="source"><a href="/wiki/ImplementationsMay/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Things that implementations explicitly <i>may</i> do:</p>
+      <ul>
+        <li>Define external representations for additional types of objects</li>
+        <li>Share empty strings, vectors, and bytevectors (detectably by <span class="monospace">eq?</span> or <span class="monospace">eqv?</span> or neither)</li>
+        <li>Recognize additional cases of tail calls.</li>
+        <li>Use different orders of evaluation in procedure calls</li>
+        <li>Return a non-promise as-is from <span class="monospace">force</span></li>
+        <li>Treat promises the same as their forced values in some cases</li>
+        <li>Return literal structure or newly allocated objects in <span class="monospace">quasiquote</span></li>
+        <li>Write <span class="monospace">quote</span> and friends using lexical syntax</li>
+        <li>Provide macro facilities other than <span class="monospace">syntax-rules</span></li>
+        <li>Provide additional <span class="monospace">features</span> identifiers</li>
+        <li>Treat additional characters (such as FF) as whitespace</li>
+        <li>Detect procedure equivalence beyond what is required</li>
+        <li>Share structures between constants</li>
+        <li>Use multiple internal representations of numbers</li>
+        <li>Provide more than one format for inexact numbers</li>
+        <li>Use floating-point arithmetic for inexact numbers</li>
+        <li>Silently coerce the unrepresentable result of an exact operation to an inexact value of the highest precision available</li>
+        <li>Return an exact result to an inexact operation if it can prove it is safe</li>
+        <li>Support only a limited range of numbers of any type</li>
+        <li>May support only some types of numbers</li>
+        <li>Coerce an exact constant to an inexact value</li>
+        <li>Distinguish <span class="monospace">+inf.0</span>, <span class="monospace">-inf.0</span>, <span class="monospace">+nan.0</span>, and <span class="monospace">0.0</span></li>
+        <li>Use <span class="monospace">+nan.0</span> to represent non-real numbers</li>
+        <li>Accept non-standard exponent marker</li>
+        <li>Allow the default inexact-number precision to be set by the user</li>
+        <li>Represent some irrational numbers exactly</li>
+        <li>Extend the number system with non-standard types</li>
+        <li>Return inexact values from <span class="monospace">make-polar</span></li>
+        <li>Silently coerce exact non-real numbers to inexact</li>
+        <li>Restrict the domain of <span class="monospace">string-&gt;number</span> in specified ways</li>
+        <li>Support any or all Unicode characters</li>
+        <li>Support non-Unicode characters</li>
+        <li>Support additional character names</li>
+        <li>Forbid characters (other than ASCII ones) from appearing in strings</li>
+        <li>Return the argument from case-folding procedures if no change was made</li>
+        <li>Always downcase upper-case sigma to normal lower-case sigma</li>
+        <li>Condition objects that satisfy <span class="monospace">file-error?</span> or <span class="monospace">read-error?</span> but not <span class="monospace">error?</span></li>
+        <li>Support arguments other than 5 to <span class="monospace">scheme-version-environment</span> and <span class="monospace">null-environment</span></li>
+        <li>Make the result of <span class="monospace">scheme-report-environment</span> and <span class="monospace">null-environment</span> mutable</li>
+        <li>Extend <span class="monospace">eval</span> to allow other objects</li>
+        <li>Provide port types other than textual and binary</li>
+        <li>Provide input/output ports</li>
+        <li>Recognize alternative line-ends</li>
+        <li>Use locale information to encode and decode environment variables</li>
+        <li>Vary the epoch of <span class="monospace">current-jiffy</span> between runs of a program</li>
+        <li>Bind a record-type name to a syntactic or procedural object</li>
+        <li>Process <span class="monospace">cond-expand</span> and <span class="monospace">import</span> library declarations before <span class="monospace">import</span>, <span class="monospace">include</span>, and <span class="monospace">include-ci</span> declarations</li>
+        <li>Load libraries more than once</li>
+        <li>Provide a REPL</li>
+        <li>In the REPL, treat all variables as bound</li>
+        <li>Allow the REPL to read input from a file</li>
+        <li>Allow additional Unicode characters in identifiers</li>
+        <li>Process &quot;is an error&quot; situations in a variety of ways</li>
+        <li>Raise an exception on domain errors</li>
+        <li>Provide non-portable extensions of any kind</li></ul></div></body></html>

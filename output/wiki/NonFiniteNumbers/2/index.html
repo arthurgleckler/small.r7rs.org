@@ -1,0 +1,210 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NonFiniteNumbers</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NonFiniteNumbers.md">NonFiniteNumbers</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Non&shy;Finite&shy;Numbers</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-05-24 13:00:50</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/NonFiniteNumbers/history">history</a></div>
+      <div class="source"><a href="/wiki/NonFiniteNumbers/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Syntax">Syntax</h2>
+      <p>Here's how various Schemes deal with syntax for non-finite inexact numbers.  &quot;Standard syntax&quot; means what R6RS prescribes: <span class="monospace">+inf.0</span> for positive infinity, <span class="monospace">-inf.0</span> for negative infinity, and both <span class="monospace">+nan.0</span> and <span class="monospace">-nan.0</span> for NaN.</p>
+      <p>Racket, Gauche, Chicken (with or without the numbers egg), Scheme48, Guile, Kawa, Chez, Ikarus/Vicare, Larceny, Ypsilon, Mosh, IronScheme, STklos, Spark accept and print the standard syntax.</p>
+      <p>Gambit, Bigloo, Chibi accept and print the standard syntax, except that they do not accept <span class="monospace">-nan.0</span>.</p>
+      <p>SigScheme, Scheme 9, Dream, Oaklisp, Owl Lisp are excluded because they do not have inexact non-finite numbers.</p>
+      <p>The following table concisely describes the other Schemes in the test suite.  &quot;Std syntax&quot; is &quot;yes&quot; if the Scheme can read the standard syntax, &quot;print&quot; shows what <span class="monospace">(let* ((i (* 1.0e200 1.0e200)) (n (- i i))) (list i (- i) n))</span> prints, and &quot;own syntax&quot; is &quot;yes&quot; if the Scheme can reread what it prints.  The implementations are listed in roughly decreasing order of standardosity.</p>
+      <table><tr><td class="default">
+            <p>Scheme</p></td><td class="default">
+            <p>std syntax</p></td><td class="default">
+            <p>prints</p></td><td class="default">
+            <p>own syntax</p></td></tr><tr><td class="default">
+            <p>KSi</p></td><td class="default">
+            <p>yes</p></td><td class="default">
+            <p><span class="monospace">(+inf.0 -inf.0 nan.0)</span></p></td><td class="default">
+            <p>yes</p></td></tr><tr><td class="default">
+            <p>NexJ</p></td><td class="default">
+            <p>yes</p></td><td class="default">
+            <p><span class="monospace">(Infinity -Infinity NaN)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>VX</p></td><td class="default">
+            <p>yes</p></td><td class="default">
+            <p><span class="monospace">(inf. -inf. -nan.)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>SCM</p></td><td class="default">
+            <p>*</p></td><td class="default">
+            <p><span class="monospace">(+inf.0 -inf.0 0/0)</span></p></td><td class="default">
+            <p>yes</p></td></tr><tr><td class="default">
+            <p>S7</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf.0 -inf.0 -nan.0)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>SXM</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf.0 -inf.0 -nan.0)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>Inlab</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf.0 -inf.0 -nan.0)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>UMB</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf.0 -inf.0 -nan)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>Shoe</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf -inf -nan)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>TinyScheme</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf -inf -nan)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>XLisp</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf -inf -nan)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>Schemik</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf -inf -nan)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>scsh</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf. -inf. -nan.)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>Rep</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf. -inf. -nan.)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>RScheme</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf. -inf. -nan.)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>Elk</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf -inf -nan.0)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>SISC</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(infinity.0 -infinity.0 nan.0)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>BDC</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(Infinity -Infinity NaN)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>MIT</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(#[+inf] #[-inf] #[NaN])</span></p></td><td class="default">
+            <p>no</p></td></tr></table>
+      <p>[*] Accepts <span class="monospace">+inf.0</span> and <span class="monospace">-inf.0</span> but not <span class="monospace">+nan.0</span> or <span class="monospace">-nan.0</span></p>
+      <h2 id="NaNequivalence">NaN equivalence</h2>
+      <p>The following implementations return <span class="monospace">#t</span> for <span class="monospace">(eqv +nan.0 +nan.0)</span>: Chez, Gambit, Guile, Ikarus/Vicare, Kawa, Larceny, Racket, STklos.</p>
+      <p>The following implementations return <span class="monospace">#f</span> for <span class="monospace">(eqv +nan.0 +nan.0)</span>: Bigloo, Chibi, Chicken, Gauche, MIT Scheme, Scheme48.</p>
+      <h2 id="Infinityexamples"><a href="/wiki/Infinity">Infinity</a> examples</h2>
+      <p>These are the R6RS examples involving <span class="monospace">+inf.0</span> and <span class="monospace">-inf.0</span> (already accounted for verbally in the &quot;Implementation extensions&quot; section of R7RS):</p><span class="monospace">(complex? +inf.0)    =&gt; #t     ; infinities are real but not rational
+(real? -inf.0)       =&gt; #t
+(rational? -inf.0)   =&gt; #f
+(integer? -inf.0)    =&gt; #f
+
+(inexact? +inf.0)    =&gt; #t     ; infinities are inexact
+
+(= +inf.0 +inf.0)    =&gt; #t     ; infinities are signed
+(= -inf.0 +inf.0)    =&gt; #f
+(= -inf.0 -inf.0)    =&gt; #t
+(positive? +inf.0)   =&gt; #t
+(negative? -inf.0)   =&gt; #t
+(abs -inf.0)         =&gt; +inf.0
+
+(finite? +inf.0)     =&gt; #f     ; infinities are infinite
+(infinite? +inf.0)   =&gt; #t
+
+                               ; infinities are maximal
+(max +inf.0 x)       =&gt; +inf.0 where x is real
+(min -inf.0 x)       =&gt; -inf.0 where x is real
+(&lt; -inf.0 x +inf.0)) =&gt; #t where x is real and finite
+(&gt; +inf.0 x -inf.0)) =&gt; #t where x is real and finite
+(floor +inf.0)       =&gt; +inf.0
+(ceiling -inf.0)     =&gt; -inf.0
+
+                               ; infinities are sticky
+(+ +inf.0 x)         =&gt; +inf.0 where x is real and finite
+(+ -inf.0 x)         =&gt; -inf.0 where x is real and finite
+(+ +inf.0 +inf.0)    =&gt; +inf.0
+
+(+ +inf.0 -inf.0)    =&gt; +nan.0 ; sum of oppositely signed infinities is NaN
+(- +inf.0 +inf.0)    =&gt; +nan.0
+
+(* 5 +inf.0)         =&gt; +inf.0 ; infinities are sticky
+(* -5 +inf.0)        =&gt; -inf.0
+(* +inf.0 +inf.0)    =&gt; +inf.0
+(* +inf.0 -inf.0)    =&gt; -inf.0
+
+(/ 0.0)              =&gt; +inf.0 ; infinities are reciprocals of zero
+(/ 1.0 0)            =&gt; +inf.0
+(/ -1 0.0)           =&gt; -inf.0
+(/ +inf.0)           =&gt; 0.0
+(/ -inf.0)           =&gt; -0.0 if distinct from 0.0 
+
+(rationalize +inf.0 3)      =&gt; +inf.0
+(rationalize +inf.0 +inf.0) =&gt; +nan.0
+(rationalize 3 +inf.0)      =&gt; 0.0
+
+(exp +inf.0)         =&gt; +inf.0
+(exp -inf.0)         =&gt; 0.0
+(log +inf.0)         =&gt; +inf.0
+(log 0.0)            =&gt; -inf.0
+(log -inf.0)         =&gt; +inf.0+3.141592653589793i ; approximately
+(atan -inf.0)        =&gt; -1.5707963267948965 ; approximately
+(atan +inf.0)        =&gt; 1.5707963267948965 ; approximately
+
+(sqrt +inf.0)        =&gt; +inf.0
+(sqrt -inf.0)        =&gt; +inf.0i
+
+(angle +inf.0)       =&gt; 0.0
+(angle -inf.0)       =&gt; 3.141592653589793
+(magnitude (make-rectangular x y)) =&gt; +inf.0 where x or y or both are infinite
+</span>
+      <h2 id="NaNexamples">NaN examples</h2>
+      <p>These are the R6RS examples involving NaNs (already accounted for verbally in the &quot;Implementation extensions&quot; section of R7RS):</p><span class="monospace">(number? +nan.0)   =&gt; #t ; NaN is real but not rational
+(complex? +nan.0)  =&gt; #t
+(real? +nan.0)     =&gt; #t
+(rational? +nan.0) =&gt; #f
+
+                         ; NaN compares #f to anything
+(= +nan.0 z)       =&gt; #f where z numeric
+(&lt; +nan.0 x)       =&gt; #f where x real
+(&gt; +nan.0 x)       =&gt; #f where x real
+
+(zero? +nan.0)     =&gt; #f ; NaN is unsigned
+(positive? +nan.0) =&gt; #f
+(negative? +nan.0) =&gt; #f
+
+                         ; NaN is mostly sticky
+(* 0 +inf.0)       =&gt; 0 or +nan.0
+(* 0 +nan.0)       =&gt; 0 or +nan.0
+(+ +nan.0 x)       =&gt; +nan.0 where x real
+(* +nan.0 x)       =&gt; +nan.0 where x real and not exact 0
+
+                         ; Sum of +inf.0 and -inf.0 is NaN
+(+ +inf.0 -inf.0)  =&gt; +nan.0
+(- +inf.0 +inf.0)  =&gt; +nan.0
+
+                         ; 0/0 is NaN unless both 0s are exact
+(/ 0 0.0) =&gt; +nan.0
+(/ 0.0 0) =&gt; +nan.0
+(/ 0.0 0.0) =&gt; +nan.0
+
+(round +nan.0)     =&gt; +nan.0 ; Nan rounds (etc.) to NaN
+
+(rationalize +inf.0 +inf.0) =&gt; +nan.0 ; Rationalizing infinity to nearest infinity is NaN
+</span></div></body></html>

@@ -1,0 +1,64 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>423: Formal Comment: The list of cases where `eqv?` returns `#t` does not mention procedures</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 423: <span class="summary">Formal Comment: The list of cases where `eqv?` returns `#t` does not mention procedures</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 03:15:38</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/423/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-06-28 12:16:15</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Submitter's name: Richard Kelsey</p>
+        <p>Submitter's email: kelsey at s48.org</p>
+        <p>Relevant draft: r7rs draft 6</p>
+        <p>Type: defect</p>
+        <p>Priority: major</p>
+        <p>Relevant section of draft: Equivalence predicates</p>
+        <p>Summary: The list of cases where <span class="monospace">eqv?</span> returns <span class="monospace">#t</span> does not mention procedures.</p>
+        <p>Several of the <span class="monospace">eqv?</span> examples have <span class="monospace">eqv?</span> returning <span class="monospace">#t</span> when comparing procedures.  <span class="monospace">Eq?</span> is required to behave identically to <span class="monospace">eqv?</span> on procedures, and one <span class="monospace">eq?</span> example returns <span class="monospace">#t</span> when comparing procedures.</p>
+        <p>I suggest that you go back to R5RS's notion of having procedures tagged
+with locations.</p>
+        <p>If the location tags are not used, then either come up with some other
+was to tell when two procedures are the same or change the <span class="monospace">eqv?</span> and
+<span class="monospace">eq?</span> examples so that no procedure comparison returns <span class="monospace">#t</span>.  Also, the
+formal semantics needs to be changed, as it still has a location as
+part of a procedure value and uses that location in its definition of
+<span class="monospace">eqv?</span>.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-06-28 12:54:43</div></div>
+          <div class="changes">
+            <div><span class="field">summary</span><span class="old-value">Formal Comment:</span><span class="new-value">Formal Comment: The list of cases where `eqv?` returns `#t` does not mention procedures</span></div>
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 03:15:38</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

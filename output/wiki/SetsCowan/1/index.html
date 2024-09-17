@@ -1,0 +1,85 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>SetsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/SetsCowan.md">SetsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Sets&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-09-20 11:11:51</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/SetsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/SetsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Sets,bags,andintegersets">Sets, bags, and integer sets</h2>
+      <p>Sets and bags (multisets) are mutable collections that can contain any Scheme object.  Integer sets are mutable collections that can contain non-negative integers from 0 to a value <i>n</i> that is specified when the integer set is created.</p>
+      <p>Sets and bags (multisets) are intended to be a thin veneer over hashtables, and integer sets are a thin veneer over bit vectors.  Consequently, the <span class="monospace">-member?</span>, <span class="monospace">-add!</span>, and <span class="monospace">-remove!</span> procedures are required to have an amortized cost of O(1).</p>
+      <h2 id="Setprocedures">Set procedures</h2>
+      <p><span class="monospace">(make-set </span><i>proc</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new empty set.  <i>Proc</i> is the equality procedure for the set, which must be consistent with <span class="monospace">eq?</span>.  If <i>proc</i> is other than <span class="monospace">eq?</span>, <span class="monospace">eqv?</span>, <span class="monospace">equal</span>, or <span class="monospace">string-ci=?</span>, the implementation MAY signal an error.</p>
+      <p><span class="monospace">(set </span><i>element</i><span class="monospace"> ...)</span></p>
+      <p>Constructs and returns a new set containing the <i>elements</i>.</p>
+      <p><span class="monospace">(copy-set </span><i>set</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new set containing the elements of <i>set</i>.</p>
+      <p><span class="monospace">(set? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a set, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(set-length? </span><i>set</i><span class="monospace">)</span></p>
+      <p>Returns the number of elements in <i>set</i>.</p>
+      <p><span class="monospace">(set-member? </span><i>set</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>element</i> is a member of <i>set</i> and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(set-add! </span><i>set</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Adds <i>element</i> to <i>set</i> unless it is already a member.  Returns unspecified values.</p>
+      <p><span class="monospace">(set-remove! </span><i>set</i><span class="monospace"> </span><i>element</i><span class="monospace">)</span></p>
+      <p>Removes <i>element</i> from <i>set</i> unless it is not a member.  Returns unspecified values.</p>
+      <p><span class="monospace">(set-map </span><i>proc</i><span class="monospace"> </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to the <i>sets</i> and constructs and returns a new set containing the values of the applications.</p>
+      <p><span class="monospace">(set-for-each </span><i>proc</i><span class="monospace"> </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to the <i>sets</i>, discarding the returned values.  Returns unspecified results.</p>
+      <p><span class="monospace">(set-&gt;list </span><i>set</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new list containing the members of <i>set</i> in unspecified order.</p>
+      <p><span class="monospace">(list-&gt;set </span><i>list</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new set containing the elements of <i>list</i>.</p>
+      <p><span class="monospace">(set-&gt;vector </span><i>set</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new vector containing the elements of <i>set</i> in unspecified order.</p>
+      <p><span class="monospace">(vector-&gt;set </span><i>vector</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new set containing the elements of <i>vector</i>.</p>
+      <p><span class="monospace">(set&lt;= </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> other than the last is a subset of the following <i>set</i>, and <span class="monospace">#f</span> otherwise.  All the <i>sets</i> must share the same equality predicate.</p>
+      <p><span class="monospace">(set= </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> contains the same elements.  All the <i>sets</i> must share the same equality predicate.</p>
+      <p><span class="monospace">(set-union </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Constructs and returns a new set that is the union of the <i>sets</i>.</p>
+      <p><span class="monospace">(set-intersection </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Constructs and returns a new set that is the intersection of the <i>sets</i>.</p>
+      <p><span class="monospace">(set-difference </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Constructs and returns a new set that is the difference of the <i>sets</i>.</p>
+      <p><span class="monospace">(set-xor </span><i>set</i> ...<span class="monospace">)</span></p>
+      <p>Constructs and returns a new set that is the xor (symmetric difference) of the <i>sets</i>.</p>
+      <p><span class="monospace">(set-union! </span><i>set</i><span class="monospace"> </span><i>other-set</i> ...<span class="monospace">)</span></p>
+      <p>Mutates <i>set</i> to a new set that is the union of <i>set</i> and the <i>other-sets</i>.</p>
+      <p><span class="monospace">(set-intersection! </span><i>set</i><span class="monospace"> </span><i>other-set</i> ...<span class="monospace">)</span></p>
+      <p>Mutates <i>set</i> to a new set that is the difference of <i>set</i> and the <i>other-sets</i>.</p>
+      <p><span class="monospace">(set-difference! </span><i>set</i><span class="monospace"> </span><i>other-set</i> ...<span class="monospace">)</span></p>
+      <p>Mutates <i>set</i> to a new set that is the difference of <i>set</i> and the <i>other-sets</i>.</p>
+      <p><span class="monospace">(set-xor! </span><i>set</i><span class="monospace"> </span><i>other-set</i> ...<span class="monospace">)</span></p>
+      <p>Mutates <i>set</i> to a new set that is the xor (symmetric difference) of <i>set</i> and the <i>other-sets</i>.</p>
+      <h2 id="Bagprocedures">Bag procedures</h2>
+      <p>The procedures for creating and manipulating bags are the same as those for sets, except that <span class="monospace">set</span> is replaced by <span class="monospace">bag</span> in their names, and that adding an element to a bag is effective even if the bag already contains the element.</p>
+      <h2 id="Integersetprocedures">Integer set procedures</h2>
+      <p><span class="monospace">(make-integer-set </span><i>n</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new empty integer set.  The possible elements of the set are the exact integers from 0 to <i>n</i> - 1.</p>
+      <p><span class="monospace">(integer-set </span><i>n</i><span class="monospace"> </span><i>element</i> ...<span class="monospace">)</span></p>
+      <p>Constructs and returns a new integer set.  The possible elements of the set are the exact integers from 0 to <i>n</i> - 1. The set is initialized to contain the <i>elements</i>.</p>
+      <p><span class="monospace">(list-&gt;integer-set </span><i>n</i><span class="monospace"> </span><i>list</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new integer set.  The possible elements of the set are the exact integers from 0 to <i>n</i> - 1. The set is initialized to contain the elements of <i>list</i>.</p>
+      <p><span class="monospace">(vector-&gt;integer-set </span><i>n</i><span class="monospace"> </span><i>list</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new integer set.  The possible elements of the set are the exact integers from 0 to <i>n</i> - 1. The set is initialized to contain the elements of <i>vector</i>.</p>
+      <p>The other integer set procedures are the same as those for sets, except that <span class="monospace">set</span> is replaced by <span class="monospace">integer-set</span> in their names.</p></div></body></html>

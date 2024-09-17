@@ -1,0 +1,303 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ContainerSrfiComparison</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ContainerSrfiComparison.md">ContainerSrfiComparison</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Container&shy;Srfi&shy;Comparison</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-12-24 09:49:10</div>
+      <div class="version">10<span class="comment"></span><a href="/wiki/ContainerSrfiComparison/history">history</a></div>
+      <div class="source"><a href="/wiki/ContainerSrfiComparison/10/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a face-to-face comparison of three container SRFIs, <a href="http://srfi.schemers.org/srfi-1/srfi-1.html">SRFI 1</a> for lists, <a href="http://srfi.schemers.org/srfi-13/srfi-13.html">SRFI 13</a> for strings, and <a href="http://srfi.schemers.org/srfi-43/srfi-43.html">SRFI 43</a> for vectors.  Procedures present in the small language have mostly been removed unless they have corresponding procedures in other SRFIs that aren't part of the small language, as I assume that they won't be separately part of the large language.  The order of functions is basically the order of SRFI-1, the most comprehensive library: the functions are grouped as constructors, predicates, selectors, miscellaneous, filtering, partitioning, searching, and deleting.</p>
+      <p>The following sections and subsections are omitted here because they aren't likely to have counterparts in other containers:</p>
+      <ul>
+        <li>association lists (SRFI 1)</li>
+        <li>set operations on lists (SRFI 1)</li>
+        <li>trimming and padding (SRFI 13)</li>
+        <li>alphabetic case mapping (SRFI 13)</li>
+        <li>low-level procedures (SRFI 13)</li></ul>
+      <table><tr><td class="default">
+            <p>Function</p></td><td class="default">
+            <p>List library</p></td><td class="default">
+            <p>String library</p></td><td class="default">
+            <p>Vector library</p></td></tr><tr><td class="default">
+            <p>Specified elements plus existing container</p></td><td class="default">
+            <p><span class="monospace">cons*</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Elements constructed by applying proc to integers</p></td><td class="default">
+            <p><span class="monospace">list-tabulate</span></p></td><td class="default">
+            <p><span class="monospace">string-tabulate</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Elements are integers</p></td><td class="default">
+            <p><span class="monospace">iota</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Copy container in reverse element order</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">vector-reverse-copy</span></p></td></tr><tr><td class="default">
+            <p>Empty container predicate</p></td><td class="default">
+            <p><span class="monospace">null?</span></p></td><td class="default">
+            <p><span class="monospace">string-null?</span></p></td><td class="default">
+            <p><span class="monospace">vector-empty?</span></p></td></tr><tr><td class="default">
+            <p>Elementwise equality</p></td><td class="default">
+            <p><span class="monospace">list=</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">vector=</span></p></td></tr><tr><td class="default">
+            <p>Does one container subsume another?</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-contains</span>(<span class="monospace">-ci</span>)</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Specified element</p></td><td class="default">
+            <p><span class="monospace">first</span> .. <span class="monospace">tenth</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Initial elements</p></td><td class="default">
+            <p><span class="monospace">take</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p><span class="monospace">string-take</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>All but initial elements</p></td><td class="default">
+            <p><span class="monospace">drop</span></p></td><td class="default">
+            <p><span class="monospace">string-drop</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Final elements</p></td><td class="default">
+            <p><span class="monospace">take-right</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p><span class="monospace">string-take-right</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>All but final elements</p></td><td class="default">
+            <p><span class="monospace">drop-right</span></p></td><td class="default">
+            <p><span class="monospace">string-drop-right</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Initial and final elements</p></td><td class="default">
+            <p><span class="monospace">split-at</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Last element</p></td><td class="default">
+            <p><span class="monospace">last</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Inequality comparison</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string</span>(<span class="monospace">-ci</span>)<span class="monospace">-&lt;&gt;</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Comparison</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-compare</span>(<span class="monospace">-ci</span>)</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Hashing</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-hash</span>(<span class="monospace">-ci</span>)</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Prefix equality</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-prefix</span>(<span class="monospace">-ci</span>)<span class="monospace">?</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Suffix equality</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-suffix</span>(<span class="monospace">-ci</span>)<span class="monospace">?</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Shared prefix length</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-prefix-length</span>(<span class="monospace">-ci</span>)</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Shared suffix length</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-suffix-length</span>(<span class="monospace">-ci</span>)</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Concatenate containers in a list</p></td><td class="default">
+            <p><span class="monospace">concatenate</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p><span class="monospace">string-concatenate</span></p></td><td class="default">
+            <p><span class="monospace">vector-concatenate</span></p></td></tr><tr><td class="default">
+            <p>Concatenate with separator</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-join</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Concatenate in reverse</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-concatenate-reverse</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Reverse container</p></td><td class="default">
+            <p><span class="monospace">reverse</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p><span class="monospace">string-reverse</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p><span class="monospace">vector-reverse!</span></p></td></tr><tr><td class="default">
+            <p>Append reversed container</p></td><td class="default">
+            <p><span class="monospace">append-reverse</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Zip up input to make container of containers</p></td><td class="default">
+            <p><span class="monospace">zip</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Unzip container of containers</p></td><td class="default">
+            <p><span class="monospace">unzip1</span> .. <span class="monospace">unzip5</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Swap elements</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">vector-swap!</span></p></td></tr><tr><td class="default">
+            <p>Reverse conversion</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">reverse-list-&gt;string</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Reverse conversion</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">reverse-vector-&gt;list</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Reverse conversion</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">reverse-list-&gt;vector</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Count of elements satisfying pred</p></td><td class="default">
+            <p><span class="monospace">count</span></p></td><td class="left">
+            <p><span class="monospace">string-count</span>â€</p></td><td class="default">
+            <p><span class="monospace">vector-count</span></p></td></tr><tr><td class="default">
+            <p>Fundamental deconstructor</p></td><td class="default">
+            <p><span class="monospace">fold</span></p></td><td class="default">
+            <p><span class="monospace">string-fold</span></p></td><td class="default">
+            <p><span class="monospace">vector-fold</span></p></td></tr><tr><td class="default">
+            <p>Fundamental deconstructor from right</p></td><td class="default">
+            <p><span class="monospace">fold-right</span></p></td><td class="default">
+            <p><span class="monospace">string-fold-right</span></p></td><td class="default">
+            <p><span class="monospace">vector-fold-right</span></p></td></tr><tr><td class="default">
+            <p>Fundamental constructor</p></td><td class="default">
+            <p><span class="monospace">unfold</span></p></td><td class="default">
+            <p><span class="monospace">string-unfold</span></p></td><td class="default">
+            <p><span class="monospace">vector-unfold</span></p></td></tr><tr><td class="default">
+            <p>Fundamental constructor from right</p></td><td class="default">
+            <p><span class="monospace">unfold-right</span></p></td><td class="default">
+            <p><span class="monospace">string-unfold-right</span></p></td><td class="default">
+            <p><span class="monospace">vector-unfold-right</span></p></td></tr><tr><td class="default">
+            <p>Simplified constructor</p></td><td class="default">
+            <p><span class="monospace">reduce</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Simplified constructor from right</p></td><td class="default">
+            <p><span class="monospace">reduce-right</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Append results of mapping</p></td><td class="default">
+            <p><span class="monospace">append-map</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Linear-update map</p></td><td class="left">
+            <p><span class="monospace">map!</span></p></td><td class="left">
+            <p><span class="monospace">string-map!</span></p></td><td class="default">
+            <p><span class="monospace">vector-map!</span></p></td></tr><tr><td class="default">
+            <p>Map saving only true values</p></td><td class="default">
+            <p><span class="monospace">filter-map</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Map guaranteeing order</p></td><td class="default">
+            <p><span class="monospace">map-in-order</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>For-each with element and index</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-for-each-index</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Replicated copy</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">xsubstring</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Linear-update replicated copy</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">string-xcopy!</span></p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Container with elements matching pred</p></td><td class="default">
+            <p><span class="monospace">filter</span>(<span class="monospace">!</span>)</p></td><td class="left">
+            <p><span class="monospace">string-filter</span>â€</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Two containers with elements matching and not</p></td><td class="default">
+            <p><span class="monospace">partition</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Container with elements not matching pred</p></td><td class="default">
+            <p><span class="monospace">remove</span>(<span class="monospace">!</span>)</p></td><td class="left">
+            <p><span class="monospace">string-delete</span>â€</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Find first element satisfying pred</p></td><td class="default">
+            <p><span class="monospace">find</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Return true if any elements satisfy</p></td><td class="default">
+            <p><span class="monospace">any</span></p></td><td class="left">
+            <p><span class="monospace">string-any</span>â€</p></td><td class="default">
+            <p><span class="monospace">vector-any</span></p></td></tr><tr><td class="default">
+            <p>Return true if every element satisfies</p></td><td class="default">
+            <p><span class="monospace">every</span></p></td><td class="left">
+            <p><span class="monospace">string-every</span>â€</p></td><td class="default">
+            <p><span class="monospace">vector-every</span></p></td></tr><tr><td class="default">
+            <p>Index of first element satisfying pred</p></td><td class="default">
+            <p><span class="monospace">list-index</span></p></td><td class="left">
+            <p><span class="monospace">string-index</span>â€</p></td><td class="default">
+            <p><span class="monospace">vector-index</span></p></td></tr><tr><td class="default">
+            <p>Index of last element satisfying pred</p></td><td class="default">
+            <p>-</p></td><td class="left">
+            <p><span class="monospace">string-index-right</span>â€</p></td><td class="default">
+            <p><span class="monospace">vector-index-right</span></p></td></tr><tr><td class="default">
+            <p>Find first element not satisfying pred</p></td><td class="default">
+            <p>-</p></td><td class="left">
+            <p><span class="monospace">string-skip</span>â€</p></td><td class="default">
+            <p><span class="monospace">vector-skip</span></p></td></tr><tr><td class="default">
+            <p>Find last element not satisfying pred</p></td><td class="default">
+            <p>-</p></td><td class="left">
+            <p><span class="monospace">string-skip-right</span>â€</p></td><td class="default">
+            <p><span class="monospace">vector-skip-right</span></p></td></tr><tr><td class="default">
+            <p>Initial elements satisfying pred</p></td><td class="default">
+            <p><span class="monospace">take-while</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Final elements satisfying pred</p></td><td class="default">
+            <p><span class="monospace">drop-while</span></p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Initial elements satisfying pred plus final ones</p></td><td class="default">
+            <p><span class="monospace">span</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Initial elements not satisfying pred plus final ones</p></td><td class="default">
+            <p><span class="monospace">break</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Binary search</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p><span class="monospace">vector-binary-search</span></p></td></tr><tr><td class="default">
+            <p>Remove elements by identity</p></td><td class="default">
+            <p><span class="monospace">delete</span>(<span class="monospace">!</span>)</p></td><td class="left">
+            <p><span class="monospace">string-delete</span>â€</p></td><td class="default">
+            <p>-</p></td></tr><tr><td class="default">
+            <p>Remove duplicate elements</p></td><td class="default">
+            <p><span class="monospace">delete-duplicates</span>(<span class="monospace">!</span>)</p></td><td class="default">
+            <p>-</p></td><td class="default">
+            <p>-</p></td></tr></table>
+      <h2 id="Listoddities">List oddities</h2>
+      <p><span class="monospace">xcons</span>, <span class="monospace">circular-list</span>, <span class="monospace">proper-list?</span>, <span class="monospace">circular-list?</span>, <span class="monospace">dotted-list?</span>, <span class="monospace">not-pair?</span>, <span class="monospace">null-list?</span>, <span class="monospace">car+cdr</span>, <span class="monospace">last-pair</span>, <span class="monospace">append!</span>, <span class="monospace">pair-fold</span>, <span class="monospace">pair-fold-right</span>, <span class="monospace">pair-for-each</span>, <span class="monospace">find-tail</span>.</p>
+      <p>In SRFI 1, <span class="monospace">length</span> corresponds to R5RS <span class="monospace">length</span>, whereas <span class="monospace">length+</span> corresponds to R7RS <span class="monospace">length</span>.</p>
+      <h2 id="Stringoddities">String oddities</h2>
+      <p><span class="monospace">substring/shared</span>, <span class="monospace">string-concatenate/shared</span>, <span class="monospace">string-append/shared</span>, <span class="monospace">string-concatenate-reverse/shared</span>, <span class="monospace">string-replace</span>, <span class="monospace">string-tokenize</span>.</p>
+      <h2 id="Footnotes">Footnotes</h2>
+      <p>â€ Polymorphic procedure: accepts character, character set, or predicate</p>
+      <h2 id="Maximalistproposal">Maximalist proposal</h2>
+      <p>The <i>maximalist proposal</i> is that this is for R7RS-large, and all the empty boxes should be filled with procedures, except for cases where it clearly makes no sense to do so.  Here's a list of &quot;makes no sense&quot; procedures that various people have proposed:</p>
+      <ul>
+        <li><span class="monospace">list-binary-search</span> has the wrong speed and space performance to make any sense</li>
+        <li><span class="monospace">string-binary-search</span> doesn't reflect the way people use strings: a vector of chars would be more plausible</li>
+        <li><span class="monospace">first</span> .. <span class="monospace">tenth</span> are primarily leftovers from the very old days before records</li>
+        <li><span class="monospace">string-iota</span> because strings don't hold integers</li>
+        <li><span class="monospace">string-append-reverse</span> and <span class="monospace">vector-append-reverse</span>, because it is not normal to build strings and vectors up in reverse</li></ul>
+      <p>As part of this proposal, provide SRFI 1 and R5RS <span class="monospace">length</span> as <span class="monospace">simple-length</span>.</p>
+      <p><a href="/wiki/SearchCowan">SearchCowan</a>, <a href="/wiki/SubstituteCowan">SubstituteCowan</a>, and <a href="/wiki/AssociationListsCowan">AssociationListsCowan</a> are extensions to the maximalist proposal.</p></div></body></html>

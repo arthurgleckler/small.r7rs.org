@@ -1,0 +1,71 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>WhatShinnDoesNotLike</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/WhatShinnDoesNotLike.md">WhatShinnDoesNotLike</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">What&shy;Shinn&shy;Does&shy;Not&shy;Like</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-10 17:54:07</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/WhatShinnDoesNotLike/history">history</a></div>
+      <div class="source"><a href="/wiki/WhatShinnDoesNotLike/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Alex Shinn is the only active member of WG1 who is also an implementer.  Here is a preliminary list of things he has to implement as part of R7RS-compliance in Chibi Scheme that he voted against:</p>
+      <ul>
+        <li>the <span class="monospace">call-cc</span> alias</li>
+        <li><span class="monospace">_</span> in syntax-rules</li>
+        <li>SRFI 46</li>
+        <li>dotted-tail patterns in syntax rules</li>
+        <li>block comments</li>
+        <li>char folding</li>
+        <li><span class="monospace">case-lambda</span></li>
+        <li><span class="monospace">=&gt;</span> in <span class="monospace">case</span></li>
+        <li>case-folding dircctives</li>
+        <li><span class="monospace">string-set!</span> in <span class="monospace">(scheme base)</span></li>
+        <li><span class="monospace">begin</span> rather than <span class="monospace">body</span> as a library declaration</li>
+        <li>requiring <span class="monospace">equal?</span> to return <span class="monospace">#t</span> if <span class="monospace">eqv?</span> does</li>
+        <li>possibly something about <a href="/ticket/48">#48</a>, but I don't understand what</li>
+        <li>new integer division operators</li>
+        <li>procedures not having locations</li>
+        <li><span class="monospace">let-values</span> and <span class="monospace">let*-values</span></li>
+        <li>allowing <span class="monospace">cond-expand</span>, <span class="monospace">include</span>, and <span class="monospace">include-ci</span> at top level</li>
+        <li><span class="monospace">error-object?</span>, <span class="monospace">error-object-message</span>, and <span class="monospace">error-object-irritants</span></li>
+        <li>everything to do with multiple values</li>
+        <li>more than two arguments for char and string comparisons</li>
+        <li>making it an error for a procedure mapped by <span class="monospace">map</span> and friends to return more than once</li>
+        <li><span class="monospace">#u8</span> syntax for bytevectors rather than <span class="monospace">#vu8</span></li>
+        <li>vertical bars around symbols</li>
+        <li><span class="monospace">close-port</span></li>
+        <li><span class="monospace">make-promise</span></li>
+        <li><span class="monospace">(scheme ...)</span> instead of <span class="monospace">(r7rs ...)</span></li>
+        <li>UAX 29 based string case conversion</li>
+        <li>fundamental I/O in <span class="monospace">(scheme base)</span></li>
+        <li><span class="monospace">interaction-environment</span> in <span class="monospace">(scheme repl)</span></li>
+        <li>record types in <span class="monospace">(scheme base)</span></li>
+        <li>semicolon-based rather than brace-based escape sequences</li>
+        <li>R6RS rather than dotted-ratio syntax for non-rational reals</li>
+        <li><span class="monospace">-nan.0</span></li>
+        <li><span class="monospace">make-promise</span></li>
+        <li><i>start</i> and <i>end</i> arguments in various procedures</li>
+        <li><span class="monospace">string-copy!</span> and <span class="monospace">vector-copy!</span></li>
+        <li>numeric syntax in programs must agree with <span class="monospace">string-&gt;number</span> and <span class="monospace">read</span></li>
+        <li>support for undesirable characters and arbitrary numbers in library names</li>
+        <li>same-bits explanation of <span class="monospace">eqv?</span> on IEEE inexacts</li>
+        <li>location-free procedures</li>
+        <li>complex numbers with <span class="monospace">+nan.0</span> portions</li>
+        <li>predicates for R5RS signaled conditions</li>
+        <li><span class="monospace">emergency-exit</span></li>
+        <li>type-check rule for auto-forcing</li>
+        <li>support for bare CR as newline</li>
+        <li><span class="monospace">digit-value</span></li>
+        <li>singular library names</li>
+        <li>multiple imports in program files</li></ul></div></body></html>

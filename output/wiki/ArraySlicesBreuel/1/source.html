@@ -1,0 +1,115 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ArraySlicesBreuel version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ArraySlicesBreuel version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>98.14.172.212</pre>
+    <h2>name</h2>
+    <pre>ArraySlicesBreuel</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This is not yet a formal proposal.
+
+{{{
+In pretty much all modern array languages, the array type is a descriptor
+for the layout of shared storage, and this is reflected throughout the
+entire design and API of the array facility.
+
+Subscripting and slicing operations return new descriptors, not new storage.
+Sharing rather than copying is a reasonable default because most array code
+is written functional style anyway, and the copy operations are unnecessary
+overhead (this is somewhat analogous to why lists in Scheme are usually both
+shared and mutable).
+
+The descriptors are general enough that they allow rectangular subarrays,
+arbitrary permutations of the axes, and different strides as views of the
+same data.   (Arbitrary element permutations or boolean masks are not
+selected by the descriptors.)
+
+With these kinds of descriptors, you can basically write most array
+functions on the last or first axis and efficiently apply them to arbitrary
+axes.
+
+A slice is basically a descriptor without underlying storage.  Subscripting
+an array with a slice creates a descriptor that associates the slice with
+
+the storage.  There is actually an algebra of slices, so subscripting an
+array with a slice basically composes the two slices to compute a new slice
+that is then applied to the underlying storage.  (I don't think any of the
+existing array languages express it quite that cleanly, but that's what's
+going on abstractly... should probably write this up some time.)
+
+The underlying storage for arrays is not made available as a separate
+&quot;simple array&quot; type because there really is no need to; you can do
+everything you want to do by using a 1D descriptor for that data.
+
+In a sense, the fundamental data type in an array language is the slice, and
+the array is kind of an afterthought, it's what happens when you associate a
+slice with data via indexing.
+
+(SLICE lo hi step) -&gt; a 1D slice
+(SLICE-AXIS s i) -&gt; return the 1D slice representing axis i of slice s
+(SLICE-PRODUCT s1 s2 ...) -&gt; a cartesian product of slices
+(SLICE-ASSOCIATE s v) -&gt; associate a slice with a data vector, yielding an
+array
+(SLICE-COMPOSE s1 s2) -&gt; compose two slices
+(SLICE-OFFSET-LIST s) -&gt; returns the list of offsets implied by the slice
+
+(SLICE-TRANSPOSE s permutation) -&gt; permutes the axes of the slice
+
+(ARRAY-SLICE a) -&gt; return the slice associated with an array
+(ARRAY-DATA a) -&gt; return the data vector associated with an array
+(ARRAY-&gt;LIST a) -&gt; returns the elements of the array in the order implied by
+its slice
+
+With these, ARRAY-REF becomes a special case of slicing (of course, it might
+still be implemented more efficiently, but array subscripting with integers
+is pretty rarely used anyway):
+
+(ARRAY-INDEX a s) =
+    (SLICE-ASSOCIATE (SLICE-COMPOSE (ARRAY-SLICE a) s) (ARRAY-DATA a)))
+
+(ARRAY-REF a i1 i2 ...) =
+    (CAR
+        (ARRAY-&gt;LIST
+            (ARRAY-INDEX a (SLICE-PRODUCT (SLICE i1 i1 1) (SLICE i2 i2 1)
+...)))))
+
+(ARRAY-TRANSPOSE a axes) =
+
+    (SLICE-ASSOCIATE (SLICE-TRANSPOSE (ARRAY-SLICE a) axes) (ARRAY-DATA a)))
+
+(ARRAY-REDUCE-LAST a f) -&gt; returns a new array in which f is mapped over
+slices representing the last axis
+
+Functions like ARRAY-FILTER, ARRAY-PERMUTE, ARRAY-TAKE, etc. of course have
+to return copies, since slices can't express the kind of complicated sharing
+they would imply.
+
+Just to be clear: the above isn't some complicated generalization from other
+array languages, it's pretty much the standard functionality that is
+available in many array languages.  (There are some details I have glossed
+over related to array bounds etc.)
+}}}
+
+</pre>
+    <h2>time</h2>
+    <pre>2011-10-16 02:24:07</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

@@ -1,0 +1,439 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #45</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #45</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-11-29 01:54:10</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>(record-let &lt;record-data&gt;
+            ((&lt;variable&gt; &lt;field&gt;)
+              ...)
+             &lt;body&gt;)
+
+Where each &lt;variable&gt; is filled with the corresponding data &lt;field&gt; from &lt;record-data&gt; as in a &lt;let&gt; expression, then the &lt;body&gt; is evaluated with these bindinds added and last expressions is returned. It is an error if the &lt;record-data&gt; does not contain corresponding &lt;fields&gt;.
+
+Notice that this works directly on the data itself and that the data may contain more fields than the one cited in the record-let expression allowing code to be reused for inherited records.
+
+- Do we need to be able to check at runtime if a given record data has a given field ?
+
+</pre>
+    <h2>id</h2>
+    <pre>45</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>medernac</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Record-let syntax and semantics</pre>
+    <h2>time</h2>
+    <pre>2010-03-11 16:16:58</pre>
+    <h2>type</h2>
+    <pre>enhancement</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-11-29 01:54:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>12</pre>
+    <h2>raw-time</h2>
+    <pre>1354125250322184</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2012-11-29 01:54:10</pre>
+    <h2>Change at time 2012-11-29 01:54:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1354125250322184</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2012-11-29 01:54:10</pre>
+    <h2>Change at time 2012-11-29 01:54:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>reopened</pre>
+    <h2>raw-time</h2>
+    <pre>1354125250322184</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2012-11-29 01:54:10</pre>
+    <h2>Change at time 2012-11-29 01:54:00</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>11</pre>
+    <h2>raw-time</h2>
+    <pre>1354125240016932</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2012-11-29 01:54:00</pre>
+    <h2>Change at time 2012-11-29 01:54:00</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>fixed</pre>
+    <h2>raw-time</h2>
+    <pre>1354125240016932</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2012-11-29 01:54:00</pre>
+    <h2>Change at time 2012-11-29 01:54:00</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>reopened</pre>
+    <h2>oldvalue</h2>
+    <pre>closed</pre>
+    <h2>raw-time</h2>
+    <pre>1354125240016932</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2012-11-29 01:54:00</pre>
+    <h2>Change at time 2011-07-10 18:28:44</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>We voted no.</pre>
+    <h2>oldvalue</h2>
+    <pre>10</pre>
+    <h2>raw-time</h2>
+    <pre>1310297324000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:28:44</pre>
+    <h2>Change at time 2011-07-10 18:28:44</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1310297324000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:28:44</pre>
+    <h2>Change at time 2011-07-10 18:28:44</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1310297324000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 18:28:44</pre>
+    <h2>Change at time 2010-03-17 02:22:38</h2>
+    <h2>author</h2>
+    <pre>medernac</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Replying to [comment:8 kumoyuki]:
+
+To illustrate the idea, here is what I am personnaly using in association with let-record for record definition with types:
+  
+
+{{{
+(record-constructor &lt;Constructor name&gt;
+		    &lt;Type checker name&gt;
+		    &lt;Fields name&gt;
+		    (&lt;Type&gt; &lt;data&gt; &lt;getter&gt;) ...)
+}}}
+
+
+Where I view type mainly as predicates. I don't have setters, but I
+see no problem in adding it. Here are some examples:
+
+
+{{{
+;; A flat record
+(record-constructor make-job
+		    job-type?
+		    job-fields
+		    (real?   release  job-release)
+		    (real?   duration  job-duration)
+		    (string? username  job-username))
+
+(define (List-of type?)
+  (lambda (data)
+    (and (list? data)
+         (let loop ((tmp data))
+	    (or (null? tmp)
+	        (and (type? (car tmp))
+	             (loop (cdr tmp))))))))
+
+;; A record with recursive type field
+(record-constructor Tree-of-integer
+		    Tree-of-integer-type?
+		    Tree-of-integer-fields
+		    (integer? element Tree-of-integer-&gt;element)
+		    ((List-of Tree-of-integer-type?) subtrees Tree-of-integer-&gt;subtrees))
+
+(Tree-of-integer 17 (list (Tree-of-integer 12 '())))
+}}}
+		    
+
+But I could also do type parameterization like this:
+
+
+{{{
+(record-constructor (&lt;Constructor name&gt; &lt;Type parameter&gt; ...)
+		    &lt;Type checker name&gt;
+		    &lt;Fields name&gt;
+		    (&lt;Type&gt; &lt;data&gt; &lt;getter&gt;) ...)
+}}}
+
+For instance:		    
+		    
+
+{{{
+(record-constructor (Tree type?)
+		    Tree-type?
+		    Tree-fields
+		    (type? element Tree-&gt;get-element)
+		    ((List-of (Tree type?)) subtrees Tree-&gt;get-subtrees))
+
+}}}
+
+And then generate records like this:		    
+		    
+
+{{{
+(define make-integer-tree (Tree integer?))
+(make-integer-tree 17 (list (make-integer-tree 12 '())))
+
+(define make-string-tree (Tree string?))
+(make-string-tree &quot;foo&quot; (list (make-string-tree &quot;bar&quot; '())))
+}}}
+
+Then let-record easily allows access to fields and I could reuse the same code for records sharing some fields.
+</pre>
+    <h2>oldvalue</h2>
+    <pre>8.9</pre>
+    <h2>raw-time</h2>
+    <pre>1268767358000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2010-03-17 02:22:38</pre>
+    <h2>Change at time 2010-03-16 04:40:00</h2>
+    <h2>author</h2>
+    <pre>kumoyuki</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Replying to [comment:7 cowan]:
+&gt; The only &quot;methods&quot; we have are getters, setters, and predicates.  It's not clear to me what the difference is between delegation and inheritance in that context.
+
+The reference to inheritance was the OP's. The difference could be trivial; the issue is what types does a new value become a member of (and expose the interfaces of). I do realize that the proposal we are commenting on contains no such information, and I wonder how OP got to inheritance in the first place. The lack of anything resembling a type algebra, even as simple a one as SI, has often been mentioned as one of SRFI-9's main drawbacks, so I expect that it *will* come up somewhere along the line. In fact it is one of the few areas where I'd be willing to see more complexity come into Thing1.</pre>
+    <h2>oldvalue</h2>
+    <pre>7.8</pre>
+    <h2>raw-time</h2>
+    <pre>1268689200000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2010-03-16 04:40:00</pre>
+    <h2>Change at time 2010-03-15 23:28:49</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The only &quot;methods&quot; we have are getters, setters, and predicates.  It's not clear to me what the difference is between delegation and inheritance in that context.</pre>
+    <h2>oldvalue</h2>
+    <pre>6.7</pre>
+    <h2>raw-time</h2>
+    <pre>1268670529000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2010-03-15 23:28:49</pre>
+    <h2>Change at time 2010-03-15 14:58:39</h2>
+    <h2>author</h2>
+    <pre>kumoyuki</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Replying to [comment:4 medernac]:
+&gt; By the way notice that if we have only single-inheritance (hierachy of types) 
+&gt; it is easy by convention to always use the same index number as parent-type
+&gt; fields. So an interpreter/compiler just has to lookup from the fields name
+&gt; which is the corresponding index for fields.
+
+It's worth noting that delegation techniques are strictly more expressive than inheritance based ones and they completely avoid the hair of multiple inheritance (this was shown in an OOPSLA paper somewhere around 1994-1996 but I've forgotten the title). I think it would be lovely to see a programmer-defined aggregate system that supported delegation as the core mechanism rather than any form of inheritance.</pre>
+    <h2>oldvalue</h2>
+    <pre>4.6</pre>
+    <h2>raw-time</h2>
+    <pre>1268639919000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2010-03-15 14:58:39</pre>
+    <h2>Change at time 2010-03-15 07:24:27</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Replying to [comment:4 medernac]:
+&gt; By the way notice that if we have only single-inheritance (hierachy of types) it is easy by convention to always use the same index number as parent-type fields. So an interpreter/compiler just has to lookup from the fields name which is the corresponding index for fields.
+
+If we have to do lookups, I'm a little concerned. Lookups can be elided when dealing with a sufficiently smart compiler in many/most cases, but not all, and with interpreters that don't do such optimizations, you will end up having much slower access. Especially when dealing with parents that could come from other libraries, the speed issues become more obvious since it is very hard to do that sort of reasoning in general.</pre>
+    <h2>oldvalue</h2>
+    <pre>4.5</pre>
+    <h2>raw-time</h2>
+    <pre>1268612667000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2010-03-15 07:24:27</pre>
+    <h2>Change at time 2010-03-13 18:30:02</h2>
+    <h2>author</h2>
+    <pre>medernac</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Replying to [comment:2 arcfide]:
+&gt; An alternate implementation that uses (&lt;record-data&gt; &lt;record-type-descriptor&gt;) instead of &lt;record-data&gt; above will enable record-let to work entirely at compile-time. 
+
+I am a bit reluctant to this but I agree that could be done that way.
+
+&gt; 
+&gt; I also think that let-record is maybe a more consistent name.
+
+I am Ok for whatever name.
+
+By the way notice that if we have only single-inheritance (hierachy of types) it is easy by convention to always use the same index number as parent-type fields. So an interpreter/compiler just has to lookup from the fields name which is the corresponding index for fields.
+</pre>
+    <h2>oldvalue</h2>
+    <pre>2.4</pre>
+    <h2>raw-time</h2>
+    <pre>1268476202000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2010-03-13 18:30:02</pre>
+    <h2>Change at time 2010-03-13 18:23:30</h2>
+    <h2>author</h2>
+    <pre>medernac</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Replying to [comment:1 cowan]:
+&gt; This will only work if the field names are available at run time, unless the type is also available at compile time.
+
+Yes, It must keep track of fields name. Some kind of reflection is needed for that to work. 
+
+By the way, would it be better if fields are restricted to be symbols only ? 
+</pre>
+    <h2>oldvalue</h2>
+    <pre>1.3</pre>
+    <h2>raw-time</h2>
+    <pre>1268475810000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2010-03-13 18:23:30</pre>
+    <h2>Change at time 2010-03-12 12:27:43</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>An alternate implementation that uses (&lt;record-data&gt; &lt;record-type-descriptor&gt;) instead of &lt;record-data&gt; above will enable record-let to work entirely at compile-time. 
+
+I also think that let-record is maybe a more consistent name.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1268368063000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2010-03-12 12:27:43</pre>
+    <h2>Change at time 2010-03-12 12:22:34</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>This will only work if the field names are available at run time, unless the type is also available at compile time.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1268367754000000</pre>
+    <h2>ticket</h2>
+    <pre>45</pre>
+    <h2>time</h2>
+    <pre>2010-03-12 12:22:34</pre></body></html>

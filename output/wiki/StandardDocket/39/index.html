@@ -1,0 +1,74 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StandardDocket</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StandardDocket.md">StandardDocket</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Standard&shy;Docket</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-03-15 01:00:30</div>
+      <div class="version">39<span class="comment">Added SRFI 42 to loops</span><a href="/wiki/StandardDocket/history">history</a></div>
+      <div class="source"><a href="/wiki/StandardDocket/39/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="WG2StandardDocket">WG2 Standard Docket</h2>
+      <p>This is a list of work items that WG2 has voted to work on, and proposals for those work items.  If no more than one proposal gets written for an item, the item may migrate to the <a href="/wiki/ConsentDocket">ConsentDocket</a>.  See <a href="/wiki/WG2Dockets">WG2Dockets</a> for other dockets.</p>
+      <p>Binary heap: <a href="/wiki/BinaryHeapsCowan">BinaryHeapsCowan</a></p>
+      <p>Binary ports: present in the small language</p>
+      <p>Binary search: <a href="http://srfi.schemers.org/srfi-43/srfi-43.html">SRFI 43</a></p>
+      <p>Boxes/references: <a href="/wiki/BoxesCowan">BoxesCowan</a></p>
+      <p>Character encoding conversion:</p>
+      <p>Conditions:</p>
+      <p>Date and time arithmetic:</p>
+      <p>Date-time parser:</p>
+      <p>Dictionaries (may include hash tables):</p>
+      <p>Enumerations and enum-sets: <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-15.html#node_chap_14">R6RS</a></p>
+      <p>Environment enquiries: <a href="/wiki/EnvironmentEnquiriesCowan">EnvironmentEnquiriesCowan</a></p>
+      <p>Exception/condition system:</p>
+      <p>File system directories (reading): <a href="http://www.scsh.net/docu/html/man-Z-H-4.html#node_sec_3.3">SCSH directory stream interface</a>, <a href="/wiki/DirectoryPortsCowan">DirectoryPortsCowan</a>, <span class="monospace">directory-files</span> to return a list of all files in the dir (in WG1 vote order)</p>
+      <p>File system directories (creation, removal):</p>
+      <p>Flonum arithmetic: <a href="/wiki/FlonumsCowan">FlonumsCowan</a></p>
+      <p>Gettext (i18n of strings):</p>
+      <p>Hash tables: <a href="http://srfi.schemers.org/srfi-69/srfi-69.html">SRFI 69</a>, <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-14.html#node_chap_13">R6RS</a> (in WG1 vote order), <a href="/wiki/HashTablesCowan">HashTablesCowan</a></p>
+      <p>Homogeneous numeric arrays: <a href="http://srfi.schemers.org/srfi-4/srfi-4.html">SRFI 4</a>, <a href="/wiki/BlobsCowan">BlobsCowan</a></p>
+      <p>Immutable cyclic lists: <a href="/wiki/CyclesMedernach">CyclesMedernach</a></p>
+      <p>Loop syntax: <a href="http://www.ccs.neu.edu/home/shivers/papers/loop.pdf">Olin Shivers's loop</a>, <a href="http://mumble.net/~campbell/scheme/foof-loop.txt">Taylor Campbell's foof-loop</a>, eager comprehensions from <a href="http://srfi.schemers.org/srfi-42/srfi-42.html">SRFI 42</a></p>
+      <p>Mailboxes, channels, synchronized queues:</p>
+      <p>C89 or C99 &lt;math.h&gt;: <a href="/wiki/FlonumsCowan">FlonumsCowan</a></p>
+      <p>Memoization:</p>
+      <p>Message digests (CRC, MD5, SHA1, SHA2):</p>
+      <p>Multi-dimensional general arrays: <a href="/wiki/ArraysCowan">ArraysCowan</a></p>
+      <p>Multiple value macros (SRFIs 8, 11, 71, and CL): <a href="/wiki/MultipleValuesCowan">MultipleValuesCowan</a></p>
+      <p>Mutexes, condition variables:</p>
+      <p>Named parameters: <a href="/wiki/NamedParametersCowan">NamedParametersCowan</a></p>
+      <p>Octet vectors, bytevectors, blobs: <a href="/wiki/BlobsCowan">BlobsCowan</a></p>
+      <p>Optional arguments (other than by <span class="monospace">case-lambda</span>):</p>
+      <p>Pathnames: <a href="/wiki/PathnamesCowan">PathnamesCowan</a></p>
+      <p>Pattern matching: <a href="/wiki/MatchingWise">MatchingWise</a></p>
+      <p>Port functions (concatenate, join, split): <a href="/wiki/PortOperationsCowan">PortOperationsCowan</a></p>
+      <p>Priority queues:</p>
+      <p>Processes (system, popen, etc): <a href="/wiki/SystemCommandCowan">SystemCommandCowan</a> + <a href="/wiki/ProcessPortsCowan">ProcessPortsCowan</a></p>
+      <p>Random numbers: <a href="/wiki/RandomnessCommonLisp">RandomnessCommonLisp</a>, <a href="http://srfi.schemers.org/srfi-27/srfi-27.html">SRFI 27</a>, <a href="/wiki/RandomCowan">RandomCowan</a>, <a href="/wiki/RandomnessArcfide">RandomnessArcfide</a> (in WG1 vote order)</p>
+      <p>Record introspection: <a href="http://srfi.schemers.org/srfi-99/srfi-99.html">SRFI 99</a></p>
+      <p>REPL facilities:</p>
+      <p>Run-time records: <a href="http://srfi.schemers.org/srfi-99/srfi-99.html">SRFI 99</a></p>
+      <p>Sets and bags: <a href="/wiki/SetsCowan">SetsCowan</a></p>
+      <p>Shift and reset:</p>
+      <p>Simple Posix:</p>
+      <p>Sorting: <a href="http://srfi.schemers.org/srfi-32/srfi-32.html">SRFI 32</a>, <a href="http://srfi.schemers.org/srfi-95/srfi-95.html">SRFI 95</a></p>
+      <p>TCP protocol: <a href="/wiki/NetworkPortsCowan">NetworkPortsCowan</a></p>
+      <p>Thread-local storage:</p>
+      <p>Threads:  <a href="/wiki/ThreadsCowan">ThreadsCowan</a></p>
+      <p>UDP protocol:  <a href="/wiki/DatagramChannelsCowan">DatagramChannelsCowan</a></p>
+      <p>Unicode character database: <a href="/wiki/UcdCowan">UcdCowan</a></p>
+      <p>Unicode normalization:</p>
+      <p>Weak dictionaries/hashtables:</p>
+      <p>Weak references (soft, phantom):</p></div></body></html>

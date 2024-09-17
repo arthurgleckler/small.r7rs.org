@@ -1,0 +1,58 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>461: Editorial: Clarify (scheme r5rs) definition</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 461: <span class="summary">Editorial: Clarify (scheme r5rs) definition</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-07 03:47:42</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/461/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-07-08 22:56:35</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Clarify that <span class="monospace">(scheme r5rs)</span> does not bind any identifiers that aren't present in the underlying implementation.  So if the implementation does not have <span class="monospace">(scheme complex)</span>, then the corresponding identifiers (<span class="monospace">make-complex</span>, <span class="monospace">magnitude</span>, etc.) are not bound in <span class="monospace">(scheme r5rs)</span>.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-08 22:56:42</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-19 01:10:09</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>What it now says:</p>
+              <p>Note that <span class="monospace">transcript-on</span> and <span class="monospace">transcript-off</span> are not present, and that <span class="monospace">exact</span> and <span class="monospace">inexact</span> appear under their R5RS names of <span class="monospace">inexact-&gt;exact</span> and <span class="monospace">exact-&gt;inexact</span> respectively.  In addition, if an implementation does not provide a particular library such as the complex library, the corresponding identifiers will not appear in this library either.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-07 03:47:42</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

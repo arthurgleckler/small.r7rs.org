@@ -1,0 +1,38 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>StringBytevectorConversionCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/StringBytevectorConversionCowan.md">StringBytevectorConversionCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">String&shy;Bytevector&shy;Conversion&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-22 22:52:03</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/StringBytevectorConversionCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/StringBytevectorConversionCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="TBD">TBD</h1>
+      <p>Stuff reclaimed from old <a href="/wiki/BlobAPI">BlobAPI</a></p>
+      <h2 id="Stringprocedures">String procedures</h2>
+      <p><span class="monospace">(bytevector-&lt;encoding&gt;-ref</span> <i>bytevector</i> [ [ <i>start</i> ] <i>end</i> ] <span class="monospace">)</span></p>
+      <p>Returns a newly allocated Scheme string corresponding to the binary value encoded according to <i>encoding</i> beginning at offset <i>n</i> in <i>bytevector</i> and continuing for <i>l</i> bytes.</p>
+      <p><span class="monospace">(bytevector-&lt;encoding&gt;-set!</span> <i>bytevector n v</i><span class="monospace">)</span></p>
+      <p>Converts <i>v</i> to a binary string encoded according to <i>encoding</i> and places it into <i>bytevector</i> beginning at offset <i>n</i>.  Returns the number of bytes encoded.</p>
+      <h2 id="Stringencodings">String encodings</h2>
+      <dl>
+        <dt><span class="monospace">utf8</span></dt>
+        <dd>UTF-8 encoding</dd>
+        <dt><span class="monospace">utf16</span></dt>
+        <dd>UTF-16 encoding (respects BOM if present, defaults to native encoding otherwise)</dd>
+        <dt><span class="monospace">utf16be</span></dt>
+        <dd>UTF-16BE encoding (treats BOM as a normal character)</dd>
+        <dt><span class="monospace">utf16le</span></dt>
+        <dd>UTF-16LE encoding (treats BOM as a normal character)</dd></dl></div></body></html>

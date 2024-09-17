@@ -1,0 +1,128 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>171: Duplicate identifiers in define-record-type</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 171: <span class="summary">Duplicate identifiers in define-record-type</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-08 00:06:41</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">arcfide</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/171/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-05-05 23:01:44</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>What happens if <span class="monospace">define-record-type</span> is specified with two fields that have the same <span class="monospace">accessor</span> identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.</p>
+        <p>This ticket deals specifically with the situation where two identifiers (accessors or mutators) of two field clauses in a <span class="monospace">define-record-type</span> form  are identical. This is not meant to address field names and what happens or what it means if the field names are symbolically equivalent but lexically distinct.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-05-06 01:18:56</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?</span><span class="new-value">What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-05-06 03:00:45</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.</span><span class="new-value">What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.
+
+This ticket deals specifically with the situation where two accessors that are the exact same identifiers are used. This is not meant to address field names and what happens or what it means if the field names are symbolically equivalent but lexically distinct.</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-05-06 04:08:58</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Why is this restricted to accessors when its title speaks of identifiers generally?  Surely the same issue arises with conflicts between modifiers, or between an accessor and a modifier.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2011-05-06 04:14:36</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.
+
+This ticket deals specifically with the situation where two accessors that are the exact same identifiers are used. This is not meant to address field names and what happens or what it means if the field names are symbolically equivalent but lexically distinct.</span><span class="new-value">What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.
+
+This ticket deals specifically with the situation where two identifiers (accessors or mutators) of two field clauses in a `define-record-type` form  are identical. This is not meant to address field names and what happens or what it means if the field names are symbolically equivalent but lexically distinct.</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>I have adjusted the language to allow for both accessors and mutators. What I wanted to distinguish was the issue where you want to bind two different procedures to the same name, and where you have two field names that were the same, which shouldn't cause a problem since they are not used anywhere.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-05-06 04:31:10</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p><i>where you have two field names that were the same, which shouldn't cause a problem since they are not used anywhere</i></p>
+              <p>This is <b>JUST WRONG</b>, and has been corrected repeatedly.  Field names are used in the definition of a SRFI 9 constructor.  Consider this:</p><span class="monospace">  (define-record-type :pare
+    (kons x x)
+    pare?
+    (x kar set-kar!)
+    (x kdr))
+</span>
+              <p>Which argument of <span class="monospace">kons</span> is identified with which field?  Field types have to be distinct identifiers (not merely distinct symbols), though technically they don't have to be distinct from accessor/modifier names.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-05-06 04:38:29</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Okay, technically only the ones used in the constructor have to be distinct.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 21:41:04</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted to make this an error.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 21:42:58</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-08 00:06:35</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Field names have to be distinct, and so do mutator/accessor names.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-08 00:06:41</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

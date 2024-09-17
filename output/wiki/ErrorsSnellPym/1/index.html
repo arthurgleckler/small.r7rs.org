@@ -1,0 +1,64 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ErrorsSnellPym</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ErrorsSnellPym.md">ErrorsSnellPym</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Errors&shy;Snell&shy;Pym</h1>
+    <div class="wiki metadata">
+      <div class="author">alaric</div>
+      <div class="time">2010-06-13 19:33:12</div>
+      <div class="version">1<span class="comment">Proposed an error/condition/exception system</span><a href="/wiki/ErrorsSnellPym/history">history</a></div>
+      <div class="source"><a href="/wiki/ErrorsSnellPym/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Background">Background</h1>
+      <p>Being able to define a means of catching raised errors is fundamental to reliable programming, that can recover from error cases.</p>
+      <p>Yes, we can make all primitives return sentinel values in the event of errors, and expect users to explicitly test for them, but that creates a lot of unpleasant &quot;paperwork&quot; (although and-let* helps!), and the resulting error handling paths are difficult to exhaustively test.</p>
+      <p>I think we should standardise exception raising and catching, rather than allowing different libraries to evolve in the wild, because it's important to have one standard way to catch all raised exceptions/errors/conditions, in order to allow code written by multiple authors to be composed.</p>
+      <p>So a library might expose a &quot;retry up to five times, then ask the user if we should try and more, and abort if not&quot; procedure (that calls a supplied action thunk as the action to be retried), and it can reliably catch errors thrown by the thunk, rather than needing to cater for a plethora of different catch/throw systems, and without taking the approach of using a dynamic-wind to catch *all* nonlocal exits from the thunk (which would interact badly with tools like (amb)).</p>
+      <h1 id="TheProposal">The Proposal</h1>
+      <p>A current condition handler is defined as a dynamically scoped value (and is thread-local in the presence of threads; eg it has <a href="/wiki/ParametersSnellPym">ParametersSnellPym</a> parameter semantics).</p>
+      <p>The initial value of the handler is a system-specific procedure known as the 'root condition handler' that generally invokes a top-level exit continuation for the whole program, or the current thread (if some concept of threading exists), possibly displaying useful debugging information to some interested parties in some implementation-specific way; implementations are permitted to provide a debugger that interactively lets the programmer perform actions other than invoking the top-level exit continuation, perhaps invoking retries or invoking other arbitrary continuations, but only under interactive control; unattended systems must always invoke the top-level exit continuation.</p>
+      <ul>
+        <li><span class="monospace">(raise &lt;datum&gt;)</span></li></ul>
+      <p>This procedure applies the current condition handler to the datum, with a continuation that immediately invokes the root condition handler with the datum <span class="monospace">(condition-handler-returned &lt;return value of condition handler&gt;)</span>.</p>
+      <ul>
+        <li><span class="monospace">(abort &lt;datum&gt;)</span></li></ul>
+      <p>This procedure applies the root condition handler to the datum.</p>
+      <ul>
+        <li><span class="monospace">(error &lt;datum&gt;)</span></li></ul>
+      <p>This is a shorthand for <span class="monospace">(raise (cons 'error &lt;datum&gt;))</span>, or something along those lines.</p>
+      <ul>
+        <li><span class="monospace">(with-condition-handler &lt;thunk&gt; &lt;handler&gt;)</span></li></ul>
+      <p>This procedure captures its current continuation (<span class="monospace">k</span>) then applies the handler to the result of capturing another continuation (<span class="monospace">e</span>) to the result of applying k to the application of the thunk, in a dynamic environment in which the current condition handler is <span class="monospace">e</span>. (I think I got that right. Consider the next paragraph more normative than this...)</p>
+      <p>In other words, if the thunk raises no conditions, then the return value of the expression is the return value of the thunk; if the thunk raises a condition, then the handler is executed within the dynamic scope of the <span class="monospace">with-condition-handler</span>, rather than within that of <span class="monospace">raise</span>, and the return value of the expression is the return value of the handler.</p>
+      <ul>
+        <li><span class="monospace">(with-condition-handler* &lt;thunk&gt; &lt;handler&gt;)</span></li></ul>
+      <p>This procedure captures its current continuation then evaluates to the thunk, within a dynamic scope where the current condition handler is set to a procedure which applies the capture continuation to the application of the supplied handler to the argument of the condition handler.</p>
+      <p>In other words, if the thunk raises no conditions, then the return value of the expression is the return value of the thunk; if the thunk raises a condition, then the handler is executed within the dynamic scope of the <span class="monospace">raise</span>, rather than within that of <span class="monospace">with-condition-handler*</span>, and the return value of the expression is the return value of the handler.</p>
+      <p>The ability to re-raise conditions within the scope of the <span class="monospace">raise</span> allows for &quot;restarts&quot;, where (for example) a procedure that reads the contents of a file might open the file and perform the I/O within a context with a condition handler that catches special &quot;restart conditions&quot; that do things like restart the operation with a different filename, or just invoke the continuation with an arbitrary string as the returned value, while re-raising any other conditions; then this procedure might be called with a condition handler that responds to a file-not-found condition by raising a restart condition which causes the procedure to return an empty string, thereby causing all nonexistant files to appear to be present but empty.</p>
+      <ul>
+        <li><span class="monospace">(with-generalised-condition-handler &lt;thunk&gt; &lt;handler&gt;)</span></li></ul>
+      <p>This procedure captures its current continuation (<span class="monospace">k</span>) then applies the handler to the result of capturing another continuation (<span class="monospace">e</span>) to the result of applying k to the application of the thunk, in a dynamic environment in which the current condition handler is captures the current continuation (<span class="monospace">k2</span>) then invokes the thunk returned from the result of capturing the current continuation (<span class="monospace">n</span>) then invoking <span class="monospace">e</span> to the original condition handler argument and <span class="monospace">n</span>. (I think I probably didn't get that right. Consider the next paragraph more normative than this...)</p>
+      <p>Note that this definition assumes multiple-valued continuations; if we don't support that, it can be done in terms of passing a vector or other structure around.</p>
+      <p>In other words, if the thunk raises no conditions, then the return value of the expression is the return value of the thunk; if the thunk raises a condition, then the handler is executed within the dynamic scope of the <span class="monospace">raise</span>, rather than within that of <span class="monospace">with-generalised-condition-handler</span>, and the return value of the expression is the return value of the handler; however, the handler is given two arguments, the first of which is the <span class="monospace">raise</span>d datum, and the second of which is a continuation which, if applied to a thunk, executes that thunk in the scope of the original <span class="monospace">raise</span>, so that conditions can be raised by the handler in either scope.</p>
+      <ul>
+        <li>Run-time errors</li></ul>
+      <p>Any error case in primitives defined by this standard shall be <span class="monospace">raise</span>d as a suitable datum, generally of the form <span class="monospace">(&lt;type symbol&gt; &lt;details...&gt;)</span></p>
+      <ul>
+        <li>Condition values</li></ul>
+      <p>Some exception systems provide a detailed type system for conditions, generally allowing for inheritance (so that more specific classes of condition may be specified by handlers), and/or allowing for conditions to have &quot;display behaviour&quot; attached so that they can be converted into a human-readable message.</p>
+      <p>This proposal defines no such system, but implies that system-raised conditions should be of the form <span class="monospace">(&lt;type symbol&gt; &lt;args&gt;...)</span>; hierarchial structure can be expressed by having a subtype symbol as the first argument, repeated as necessary (so we might have <span class="monospace">(io file ...)</span> errors, <span class="monospace">(io socket ...)</span>, and so on).</p>
+      <p>I'm open to ideas for better conventions!</p>
+      <p>More complex condition type systems should then recognise that pattern as a &quot;system condition&quot;, optionally mapping the type symbol into some more complex hierarchy, and providing a default &quot;display behaviour&quot; along the lines of &quot;An internal error has occurred&quot;.</p>
+      <ul>
+        <li>Error, exception, or condition?</li></ul>
+      <p>I'm not quite sure which term is best, but I have a vague hunch that 'condition' is the most general.</p></div></body></html>

@@ -1,0 +1,386 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImmutableDataStructuresWortman</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImmutableDataStructuresWortman.md">ImmutableDataStructuresWortman</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Immutable&shy;Data&shy;Structures&shy;Wortman</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-05-26 21:28:57</div>
+      <div class="version">15<span class="comment"></span><a href="/wiki/ImmutableDataStructuresWortman/history">history</a></div>
+      <div class="source"><a href="/wiki/ImmutableDataStructuresWortman/15/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Introduction">Introduction</h2>
+      <p>This proposal defines <i>immutable</i> data structures for queues, sets, and maps. A structure is immutable when all its operations leave the structure unchanged. Note that none of the procedures specified here ends with a <span class="monospace">!</span>.</p>
+      <p>Immutable structures are sometimes called <i>persistent</i> and are closely related to <i>pure-functional</i> (a.k.a. <i>pure</i>) structures. The availability of immutable data structures facilitates writing efficient programs in the pure-functional style.</p>
+      <h2 id="Efficiencybounds">Efficiency bounds</h2>
+      <p>We specify required time efficiency upper bounds using big-O notation. We note when, in some cases, there is &quot;slack&quot; between the required bound and the theoretically optimal bound for an operation. Implementations may use data structures with amortized time bounds, but should document which bounds hold in only an amortized sense. The use of randomized data structures with expected time bounds is discouraged.</p>
+      <h2 id="Disjointtypes">Disjoint types</h2>
+      <p>Deques, sets, and maps are disjoint from all other Scheme types, and deques are disjoint from sets and maps.  It is unspecified whether sets and maps are disjoint.</p>
+      <h2 id="Deque">Deque</h2>
+      <p>A deque (conventionally pronounced &quot;deck&quot;) is a queue data structure that supports efficient manipulation of either of its ends. It may be used in place of a (LIFO) stack or (FIFO) queue.</p>
+      <p>The <i>unlabeled finger tree</i> data structure can meet all these requirements rather conveniently.  A pair of lists is also a suitable implementation.</p>
+      <h3 id="Construction">Construction</h3>
+      <p><span class="monospace">(ideque </span>[ <i>element</i> ...]<span class="monospace">)</span></p>
+      <p>Returns a deque containing the <i>elements</i>. The leftmost element (if any) will be at the front of the deque and the rightmost element (if any) will be at the back. Takes O(n) time, where <i>n</i> is the number of elements.</p>
+      <p><span class="monospace">(ideque-tabulate </span><i>n proc</i><span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> successively on the integers 0 through <i>n</i> - 1 inclusive, and returns a deque containing the results in the given order.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-unfold </span><i>stop? mapper successor seed</i><span class="monospace">)</span></p>
+      <p>Invokes the predicate <i>stop?</i> on <i>seed</i>.  If it returns false, generate the next result by applying <i>mapper</i> to <i>seed</i>, generate the next seed by applying <i>successor</i> to <i>seed</i>, and repeat the algorithm with the new seed.  If <i>stop?</i> returns true, return a deque containing the results in order of accumulation.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-unfold-right </span><i>stop? mapper successor seed</i><span class="monospace">)</span></p>
+      <p>Invokes the predicate <i>stop?</i> on <i>seed</i>.  If it returns false, generate the next result by applying <i>mapper</i> to <i>seed</i>, generate the next seed by applying <i>successor</i> to <i>seed</i>, and repeat the algorithm with the new seed.  If <i>stop?</i> returns true, return a deque containing the results in reverse order of accumulation.  Takes O(n) time.</p>
+      <h3 id="Predicates">Predicates</h3>
+      <p><span class="monospace">(ideque? </span><i>x</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>x</i> is an ideque, and <span class="monospace">#f</span> otherwise.  Takes O(1) time.</p>
+      <p><span class="monospace">(ideque-empty? </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>deque</i> contains zero elements, and <span class="monospace">#f</span> otherwise.  Takes O(1) time.</p>
+      <h3 id="Queueoperations">Queue operations</h3>
+      <p><span class="monospace">(ideque-front </span><i>deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-back </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Returns the front/back element of <i>deque</i>. It is an error for <i>deque</i> to be empty. Each takes O(1) time.</p>
+      <p><span class="monospace">(ideque-remove-front </span><i>deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-remove-back </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Returns a deque with the front/back element of <i>deque</i> removed. It is an error for <span class="monospace">deque</span> to be empty. Each takes O(1) time.</p>
+      <p><span class="monospace">(ideque-add-front </span><i>deque obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-add-back </span><i>deque obj</i><span class="monospace">)</span></p>
+      <p>Returns a deque with <i>obj</i> pushed to the front/back of <i>deque</i>. Each takes O(1) time.</p>
+      <h3 id="Otheraccessors">Other accessors</h3>
+      <p><span class="monospace">(ideque-take </span><i>deque n</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-take-right </span><i>deque n</i><span class="monospace">)</span></p>
+      <p>Returns a deque containing the first/last <i>n</i> elements of <i>deque</i>.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-drop </span><i>deque n</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-drop-right </span><i>deque n</i><span class="monospace">)</span></p>
+      <p>Returns a deque containing all but the first/last <i>n</i> elements of <i>deque</i>.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-split-at </span><i>deque n</i><span class="monospace">)</span></p>
+      <p>Returns two values, the results of <span class="monospace">(ideque-take </span><i>deque n</i><span class="monospace">)</span> and <span class="monospace">(ideque-drop </span><i>deque n</i><span class="monospace">)</span> respectively.  Takes O(n) time.</p>
+      <h3 id="Thewholedeque">The whole deque</h3>
+      <p><span class="monospace">(ideque-length </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Returns the length of <i>deque</i> as an exact integer.  May take O(n) time, though O(1) is optimal.</p>
+      <p><span class="monospace">(ideque-append </span><i>deque</i> ...<span class="monospace">)</span></p>
+      <p>Returns a deque with the contents of the first argument deque followed by the others. Takes O(kn) time, where k is the number of deques and n is the number of elements involved, though O(k log n) is possible.</p>
+      <p><span class="monospace">(ideque-concatenate </span><i>list-of-deques</i><span class="monospace">)</span></p>
+      <p>Returns a deque with the contents of the first deque in <i>list-of-deques</i> followed by the others. This is provided for Schemes in which the number of arguments which can be passed to <span class="monospace">apply</span> is limited.  Takes O(kn) time, where k is the number of deques and n is the number of elements involved, though O(k log n) is possible.</p>
+      <p><span class="monospace">(ideque-reverse </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Returns a deque containing the elements of <i>deque</i> in reverse order.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-count </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p>Returns the number of elements of <i>deque</i> which satisfy <i>pred</i> as an exact integer.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-delete </span><i>pred deque</i><span class="monospace">)</span></p>
+      <p>Returns a deque containing the elements of <i>deque</i>, except for those which satisfy <i>pred</i>.  Takes O(n) time.</p>
+      <p><span class="monospace">(ideque-zip </span><i>deque</i> ...<span class="monospace">)</span></p>
+      <p>Returns a deque of lists (not deques) each of which contains the corresponding element of the argument deques in the order specified.  Processing stops when all the elements of any deque have been seen. Takes O(kn) time, where <i>k</i> is the number of deques and <i>n</i> is the number of elements involved.</p>
+      <h3 id="Mapping">Mapping</h3>
+      <p><span class="monospace">(ideque-map </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-for-each </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-fold </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-fold-right </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-append-map </span><i>proc deque</i><span class="monospace">)</span></p>
+      <h3 id="Filtering">Filtering</h3>
+      <p><span class="monospace">(ideque-filter </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-remove </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-partition </span><i>proc deque</i><span class="monospace">)</span></p>
+      <h3 id="Searching">Searching</h3>
+      <p><span class="monospace">(ideque-find </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-find-right </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-take-while </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-take-while-right </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-drop-while </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-drop-while-right </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-map </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-span </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-break </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-any? </span><i>proc deque</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-every? </span><i>proc deque</i><span class="monospace">)</span></p>
+      <h3 id="Conversion">Conversion</h3>
+      <p><span class="monospace">(list-&gt;ideque </span><i>list</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(ideque-&gt;list </span><i>deque</i><span class="monospace">)</span></p>
+      <p>Conversion between deque and list structures. FIFO order is preserved, so the front of a list corresponds to the front of a deque. Each operation takes O(n) time.</p>
+      <h2 id="Set">Set</h2>
+      <p>A sorted set data structure stores a finite collection of unique elements with a defined <a href="http://ccil.org/~cowan/temp/srfi-114.html">comparator</a>.</p>
+      <p>These requirements can be satisfied by many flavors of <i>self-balancing binary trees.</i> Red-black trees, 1-2 brother trees, and labeled 2-3 finger trees are particularly convenient in an immutable context.</p>
+      <h3 id="Construction">Construction</h3>
+      <p>`
+(iset/merger comparator merger [element...])
+(iset comparator [element...])
+`
+Returns a set using containing elements <span class="monospace">element...</span>. <span class="monospace">iset</span> uses <span class="monospace">set-merger-right</span>. O(n log n) time.</p>
+      <h3 id="Set-widequeries">Set-wide queries</h3>
+      <p>`
+(iset? x)
+(iset-empty? set)
+(iset-size set)
+(iset-comparator set)
+`</p>
+      <p><span class="monospace">iset-size</span> may take O(n) time, though O(1) is optimal. The other procedures take O(1) time.</p>
+      <h3 id="Set-theoreticoperations">Set-theoretic operations</h3>
+      <p>`
+(iset-union set... [merger])
+(iset-intersection set... [merger])
+(iset-difference left set...)
+(iset-xor set1 set2)
+`</p>
+      <p>Returns a set containing the union/intersection/difference/symmetric difference of the arguments. All the arguments must be sets sharing an equivalent order predicate. The set operator is applied in a left-associative order. May take O(kn log n) time, where k is the number of sets and n is the number of elements involved, though O(kn) time is optimal.</p>
+      <h3 id="Elementqueries">Element queries</h3>
+      <p>`
+(iset-member? set x)
+`</p>
+      <p>Returns non-<span class="monospace">#false</span> iff <span class="monospace">x</span> is an element of <span class="monospace">set</span>, or <span class="monospace">#false</span> otherwise. Takes O(log n) time.</p>
+      <p>`
+(iset-min set)
+(iset-max set)
+`</p>
+      <p>Returns the least/greatest element of <span class="monospace">set</span>. It is an error for <span class="monospace">set</span> to be empty. Takes O(log n) time; O(1) is optimal.</p>
+      <h3 id="Elementoperations">Element operations</h3>
+      <p>`
+(iset-update set x present-proc absent-proc)
+`</p>
+      <p>A continuation-based universal update procedure. Attempts to find an element <span class="monospace">match</span> equal to <span class="monospace">x</span> in <span class="monospace">set</span> according to the order predicate. When such a <span class="monospace">match</span> is found, calls
+`
+(present-proc match update remove)
+`
+which must either tail-call
+`
+(update new-element ret)
+`
+to replace <span class="monospace">match</span> with <span class="monospace">new-element</span>, or tail-call
+`
+(remove ret)
+`
+to remove <span class="monospace">match</span> from <span class="monospace">set</span>. In either case <span class="monospace">ret</span> will be one of the values returned from the enclosing <span class="monospace">iset-update</span> call.</p>
+      <p>When no such <span class="monospace">match</span> is found, <span class="monospace">iset-update</span> calls
+`
+(absent-proc insert ignore)
+`
+which should either tail-call
+`
+(insert ret)
+`
+to insert <span class="monospace">x</span> into <span class="monospace">set</span>, or else tail-call
+`
+(ignore ret)
+`
+to leave <span class="monospace">set</span> unchanged. Again, <span class="monospace">ret</span> will be returned from the enclosing <span class="monospace">iset-update</span> call.</p>
+      <p>In any case, <span class="monospace">iset-update</span> returns
+`
+(values new-set ret)
+`
+where <span class="monospace">new-set</span> is a set reflecting the indicated modification, if any; and <span class="monospace">ret</span> is the returns value produced by one of the continuations. It runs in O(log n) time.</p>
+      <p>(This procedure is based on an analogous procedure for hash tables suggested by Alexey Radul and attributed to Taylor Campbell.)</p>
+      <p>`
+(iset-find set x [absent-thunk])
+`
+Returns the element <span class="monospace">match</span> equal to <span class="monospace">x</span> in <span class="monospace">set</span>, or the result of evaluating <span class="monospace">(absent-thunk)</span> if no such element exists. If <span class="monospace">absent-thunk</span> is unspecified then a default procedure that always returns <span class="monospace">#false</span> is used. Takes O(log n) time.</p>
+      <p>`
+(iset-include set x [merger])
+(iset-exclude set x)
+`
+Returns a set that certainly does/doesn't include <span class="monospace">x</span>. <span class="monospace">merger</span> is called when <span class="monospace">set</span> already includes an element equal to <span class="monospace">x</span> according to the set's comparator, with <span class="monospace">left</span> as the object already in <span class="monospace">set</span> and <span class="monospace">right</span> as <span class="monospace">x</span>. Each operation takes O(log n) time.</p>
+      <p>`
+(iset-predecessor set x [absent-thunk])
+(iset-successor set x [absent-thunk])
+`
+Returns the element that immediately precedes/succeeds <span class="monospace">x</span> in <span class="monospace">set</span>'s ordering. If no such element exists because <span class="monospace">x</span> is the minimum/maximum element, or because <span class="monospace">set</span> is empty, returns the result of evaluating <span class="monospace">(absent-thunk)</span>. If <span class="monospace">absent-thunk</span> is unspecified then a default procedure that always returns <span class="monospace">#false</span> is used. Takes O(log n) time.</p>
+      <h3 id="Rangequeries">Range queries</h3>
+      <p>`
+(iset-between set least include-least most include-most)
+`</p>
+      <p>Returns a set containing the elements of <span class="monospace">set</span> in the interval between <span class="monospace">least</span> and <span class="monospace">most</span>. If <span class="monospace">include-least</span>/<span class="monospace">include-most</span> is non-<span class="monospace">#false</span> then the result includes an element equal to <span class="monospace">least</span>/<span class="monospace">most</span> respectively; otherwise those elements are not included. Takes O(k log k + log n) time, where n is the number of elements in the set and k is the number of elements returned; O(k + log n) is optimal.</p>
+      <p>`
+(iset-range&lt; set x)
+(iset-range&lt;= set x)
+(iset-range= set x)
+(iset-range&gt;= set x)
+(iset-range&gt; set x)
+`</p>
+      <p>Returns a set containing only the elements of <span class="monospace">set</span> that are less/less-or-equal/equal/greater-or-equal/greater than <span class="monospace">x</span>. Takes O(k log k + log n) time, where n is the number of elements in the set and k is the number of elements returned; O(k + log n) is optimal.</p>
+      <p>Note that since set elements are unique, <span class="monospace">iset-range=</span> returns a set of at most one element.</p>
+      <h3 id="Filter,fold,map">Filter, fold, map</h3>
+      <p>`
+(iset-filter predicate? set)
+`</p>
+      <p>Returns a set containing only those elements <span class="monospace">x</span> for which <span class="monospace">(predicate? x)</span> returns non-<span class="monospace">#false</span>. Takes O(n log n) time; O(n) is optimal.</p>
+      <p>`
+(iset-fold proc base set)
+`
+The fundamental set iterator. Equivalent to, but may be more efficient than,
+`
+(fold proc base (iset-&gt;ordered-list set))
+`
+Takes O(n) time.</p>
+      <p>`
+(iset-map/monotone proc set [comparator])
+`
+Returns a set containing the elements <span class="monospace">(proc x)</span> for every <span class="monospace">x</span> in <span class="monospace">set</span>. <span class="monospace">proc</span> must be a <i>monotone</i> unary procedure that preserves the order of set elements. Observe that mapping a set of unique elements with a monotone function yields a set of unique elements, so element uniqueness follows from the monotonicity assumption. If <span class="monospace">comparator</span> is given, it is the comparator of the set; otherwise the set uses the same order predicate as <span class="monospace">set</span>. Takes O(n) time.</p>
+      <p>`
+(iset-map proc set [merger [comparator]])
+`
+As <span class="monospace">iset-map/monotone</span>, except the <span class="monospace">proc</span> is not required to be monotone. <span class="monospace">merger</span> is used to select among any duplicates that might be created, and defaults to <span class="monospace">set-merger-right</span>. O(n log n) time.</p>
+      <h3 id="Conversion">Conversion</h3>
+      <p>`
+(iset-&gt;ordered-list set)
+`</p>
+      <p>Returns a list containing the elements of <span class="monospace">set</span> in increasing order. O(n) time.</p>
+      <p>`
+(ordered-list-&gt;iset comparator list)
+`</p>
+      <p>Returns a set containing the elements of <span class="monospace">list</span> and using comparator <span class="monospace">comparator</span>. It is an error for <span class="monospace">list</span> to be anything other than a proper list of elements in increasing order. O(n log n) time; O(n) is optimal.</p>
+      <p>`
+(list-&gt;iset comparator list [merger])
+`</p>
+      <p>Returns a set containing the elements of <span class="monospace">list</span> and using comparator <span class="monospace">comparator</span>. <span class="monospace">list</span> must be a proper list, but may contain duplicates and need not be in order. <span class="monospace">merger</span> defaults to <span class="monospace">set-merger-right</span>. O(n log n) time.</p>
+      <h2 id="Maps">Maps</h2>
+      <p>A map data structure stores key-value associations from a set of keys with an order predicate to arbitrary value objects. It is an alternative to an association list or hash table, which also store key-value associations, but with different key constraints and efficiency guarantees.</p>
+      <p>In the same way that a list of key-value dotted pairs can implement an association list, a set of key-value dotted pairs can implement a map. Implementations may use this approach, or may implement a distinct data structure specific to maps.</p>
+      <h3 id="Construction">Construction</h3>
+      <h3 id="Map-widequeries">Map-wide queries</h3>
+      <p>`
+(imap? x)
+(imap-empty? map)
+(imap-size map)
+(imap-order-predicate map)
+`</p>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h3 id="Set-theoreticoperations">Set-theoretic operations</h3>
+      <p>`
+(imap-union map...)
+(imap-intersection map...)
+(imap-difference map...)
+(imap-xor map1 map2)
+`</p>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h3 id="Elementqueries">Element queries</h3>
+      <p>`
+(imap-member? map key)
+(imap-min-key map)
+(imap-max-key map)
+`</p>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <p>`
+(imap-min-value map)
+(imap-max-value map)
+`</p>
+      <p>Returns the value associated with <span class="monospace">(imap-min-key map)</span> and <span class="monospace">(imap-max-key map)</span> respectively. O(log n) time; O(1) is optimal.</p>
+      <h3 id="Elementoperations">Element operations</h3>
+      <p>`
+(imap-update map key absent-proc present-proc)
+`</p>
+      <p>A continuation-based universal update procedure. Attempts to find a key <span class="monospace">key-match</span> equal to <span class="monospace">key</span> in <span class="monospace">map</span>, and its associated <span class="monospace">value</span>. When such no such <span class="monospace">key-match</span> is found, returns the result of calling
+`
+(absent-proc insert)
+`
+. <span class="monospace">insert</span> is a procedure such that
+`
+(insert new-value)
+`
+returns a version of <span class="monospace">map</span> in which <span class="monospace">key</span> is associated with <span class="monospace">new-value</span>.</p>
+      <p>When <span class="monospace">key-match</span> exists, returns the result of calling
+`
+(present-proc key-match value replace remove)
+`
+. <span class="monospace">replace</span> is a procedure such that
+`
+(replace new-value)
+`
+returns a new version of <span class="monospace">map</span> in which the <span class="monospace">key</span> maps to <span class="monospace">new-value</span> instead of <span class="monospace">value</span>.</p>
+      <p><span class="monospace">remove</span> is a thunk such that
+`
+(remove)
+`
+returns a new version of <span class="monospace">map</span> with no association for <span class="monospace">key</span>.</p>
+      <p>The <span class="monospace">imap-update</span>, <span class="monospace">insert</span>, <span class="monospace">replace</span>, and <span class="monospace">remove</span> procedures may take O(log n) time each. Thus if <span class="monospace">absent-proc</span> and <span class="monospace">present-proc</span> take constant (or even O(log n)) time and call their passed-in continuations at most once (or even any constant number of times), the entire update process takes O(log n) time.
+`
+(imap-find map key [absent-thunk])
+`
+Returns the value associated with <span class="monospace">key</span> in <span class="monospace">map</span>, or the result of evaluating <span class="monospace">(absent-thunk)</span> if no such value exists. If <span class="monospace">absent-thunk</span> is unspecified then a default procedure that always returns <span class="monospace">#false</span> is used. O(log n) time.</p>
+      <p>`
+(imap-include map key value)
+(imap-exclude map key)
+`
+Returns a set that certainly does/doesn't include an association from <span class="monospace">key</span>. <span class="monospace">imap-include</span> will replace any prior association from <span class="monospace">key</span> that might exist in <span class="monospace">map</span>. O(log n) time.</p>
+      <p>`
+(imap-key-predecessor map key [absent-thunk])
+(imap-key-successor map key [absent-thunk])
+`</p>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h3 id="Rangequeries">Range queries</h3>
+      <p>`
+(imap-between map least include-least most include-most)
+`</p>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures. (Least and most are keys.)</p>
+      <p>`
+(imap-range&lt; map key)
+(imap-range&lt;= map key)
+(imap-range= map key)
+(imap-range&gt;= map key)
+(imap-range&gt; map key)
+`</p>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h3 id="Filter,fold,map">Filter, fold, map</h3>
+      <p>`
+(imap-filter proc set)
+`</p>
+      <p>Returns a set containing only those associations for which <span class="monospace">(proc key value)</span> returns non-<span class="monospace">#false</span>. O(n log n) time; O(n) is optimal.</p>
+      <p>`
+(imap-fold proc base map)
+`
+The fundamental map iterator. Calls
+`
+(proc key value accum)
+`
+successively to accumulate a value initialized to <span class="monospace">base</span>. O(n) time.</p>
+      <p>`
+(imap-map-values proc map)
+`
+Returns a map where each <span class="monospace">value</span> is replaced with the result of evaluating
+`
+(proc key value)
+`
+for that value's key. Takes O(n) time.</p>
+      <p>`
+(imap-map/monotone proc map [precedes?])
+`
+Returns a map containing the association values returned by calls to
+`
+(proc key value)
+`
+for each key-value association in <span class="monospace">map</span>. <span class="monospace">proc</span> must returns <span class="monospace">(values new-key new-value)</span>. The key mapping must be a <i>monotone,</i> preserving the order and uniqueness of keys. The value mapping need not be monotone. If <span class="monospace">precedes?</span> is given, it is the key order predicate of the map; otherwise the map uses the same order predicate as <span class="monospace">map</span>. Takes O(n) time.</p>
+      <p>`
+(imap-map proc map [precedes?])
+`
+As <span class="monospace">imap-map/monotone</span>, except the <span class="monospace">proc</span> is not required to be monotone. When multiple keys are mapped to the same <span class="monospace">new-key</span>, only the association originating from the greatest pre-mapped key is retained. O(n log n) time.</p>
+      <h3 id="Conversion">Conversion</h3>
+      <p>`
+(imap-&gt;ordered-alist map)
+`</p>
+      <p>Returns an association list containing the associations of <span class="monospace">map</span> in increasing order by key. O(n) time.</p>
+      <p>`
+(imap-keys map)
+`
+Returns a set containing the keys of <span class="monospace">map</span>. O(n log n) time; O(n) is optimal.</p>
+      <p>`
+(imap-values map)
+`
+Returns a list containing the values of <span class="monospace">map</span> in increasing order by key. O(n) time.</p>
+      <p>`
+(ordered-alist-&gt;imap precedes? alist)
+`</p>
+      <p>Returns a map containing the associations of <span class="monospace">alist</span> and using order predicate <span class="monospace">precedes?</span>. It is an error for <span class="monospace">list</span> to be anything other than a proper association list in increasing order by key. O(n log n) time; O(n) is optimal.</p>
+      <p>`
+(alist-&gt;imap precedes? alist)
+`</p>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p>
+      <h3 id="Keycomparison">Key comparison</h3>
+      <p>`
+(imap-key&lt;? map x y)
+(imap-key=? map x y)
+(imap-key&gt;? map x y)
+`</p>
+      <p>The behavior and efficiency of these operations is the same as the analogous set procedures.</p></div></body></html>

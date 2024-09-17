@@ -1,0 +1,44 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>535: Libraries should have at most one begin</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 535: <span class="summary">Libraries should have at most one begin</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:20:44</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/535/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-20 00:00:29</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Michael Montague writes:</p>
+        <p>I believe that a library should have at most one <span class="monospace">begin</span> and it should have the semantics of a body (though no expressions are required). This would make the semantics of library bodies clear and make R7RS libraries much closer to R6RS libraries, with little loss in expressiveness.</p>
+        <p>The question is, what gain is to counterbalance that loss?  It's easy for users who agree with this to make sure their libraries have at most one <span class="monospace">begin</span>, and likewise to reformat existing libraries if they feel strongly about it.  The benefit, then, must be to implementers -- but what benefit is that?  The <span class="monospace">define-library</span> form must be read as a whole, and the first step will normally be to concatenate the <span class="monospace">begin</span> declarations.</p>
+        <p>In addition, the restriction in the draft that imported identifiers cannot appear in a library textually before the <span class="monospace">import</span> declaration that introduces them (see <a href="/ticket/353">#353</a>) means that it's possible to construct a library incrementally, adding new <span class="monospace">import</span> and <span class="monospace">begin</span> declarations as you go.  This is a convenience for programs that create libraries.</p>
+        <p>Without a definite improvement visible from the restriction to a single <span class="monospace">begin</span> declaration, this proposal would indeed be one of those &quot;weaknesses and restrictions&quot; that the Scheme standards denounce.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:20:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG decided by unanimous consent to take no action on this ticket.</p></div></div></div></div></div></body></html>

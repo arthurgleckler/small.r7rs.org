@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki Memoize version 4</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki Memoize version 4</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.10.177.1</pre>
+    <h2>name</h2>
+    <pre>Memoize</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This isn't a proposal, just some ideas and discussion points.
+
+The basic interface to memoizing is a variant of `lambda`, perhaps called `lambda/memo` as in Racket, or perhaps something else.  It returns a procedure that ''memoizes'' the results of calls on it in a ''store'', and then pulls the results out of the store on later calls with the same arguments.  (Obviously you don't want to memoize impure procedures.)  Plausible stores are a-lists, hash tables, mutable or immutable sets, and other data structures.  It's easy to see how `define/memo` would work as a more convenient version of this.
+
+The store can be abstracted into a record with four fields: a store creation procedure, a getter, a setter, and a [http://srfi.schemers.org/srfi-114/srfi-114.html SRFI 114] comparator which defines what counts as &quot;the same arguments&quot; and is passed to the store creation procedure.  We need some standard stores, though unless memoization is tightly coupled to something like hash tables or trees, they won't be very efficient ones.  On the other hand, if it happens that the range of the argument is 0 to a small exact integer, a vector store would be much better than a hash table store.
+
+== Issues ==
+
+ * How do we associate the store object with a particular lambda?  Dynamic parameters seem like the Wrong Thing; the store object should be statically bound to the memoized procedure.  Adding extra arguments to `lambda/memo` beyond the lambda-list and the body doesn't seem like a win either: how do you know if the extra arguments are arguments, or part of the body?.
+
+ * If multiple arguments and/or multiple returns are allowed, how are they packaged up in the store?  Vectors?  Lists?  Something else?
+
+ * Should there be some way to let the function decide which return values to memoize?</pre>
+    <h2>time</h2>
+    <pre>2013-06-24 11:55:49</pre>
+    <h2>version</h2>
+    <pre>4</pre></body></html>

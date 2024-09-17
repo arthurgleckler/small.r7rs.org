@@ -1,0 +1,57 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki UnicodeSupport version 3</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki UnicodeSupport version 3</h1>
+    <h2>author</h2>
+    <pre>aag</pre>
+    <h2>comment</h2>
+    <pre>Corrected characterization of MIT Scheme support for Unicode strings.</pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>UnicodeSupport</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Unicode support ==
+
+I examined the result of `(integer-&gt;char 256)`, the first Unicode character outside the 8-bit range, and then attempted to create a string containing it.  I then tried the same thing with `(integer-&gt;char 65536)`, the first Unicode character outside the Basic Multilingual Plane.  In all cases where it was possible to create a string, it correctly had a length of 1.
+
+Full support:  Racket, Gauche, Gambit, Chicken, Scheme48/scsh, Guile, Kawa, Chez, Vicare, Larceny, Ypsilon, Mosh, STklos, KSi, !SigScheme, XLisp, BDC, Foment, Owl Lisp, Chibi
+
+Characters exist but can't be in a string: MIT (but there are special UTF8 and &quot;wide&quot; strings)
+
+Character 256 exists, but can't be in a string; character 65536 does not exist: RScheme
+
+Character 65536 does not exist: SISC, !IronScheme, NexJ, JScheme
+
+Character 256 does not exist:  Bigloo, SCM, Shoe, !TinyScheme, Scheme 9, S7, UMB, Elk, SXM, Sizzle, Inlab
+
+No `integer-&gt;char` procedure: Rep, Schemik, Llava, !FemtoLisp, Dfsch
+
+== NUL character ==
+
+I also tested to see if Schemes could handle character 0 (ASCII NUL) correctly.  All Schemes in the test suite treated it like any other character.
+
+== Unicode identifiers ==
+
+I tried to define the identifier π with the value 3.141592653 and then evaluate it.
+
+Successful:  Racket, Gauche, Gambit, Chicken, Bigloo, Scheme48/scsh, Guile, Kawa, SISC, SCM, Chez, Vicare, Larceny, Ypsilon, Mosh, !IronScheme, NexJ, JScheme, STklos, KSi, !SigScheme, Shoe, !TinyScheme, RScheme, S7, BDC, UMB, Elk, Llava, Sizzle, !FemtoLisp, Dfsch, Inlab, Foment, Owl Lisp, Chibi
+
+Unsuccessful: MIT, Chez (can't enter π at the REPL), Scheme 9, XLisp, Rep, Schemik, SXM</pre>
+    <h2>time</h2>
+    <pre>2014-05-04 04:50:37</pre>
+    <h2>version</h2>
+    <pre>3</pre></body></html>

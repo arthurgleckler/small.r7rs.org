@@ -1,0 +1,174 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ArraysCowan version 18</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ArraysCowan version 18</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>ArraysCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Introduction ==
+
+TBD - arrays are multidimensional objects based on top of one-dimensional storage objects
+
+== Specification ==
+
+=== Terminology ===
+
+TBD: array, storage class, storage object, index, dimension, rank, upper bound, lower bound, stride, offset, start, end
+
+See StorageClassesCowan for the storage class API.
+
+=== Predicates ===
+
+`(array? `''obj''`)`
+
+Returns `#t` if ''obj'' is an array, and `#f` otherwise.
+
+=== Constructors ===
+
+`(make-array `''storage-class'' [ ''lower-bounds'' ] ''upper-bounds''`)`
+
+Returns a newly allocated array with a newly allocated storage object.  The lower and upper bounds of the array's dimensions are specified as vectors: they must be of the same length.  If ''lower-bounds'' is not given, it is understood to be all zeros.
+
+=== Metadata accessors ===
+
+`(array-storage-class `''array''`)`
+
+Returns the storage class with which ''array'' was created.  Note that there is no way to access the storage ''object'', as it may not exist.
+
+`(array-rank `''array''`)`
+
+Return the rank (number of dimensions) of ''array''.  Note that &quot;rank&quot; is an APL term that has nothing to do with matrix ranks.
+
+`(array-lower-bounds `''array''`)`
+
+Return a vector containing the lower bounds of ''array''.  It is an error to mutate this vector.
+
+`(array-upper-bounds `''array''`)`
+
+Return a vector containing the upper bounds of ''array''.  It is an error to mutate this vector.
+
+`(array-strides `''array''`)`
+
+Return a vector containing the strides of ''array''.  It is an error to mutate this vector.
+
+`(array-lower-bound `''array n''`)`
+
+Return a vector containing the ''n''th lower bound of ''array''.
+
+`(array-upper-bounds `''array n''`)`
+
+Return a vector containing the ''n''th upper bound of ''array''.
+
+`(array-stride `''array n''`)`
+
+Return a vector containing the ''n''th stride of ''array''.
+
+`(array-offset `''array''`)`
+
+Returns the storage offset of ''array''.  This is the storage index of the location whose array index is specified by all zeros.
+
+=== Accessors ===
+
+`(array-ref `''array index''`)`
+
+Returns the value of the element of ''array'' specified by ''index'', which is a vector.  Note that this is different from the `array-ref` of most Lisp systems, which specify the index as a sequence of arguments.
+
+`(array-for-each `''proc array'' [ ''start'' [ ''end '' ] ]`)`
+
+Iterates over the elements of ''array'' starting at the index ''start'' and ending at the index ''end'', and calling ''proc'' on each element.  Each invocation of ''proc'' receives ''array'', the current index, and the value of the element at that index.  It is an error to mutate the index.
+
+`(array-for-each-index `''proc array'' [ ''start'' [ ''end '' ] ]`)`
+
+Iterates over the indexes of ''array'' starting at the index ''start'' and ending at the index ''end'', and calling ''proc'' on each element.  Each invocation of ''proc'' receives ''array'' and the current index.  The value returned by ''proc'' is discarded.  It is an error to mutate the index.
+
+=== Mutators ===
+
+`(array-set! `''array index value''`)`
+
+Sets the value of the element of ''array'' specified by ''index'' to ''value''.  Note that this is different from the `array-set!` of most Lisp systems, which specify the index as a sequence of arguments.
+
+`(array-tabulate! `''proc array'' [ ''start'' [ ''end '' ] ]`)`
+
+Iterates over the elements of ''array'' starting at the index ''start'' (each dimension is inclusive) and ending at the index ''end'' (each dimension is exclusive), and calling ''proc'' on each element.  Each invocation of ''proc'' receives ''array'' and the current index.  Whatever ''proc'' returns becomes the value of the array at the index.  It is an error for ''proc'' to mutate the index.
+
+FIXME from here down.
+
+== Maps ==
+
+
+`(array-map `''proc array'' ...`)`
+
+Returns a newly allocated array with the same structure as the ''arrays'', which must all have the same structure.   For each valid index value, ''proc'' is invoked in arbitrary order, passing the index and all the arrays.  The index may or may not be the same Scheme vector for each call.  Whatever ''proc'' returns becomes the value of the storage element corresponding to that index in the result array.
+
+`(array-map! `''proc array'' ...`)`
+
+The ''arrays'' must all have the same structure.   For each valid index value, ''proc'' is invoked in arbitrary order, passing the index and all the arrays.  The index may or may not be the same Scheme vector for each call.  Whatever ''proc'' returns becomes the value of the storage element corresponding to that index in the first array argument.  The value returned is undefined.
+
+
+`(array-fold `''proc seed array'' ...`)`
+
+The ''arrays'' must all have the same structure.   For each valid index value, ''proc'' is invoked in row-major order, passing the index, all the arrays, and the seed value.  The index may or may not be the same Scheme vector for each call.  The result is used as the seed for the next call to 'proc', and the final seed is returned.
+
+`(array-reduce `''proc''` `''array''` `''axis'' [ ''n'' ]`)`
+
+Returns a newly allocated array whose rank is one less than the rank of ''array'', by combining all the groups of elements of length ''n'' (default 1) along ''axis'' using ''proc'', which MUST be a two-argument procedure.  The order and number of invocations of ''proc'' is unspecified.  If there is only one such element, it is unchanged.  (APL reduce.)
+
+`(array-cumulate `''proc''` `''array''` `''axis''`)`
+
+Returns a newly allocated array whose shape is the same as the shape of ''array''.  Each element along ''axis'' is constructed by reducing (as if by `array-reduce`) successive prefixes of the elements of ''array'' along that axis.  (APL scan.)
+
+== Outer and inner products ==
+
+`(array-outer-product `''proc''` `''array1''` `''array2''`)`
+
+Returns a newly allocated array whose shape is the concatenation of the shapes of ''array1'' and ''array2''.  Each component of the new array is the result of applying ''proc'' to every element of ''array1'' and every element of ''array2''.  The order and number of invocations of ''proc'' is unspecified.  (APL outer product.)
+
+`(array-inner-product `''proc1''` `''proc2''` `''array1''` `''array2''`)`
+
+Returns a newly allocated array whose shape is equal to the shape of ''array1'' without its last element concatenated with the shape of ''array2'' without its first element; these elements MUST be numerically equal.  It is an error if both arrays have rank 0.
+
+Each element of the result array results from applying ''proc2'' to the corresponding elements of the last vectors of ''array1'' and the first vectors of ''array2'' and then reducing them with ''proc1'' to a single value.  The order and number of invocations of the procedures is unspecified.
+
+In particular, if both arrays have rank 1, the last and first vectors are the whole of the arrays, and the result has rank 0; if both arrays have rank 2, the last vectors of ''array1'' are the column-wise vectors, and the first vectors of ''array2'' are the row-wise vectors, and the result has rank 2.  (APL inner product.)
+
+Example:  `(array-inner-product + * vector1 vector2)` computes the usual dot product of ''vector1'' and ''vector2''.
+
+== Conversions ==
+
+`(array-&gt;nested-vector `''array''`)`
+
+Returns a newly allocated Scheme vector whose components are also newly constructed Scheme vectors, and so on as far down as necessary to cover every axis of the array.  Bottom-level Scheme vectors contain the components of ''array''.  Thus, if ''array'' has rank 1, the result is a Scheme vector; if the array has rank 2, the result is a Scheme vector containing Scheme vectors, and so on.  As a special case, if ''array'' has rank 0, the sole component is returned.
+
+`(nested-vector-&gt;array `''rank nested-vector''`)`
+
+Returns a newly allocated array with rank ''rank'' whose components are initialized from the Scheme vector''nested-vector''.  It is an error if ''nested-vector'' is not rectangular.  As a special case, if ''rank'' is 0, the sole component is ''nested-vector'', which need not be a Scheme vector.
+
+
+== Advanced procedures ==
+
+See AdvancedArraysCowan.
+
+</pre>
+    <h2>time</h2>
+    <pre>2016-02-02 09:23:04</pre>
+    <h2>version</h2>
+    <pre>18</pre></body></html>

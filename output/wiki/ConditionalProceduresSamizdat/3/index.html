@@ -1,0 +1,40 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ConditionalProceduresSamizdat</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ConditionalProceduresSamizdat.md">ConditionalProceduresSamizdat</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Conditional&shy;Procedures&shy;Samizdat</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-12-23 03:34:59</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/ConditionalProceduresSamizdat/history">history</a></div>
+      <div class="source"><a href="/wiki/ConditionalProceduresSamizdat/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>These are Scheme procedures that correspond to basic syntax.  They are derived from <a href="https://github.com/danfuzz/samizdat/blob/master/doc/library-guide/If.md">the If class of Samizdat</a>.</p>
+      <p><span class="monospace">(begin-procedure </span><i>thunk</i> ...<span class="monospace">)</span></p>
+      <p>Invokes <i>thunks</i> in order, and returns what the last thunk returns, or an unspecified value if there are no thunks.</p>
+      <p><span class="monospace">(if-procedure </span><i>value then-thunk</i> [ <i>else-thunk</i> ]<span class="monospace">)</span></p>
+      <p>If <i>value</i> is true, invokes <i>then-thunk</i> and returns what it returns.  Otherwise, invokes <i>else-thunk</i> and returns what it returns, or if <i>else-thunk</i> is not specified, returns an unspecified value.</p>
+      <p><span class="monospace">(if-not-procedure </span><i>value else-thunk</i><span class="monospace">)</span></p>
+      <p>If <i>value</i> is true, returns an unspecified value.  Otherwise, invokes <i>else-thunk</i> and returns what it returns.</p>
+      <p><span class="monospace">(value-procedure </span><i>value then-proc else-thunk</i><span class="monospace">)</span></p>
+      <p>If <i>value</i> is true, invokes <i>then-proc</i> on it and returns what <i>then-proc</i> returns.  Otherwise, invokes <i>else-thunk</i> and returns what it returns.</p>
+      <p><span class="monospace">(case-procedure </span><i>value thunk-alist</i> [ <i>else-thunk</i> ]<span class="monospace">)</span></p>
+      <p>Searches <i>thunk-alist</i> for <i>value</i> (as if by <span class="monospace">assv</span>).  If there is no such entry in <i>thunk-alist</i>, invokes <i>else-thunk</i> and returns what it returns, or returns an unspecified value if <i>else-thunk</i> is not provided.  If there is a matching entry in <i>thunk-alist</i>, its cdr is invoked as a thunk, and <span class="monospace">case-procedure</span> returns what the thunk returns.</p>
+      <p><span class="monospace">(and-procedure </span><i>thunk</i> ...<span class="monospace">)</span></p>
+      <p>Invokes each <i>thunk</i> in the order given, and returns <span class="monospace">#f</span> immediately if any of them return <span class="monospace">#f</span>.  Otherwise returns the value of the last thunk, or <span class="monospace">#t</span> if there are none.</p>
+      <p><span class="monospace">(or-procedure </span><i>thunk</i> ...<span class="monospace">)</span></p>
+      <p>Invokes each <i>thunk</i> in the order given, and if any of them returns true, <span class="monospace">or-procedure</span> returns that value immediately.  Otherwise returns <span class="monospace">#f</span>.</p>
+      <p><span class="monospace">(loop-procedure </span><i>thunk</i><span class="monospace">)</span></p>
+      <p>Invokes <i>thunk</i> repeatedly.  Does not return.</p>
+      <p><span class="monospace">(while-procedure </span><i>thunk</i><span class="monospace">)</span></p>
+      <p>Invokes <i>thunk</i> repeatedly until it returns <span class="monospace">#f</span>.  Returns an unspecified value.</p></div></body></html>

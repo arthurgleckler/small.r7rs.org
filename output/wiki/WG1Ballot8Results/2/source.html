@@ -1,0 +1,65 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki WG1Ballot8Results version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki WG1Ballot8Results version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>98.14.173.81</pre>
+    <h2>name</h2>
+    <pre>WG1Ballot8Results</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>Ballot 8 was conducted informally on [https://groups.google.com/forum/?fromgroups=#!topic/scheme-reports-wg1/-Z65vUeerPk a poll thread] of the WG1 mailing list.
+
+= WG1 Ballot Items To Finalize By Oct. 29 =
+
+=== #315 null character may not be usable in strings ===
+
+The original proposal was to make `(string-set! str n #\null)` unspecified, which was rejected, at least partly on the ground that R7RS implementations can already forbid specified characters from appearing in strings.  However, the ASCII character set (which includes `#\null`) could not be forbidden, per UnicodeCowan.  Consequently, the rationale given by several voters that there was no need to make a special case for `#\null` was incorrect.  The WG therefore chose from the following options:
+
+`forbid-nothing`: every character supported by the implementation must be allowed to appear in strings.
+
+`forbid-any-but-128`: every ASCII character ''including'' `#\null` must be allowed in strings.  (This is the default, corresponding to the `no` vote on Ballot 5.)
+
+`forbid-any-but-127`: every ASCII character ''excluding'' `#\null` must be allowed in strings.
+
+`forbid-any-but-97`: every printable ASCII character plus `#\space`, `#\tab`, and `#\newline` must be allowed in strings.
+
+`open`: any character may be forbidden in strings.
+
+`reader`: the characters required by the reader, plus `[A-Za-z]`, must be allowed in strings.
+
+`unspecified`: say nothing.
+
+
+  * '''Options:''' forbid-nothing, forbid-any-but-128, forbid-any-but-127, forbid-any-but-96, open, reader, unspecified, undecided
+  * '''Default:''' forbid-any-but-128
+  * '''Voters:''' 
+    * Cowan: forbid-any-but-127
+    * Ganz: forbid-any-but-127
+    * Gleckler: forbid-any-but-127
+    * Hsu: forbid-nothing
+    * Medernach: forbid-any-but-127
+    * Read: forbid-all-but-127
+    * Shinn: open, forbid-any-but-127, forbid-nothing, forbid-any-but-128
+    * !SnellPym: forbid-any-but-128
+  * '''Results:''' '''forbid-any-but-127'''</pre>
+    <h2>time</h2>
+    <pre>2012-10-29 12:52:51</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

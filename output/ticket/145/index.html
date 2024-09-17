@@ -1,0 +1,79 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>145: RFC 2119 compliance</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 145: <span class="summary">RFC 2119 compliance</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-11 21:57:45</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/145/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-03-03 23:45:19</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Scrutinize every use of the <a href="http://tools.ietf.org/html/rfc2119">RFC 2119</a> modal verbs &quot;may&quot;, &quot;should&quot;, &quot;must&quot;, &quot;shall&quot;, &quot;should not&quot;, &quot;must not&quot;, &quot;shall not&quot; and the RFC 2119 adjectives &quot;required&quot;, &quot;recommended&quot;, and &quot;optional&quot; to make sure they are compliant and fix them if not.  Introduce them in situations where they ought to be used.  If you find &quot;may not&quot;, it probably should be &quot;must not&quot;.</p>
+        <p>We will probably need to use different markup for compliant and non-compliant usage, hopefully not as intrusive as ALL CAPS.</p>
+        <p>Note that &quot;shall&quot; is a synonym for &quot;must&quot;.</p>
+        <p>We should talk only about what implementations may, should, or must do, and use &quot;can&quot; or similar terms for user choices.</p>
+        <p>Beware the unexpressed subject.  &quot;X must be done&quot; isn't properly 2119-compliant, because we don't know who must do it.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-11 07:55:33</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 accepted this proposal.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-11 07:56:19</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 decided to add the long-form names currently in use to the list.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-09-11 07:56:40</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Ignore the above comment!</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2011-10-01 19:48:50</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-11 21:57:45</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Cleaned up all remaining bad MUSTard, I hope.</p></div></div></div></div></div></body></html>

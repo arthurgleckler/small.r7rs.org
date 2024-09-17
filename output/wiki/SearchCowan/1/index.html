@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>SearchCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/SearchCowan.md">SearchCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Search&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-12-24 09:14:52</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/SearchCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/SearchCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a small WG2 proposal for Scheme procedures corresponding to the Common Lisp function <a href="http://www.lispworks.com/documentation/lw50/CLHS/Body/f_search.htm">SEARCH</a>.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(vector-contains </span><i>test</i><span class="monospace"> </span><i>vector1</i><span class="monospace"> </span><i>vector2</i><span class="monospace"> </span> [ [ [ [ <i>start1</i> ] <i>end1</i> ] <i>start2</i> ] <i>end2</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(vector-contains-right </span><i>test</i><span class="monospace"> </span><i>vector1</i><span class="monospace"> </span><i>vector2</i><span class="monospace"> </span> [ [ [ [ <i>start1</i> ] <i>end1</i> ] <i>start2</i> ] <i>end2</i> ]<span class="monospace">)</span></p>
+      <p>Searches <i>vector2</i> from <i>start2</i> to <i>end2</i> for the leftmost (for <span class="monospace">vector-contains</span>) or the rightmost (for <span class="monospace">vector-contains-right</span>) sub-vector whose elements are the same (in the sense of <i>test</i>) as those of <i>vector1</i> from <i>start1</i> to <i>end1</i>.  <i>Test</i> is a predicate of two arguments.  The usual default rules and restrictions apply to the start and end arguments.</p>
+      <p>Returns an index into <i>vector2</i> if the search succeeds, or <span class="monospace">#f</span> if it fails.</p>
+      <p>The order in which the search is made is unspecified; in particular, <span class="monospace">vector-rsearch</span> may search from left to right rather than right to left.  The number of times that <i>test</i> is invoked is also unspecified.</p>
+      <p><span class="monospace">(list-contains </span><i>test</i><span class="monospace"> </span><i>list1</i><span class="monospace"> </span><i>list2</i><span class="monospace"> </span> [ [ [ [ <i>start1</i> ] <i>end1</i> ] <i>start2</i> ] <i>end2</i> ]<span class="monospace">)</span></p>
+      <p>Analogous to <span class="monospace">vector-search</span>, but applicable to lists.</p>
+      <p><span class="monospace">(string-contains </span><i>test</i><span class="monospace"> </span><i>string1</i><span class="monospace"> </span><i>string2</i><span class="monospace"> </span> [ [ [ [ <i>start1</i> ] <i>end1</i> ] <i>start2</i> ] <i>end2</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(string-contains-right </span><i>test</i><span class="monospace"> </span><i>string1</i><span class="monospace"> </span><i>string2</i><span class="monospace"> </span> [ [ [ [ <i>start1</i> ] <i>end1</i> ] <i>start2</i> ] <i>end2</i> ]<span class="monospace">)</span></p>
+      <p>Analogous to <span class="monospace">vector-contains</span> and <span class="monospace">vector-contains-right</span>, but applicable to strings.  <span class="monospace">String-contains</span> is already part of SRFI 13.</p>
+      <h2 id="Issues">Issues</h2>
+      <p>SRFI 13's <span class="monospace">string-contains(-ci)</span> allows only the fixed tests <span class="monospace">char=?</span> and <span class="monospace">char-ci=?</span>.  Here are some reasonable ways to resolve the conflict:</p>
+      <ul>
+        <li>Omit the <i>test</i> argument from these procedures</li></ul>
+      <ul>
+        <li>Modify SRFI 13 to accept a mandatory <i>test</i> argument</li></ul>
+      <ul>
+        <li>Modify both SRFI 13 and these procedures to make the <i>test</i> argument optional</li></ul>
+      <ul>
+        <li>Rename these separate procedures using a different root name</li></ul></div></body></html>

@@ -1,0 +1,199 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #382</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #382</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-12 03:07:14</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Submitter's name: John Boyle
+
+Submitter's email: johnthescavenger at gmail.com
+
+Relevant draft: r7rs-small-current
+
+Type: enhancement
+
+Priority: major
+
+Relevant section of draft: Conditionals
+
+Summary: Allow `if` to accept arbitrarily many if-then pairs.
+
+Description:
+
+The conditional operator `if` should be made to accept arbitrarily many
+if-then pairs, so that:
+
+{{{
+  (if (blip)
+      (blop)
+      (flip)
+      (flop)
+      (floop))
+}}}
+
+is equivalent to:
+
+{{{
+  (cond ((blip)
+         (blop))
+        ((flip)
+         (flop))
+        (else (floop)))
+}}}
+
+This is more terse and provides for a better user experience.  (In the case of 3 arguments, one who writes `if` and later discovers that he needs to add more cases must either write nested `if`s or go back and rewrite the whole expression with `cond`; either choice is unpleasant.  For precisely this reason, there are people who preempt it by always using `cond` over `if` in the first place; these people pay a cost in extra parentheses, letters typed, and indentation.)
+
+I anticipate reluctance to alter the syntax of a primitive operator.  But this change is entirely backwards compatible with code that uses the previous `if`, and skeptical people are free to continue only writing `if`s with three arguments and using `cond` otherwise.  The only thing they will lose is error-checking if they accidentally give four or more arguments to `if`.  I point out that the same objection could be made to `map`, `+`, `-`, `*`, /, and other functions.  I add that the Arc language has used this form of `if` without any `cond` at all, and I didn't find anyone complaining in any of 14,000 posts on the Arc Forum that they wanted `cond` back.
+
+Here is an example implementation in terms of `cond`.  (I see no reason not to allow ''zero'' or more arguments, rather than two or more, but I expect that is pushing it.)
+
+{{{
+  (define-syntax my-if
+    (syntax-rules ()
+      ((my-if a b c ...) ;at least two arguments
+       (expand-if a b c ...))))
+
+  (define-syntax expand-if
+    (syntax-rules ()
+      ((expand-if) (cond (#f #f))) ;the unspecified fall-through result
+      ((expand-if x) x)
+      ((expand-if a b rest ...)
+       (cond (a b)
+             (else (expand-if rest ...))))))
+}}}
+
+This suggestion comes from the Arc language.  Further discussion may be found [http://ycombinator.com/arc/tut.txt here], near the phrases &quot;An if&quot; and &quot;cond operator&quot;:
+
+
+</pre>
+    <h2>id</h2>
+    <pre>382</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Formal Comment: Allow &quot;if&quot; to accept arbitrarily many if-then pairs</pre>
+    <h2>time</h2>
+    <pre>2012-04-23 06:52:13</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-12 03:07:14</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1349986034491786</pre>
+    <h2>ticket</h2>
+    <pre>382</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 03:07:14</pre>
+    <h2>Change at time 2012-10-12 03:07:14</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349986034491786</pre>
+    <h2>ticket</h2>
+    <pre>382</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 03:07:14</pre>
+    <h2>Change at time 2012-10-12 03:07:14</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>accepted</pre>
+    <h2>raw-time</h2>
+    <pre>1349986034491786</pre>
+    <h2>ticket</h2>
+    <pre>382</pre>
+    <h2>time</h2>
+    <pre>2012-10-12 03:07:14</pre>
+    <h2>Change at time 2012-04-23 06:52:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1335138746863366</pre>
+    <h2>ticket</h2>
+    <pre>382</pre>
+    <h2>time</h2>
+    <pre>2012-04-23 06:52:26</pre>
+    <h2>Change at time 2012-04-23 06:52:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1335138746863366</pre>
+    <h2>ticket</h2>
+    <pre>382</pre>
+    <h2>time</h2>
+    <pre>2012-04-23 06:52:26</pre>
+    <h2>Change at time 2012-04-23 06:52:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>accepted</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1335138746863366</pre>
+    <h2>ticket</h2>
+    <pre>382</pre>
+    <h2>time</h2>
+    <pre>2012-04-23 06:52:26</pre></body></html>

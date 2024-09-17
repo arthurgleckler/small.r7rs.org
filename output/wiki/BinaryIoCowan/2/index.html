@@ -1,0 +1,41 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BinaryIoCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BinaryIoCowan.md">BinaryIoCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Binary&shy;Io&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-07-02 05:17:55</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/BinaryIoCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/BinaryIoCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Inputandoutput">Input and output</h2>
+      <p>The default value of <i>port</i> is the current input or output port, as appropriate.  It is an error if the ports passed to these procedures are not binary ports.  The [type] values are defined in <a href="/wiki/BytevectorsCowan">BytevectorsCowan</a>.</p>
+      <p><span class="monospace">(read-[type] </span> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Reads the appropriate number of bytes from <i>port</i> and returns a number of the appropriate type (exact integer or inexact real or complex number).</p>
+      <p><span class="monospace">(write-[type] </span><i>number</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Writes <i>number</i> to <i>port</i> in the appropriate format.</p>
+      <p><span class="monospace">(read-ber-integer </span> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Reads a <a href="https://en.wikipedia.org/wiki/X.690#BER_encoding">BER</a>-encoded integer of arbitrary size from <i>port</i> and returns it as an exact integer.</p>
+      <p><span class="monospace">(write-ber-integer </span> <i>exact-integer</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Writes <i>exact-integer</i> using <a href="https://en.wikipedia.org/wiki/X.690#BER_encoding">BER</a> encoding to <i>port</i>.</p>
+      <p><span class="monospace">(read-utf8-string </span> <i>k</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(read-utf16-le-string </span> <i>k</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(read-utf16-be-string </span> <i>k</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Read <i>k</i> bytes from <i>port</i>, interpreting them as a sequence of characters encoded in UTF-8, UTF-16LE, or UTF-16BE, and return the sequence as a string.  It is an error if the implementation forbids any of the characters in strings.</p>
+      <p><span class="monospace">(write-utf8-string </span> <i>string</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(write-utf16-le-string </span> <i>string</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(write-utf16-be-string </span> <i>string' [ </i>port'' ]<span class="monospace">)</span></p>
+      <p>Convert the characters of <i>string</i> to UTF-8, UTF-16LE, or UTF-16BE, and write the bytes to <i>port</i>.  It is an error if the implementation forbids any of the characters in strings.</p>
+      <p><span class="monospace">(read-utf8-string-until </span><i>byte</i> [ <i>port</i> ]<span class="monospace">)</span></p>
+      <p>Read bytes from <i>port</i> until a byte equal to <i>byte</i> is read.  Discard the final byte, interpret all the other bytes as a sequence of characters encoded in UTF-8, and return the sequence as a string.</p></div></body></html>

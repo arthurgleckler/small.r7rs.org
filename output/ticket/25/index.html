@@ -1,0 +1,54 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>25: char and string ordering</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 25: <span class="summary">char and string ordering</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2010-11-18 13:55:26</div>
+      <div class="component">WG1 - Strings and Chars</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/25/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-02-23 16:55:35</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>R6RS provides comparator routines for
+characters and strings using locale-independent
+Unicode algorithms.  How do we order our
+textual data?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-03-02 01:34:21</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>R5RS ordering is very undemanding: it requires only that the ASCII uppercase letters sort correctly, that the ASCII lowercase letters sort correctly, that the digits sort correctly, and that digits and letters are not interleaved.   On the other hand, it also requires that string sorting be lexicographic with respect to character sorting: that is, if two (sub)strings are the same except for the last character, they are sorted in the same way that the last character is sorted.</p>
+              <p>I'd like to apply R6RS rules to characters: they sort in Unicode order and char-&gt;integer and integer-&gt;char (which are arbitrary mappings in R5RS) map characters to Unicode code points.  But Thing One implementations shouldn't be required to represent all of Unicode, nor to use UTF-8 or UTF-32 for strings internally (the native sort of UTF-16 is <i>not</i> codepoint order).</p>
+              <p>Instead, I believe we should break the lexicographic rule and allow string ordering to be done however an implementation pleases, as long as the R5RS rules are kept (all modern encodings, including EBCDIC, do keep them), and as long as the regular rules of comparison functions are preserved (consistency, trichotomy, etc.)</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2010-11-18 13:55:26</div></div>
+          <div class="changes">
+            <div><span class="field">milestone</span><span class="old-value">&blank;</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>This has been subsumed by <a href="/ticket/23">#23</a>.</p></div></div></div></div></div></body></html>

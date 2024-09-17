@@ -1,0 +1,195 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #353</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #353</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-07 04:35:07</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>For ease of implementation, I think we should make it an error for an imported identifier to be referenced or defined in a library before the library declaration that imports it.  This allows strict left-to-right processing of library declarations, with no need to delay processing till the end of the library.
+
+Therefore, this would be an error (but still permitted as an extension in Schemes that can easily provide it):
+
+{{{
+(module
+  (begin (define x y))
+  (import (library defining y))
+}}}
+
+This would necessitate replacing the penultimate paragraph of section 5.5.1 with:
+
+One possible implementation of libraries is as follows:  After all `cond-expand` library declarations are expanded, a new environment is constructed for the library consisting of all imported bindings. The expressions and declarations from all `begin`, `include`, and `include-ci` declarations are expanded in that environment in the order in which they occur in the library declaration.  Alternatively, `cond-expand` and `import` declarations may be processed in left to right order interspersed with the processing of expressions and declarations, with the environment growing as imported bindings are added to it by each `import` declaration.</pre>
+    <h2>id</h2>
+    <pre>353</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>No use before import in libraries</pre>
+    <h2>time</h2>
+    <pre>2012-02-26 18:25:44</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-07 04:35:07</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1349559307890093</pre>
+    <h2>ticket</h2>
+    <pre>353</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 04:35:07</pre>
+    <h2>Change at time 2012-10-07 04:35:07</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349559307890093</pre>
+    <h2>ticket</h2>
+    <pre>353</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 04:35:07</pre>
+    <h2>Change at time 2012-10-07 04:35:07</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349559307890093</pre>
+    <h2>ticket</h2>
+    <pre>353</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 04:35:07</pre>
+    <h2>Change at time 2012-08-27 06:52:48</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1346025168899393</pre>
+    <h2>ticket</h2>
+    <pre>353</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 06:52:48</pre>
+    <h2>Change at time 2012-08-27 06:52:48</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1346025168899393</pre>
+    <h2>ticket</h2>
+    <pre>353</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 06:52:48</pre>
+    <h2>Change at time 2012-08-27 06:52:48</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1346025168899393</pre>
+    <h2>ticket</h2>
+    <pre>353</pre>
+    <h2>time</h2>
+    <pre>2012-08-27 06:52:48</pre>
+    <h2>Change at time 2012-08-26 23:00:57</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>WG1 decided to adopt this limitation.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1345996857715176</pre>
+    <h2>ticket</h2>
+    <pre>353</pre>
+    <h2>time</h2>
+    <pre>2012-08-26 23:00:57</pre>
+    <h2>Change at time 2012-08-26 23:00:57</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1345996857715176</pre>
+    <h2>ticket</h2>
+    <pre>353</pre>
+    <h2>time</h2>
+    <pre>2012-08-26 23:00:57</pre>
+    <h2>Change at time 2012-06-12 00:19:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Incremental processing is the way Chicken modules (which are just name scopes) work today, and it seems a plausible approach to allow.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1339435166039592</pre>
+    <h2>ticket</h2>
+    <pre>353</pre>
+    <h2>time</h2>
+    <pre>2012-06-12 00:19:26</pre></body></html>

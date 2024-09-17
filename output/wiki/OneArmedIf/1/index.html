@@ -1,0 +1,28 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>OneArmedIf</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/OneArmedIf.md">OneArmedIf</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">One&shy;Armed&shy;If</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-06-22 23:18:47</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/OneArmedIf/history">history</a></div>
+      <div class="source"><a href="/wiki/OneArmedIf/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>The Scheme standards say that a one-armed <span class="monospace">if</span> returns an unspecified value if the first argument is false.  The great majority of all Schemes tested have an &quot;unspecified value&quot; value, which is returned as the value of <span class="monospace">(if #f #f)</span> and in other circumstances where the standards say that the value is unspecified.  The printing of this value is often suppressed by the REPL.  The following are exceptions:</p>
+      <p><span class="monospace">(if #f #f)</span> =&gt; <span class="monospace">#f</span>:  Bigloo, JScheme, Dream, Owl Lisp</p>
+      <p><span class="monospace">(if #f #f)</span> =&gt; <span class="monospace">()</span>:  NexJ, TinyScheme, Elk, UMB, Llava, Dfsch, Inlab</p>
+      <p><span class="monospace">(if #f #f)</span> =&gt; <span class="monospace">#t</span>:  Shoe, FemtoLisp</p>
+      <p><span class="monospace">(if #f #f)</span> =&gt; a value which is both <span class="monospace">#f</span> and <span class="monospace">()</span>: XLisp, Rep</p>
+      <p>SXM returns a closure which when invoked apparently loops forever.</p>
+      <p>Note that although R6RS allows returning an unspecified number of unspecified values, including no values, no known Scheme implementation actually does so.</p></div></body></html>

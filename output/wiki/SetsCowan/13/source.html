@@ -1,0 +1,227 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki SetsCowan version 13</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki SetsCowan version 13</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>69.195.55.172</pre>
+    <h2>name</h2>
+    <pre>SetsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Sets, bags, integer sets, and enumeration sets ==
+
+Sets and bags (multisets) are mutable collections that can contain any Scheme object.  Integer sets are mutable collections that can contain non-negative exact integers from 0 to a maximum value that is specified when the integer set is created.  Enumeration sets are mutable collections that can contain symbols chosen from a set of symbols represented by an enumeration type.
+
+Sets and bags (multisets) are intended to be a thin veneer over hashtables, and integer sets are a thin veneer over bit vectors.  In turn, enumeration sets are a thin veneer over integer sets.  Consequently, the `-member?`, `-add!`, and `-remove!` procedures are required to have an amortized cost of O(1).
+
+Sets, bags, integer sets, enumeration sets, and enumeration types are mutually disjoint, and disjoint from other types of Scheme objects.
+
+== Set procedures ==
+
+`(make-set `''=''`)`
+
+Returns a newly allocated empty set.  ''='' is the equality procedure for the set, which must be consistent with `eq?`.  If ''='' is other than `eq?`, `equal`, `string=?`, or `string-ci=?`, the implementation MAY signal an error.  '''Issue: possibly add '''`eqv?`''' to this list if hash tables support it.'''
+
+`(set `''=''` `''element''` ...)`
+
+Returns a newly allocated set with equality procedure ''='' and containing the ''elements''.
+
+`(set-copy `''set''`)`
+
+Returns a newly allocated set containing the elements of ''set'', with the same equality procedure.
+
+`(set? `''obj''`)`
+
+Returns `#t` if ''obj'' is a set, and `#f` otherwise.
+
+`(set-length? `''set''`)`
+
+Returns the number of elements in ''set''.
+
+`(set-member? `''set''` `''element''`)`
+
+Returns `#t` if ''element'' is a member of ''set'' and `#f` otherwise.
+
+`(set-add! `''set''` `''element''`)`
+
+Adds ''element'' to ''set'' unless it is already a member.  Returns an unspecified value.
+
+`(set-remove! `''set''` `''element''`)`
+
+Removes ''element'' from ''set'' unless it is not a member.  Returns an unspecified value.
+
+`(set-map `''proc''` `''set''`)`
+
+Applies ''proc'' to each element of ''set'' in arbitrary order and returns a newly allocated set with the same equality predicate containing the values of the applications.  '''Issue: Should we provide this at all?  The fold is sufficient.'''
+
+`(set-for-each `''proc''` `''set''`)`
+
+Applies ''proc'' to ''set'' in arbitrary order, discarding the returned values.  Returns unspecified results.
+
+`(set-fold `''proc''` `''nil''` `''set''`)`
+
+Invokes ''proc'' on each member of ''set'' in arbitrary order, passing the result of the previous invocation as a second argument.  For the first invocation, ''nil'' is used as the second argument.  Returns the result of the last invocation.
+
+`(set-&gt;list `''set''`)`
+
+Returns a newly allocated list containing the members of ''set'' in unspecified order.
+
+`(list-&gt;set `''list''`)`
+
+Returns a newly allocated set containing the elements of ''list''.
+
+`(set=? `''set'' ...`)`
+
+Returns `#t` if each ''set'' contains the same elements.
+
+`(set&lt;? `''set'' ...`)`
+
+Returns `#t` if each ''set'' other than the last is a proper subset of the following ''set'', and `#f` otherwise.
+
+`(set&gt;? `''set'' ...`)`
+
+Returns `#t` if each ''set'' other than the last is a proper superset of the following ''set'', and `#f` otherwise.
+
+`(set&lt;=? `''set'' ...`)`
+
+Returns `#t` if each ''set'' other than the last is a subset of the following ''set'', and `#f` otherwise.
+
+`(set&gt;=? `''set'' ...`)`
+
+Returns `#t` if each ''set'' other than the last is a superset of the following ''set'', and `#f` otherwise.
+
+`(set-union `''set'` `''other-set'' ...`)`
+
+Returns a newly allocated set that is the union of ''set'' and the ''other-sets''.
+
+`(set-intersection `''set'` `''other-set'' ...`)`
+
+Returns a newly allocated set that is the intersection of ''set'' and the ''other-sets''.
+
+`(set-difference `''set'` `''other-set'' ...`)`
+
+Returns a newly allocated set that is the difference of ''set'' and the union of the ''other-sets''.
+
+`(set-xor `''set''` `''other-set'' ...`)`
+
+Returns a newly allocated set that is the xor (symmetric difference) of the ''sets''.
+
+`(set-union! `''set''` `''other-set'' ...`)`
+
+Mutates ''set'' to a new set that is the union of ''set'' and the ''other-sets''.
+
+`(set-intersection! `''set''` `''other-set'' ...`)`
+
+Mutates ''set'' to a new set that is the intersection of ''set'' and the ''other-sets''.
+
+`(set-difference! `''set''` `''other-set'' ...`)`
+
+Mutates ''set'' to a new set that is the difference of ''set'' and the union of the ''other-sets''.
+
+`(set-xor! `''set''` `''other-set'' ...`)`
+
+Mutates ''set'' to a new set that is the xor (symmetric difference) of ''set'' and the ''other-sets''.
+
+== Bag procedures ==
+
+The procedures for creating and manipulating bags are the same as those for sets, except that `set` is replaced by `bag` in their names, and that adding an element to a bag is effective even if the bag already contains the element.
+
+`(bag-count `''bag''` `''element''`)`
+
+Returns an exact integer representing the number of times that ''element'' appears in ''bag''.
+
+== Integer set procedures ==
+
+Except as noted below, the procedures for creating and manipulating integer sets are the same as those for sets, except that `set` is replaced by `integer-set` in their names.  Wherever a newly allocated integer set is returned, it has the same limit as the source sets.
+
+`(make-integer-set `''limit''`)`
+
+Returns a newly allocated integer set.  The possible elements of the set are the exact integers from 0 to ''limit'' - 1, where ''limit'' is an exact non-negative integer.  The set is empty.
+
+`(make-universal-integer-set `''limit''`)`
+
+Returns a newly allocated integer set.  The possible elements of the set are the exact integers from 0 to ''limit'' - 1, where ''limit'' is an exact non-negative integer.  The set contains all possible elements.
+
+`(integer-set `''limit''` `''element'' ...`)`
+
+Returns a newly allocated integer set.  The possible elements of the set are the exact integers from 0 to ''limit'' - 1. The set is initialized to contain the ''elements''.
+
+`(list-&gt;integer-set `''limit''` `''list''`)`
+
+Returns a newly allocated integer set.  The possible elements of the set are the exact integers from 0 to ''limit'' - 1. The set is initialized to contain the elements of ''list''.
+
+`(integer-set-complement `''integer-set''`)`
+
+Returns a newly allocated integer set that is the complement of ''integer-set''.
+
+`(integer-set-complement! `''integer-set''`)`
+
+Mutates ''integer-set'' to a new set that is the complement of ''integer-set''.
+
+== Enumeration sets ==
+
+Except as noted below, the procedures for creating and manipulating enumeration sets are the same as those for sets, except that `set` is replaced by `enum-set` in their names.  Wherever a newly allocated enumeration set is returned, it has the same enumeration type as the source sets.
+
+`(make-enum-type `''symbol-list''`)`
+
+Returns a newly allocated enumeration type suitable for constructing enumeration sets whose members are the symbols in ''symbol-list''.  These symbols are said to be ''in the enumeration type''.
+
+`(make-enum-set `''enum-type''`)`
+
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in ''enum-type''.  The set is empty.
+
+`(make-universal-enum-set `''enum-type''`)`
+
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in ''enum-type''.  The set contains all possible elements.
+
+`(enum-set `''enum-type''` `''element'' ...`)`
+
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in ''enum-type''. The set is initialized to contain the ''elements''.
+
+`(list-&gt;enum-set `''enum-type''` `''list''`)`
+
+Returns a newly allocated enumeration set.  The possible elements of the set are the symbols in ''enum-type''. The set is initialized to contain the elements of ''list''.
+
+`(enum-set-complement `''enum-set''`)`
+
+Returns a newly allocated enumeration set that is the complement of ''enum-set''.
+
+`(enum-set-complement! `''enum-set''`)`
+
+Mutates ''enum-set'' to a new set that is the complement of ''enum-set''.
+
+`(enum-set-projection `''enum-set-1''` `''enum-set-2''`)`
+
+Returns a newly allocated enumeration set of the same enumeration type as ''enum-set-2''.  The elements of the enumeration set are the symbols belonging to ''enum-set-1'', ignoring any symbols which are not in the enumeration type of ''enum-set-2''.
+
+`(define-enumeration `&lt;type-name&gt;` (`&lt;symbol&gt; ...`)` &lt;constructor&gt;`)`
+
+Defines a newly allocated enumeration type and provides macros for constructing its members and sets.  It is a definition and can appear anywhere that other definitions can appear.  The &lt;symbol&gt;s are in the enumeration type.  '''Issue: do we need define-enumeration?'''
+
+The identifier &lt;type-name&gt; is bound to a syntax definition which accepts a symbol as its argument and returns the symbol if it is in the enumeration type.  It is a syntax error if the symbol is not in the enumeration type.
+
+The identifier &lt;constructor&gt; is bound to a syntax definition which accepts symbols as its arguments and returns an enumeration set containing those symbols.  It is a syntax error if any of the symbols are not in the enumeration type.
+
+== Conversions ==
+
+The basic set is used as the pivot between different kinds of specialized sets.  In particular, `set-&gt;bag`, `set-&gt;integer-set`, `set-&gt;bag`, `bag-&gt;set`, `integer-set-&gt;set`, and `enum-set-&gt;set` take one argument and do the obvious thing.  `set-&gt;integer-set` takes two arguments, ''limit'' and the set.  `set-&gt;enum-set` also takes two arguments, ''enum-type'' and the set.</pre>
+    <h2>time</h2>
+    <pre>2012-11-24 03:48:12</pre>
+    <h2>version</h2>
+    <pre>13</pre></body></html>

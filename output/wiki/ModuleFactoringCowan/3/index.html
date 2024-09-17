@@ -1,0 +1,58 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ModuleFactoringCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ModuleFactoringCowan.md">ModuleFactoringCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Module&shy;Factoring&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2011-06-21 01:49:47</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/ModuleFactoringCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ModuleFactoringCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Here's my counterproposal to <a href="/wiki/ModuleFactoringShinn">ModuleFactoringShinn</a>, with rationales:</p>
+      <ul>
+        <li>Move <span class="monospace">(scheme io)</span> back to the base.
+          <ul>
+            <li>It provides string-ports and the shared function of all ports, and there is no reason why all Schemes shouldn't provide these.  Note that <span class="monospace">(scheme io)</span> was never actually proposed or voted on, and its presence in the first draft is an error by the editors.</li>
+            <li>Failing this, I prefer the name <span class="monospace">(scheme ports)</span> from <a href="/wiki/ModuleFactoringMedernach">ModuleFactoringMedernach</a> to <span class="monospace">(scheme io)</span>, since by themselves these routines don't actually provide input to or output from the program.</li></ul></li>
+        <li>Don't provide an umbrella module for I/O.
+          <ul>
+            <li>Files, reading Scheme objects, and writing Scheme objects are orthogonal.  Demanding that your implementation provide all of them as a matter of course, across the whole range of Schemes, doesn't make much sense.  We already have a ticket allowing Schemes to pre-import whichever modules they want in the REPL.</li></ul></li>
+        <li>Leave <span class="monospace">interaction-environment</span> in the <span class="monospace">(scheme repl)</span> module.
+          <ul>
+            <li>Alex wants to move this to <span class="monospace">(scheme eval)</span>, but the essence of <span class="monospace">(scheme repl)</span> is that it provides not only evaluation of expressions, but a mutable global environment.  There is no reason why a Scheme can't provide the first without the second.</li></ul></li>
+        <li>Leave <span class="monospace">case-lambda</span> in the base module.
+          <ul>
+            <li>It captures a useful pattern and can be optimized by a slick compiler or by hand.</li></ul></li>
+        <li>Move <span class="monospace">(scheme multiple-values)</span> back to the base.
+          <ul>
+            <li>Multiple values are easy to hack an implementation for (lists, or a list wrapped in a record if you insist), and at least <span class="monospace">exact-integer-sqrt</span> depends on them.  Alex wants to move this procedure to a separate module so it can depend on <span class="monospace">(scheme multiple-values)</span>, but I think that's <a href="http://dictionary.reference.com/browse/pelion">piling Pelion on Ossa</a>.</li></ul></li>
+        <li>Rename <span class="monospace">(scheme unicode)</span> to <span class="monospace">(scheme char)</span>.
+          <ul>
+            <li>Alex and I agree on this one.  The essence of this module is that it does things which, on a full-Unicode system, require a big table.  Making it a module means that you can have full Unicode without the big table unless specific code requires it.</li></ul></li>
+        <li>Move <span class="monospace">char-alphabetic?</span>, <span class="monospace">char-numeric?</span>, <span class="monospace">char-upper-case?</span>, <span class="monospace">char-lower-case?</span> and <span class="monospace">char-whitespace?</span> to <span class="monospace">(scheme char)</span>.
+          <ul>
+            <li>Alex and I agree on this one; not doing it in the first place was an oversight on my part.</li></ul></li>
+        <li>Move the normalization procedures to <span class="monospace">(scheme char normalization)</span>.
+          <ul>
+            <li>I still prefer to keep the names of WG1 modules simple, but okay, fine.</li></ul></li></ul>
+      <h2 id="Notpartoftheproposal">Not part of the proposal</h2>
+      <p>Alex says that depending on discussion, he would consider moving
+the following out of the core:</p>
+      <ul>
+        <li><span class="monospace">syntax-rules</span></li>
+        <li><span class="monospace">define-record-type</span></li>
+        <li>blob procedures</li>
+        <li><span class="monospace">string-ref</span> and <span class="monospace">string-set!</span> (but possibly he means <span class="monospace">string-set!</span> and <span class="monospace">string-fill</span>?)</li></ul>
+      <p>The first three are IMO important parts of Scheme and cheap to provide directly on all reasonable systems.  There is no reason why all Schemes can't support them, which I consider the most important factor in moving things to modules.  It doesn't make sense for all Schemes to provide inexact arithmetic (which is mostly about having floating-point instructions available) or files, so they belong in modules.</p>
+      <p>I am no fan of mutable strings, but reluctantly I conclude that programs depend on them and we can't get rid of them, so all Schemes might as well provide them.  Hence no module.</p></div></body></html>

@@ -1,0 +1,144 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ArraysCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ArraysCowan.md">ArraysCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Arrays&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-10-23 23:35:03</div>
+      <div class="version">17<span class="comment"></span><a href="/wiki/ArraysCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/ArraysCowan/17/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Introduction">Introduction</h2>
+      <p>TBD - arrays are multidimensional objects based on top of one-dimensional storage objects</p>
+      <h2 id="Specification">Specification</h2>
+      <h3 id="Terminology">Terminology</h3>
+      <p>TBD: array, storage class, storage object, index, dimension, rank, upper bound, lower bound, stride, offset, start, end</p>
+      <h3 id="Storageclasses">Storage classes</h3>
+      <p>A storage class is a group of storage objects with the same behavior.  A storage object maps a non-negative exact integer index into a storage location.  There are standard storage classes, but it is also possible for programmers to create their own storage classes.  Each storage class allows creating a storage object of a given size, accessing a location by its index, and mutating a location by its index to a new value.  Note that the procedures used to do this need not be the standard procedures such as <span class="monospace">make-vector</span>, <span class="monospace">vector-ref</span>, and <span class="monospace">vector-set!</span>; they may be more efficient equivalents.</p>
+      <p><span class="monospace">vector-storage-class</span></p>
+      <p>Used to create and manipulate a Scheme vector as storage.</p>
+      <p><span class="monospace">bytevector-u8-storage-class</span></p>
+      <p><span class="monospace">bytevector-s8-storage-class</span></p>
+      <p><span class="monospace">bytevector-u16-storage-class</span></p>
+      <p><span class="monospace">bytevector-u16be-storage-class</span></p>
+      <p><span class="monospace">bytevector-u16le-storage-class</span></p>
+      <p><span class="monospace">bytevector-s16-storage-class</span></p>
+      <p><span class="monospace">bytevector-s16be-storage-class</span></p>
+      <p><span class="monospace">bytevector-s16le-storage-class</span></p>
+      <p><span class="monospace">bytevector-u32-storage-class</span></p>
+      <p><span class="monospace">bytevector-u32be-storage-class</span></p>
+      <p><span class="monospace">bytevector-u32le-storage-class</span></p>
+      <p><span class="monospace">bytevector-s32-storage-class</span></p>
+      <p><span class="monospace">bytevector-s32be-storage-class</span></p>
+      <p><span class="monospace">bytevector-s32le-storage-class</span></p>
+      <p><span class="monospace">bytevector-u64-storage-class</span></p>
+      <p><span class="monospace">bytevector-u64be-storage-class</span></p>
+      <p><span class="monospace">bytevector-u64le-storage-class</span></p>
+      <p><span class="monospace">bytevector-s64-storage-class</span></p>
+      <p><span class="monospace">bytevector-s64be-storage-class</span></p>
+      <p><span class="monospace">bytevector-s64le-storage-class</span></p>
+      <p><span class="monospace">bytevector-f32-storage-class</span></p>
+      <p><span class="monospace">bytevector-f32be-storage-class</span></p>
+      <p><span class="monospace">bytevector-f32le-storage-class</span></p>
+      <p><span class="monospace">bytevector-f64-storage-class</span></p>
+      <p><span class="monospace">bytevector-f64be-storage-class</span></p>
+      <p><span class="monospace">bytevector-f64le-storage-class</span></p>
+      <p><span class="monospace">bytevector-c64-storage-class</span></p>
+      <p><span class="monospace">bytevector-c64be-storage-class</span></p>
+      <p><span class="monospace">bytevector-c64le-storage-class</span></p>
+      <p><span class="monospace">bytevector-c128-storage-class</span></p>
+      <p><span class="monospace">bytevector-c128be-storage-class</span></p>
+      <p><span class="monospace">bytevector-c128le-storage-class</span></p>
+      <p>Used to create and manipulate a Scheme bytevector as storage, viewed as one of the given kinds of numeric vectors:  signed or unsigned 8-bit, 16-bit, 32-bit, and 64-bit integers, 32-bit and 64-bit floats, and 64-bit and 128-bit float complex numbers.  All can be in native byte order, little-endian byte order, or big-endian byte order, though the u8 and s8 classes have only native byte order.</p>
+      <p><span class="monospace">u8vector-storage-class</span></p>
+      <p><span class="monospace">s8vector-storage-class</span></p>
+      <p><span class="monospace">bytevector-u16-storage-class</span></p>
+      <p><span class="monospace">bytevector-s16-storage-class</span></p>
+      <p><span class="monospace">bytevector-u32-storage-class</span></p>
+      <p><span class="monospace">bytevector-s32-storage-class</span></p>
+      <p><span class="monospace">bytevector-u64-storage-class</span></p>
+      <p><span class="monospace">bytevector-s64-storage-class</span></p>
+      <p><span class="monospace">bytevector-f32-storage-class</span></p>
+      <p><span class="monospace">bytevector-f64-storage-class</span></p>
+      <p><span class="monospace">bytevector-c64-storage-class</span></p>
+      <p><span class="monospace">bytevector-c128-storage-class</span></p>
+      <p>Used to create and manipulate native numeric vectors as  as storage.  Note that only native byte order is provided.</p>
+      <p><span class="monospace">sparse-storage-class</span></p>
+      <p>Used to create and manipulate an object of arbitrary type (run-length-encoded vector, hash table, tree, etc.) that provides a sparse representation of the mapping between indexes and arbitrary Scheme objects.</p>
+      <p><span class="monospace">(make-storage-class </span><i>constructor accessor mutator</i><span class="monospace">)</span></p>
+      <p>Returns a storage class with the specified procedures as constructor, accessor, and mutator.  The invocation protocols are <span class="monospace">(</span><i>constructor size</i><span class="monospace">)</span>, where <i>size</i> is a non-negative integer; <span class="monospace">(</span><i>accessor storage-object index</i><span class="monospace">)</span>, where <i>storage-object</i> is a storage object returned by a call to the constructor and <i>index</i> is a non-negative integer less than <i>size</i>, and <span class="monospace">(</span><i>mutator storage-object index value</i><span class="monospace">)</span>, where <i>value</i> is a value which can be stored in <i>storage-object</i>.  Storage classes created by this procedure do not have to have actual storage objects (they can access and mutate values algorithmicallly), in which case they can ignore the <i>storage-object</i> argument.</p>
+      <h3 id="Predicates">Predicates</h3>
+      <p><span class="monospace">(array? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an array, and <span class="monospace">#f</span> otherwise.</p>
+      <h3 id="Constructors">Constructors</h3>
+      <p><span class="monospace">(make-array </span><i>storage-class</i> [ <i>lower-bounds</i> ] <i>upper-bounds</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array with a newly allocated storage object.  The lower and upper bounds of the array's dimensions are specified as vectors: they must be of the same length.  If <i>lower-bounds</i> is not given, it is understood to be all zeros.</p>
+      <h3 id="Metadataaccessors">Metadata accessors</h3>
+      <p><span class="monospace">(array-storage-class </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the storage class with which <i>array</i> was created.  Note that there is no way to access the storage <i>object</i>, as it may not exist.</p>
+      <p><span class="monospace">(array-rank </span><i>array</i><span class="monospace">)</span></p>
+      <p>Return the rank (number of dimensions) of <i>array</i>.  Note that &quot;rank&quot; is an APL term that has nothing to do with matrix ranks.</p>
+      <p><span class="monospace">(array-lower-bounds </span><i>array</i><span class="monospace">)</span></p>
+      <p>Return a vector containing the lower bounds of <i>array</i>.  It is an error to mutate this vector.</p>
+      <p><span class="monospace">(array-upper-bounds </span><i>array</i><span class="monospace">)</span></p>
+      <p>Return a vector containing the upper bounds of <i>array</i>.  It is an error to mutate this vector.</p>
+      <p><span class="monospace">(array-strides </span><i>array</i><span class="monospace">)</span></p>
+      <p>Return a vector containing the strides of <i>array</i>.  It is an error to mutate this vector.</p>
+      <p><span class="monospace">(array-lower-bound </span><i>array n</i><span class="monospace">)</span></p>
+      <p>Return a vector containing the <i>n</i>th lower bound of <i>array</i>.</p>
+      <p><span class="monospace">(array-upper-bounds </span><i>array n</i><span class="monospace">)</span></p>
+      <p>Return a vector containing the <i>n</i>th upper bound of <i>array</i>.</p>
+      <p><span class="monospace">(array-stride </span><i>array n</i><span class="monospace">)</span></p>
+      <p>Return a vector containing the <i>n</i>th stride of <i>array</i>.</p>
+      <p><span class="monospace">(array-offset </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns the storage offset of <i>array</i>.  This is the storage index of the location whose array index is specified by all zeros.</p>
+      <h3 id="Accessors">Accessors</h3>
+      <p><span class="monospace">(array-ref </span><i>array index</i><span class="monospace">)</span></p>
+      <p>Returns the value of the element of <i>array</i> specified by <i>index</i>, which is a vector.  Note that this is different from the <span class="monospace">array-ref</span> of most Lisp systems, which specify the index as a sequence of arguments.</p>
+      <p><span class="monospace">(array-for-each </span><i>proc array</i> [ <i>start</i> [ <i>end </i> ] ]<span class="monospace">)</span></p>
+      <p>Iterates over the elements of <i>array</i> starting at the index <i>start</i> and ending at the index <i>end</i>, and calling <i>proc</i> on each element.  Each invocation of <i>proc</i> receives <i>array</i>, the current index, and the value of the element at that index.  It is an error to mutate the index.</p>
+      <p><span class="monospace">(array-for-each-index </span><i>proc array</i> [ <i>start</i> [ <i>end </i> ] ]<span class="monospace">)</span></p>
+      <p>Iterates over the indexes of <i>array</i> starting at the index <i>start</i> and ending at the index <i>end</i>, and calling <i>proc</i> on each element.  Each invocation of <i>proc</i> receives <i>array</i> and the current index.  The value returned by <i>proc</i> is discarded.  It is an error to mutate the index.</p>
+      <h3 id="Mutators">Mutators</h3>
+      <p><span class="monospace">(array-set! </span><i>array index value</i><span class="monospace">)</span></p>
+      <p>Sets the value of the element of <i>array</i> specified by <i>index</i> to <i>value</i>.  Note that this is different from the <span class="monospace">array-set!</span> of most Lisp systems, which specify the index as a sequence of arguments.</p>
+      <p><span class="monospace">(array-tabulate! </span><i>proc array</i> [ <i>start</i> [ <i>end </i> ] ]<span class="monospace">)</span></p>
+      <p>Iterates over the elements of <i>array</i> starting at the index <i>start</i> (each dimension is inclusive) and ending at the index <i>end</i> (each dimension is exclusive), and calling <i>proc</i> on each element.  Each invocation of <i>proc</i> receives <i>array</i> and the current index.  Whatever <i>proc</i> returns becomes the value of the array at the index.  It is an error for <i>proc</i> to mutate the index.</p>
+      <p>FIXME from here down.</p>
+      <h2 id="Maps">Maps</h2>
+      <p><span class="monospace">(array-map </span><i>proc array</i> ...<span class="monospace">)</span></p>
+      <p>Returns a newly allocated array with the same structure as the <i>arrays</i>, which must all have the same structure.   For each valid index value, <i>proc</i> is invoked in arbitrary order, passing the index and all the arrays.  The index may or may not be the same Scheme vector for each call.  Whatever <i>proc</i> returns becomes the value of the storage element corresponding to that index in the result array.</p>
+      <p><span class="monospace">(array-map! </span><i>proc array</i> ...<span class="monospace">)</span></p>
+      <p>The <i>arrays</i> must all have the same structure.   For each valid index value, <i>proc</i> is invoked in arbitrary order, passing the index and all the arrays.  The index may or may not be the same Scheme vector for each call.  Whatever <i>proc</i> returns becomes the value of the storage element corresponding to that index in the first array argument.  The value returned is undefined.</p>
+      <p><span class="monospace">(array-fold </span><i>proc seed array</i> ...<span class="monospace">)</span></p>
+      <p>The <i>arrays</i> must all have the same structure.   For each valid index value, <i>proc</i> is invoked in row-major order, passing the index, all the arrays, and the seed value.  The index may or may not be the same Scheme vector for each call.  The result is used as the seed for the next call to 'proc', and the final seed is returned.</p>
+      <p><span class="monospace">(array-reduce </span><i>proc</i><span class="monospace"> </span><i>array</i><span class="monospace"> </span><i>axis</i> [ <i>n</i> ]<span class="monospace">)</span></p>
+      <p>Returns a newly allocated array whose rank is one less than the rank of <i>array</i>, by combining all the groups of elements of length <i>n</i> (default 1) along <i>axis</i> using <i>proc</i>, which MUST be a two-argument procedure.  The order and number of invocations of <i>proc</i> is unspecified.  If there is only one such element, it is unchanged.  (APL reduce.)</p>
+      <p><span class="monospace">(array-cumulate </span><i>proc</i><span class="monospace"> </span><i>array</i><span class="monospace"> </span><i>axis</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array whose shape is the same as the shape of <i>array</i>.  Each element along <i>axis</i> is constructed by reducing (as if by <span class="monospace">array-reduce</span>) successive prefixes of the elements of <i>array</i> along that axis.  (APL scan.)</p>
+      <h2 id="Outerandinnerproducts">Outer and inner products</h2>
+      <p><span class="monospace">(array-outer-product </span><i>proc</i><span class="monospace"> </span><i>array1</i><span class="monospace"> </span><i>array2</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array whose shape is the concatenation of the shapes of <i>array1</i> and <i>array2</i>.  Each component of the new array is the result of applying <i>proc</i> to every element of <i>array1</i> and every element of <i>array2</i>.  The order and number of invocations of <i>proc</i> is unspecified.  (APL outer product.)</p>
+      <p><span class="monospace">(array-inner-product </span><i>proc1</i><span class="monospace"> </span><i>proc2</i><span class="monospace"> </span><i>array1</i><span class="monospace"> </span><i>array2</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array whose shape is equal to the shape of <i>array1</i> without its last element concatenated with the shape of <i>array2</i> without its first element; these elements MUST be numerically equal.  It is an error if both arrays have rank 0.</p>
+      <p>Each element of the result array results from applying <i>proc2</i> to the corresponding elements of the last vectors of <i>array1</i> and the first vectors of <i>array2</i> and then reducing them with <i>proc1</i> to a single value.  The order and number of invocations of the procedures is unspecified.</p>
+      <p>In particular, if both arrays have rank 1, the last and first vectors are the whole of the arrays, and the result has rank 0; if both arrays have rank 2, the last vectors of <i>array1</i> are the column-wise vectors, and the first vectors of <i>array2</i> are the row-wise vectors, and the result has rank 2.  (APL inner product.)</p>
+      <p>Example:  <span class="monospace">(array-inner-product + * vector1 vector2)</span> computes the usual dot product of <i>vector1</i> and <i>vector2</i>.</p>
+      <h2 id="Conversions">Conversions</h2>
+      <p><span class="monospace">(array-&gt;nested-vector </span><i>array</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated Scheme vector whose components are also newly constructed Scheme vectors, and so on as far down as necessary to cover every axis of the array.  Bottom-level Scheme vectors contain the components of <i>array</i>.  Thus, if <i>array</i> has rank 1, the result is a Scheme vector; if the array has rank 2, the result is a Scheme vector containing Scheme vectors, and so on.  As a special case, if <i>array</i> has rank 0, the sole component is returned.</p>
+      <p><span class="monospace">(nested-vector-&gt;array </span><i>rank nested-vector</i><span class="monospace">)</span></p>
+      <p>Returns a newly allocated array with rank <i>rank</i> whose components are initialized from the Scheme vector<i>nested-vector</i>.  It is an error if <i>nested-vector</i> is not rectangular.  As a special case, if <i>rank</i> is 0, the sole component is <i>nested-vector</i>, which need not be a Scheme vector.</p>
+      <h2 id="Advancedprocedures">Advanced procedures</h2>
+      <p>See <a href="/wiki/AdvancedArraysCowan">AdvancedArraysCowan</a>.</p></div></body></html>

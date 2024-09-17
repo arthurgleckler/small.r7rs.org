@@ -1,0 +1,29 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>MultipleValuesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/MultipleValuesCowan.md">MultipleValuesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Multiple&shy;Values&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-11-22 10:20:00</div>
+      <div class="version">9<span class="comment">Minor corrections</span><a href="/wiki/MultipleValuesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/MultipleValuesCowan/9/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Multiplevaluesprocedure">Multiple values procedure</h2>
+      <p><span class="monospace">(call-with-all-values </span><i>producer</i> ...<span class="monospace"> </span><i>consumer</i><span class="monospace">)</span></p>
+      <p>Invoke the <i>producers</i> in arbitrary order and pass all values returned by them in the given order to <i>consumer</i>.  This extends <span class="monospace">call-with-values</span> by allowing more than one <i>producer</i>.  Equivalent to Common Lisp's <span class="monospace">multiple-value-call</span>.</p>
+      <h2 id="Multiplevaluessyntax">Multiple values syntax</h2>
+      <p><span class="monospace">(set!-values (</span><i>lambda-list</i><span class="monospace">) </span><i>expression</i><span class="monospace">)</span></p>
+      <p>Assigns the values returned by <i>expression</i> to the variables in <i>lambda-list</i>.
+Returns an undefined value.  Equivalent to Common Lisp's <span class="monospace">multiple-variable-setq</span>.</p>
+      <p><b>Is this module even worth having any more?  Most of its former content is part of WG1 now.</b></p></div></body></html>

@@ -1,0 +1,115 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>FactoringModuleProposals</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/FactoringModuleProposals.md">FactoringModuleProposals</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Factoring&shy;Module&shy;Proposals</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-10-24 22:46:41</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/FactoringModuleProposals/history">history</a></div>
+      <div class="source"><a href="/wiki/FactoringModuleProposals/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="FactoringModuleProposals">Factoring Module Proposals</h2>
+      <p>This is an attempt to factor <a href="/wiki/ModulesShinn">ModulesShinn</a>, the <span class="monospace">library</span> and <span class="monospace">module</span> parts of <a href="/wiki/ModulesAndPackagesArcfide">ModulesAndPackagesArcfide</a>, and <a href="/wiki/ModulesGanz">ModulesGanz</a> into features that they have or don't have, to make decisions easier.  I have neglected purely syntactic features like the names and ordering constraints of forms and keywords.</p>
+      <table><tr><td class="default">
+            <p>Feature</p></td><td class="default">
+            <p>r6rs</p></td><td class="default">
+            <p>shinn</p></td><td class="default">
+            <p>hsu-library</p></td><td class="default">
+            <p>hsu-module</p></td><td class="default">
+            <p>ganz</p></td></tr><tr><td class="default">
+            <p>Module Type</p></td><td class="default">
+            <p>static</p></td><td class="default">
+            <p>static</p></td><td class="default">
+            <p>syntactic</p></td><td class="default">
+            <p>syntactic</p></td><td class="default">
+            <p>syntactic</p></td></tr><tr><td class="default">
+            <p>Top-level only</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td></tr><tr><td class="default">
+            <p>Name</p></td><td class="default">
+            <p>List</p></td><td class="default">
+            <p>List</p></td><td class="default">
+            <p>List</p></td><td class="default">
+            <p>Identifier</p></td><td class="default">
+            <p>Identifier</p></td></tr><tr><td class="default">
+            <p>Anonymous self-importing modules</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td></tr><tr><td class="default">
+            <p>File inclusion within module</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>No</p></td></tr><tr><td class="default">
+            <p>Body</p></td><td class="default">
+            <p>Implicit</p></td><td class="default">
+            <p>Explicit</p></td><td class="default">
+            <p>Implicit</p></td><td class="default">
+            <p>Implicit</p></td><td class="default">
+            <p>Implicit</p></td></tr><tr><td class="default">
+            <p>Import qualifiers: <span class="monospace">only</span> <span class="monospace">except</span> <span class="monospace">rename</span> <span class="monospace">prefix</span></p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td></tr><tr><td class="default">
+            <p>Rename on export</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>No</p></td></tr><tr><td class="default">
+            <p>Macros can generate modules</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>Unclear</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Unspecified restrictions</p></td></tr><tr><td class="default">
+            <p>Support for <span class="monospace">co-export</span></p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>No</p></td></tr><tr><td class="default">
+            <p>Implicit exports</p></td><td class="default">
+            <p>Automatic</p></td><td class="default">
+            <p>Automatic</p></td><td class="default">
+            <p>Allowed</p></td><td class="default">
+            <p>Allowed</p></td><td class="default">
+            <p>Required</p></td></tr><tr><td class="default">
+            <p>Import into REPL</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>Yes</p></td></tr><tr><td class="default">
+            <p>Phasing</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td></tr><tr><td class="default">
+            <p>Versioning</p></td><td class="default">
+            <p>Yes</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td><td class="default">
+            <p>No</p></td></tr></table>
+      <p>The difference between R6RS and R6RS-- is that R6RS-- does not have phasing or versioning.</p></div></body></html>

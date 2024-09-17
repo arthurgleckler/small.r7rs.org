@@ -1,0 +1,129 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #494</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #494</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>John David Stone writes:
+
+  The `include` and `include-ci` syntaxes and the `load` procedure [...] don't belong in Scheme.  They undermine the model of modular design and construction of programs that the library system so carefully promotes.  Even if I never mention them, students will find out about them, use them inappropriately, and promptly confuse themselves and their lab partners.</pre>
+    <h2>id</h2>
+    <pre>494</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Including/loading doesn't belong in Scheme</pre>
+    <h2>time</h2>
+    <pre>2013-05-12 23:20:17</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG decided by unanimous consent to take no action on this ticket.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>494</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>494</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-07-07 03:20:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1373142044410382</pre>
+    <h2>ticket</h2>
+    <pre>494</pre>
+    <h2>time</h2>
+    <pre>2013-07-07 03:20:44</pre>
+    <h2>Change at time 2013-05-12 23:29:12</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>As for `load`, it has been part of Scheme since R3RS, and is equivalent to doing your own reading and `eval`-ing.  To argue against it on principle is to argue against `eval` (which historically was not actually specified until R5RS, though in fact available in all implementations since the beginning).  That is an argument that all Schemers respect: if it must be enforced, however, this can best be done outside the language.
+
+It might be a good feature for an implementation to warn the programmer if the argument to `load` is a constant expression, and even suggest the use of `include` instead.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1368376152631813</pre>
+    <h2>ticket</h2>
+    <pre>494</pre>
+    <h2>time</h2>
+    <pre>2013-05-12 23:29:12</pre>
+    <h2>Change at time 2013-05-12 23:25:11</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>I assume that the reference is to `include` and `include-ci` as general expression types (section 4.1.7), rather than as library declarations.  In the latter role, they clearly promote rather than undermining modularity, by allowing code to be managed separately from its module wrapper, something not possible in R6RS without auxiliary and non-standard syntax-rules macros.
+
+I agree that these expression types, though convenient for the working programmer, are pedagogically problematic.  I believe, however, that the Racket approach of providing controlled sublanguages for students is appropriate here.  In the alternative (as I believe Gambit may be going to do), these may simply be omitted from an implementation and the fact reported as a deviation from R7RS-small.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1368375911296401</pre>
+    <h2>ticket</h2>
+    <pre>494</pre>
+    <h2>time</h2>
+    <pre>2013-05-12 23:25:11</pre></body></html>

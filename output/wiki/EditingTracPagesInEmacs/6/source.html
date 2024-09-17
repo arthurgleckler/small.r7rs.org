@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki EditingTracPagesInEmacs version 6</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki EditingTracPagesInEmacs version 6</h1>
+    <h2>author</h2>
+    <pre>aag</pre>
+    <h2>comment</h2>
+    <pre>details</pre>
+    <h2>ipnr</h2>
+    <pre>72.14.226.9</pre>
+    <h2>name</h2>
+    <pre>EditingTracPagesInEmacs</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= Editing Trac Pages in Emacs =
+
+The trac-wiki.el package allows one to view and edit wiki pages in
+Trac directly from Emacs.  I've gotten it working with GNU Emacs
+23.1.1, but I had to patch it first.  Here's what I did:
+
+ 1. I installed [http://www.emacswiki.org/emacs/xml-rpc.el xml-rpc.el version 1.6.8].
+
+ 2. I downloaded [http://trac-hacks.org/wiki/EmacsWikiEditScript trac-wiki.el 1.7].
+
+ 3. I made some changes to trac-wiki.el to make it compatibile with
+ this version of xml-rpc.el: TracWikiElPatch.  The resulting file,
+ which you can install directly, is TracWikiElWithPatch.</pre>
+    <h2>time</h2>
+    <pre>2010-02-27 06:12:25</pre>
+    <h2>version</h2>
+    <pre>6</pre></body></html>

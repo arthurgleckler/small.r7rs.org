@@ -1,0 +1,49 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>512: Parameters should be used instead of proliferating names</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 512: <span class="summary">Parameters should be used instead of proliferating names</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:20:44</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/512/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-13 08:29:17</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Aaron Hsu writes:</p>
+        <p>The standard has, as a whole, favored the introduction of new procedure names to handle new options for procedures that do effectively the same thing. In some cases this makes a bit of sense, as it would be unwieldy to do otherwise. However, there are other places where this does not make sense, and in particular, places where parameters, which we provide, could more readily be used. These places include procedures that provide behavior which is inherently dangerous and ought not to receive a full procedure name. The <span class="monospace">write</span> procedures come to mind. The <span class="monospace">include</span> and <span class="monospace">include-ci</span> forms also come to mind. Adding more names doesn’t scale well, and I think we’ve gone wrong here.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-13 08:31:19</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Au contraire.  If that were done, the only way to call <span class="monospace">write</span> with predictable results would be by always wrapping it in a <span class="monospace">parameterize</span> form, which is longer, less clear, and more error-prone (what happens when you set the parameter to a meaningless value?)  The reference to <span class="monospace">include</span> and <span class="monospace">include-ci</span> is misconceived: syntax forms are not affected by the state of (run-time) parameter objects, and without low-level macros there are no such objects at compile time.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:20:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG decided by unanimous consent to take no action on this ticket.</p></div></div></div></div></div></body></html>

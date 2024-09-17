@@ -1,0 +1,101 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BlobAPI</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BlobAPI.md">BlobAPI</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Blob&shy;API</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2011-09-20 00:35:50</div>
+      <div class="version">6<span class="comment"></span><a href="/wiki/BlobAPI/history">history</a></div>
+      <div class="source"><a href="/wiki/BlobAPI/6/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a proposal for a WG2 bytevector API.  The conceit is that everything is a separate procedure with minimal arguments; this makes for a lot of procedures, but each one can be easily inlined by even a very dumb compiler, providing high efficiency.</p>
+      <h3 id="Numericprocedures">Numeric procedures</h3>
+      <dl>
+        <dt>(<span class="monospace">bytevector-&lt;type&gt;&lt;endian&gt;-ref</span> <i>bytevector n</i><span class="monospace">)</span></dt>
+        <dd>Returns a Scheme number corresponding to the binary value encoded according to <i>type</i> beginning at offset <i>n</i> in <i>bytevector</i>.</dd>
+        <dt>(<span class="monospace">bytevector-&lt;type&gt;&lt;endian&gt;-set!</span> <i>bytevector n v</i><span class="monospace">)</span></dt>
+        <dd>Converts <i>v</i> to a binary value encoded according to <i>type</i> and places it into <i>bytevector</i> beginning at offset <i>n</i>.</dd></dl>
+      <p>The types are:</p>
+      <dl>
+        <dt><span class="monospace">u8</span></dt>
+        <dd>unsigned 8-bit integer</dd>
+        <dt><span class="monospace">s8</span></dt>
+        <dd>signed 8-bit integer</dd>
+        <dt><span class="monospace">u16</span></dt>
+        <dd>unsigned 16-bit integer</dd>
+        <dt><span class="monospace">s16</span></dt>
+        <dd>signed 16-bit integer</dd>
+        <dt><span class="monospace">u32</span></dt>
+        <dd>unsigned 32-bit integer</dd>
+        <dt><span class="monospace">s32</span></dt>
+        <dd>signed 32-bit integer</dd>
+        <dt><span class="monospace">u64</span></dt>
+        <dd>unsigned 64-bit integer</dd>
+        <dt><span class="monospace">s64</span></dt>
+        <dd>signed 64-bit integer</dd>
+        <dt><span class="monospace">u128</span></dt>
+        <dd>unsigned 128-bit integer</dd>
+        <dt><span class="monospace">s128</span></dt>
+        <dd>signed 128-bit integer</dd>
+        <dt><span class="monospace">f32</span></dt>
+        <dd>32-bit IEEE float</dd>
+        <dt><span class="monospace">fn32</span></dt>
+        <dd>32-bit native float (may not be IEEE)</dd>
+        <dt><span class="monospace">f64</span></dt>
+        <dd>64-bit IEEE float in native endianism</dd>
+        <dt><span class="monospace">fn64</span></dt>
+        <dd>64-bit native float (may not be IEEE)</dd>
+        <dt><span class="monospace">c64</span></dt>
+        <dd>64-bit complex number (two 32-bit IEEE floats)</dd>
+        <dt><span class="monospace">cn64</span></dt>
+        <dd>64-bit complex number (two 32-bit native floats, may not be IEEE)</dd>
+        <dt><span class="monospace">c128</span></dt>
+        <dd>128-bit complex number (two 64-bit IEEE floats)</dd>
+        <dt><span class="monospace">cn128</span></dt>
+        <dd>128-bit complex number (two 64-bit native floats, may not be IEEE)</dd></dl>
+      <p>The endianism values are:</p>
+      <dl>
+        <dt>(empty)</dt>
+        <dd>Native endianism (system-dependent)</dd>
+        <dt><span class="monospace">le</span></dt>
+        <dd>Little-endianism</dd>
+        <dt><span class="monospace">be</span></dt>
+        <dd>Big-endianism</dd></dl>
+      <p>Endianism is not applicable to the following types: <span class="monospace">s8 u8 fn32 fn64 cn64 cn128</span></p>
+      <h3 id="Stringprocedures">String procedures</h3>
+      <dl>
+        <dt>(<span class="monospace">bytevector-&lt;encoding&gt;-ref</span> <i>bytevector n l</i><span class="monospace">)</span></dt>
+        <dd>Returns a Scheme string corresponding to the binary value encoded according to <i>encoding</i> beginning at offset <i>n</i> in <i>bytevector</i> and continuing for <i>l</i> bytes.</dd>
+        <dt>(<span class="monospace">bytevector-&lt;encoding&gt;-set!</span> <i>blob n v</i><span class="monospace">)</span></dt>
+        <dd>Converts <i>v</i> to a binary string encoded according to <i>encoding</i> and places it into <i>bytevector</i> beginning at offset <i>n</i>.  Returns the number of bytes encoded.</dd></dl>
+      <p>The encodings are:</p>
+      <dl>
+        <dt><span class="monospace">utf8</span></dt>
+        <dd>UTF-8 encoding</dd>
+        <dt><span class="monospace">utf16</span></dt>
+        <dd>UTF-16 encoding (respects BOM if present, defaults to native encoding otherwise)</dd>
+        <dt><span class="monospace">utf16be</span></dt>
+        <dd>UTF-16BE encoding (treats BOM as a normal character)</dd>
+        <dt><span class="monospace">utf16le</span></dt>
+        <dd>UTF-16LE encoding (treats BOM as a normal character)</dd></dl>
+      <h3 id="Map,for-each,fold,unfold">Map, for-each, fold, unfold</h3>
+      <p><b>TBD</b></p>
+      <h3 id="Issues">Issues</h3>
+      <p>Pick one:</p>
+      <ol class="number">
+        <li>Offsets are in bytes and can be arbitrary</li>
+        <li>Offsets are in bytes but must be naturally aligned (divisible by n for an n-byte value)</li>
+        <li>Offsets are in n-byte units (forces natural alignment, SRFI-4 style)</li></ol>
+      <p>Should <span class="monospace">bytevector=?</span> be provided?</p>
+      <p>I've trashed the UTF-32 conversions because nobody uses UTF-32.  They can come back if somebody needs them.</p></div></body></html>

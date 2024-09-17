@@ -1,0 +1,184 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImmutableSetsWortman</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImmutableSetsWortman.md">ImmutableSetsWortman</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Immutable&shy;Sets&shy;Wortman</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2015-12-10 11:24:46</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ImmutableSetsWortman/history">history</a></div>
+      <div class="source"><a href="/wiki/ImmutableSetsWortman/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Introduction">Introduction</h2>
+      <p>This proposal defines <i>immutable data structures</i> for queues, sets, bags, and maps. A structure is immutable when all its operations leave the structure unchanged. Note that none of the procedures specified here ends with a <span class="monospace">!</span>.</p>
+      <p>Immutable structures are sometimes called <i>persistent</i> and are closely related to <i>pure-functional</i> (a.k.a. <i>pure</i>) structures. The availability of immutable data structures facilitates writing efficient programs in the pure-functional style.</p>
+      <p>This proposal will be divided into three SRFIs: one for deques, one for sets and bags, and one for maps, even though they share a substantial chunk of implementation code.  This is basically to simplify review.</p>
+      <h2 id="Efficiencybounds">Efficiency bounds</h2>
+      <p>We specify required time efficiency upper bounds using big-O notation. We note when, in some cases, there is &quot;slack&quot; between the required bound and the theoretically optimal bound for an operation. Implementations may use data structures with amortized time bounds, but should document which bounds hold in only an amortized sense. The use of randomized data structures with expected time bounds is discouraged.</p>
+      <h2 id="Disjointtypes">Disjoint types</h2>
+      <p>Deques, sets, bags, and maps are disjoint from all other Scheme types, and deques are disjoint from the other types.</p>
+      <p>A sorted set data structure stores a finite collection of unique elements with a defined <a href="http://ccil.org/~cowan/temp/srfi-114.html">comparator</a>.  It is an error if the comparator does not provide a comparison procedure.</p>
+      <p>These requirements can be satisfied by many flavors of <i>self-balancing binary trees.</i> Red-black trees, 1-2 brother trees, and labeled 2-3 finger trees are particularly convenient in an immutable context.</p>
+      <h3 id="Construction">Construction</h3>
+      <p>If two elements are inserted into a set that are equal in the sense of the set's comparator but are not <span class="monospace">eqv?</span>, the first to be specified or generated prevails.</p>
+      <p><span class="monospace">(iset </span><i>comparator</i> [ <i>element</i> ...]<span class="monospace">)</span></p>
+      <p>Returns a set containing <i>elements</i>, where <i>comparator</i> provides the criterion of identity and ordering.  Takes O(n log n) time.</p>
+      <p><span class="monospace">(iset-tabulate </span><i>n proc</i><span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> successively on the integers 0 through <i>n</i> - 1 inclusive, and returns a set containing the results.  Takes O(n log n) time.</p>
+      <p><span class="monospace">(iset-unfold </span><i>stop? mapper successor seed</i><span class="monospace">)</span></p>
+      <p>Invokes the predicate <i>stop?</i> on <i>seed</i>.  If it returns false, generate the next result by applying <i>mapper</i> to <i>seed</i>, generate the next seed by applying <i>successor</i> to <i>seed</i>, and repeat this algorithm with the new seed.  If <i>stop?</i> returns true, return a set containing the results.  Takes O(n log n) time.</p>
+      <h3 id="Predicates">Predicates</h3>
+      <p><span class="monospace">(iset? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a set, and <span class="monospace">#f</span> otherwise.  Takes O(1) time.</p>
+      <p><span class="monospace">(iset-empty? </span><i>set</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>set</i> contains zero elements, and <span class="monospace">#f</span> otherwise.  Takes O(1) time.</p>
+      <p><span class="monospace">(iset-member? </span><i>set obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>set</i> contains <i>obj</i>, and <span class="monospace">#f</span> otherwise.  Takes O(log n) time.</p>
+      <h3 id="Accessors">Accessors</h3>
+      <p><span class="monospace">(iset-min </span><i>set</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-max </span><i>set</i><span class="monospace">)</span></p>
+      <p>Returns the least/greatest element of <i>set</i>.  It is an error for <i>set</i> to be empty. Takes O(log n) time; O(1) is optimal.</p>
+      <p><span class="monospace">(iset-comparator </span><i>set</i><span class="monospace">)</span></p>
+      <p>Returns the comparator of <i>set</i>.  Takes O(1) time.</p>
+      <p><span class="monospace">(iset-predecessor </span><i>set obj failure</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-successor </span><i>set obj failure</i><span class="monospace">)</span></p>
+      <p>Returns the element that immediately precedes/succeeds <i>obj</i> in <i>set's</i> ordering. If no such element exists because <i>obj</i> is the minimum/maximum element, or because <i>set</i> is empty, returns the result of invoking the thunk <i>failure</i>. Takes O(log n) time.</p>
+      <h3 id="Functionalupdate">Functional update</h3>
+      <p><span class="monospace">(iset-adjoin </span><i>set obj</i><span class="monospace">)</span></p>
+      <p>Returns a set which contains the elements of <i>set</i> and <i>obj</i> as well.  If there is already an element of <i>set</i> that is equal (in the sense of the comparator) to <i>obj</i>, the existing element of <i>set</i> prevails.  Takes O(log n) time.</p>
+      <p><span class="monospace">(iset-adjoin-all </span><i>set list</i><span class="monospace">)</span></p>
+      <p>Returns a set which contains the elements of <i>set</i> and the elements of <i>list</i> as well.  It is an error if the elements of <i>list</i> are not distinct and increasing in the sense of the comparator of <i>set</i>.  If there is already an element of <i>set</i> which is equal (in the sense of the comparator) to an element of <i>list</i>, the element of <i>set</i> prevails.  Takes O(k log n) time, where <i>k</i> is the length of <i>list</i>.</p>
+      <p><span class="monospace">(iset-replace </span><i>set obj</i><span class="monospace">)</span></p>
+      <p>Returns a set which contains the elements of <i>set</i> and <i>obj</i> as well.  If there is already an element of <i>set</i> that is equal (in the sense of the comparator) to <i>obj</i>, <i>obj</i> prevails.  Takes O(log n) time.</p>
+      <p><span class="monospace">(iset-delete </span><i>set obj</i><span class="monospace">)</span></p>
+      <p>Returns a set which contains the elements of <i>set</i> with the exception of <i>obj</i>, if present.  If there is already an element of <i>set</i> that is equal (in the sense of the comparator) to <i>obj</i>, the element of <i>set</i> prevails.  Takes O(log n) time.</p>
+      <p><span class="monospace">(iset-delete-all </span><i>set list</i><span class="monospace">)</span></p>
+      <p>Returns a set which contains the elements of <i>set</i>, excluding the elements of <i>list</i>.  It is an error if the elements of <i>list</i> are not distinct and increasing in the sense of the comparator of <i>set</i>. Takes O(k log n) time, where <i>k</i> is the length of <i>list</i>.</p>
+      <h3 id="Thewholeset">The whole set</h3>
+      <p><span class="monospace">(iset-size </span><i>set</i><span class="monospace">)</span></p>
+      <p>Returns the size of <i>set</i> as an exact integer.  May take O(n) time, though O(1) is optimal.</p>
+      <p><span class="monospace">(iset-find </span><i>set obj failure</i><span class="monospace">)</span></p>
+      <p>Returns the element equal (in the sense of the comparator of <i>set</i>) to <i>obj</i> in <i>set</i>, or the result of invoking the thunk <i>failure</i> if no such element exists. Takes O(log n) time.</p>
+      <p><span class="monospace">(iset-count </span><i>pred set</i><span class="monospace">)</span></p>
+      <p>Returns the number of elements in <i>set</i> which satisfy <i>pred</i> as an exact integer.  Takes O(n) time.</p>
+      <p><span class="monospace">(iset-any </span><i>pred set</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-every </span><i>pred set</i><span class="monospace">)</span></p>
+      <p>Invokes <i>pred</i> on the elements of <i>set</i> until one of them returns a true/false value, which is then returned.  If there are no such elements, returns <span class="monospace">#f</span>/<span class="monospace">#t</span>.  Takes O(n) time.</p>
+      <h3 id="Filtering">Filtering</h3>
+      <p><span class="monospace">(iset-range= </span><i>set obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-range&lt; </span><i>set obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-range&gt; </span><i>set obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-range&lt;= </span><i>set obj</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-range&gt;= </span><i>set obj</i><span class="monospace">)</span></p>
+      <p>Returns a set containing only the elements of <span class="monospace">set</span> that are equal to / less than / greater than / less than or equal to / greater than or equal to <i>obj</i>.  Takes O(log n) time, where n is the number of elements in the set.</p>
+      <p>Note that since set elements are unique, <span class="monospace">iset-range=</span> returns a set of at most one element.</p>
+      <p><span class="monospace">(iset-filter </span><i>pred set</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-remove </span><i>pred set</i><span class="monospace">)</span></p>
+      <p>Returns a set containing only those elements on which <i>pred</i> returns true/false. Takes O(n log n) time; O(n) is optimal.</p>
+      <p><span class="monospace">(iset-partition</span><i>pred set</i><span class="monospace">)</span></p>
+      <p>Returns two values, <span class="monospace">(iset-filter </span><i>pred set</i><span class="monospace">)</span> and <span class="monospace">(iset-remove </span><i>pred set</i><span class="monospace">)</span> respectively, but may be more efficient.</p>
+      <h3 id="Foldingandmapping">Folding and mapping</h3>
+      <p><span class="monospace">(iset-fold </span><i>proc nil set</i><span class="monospace">)</span></p>
+      <p>The fundamental set iterator. Equivalent to, but may be more efficient than, <span class="monospace">(fold </span><i>proc base</i> <span class="monospace"> (iset-&gt;increasing-list </span><i>set</i><span class="monospace">))</span>.  Takes O(n) time.</p>
+      <p><span class="monospace">(iset-fold-right </span><i>proc nil set</i><span class="monospace">)</span></p>
+      <p>The fundamental set iterator. Equivalent to, but may be more efficient than, <span class="monospace">(fold-right </span><i>proc base</i> <span class="monospace"> (iset-&gt;increasing-list </span><i>set</i><span class="monospace">))</span>.  Takes O(n) time.</p>
+      <p><span class="monospace">(iset-map/monotone </span><i>proc set</i> [ <i>comparator</i> ]<span class="monospace">)</span></p>
+      <p>Returns a set containing the result of invoking <i>proc</i> on every element in <i>set</i>.  It is an error unless <i>proc</i> is a <i>monotone</i> unary procedure that preserves the order of set elements. Observe that mapping a set of unique elements with a monotone function yields a set of unique elements, so element uniqueness follows from the monotonicity assumption. If <i>comparator</i> is given, it is the comparator of the result; otherwise the result uses the same comparator as <i>set</i>. Takes O(n) time.</p>
+      <p><span class="monospace">(iset-map</span><i>proc set</i> [ <i>comparator</i> [ <i>merger</i> ] ]<span class="monospace">)</span></p>
+      <p>Like <span class="monospace">iset-map/monotone</span>, except that <i>proc</i> is not required to be monotone. The <span class="monospace">merger</span> procedure is used to select among any duplicate elements (in the sense of the comparator of <i>set</i>) that might be created; it returns the value to be used; if absent, the element chosen is implementation-specific.  Takes O(n log n) time.</p>
+      <p><span class="monospace">(iset-for-each </span><i>proc set</i><span class="monospace">)</span></p>
+      <p>Invokes <i>proc</i> on every <i>element</i> in <i>set</i>.  The result is unspecified. Takes O(n) time.</p>
+      <h3 id="Subsets">Subsets</h3>
+      <p>Note: The following three predicates do not obey the trichotomy law and therefore do not constitute a total order on sets.</p>
+      <p><span class="monospace">(iset=? </span><i>set1 set2</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> contains the same elements, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(iset&lt;? </span><i>set1 set2</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> other than the last is a proper subset of the following set, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(iset&gt;? </span><i>set1 set2</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> other than the last is a proper superset of the following set, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(iset&lt;=? </span><i>set1 set2</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> other than the last is a subset of the following set, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(iset&gt;=? </span><i>set1 set2</i> ...<span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if each <i>set</i> other than the last is a superset of the following set, and <span class="monospace">#f</span> otherwise.</p>
+      <h3 id="Conversion">Conversion</h3>
+      <p><span class="monospace">(iset-&gt;list </span><i>set</i><span class="monospace">)</span></p>
+      <p>Returns a list containing the elements of <span class="monospace">set</span> in increasing order. Takes O(n) time.</p>
+      <p><span class="monospace">(increasing-list-&gt;iset comparator list)</span></p>
+      <p>Returns a set containing the elements of <i>list</i> and using <i>comparator</i>. It is an error for <i>list</i> to be anything other than a proper list of elements in increasing order. Takes O(n log n) time; O(n) is optimal.</p>
+      <p><span class="monospace">(list-&gt;iset </span><i>comparator list [ </i>merger'' ]<span class="monospace">)</span></p>
+      <p>Returns a set containing the elements of <i>list</i> and using <i>comparator</i>. It is an error if <span class="monospace">list</span> is not a proper list, but it may contain duplicates and need not be in order.  The <span class="monospace">merger</span> procedure is used to select among any duplicate elements (in the sense of the comparator of <i>set</i>) that might be created; it accepts the existing and new elements and returns the value to be used.  Takes O(n log n) time.</p>
+      <p><span class="monospace">(generator-&gt;iset </span><i>generator</i>`)</p>
+      <p><span class="monospace">(iset-&gt;generator </span><i>iset</i><span class="monospace">)</span></p>
+      <p>Converts a <a href="http://srfi.schemers.org/srfi-121/srfi-121.html">SRFI 121</a> generator to and from a set.</p>
+      <h3 id="Set-theoreticoperations">Set-theoretic operations</h3>
+      <p><span class="monospace">(iset-union </span><i>set</i> ... <span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-intersection </span><i>set</i> ... <span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-difference </span><i>set</i> ... <span class="monospace">)</span></p>
+      <p><span class="monospace">(iset-xor </span><i>set<sub>1</sub> set<sub>2</sub></i><span class="monospace">)</span></p>
+      <p>Returns a set containing the union/intersection/difference/symmetric difference of the arguments. All the arguments must be sets sharing an equivalent comparator. The set operator is applied in a left-associative order. If an element is found in more than one set, the first set in the argument list prevails.  May take O(kn log n) time, where k is the number of sets and n is the number of elements involved, though O(kn) time is optimal.</p>
+      <h2 id="Bags">Bags</h2>Bags are like sets, but can contain the same object more than once.  However, if two elements that are the same in the sense of the comparator, but not in the sense of <code>eqv?</code>, are both included, it is not guaranteed that they will remain distinct when retrieved from the bag.  It is an error for a single procedure to be invoked on bags with different comparators.
+
+</p><p>
+
+The procedures for creating and manipulating bags are the same as those for sets, except that <code>iset</code> is replaced by <code>ibag</code> in their names, and that adjoining an element to a bag is effective even if the bag already contains the element.  If two elements in a bag are the same in the sense of the bag's comparator, the implementation may in fact store just one of them.
+</p>
+
+<p>The <code>ibag-union</code>, <code>ibag-intersection</code>, <code>ibag-difference</code>, and <code>ibag-xor</code> procedures behave as follows when both bags contain elements that are equal in the sense of the bags' comparator:</p>
+
+<ul>
+<li><p>For <code>bag-union</code>, the number of equal elements in the result is the largest number of equal elements in any of the original bags.</p></li>
+
+<li><p>For <code>bag-intersection</code>, the number of equal elements in the result is the smallest number of equal elements in any of the original bags.</p></li>
+
+<li><p>For <code>bag-difference</code>, the number of equal elements in the result is the number of equal elements in the first bag, minus the number of elements in the other bags (but not less than zero).</p></li>
+
+<li><p>For <code>bag-xor</code>, the number of equal elements in the result is the absolute value of the difference between the number of equal elements in the first and second bags.</p></li></ul>
+
+<h3 id="Additionalbagprocedures">Additional bag procedures</h3>
+
+<p><code>(ibag-sum </code><em>set<sub>1</sub> set<sub>2</sub></em> ... <code>)</code></p>
+
+<p>The <code>ibag-sum</code> procedure returns a bag containing all the unique elements in all the <em>bags</em>, such that the count of each unique element in the result is equal to the sum of the counts of that element in the arguments.  It differs from <code>ibag-union</code> by treating identical elements as potentially distinct rather than attempting to match them up.</p>
+
+<p><code>(ibag-product </code><em>n bag</em><code>)</code></p>
+
+The <code>bag-product</code> procedure returns a bag containing all the unique elements in <em>bag</em>, where the count of each unique element in the bag is equal to the count of that element in <code>bag</code> multiplied by <em>n</em>.
+
+</p><p><code>(ibag-unique-size </code><em>bag</em><code>)</code></p><p>
+
+Returns the number of unique elements of <em>bag</em> as an exact integer.
+
+</p><p><code>(ibag-element-count </code><em>bag element</em><code>)</code></p><p>
+
+Returns an exact integer representing the number of times that <em>element</em> appears in <em>bag</em>.
+
+</p><p><code>(ibag-for-each-unique </code><em>proc bag</em><code>)</code></p><p>
+
+Applies <em>proc</em> to each unique element of <em>bag</em> in arbitrary order, passing the element and the number of times it occurs in <em>bag</em>, and discarding the returned values.  Returns an unspecified result.
+
+</p><p><code>(ibag-fold-unique </code><em>proc nil bag</em><code>)</code></p><p>
+
+Invokes <em>proc</em> on each unique element of <em>bag</em> in arbitrary order, passing the number of occurrences as a second argument and the result of the previous invocation as a third argument.  For the first invocation, <em>nil</em> is used as the third argument.  Returns the result of the last invocation, or <em>nil</em> if there is none.
+
+</p><p><code>(ibag-increment </code><em>bag<code> </code>element<code> </code>count</em><code>)</code></p><p><code>(ibag-decrement </code><em>bag<code> </code>element<code> </code>count</em><code>)</code></p><p>
+
+Procedures that return a bag with the same elements as <em>bag</em>, but with the element count of <em>element</em> in <em>bag</em> increased or decreased by the exact integer <em>count</em> (but not less than zero).
+
+</p><p><code>(ibag-&gt;iset </code><em>bag</em><code>)</code></p><p><code>(iset-&gt;ibag </code><em>set</em><code>)</code></p><p>
+
+The <code>ibag-&gt;iset</code> procedure returns a set containing the unique elements (in the sense of the equality predicate) of <em>bag</em>.  The <code>iset-&gt;ibag</code> procedure returns a bag containing the elements of <em>set</em>. In all cases, the comparator of the result is the same as the comparator of the argument or arguments.
+
+</p><p><code>(ibag-&gt;alist </code><em>bag</em><code>)</code></p><p><code>(alist-&gt;ibag </code><em>comparator alist</em><code>)</code></p><p>
+
+The <code>ibag-&gt;alist</code> procedure returns a newly allocated alist whose keys are the unique elements of <em>bag</em> and whose values are the number of occurrences of each element.  The <code>alist-&gt;ibag</code> returning a bag based on <em>comparator</em>, where the keys of <em>alist</em> specify the elements and the corresponding values of <em>alist</em> specify how many times they occur.</p>
+</div></body></html>

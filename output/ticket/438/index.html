@@ -1,0 +1,92 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>438: Formal Comment: Inconsistency of sequence copying procedures</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 438: <span class="summary">Formal Comment: Inconsistency of sequence copying procedures</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 04:04:21</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/438/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-07-02 04:09:01</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Submitter's name: Marc Feeley</p>
+        <p>Submitter's email: feeley at iro.umontreal.ca</p>
+        <p>Relevant draft: r7rs draft 6</p>
+        <p>Type: defect</p>
+        <p>Priority: major</p>
+        <p>Relevant section of draft: 6.7. Strings, 6.8. Vectors, 6.9. Bytevectors</p>
+        <p>Summary: Inconsistency of sequence copying procedures</p>
+        <p>R7RS has three vector-like data types: strings, vectors and bytevectors.  The inconsistencies in their properties and sequence copying procedures (names and API) make it harder than it needs to be for the programmer to remember.</p>
+        <h2 id="Self-evaluationinconsistencies">Self-evaluation inconsistencies</h2>
+        <p>Vectors and bytevectors have a similar external representation, yet bytevectors are self evaluating (page 46) and vectors are not self evaluating.  I do not care very much if they are, or if they are not self-evaluating, but it should be the same for vectors and bytevectors.</p>
+        <h2 id="Sequencecopyingproceduresinconsistencies">Sequence copying procedures inconsistencies</h2>
+        <p>Subsequences of strings can be extracted using the procedure <span class="monospace">substring</span> which takes 3 required parameters, i.e.</p><span class="monospace">  (substring string start end)
+</span>
+        <p>There is also a <span class="monospace">string-copy</span> procedure which takes a single required parameter and returns a copy of the string.  These procedures are related like so:</p><span class="monospace">  (string-copy string) = (substring string 0 (string-length string))
+</span>
+        <p>Subsequences of vectors can be extracted using the procedure <span class="monospace">vector-copy</span> only, which takes one required parameter and 3 optional parameters, i.e.</p><span class="monospace">  (vector-copy vector [start [end [fill]]])
+</span>
+        <p>With a single parameter a copy of the whole vector is returned, otherwise a subsequence is returned.</p>
+        <p>Subsequences of bytevectors can be extracted using the procedure <span class="monospace">bytevector-copy-partial</span>, which takes 3 required parameters and behaves exactly like <span class="monospace">substring</span> except for the fact that bytevectors are being processed and returned, i.e.</p><span class="monospace">  (bytevector-copy-partial bv start end)
+</span>
+        <p>There is also a <span class="monospace">bytevector-copy</span> procedure which takes a single required parameter and returns a copy of the bytevector.  These procedures are related like so</p><span class="monospace">  (bytevector-copy bv) = (bytevector-copy-partial bv 0 (bytevector-length bv))
+</span>
+        <p>There are also 2 procedures to copy the content of a bytevector to another bytevector imperatively: <span class="monospace">bytevector-copy</span> and <span class="monospace">bytevector-copy-partial!</span>.</p>
+        <p>I do not see a good reason for having different APIs (mix of required and optional parameters) and naming conventions for similar operations.</p>
+        <p>The naming convention could be based on the one which has been in place for strings for a long time, i.e. <span class="monospace">substring</span>, <span class="monospace">subvector</span>, and <span class="monospace">subbytevector</span> for extracting subsequences.  The same API should be used consistently for all the procedures, in other words:</p><span class="monospace">  (substring     string     [start [end [fill]]])
+  (subvector     vector     [start [end [fill]]])
+  (subbytevector bytevector [start [end [fill]]])
+</span>
+        <p>Note that it reads even better if bytevector operations are named using the SRFI-4 naming convention:</p><span class="monospace">  (substring   string   [start [end [fill]]])
+  (subvector   vector   [start [end [fill]]])
+  (subu8vector u8vector [start [end [fill]]])
+</span>
+        <p>The functional copy procedures would remain for consistency:</p><span class="monospace">  (string-copy   string)   = (substring   string)
+  (vector-copy   vector)   = (subvector   vector)
+  (u8vector-copy u8vector) = (subu8vector u8vector)
+</span>
+        <p>The imperative partial copy procedure defined for bytevectors</p><span class="monospace">  (bytevector-copy-partial! from start end to at)
+</span>
+        <p>should exist for other sequences too.  Better consistency would be achieved by exchanging the order of the destination and source, in order to benefit from the same pattern of optional parameters as the other procedures:</p><span class="monospace">  (substring-move!   to at from [start [end [fill]]])
+  (subvector-move!   to at from [start [end [fill]]])
+  (subu8vector-move! to at from [start [end [fill]]])
+</span>
+        <p>I don't think the imperative copy operation performed by <span class="monospace">bytevector-copy!</span> is sufficiently common to be included in R7RS (and applied to the other sequence types).  In any case the same operation could be obtained by using a <span class="monospace">...-move!</span> procedure with an additional constant 0 used for the <i>at</i> parameter.</p>
+        <p>Finally, I think the handling of the fill parameter is questionable. It is a bad idea for the fill parameter to have a default.  When fill is absent, it should be an error when start and end are not within the bounds of the sequence.  Otherwise, some index calculation errors (off-by-one on <i>end</i>) may go unnoticed.  Moreover, when it is supplied, the fill should also be used when start is less than 0, for consistency with the case where end is greater to the length of the sequence.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-02 10:09:44</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 04:04:21</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Accepted in principle.</p></div></div></div></div></div></body></html>

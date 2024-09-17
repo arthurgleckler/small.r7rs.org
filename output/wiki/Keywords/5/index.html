@@ -1,0 +1,40 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Keywords</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/Keywords.md">Keywords</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Keywords</h1>
+    <div class="wiki metadata">
+      <div class="author">alaric</div>
+      <div class="time">2011-05-05 23:32:07</div>
+      <div class="version">5<span class="comment">Noted that the keywords-as-bindings issue only applies where keywords and arbitrary expressions may collide</span><a href="/wiki/Keywords/history">history</a></div>
+      <div class="source"><a href="/wiki/Keywords/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>There seems to be a serious issue with how we handle keywords (by which we mean, things like the <span class="monospace">else</span> in <span class="monospace">cond</span>). R5RS was vague on the matter, and each choice of implementation approach seems to have issues.</p>
+      <ul>
+        <li>Is <span class="monospace">syntax-rules</span> a keyword in this sense?  Some Schemes say yes, others no.</li></ul>
+      <p>The R6RS standard decided to use explicitly exported and defined auxiliary syntax values, where every syntax-rules literals clause matched hygienically using <span class="monospace">free-identifier=?</span>.</p>
+      <p>Let's summarise the issues with different approaches.</p>
+      <h2 id="Keywordsassymbols"><a href="/wiki/Keywords">Keywords</a> as symbols</h2>
+      <p>One approach is to say that the implementation of <span class="monospace">cond</span> must match a symbol called <span class="monospace">else</span> - so it's purely symbolic equality, rather than bothering about lexical environments.</p>
+      <p>Problems: See this thread: http://lists.scheme-reports.org/pipermail/scheme-reports/2011-May/000632.html</p>
+      <p>Particularly, symbolic equality bypasses the normal identifier equality tests used by <span class="monospace">syntax-rules</span>, thereby violating referential transparency and hygiene in some cases.</p>
+      <h2 id="KeywordsasBindings"><a href="/wiki/Keywords">Keywords</a> as Bindings</h2>
+      <p>Under this scheme, <span class="monospace">else</span> is bound to something (a value? a macro? a pineapple?) along with the definition of <span class="monospace">cond</span>, and we check that the same binding is in place when <span class="monospace">else</span> is used in the wild.</p>
+      <p>This means that if we do:</p><span class="monospace">(let ((else #f))
+(cond
+     (else 1))
+</span>
+      <p>...we'll get an error, not 1, as we've rebound <span class="monospace">else</span>; that arm of the <span class="monospace">cond</span> will evaluate <span class="monospace">else</span> and get <span class="monospace">#f</span>, so no arm of the <span class="monospace">cond</span> matches.</p>
+      <p>However, it has another issue. Andy Wingo, I believe, gave an example of a module that exposes both <span class="monospace">compile</span> (a procedure) and <span class="monospace">eval-when</span> (a macro that uses <span class="monospace">compile</span> as a keyword). It's then impossible to expose <span class="monospace">eval-when</span> into a sandbox, still able to use the <span class="monospace">compile</span> keyword, without then also giving them the <span class="monospace">compile</span> procedure. In this situation you can use keywords-as-symbols, as arbitrary expressions can never appear there; but in a case like <span class="monospace">cond</span>, it would be impossible to export <span class="monospace">cond</span> and all its functions without also exporting a procedure that happened to also be called <span class="monospace">else</span> or <span class="monospace">=&gt;</span>.</p>
+      <h2 id="Anyothers?">Any others?</h2>
+      <p>Please add alternative implementation techniques here, and discuss their problems and characteristics.</p></div></body></html>

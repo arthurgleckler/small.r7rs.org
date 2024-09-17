@@ -1,0 +1,104 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>486: The draft is a step backwards from R6RS</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 486: <span class="summary">The draft is a step backwards from R6RS</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:20:44</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/486/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-12 22:40:57</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Michael Sperber writes:</p>
+        <p>R7RS-small is, in almost every way that matters, a step backwards from R6RS.</p>
+        <p>Jim Wise writes:</p>
+        <p>The proposed standard fails [...] to make substantive improvements in Scheme as a language.  In essence, the standard fails to justify its own existence.</p>
+        <p>As a language, the proposed standard is a substantial step backward from R6RS in usability and fitness for purpose.  In the precision of its definition, and in the completeness of the features it does provide, it falls short of that standard as well.  (I am very aware of the R7RS small language / large language split; I am referring to the internal completeness of the features chosen for the smalllanguage in their own right, and their usefulness as a basis for the large language).</p>
+        <p>Takashi Kato writes:</p>
+        <p>R7RS has made a great step forward from R5RS however it looks a big step backwards from R6RS. The goal seemed gluing the gap between R5RS and future RnRS, and it made a lot of decided stuffs undecided again.</p>
+        <p>I think language specification should not look back that much even though R6RS seemed too progressive. I hope WG2 will decide dropped off stuff again.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-12 22:44:05</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The R7RS-small language is not meant to replace R6RS.  Rather, it is meant to replace R5RS (which R6RS did not do, and perhaps was not meant to do), and at the same time provide a sound basis for the R7RS-large language, which <i>is</i> meant to replace R6RS.</p>
+              <p>To complain in the same breath that the draft is a step backwards from R6RS and that it is internally incoherent is itself incoherent.  Without a specification of what features are missing, or provided though not useful, it's impossible to take this complaint as a program for action.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-13 00:40:11</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">Michael Sperber writes:
+
+  R7RS-small is, in almost every way that matters, a step backwards from R6RS.
+
+Jim Wise writes:
+
+  The proposed standard fails [...] to make substantive improvements in Scheme as a language.  In essence, the standard fails to justify its own existence.
+
+  As a language, the proposed standard is a substantial step backward from R6RS in usability and fitness for purpose.  In the precision of its definition, and in the completeness of the features it does provide, it falls short of that standard as well.  (I am very aware of the R7RS small language / large language split; I am referring to the internal completeness of the features chosen for the smalllanguage in their own right, and their usefulness as a basis for the large language).
+</span><span class="new-value">Michael Sperber writes:
+
+  R7RS-small is, in almost every way that matters, a step backwards from R6RS.
+
+Jim Wise writes:
+
+  The proposed standard fails [...] to make substantive improvements in Scheme as a language.  In essence, the standard fails to justify its own existence.
+
+  As a language, the proposed standard is a substantial step backward from R6RS in usability and fitness for purpose.  In the precision of its definition, and in the completeness of the features it does provide, it falls short of that standard as well.  (I am very aware of the R7RS small language / large language split; I am referring to the internal completeness of the features chosen for the smalllanguage in their own right, and their usefulness as a basis for the large language).
+
+Takashi Kato writes:
+
+  R7RS has made a great step forward from R5RS however it looks a big step backwards from R6RS. The goal seemed gluing the gap between R5RS and future RnRS, and it made a lot of decided stuffs undecided again.
+
+  I think language specification should not look back that much even though R6RS seemed too progressive. I hope WG2 will decide dropped off stuff again.
+</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-13 00:47:30</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>See also my comment to <a href="/ticket/484">#484</a> about conditional specifications.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-13 17:32:46</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>And of course the large language will be adding back a great many R6RS procedures, especially from the library report, though not necessarily in exactly the same way.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:20:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG decided by unanimous consent to take no action on this ticket.</p></div></div></div></div></div></body></html>

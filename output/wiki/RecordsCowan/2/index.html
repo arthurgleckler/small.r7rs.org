@@ -1,0 +1,37 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RecordsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RecordsCowan.md">RecordsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Records&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">aag</div>
+      <div class="time">2010-11-01 03:59:06</div>
+      <div class="version">2<span class="comment">Fixed typos.</span><a href="/wiki/RecordsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/RecordsCowan/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="RidiculouslySimpleRecords">Ridiculously Simple Records</h2>
+      <p><span class="monospace">(make-type </span><i>size</i><span class="monospace"> </span><i>parent</i><span class="monospace"> </span><i>id</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a new type object.  <i>Size</i> is an exact integer representing the number of slots in the records produced from the type object, exclusive of any slots provided by the parent type <i>parent</i>.  <i>Parent</i> may also be <span class="monospace">#f</span>, in which case there is no parent type.  `<span class="monospace">Id</span>` is an object to label the type with.</p>
+      <p><span class="monospace">(make-constructor </span><i>type</i><span class="monospace">)</span></p>
+      <p>Returns a procedure that constructs records of type <i>type</i>.  The values of the slots are undefined.</p>
+      <p><span class="monospace">(make-type-predicate </span><i>type</i><span class="monospace">)</span></p>
+      <p>Returns a procedure of one argument that answers <span class="monospace">#t</span> if its argument is of type <i>type</i> and <span class="monospace">#f</span> otherwise.  An argument is of type <i>type</i> if it was built by a constructor produced from any subtype of <i>type</i>.</p>
+      <p><span class="monospace">(make-getter </span><i>type</i><span class="monospace"> </span><i>slotnum</i><span class="monospace">)</span></p>
+      <p>Returns a procedure of one argument that returns the slot numbered <i>slotnum</i> in its argument, an object of type <i>type</i>.  Slots are numbered starting at 0 in the top-level type.</p>
+      <p><span class="monospace">(make-setter </span><i>type</i><span class="monospace"> </span><i>slotnum</i><span class="monospace">)</span></p>
+      <p>Returns a procedure of two arguments that sets the slot numbered <i>slotnum</i> in its first argument, an object of type <i>type</i>, to the value of its second argument.  Slots are numbered starting at 0 in the top-level type.</p>
+      <h2 id="TypeIntrospection">Type Introspection</h2>
+      <p><span class="monospace">(type-size </span><i>type</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(type-parent </span><i>type</i><span class="monospace">)</span></p>
+      <p><span class="monospace">(type-id </span><i>type</i><span class="monospace">)</span></p>
+      <p>These return the properties of <i>type</i>.</p></div></body></html>

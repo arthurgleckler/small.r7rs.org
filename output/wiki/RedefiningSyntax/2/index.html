@@ -1,0 +1,38 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RedefiningSyntax</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RedefiningSyntax.md">RedefiningSyntax</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Redefining&shy;Syntax</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-01-07 10:20:58</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/RedefiningSyntax/history">history</a></div>
+      <div class="source"><a href="/wiki/RedefiningSyntax/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This example determines what the behavior of the usual implementations is when an identifier is defined as a value and then redefined as syntax.  For example:</p><span class="monospace">        (define (noodle) (foodle))
+        (define (foodle) 23)
+        (noodle) =&gt; ??
+        
+        (define-syntax foodle (syntax-rules ()
+          ((foodle) 17)))
+        (noodle) =&gt; ??
+        
+        (define (noodle) (foodle))
+        (noodle) =&gt; ??
+</span>
+      <p>Essentially all the implementations that support <span class="monospace">syntax-rules</span> behave the same way on the first and third calls to <span class="monospace">noodle</span>, returning 23 and 17 respectively.  The exception is Owl Lisp, which has a hyperstatic REPL that disallows all forward references.</p>
+      <p>The first definition of <span class="monospace">noodle</span> refers to <span class="monospace">foodle</span>, which is undefined, and is therefore assumed to be a variable.  (Guile prints a warning at this point.)  The second definition of <span class="monospace">noodle</span> refers to the current (syntax) definition of <span class="monospace">foodle</span>.  The question is, what happens in the second call of <span class="monospace">noodle</span>, when the first definition of <span class="monospace">noodle</span> is being invoked, but the definition of <span class="monospace">foodle</span> has changed out from under it?</p>
+      <p><span class="monospace">Noodle</span> continues to call the old definition of <span class="monospace">foodle</span> and returns 23:  Racket, Gambit, Chicken, Bigloo, Scheme48/scsh, SISC, Chez, Vicare, Larceny, Mosh, IronScheme, STklos, KSi, SigScheme, SXM, Chibi</p>
+      <p>Complains that a non-procedure is being invoked:  Gauche, MIT, Guile, Kawa, SCM, Foment, Scheme 9</p>
+      <p>Complains that <span class="monospace">foodle</span> is not defined: Ypsilon</p>
+      <p>No support for <span class="monospace">syntax-rules</span>: NexJ, JScheme, KSi, SigScheme, Shoe, TinyScheme, RScheme, S7, BDC, XLisp, Rep, Schemik, UMB, Elk, Llava, Sizzle, FemtoLisp, Dfsch, Inlab</p></div></body></html>

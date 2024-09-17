@@ -1,0 +1,338 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #171</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #171</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-08 00:06:41</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.
+
+This ticket deals specifically with the situation where two identifiers (accessors or mutators) of two field clauses in a `define-record-type` form  are identical. This is not meant to address field names and what happens or what it means if the field names are symbolically equivalent but lexically distinct.</pre>
+    <h2>id</h2>
+    <pre>171</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>arcfide</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Duplicate identifiers in define-record-type</pre>
+    <h2>time</h2>
+    <pre>2011-05-05 23:01:44</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-08 00:06:41</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>10</pre>
+    <h2>raw-time</h2>
+    <pre>1349629601791391</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2012-10-08 00:06:41</pre>
+    <h2>Change at time 2012-10-08 00:06:41</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349629601791391</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2012-10-08 00:06:41</pre>
+    <h2>Change at time 2012-10-08 00:06:41</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349629601791391</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2012-10-08 00:06:41</pre>
+    <h2>Change at time 2012-10-08 00:06:35</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Field names have to be distinct, and so do mutator/accessor names.</pre>
+    <h2>oldvalue</h2>
+    <pre>9</pre>
+    <h2>raw-time</h2>
+    <pre>1349629595819938</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2012-10-08 00:06:35</pre>
+    <h2>Change at time 2011-07-10 21:42:58</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>8</pre>
+    <h2>raw-time</h2>
+    <pre>1310308978000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 21:42:58</pre>
+    <h2>Change at time 2011-07-10 21:42:58</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1310308978000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 21:42:58</pre>
+    <h2>Change at time 2011-07-10 21:41:04</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>We voted to make this an error.</pre>
+    <h2>oldvalue</h2>
+    <pre>7</pre>
+    <h2>raw-time</h2>
+    <pre>1310308864000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 21:41:04</pre>
+    <h2>Change at time 2011-07-10 21:41:04</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1310308864000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 21:41:04</pre>
+    <h2>Change at time 2011-07-10 21:41:04</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1310308864000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-07-10 21:41:04</pre>
+    <h2>Change at time 2011-05-06 04:38:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Okay, technically only the ones used in the constructor have to be distinct.</pre>
+    <h2>oldvalue</h2>
+    <pre>6</pre>
+    <h2>raw-time</h2>
+    <pre>1304631509000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-05-06 04:38:29</pre>
+    <h2>Change at time 2011-05-06 04:31:10</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>''where you have two field names that were the same, which shouldn't cause a problem since they are not used anywhere''
+
+This is '''JUST WRONG''', and has been corrected repeatedly.  Field names are used in the definition of a SRFI 9 constructor.  Consider this:
+
+{{{
+  (define-record-type :pare
+    (kons x x)
+    pare?
+    (x kar set-kar!)
+    (x kdr))
+}}}
+
+Which argument of `kons` is identified with which field?  Field types have to be distinct identifiers (not merely distinct symbols), though technically they don't have to be distinct from accessor/modifier names.</pre>
+    <h2>oldvalue</h2>
+    <pre>5</pre>
+    <h2>raw-time</h2>
+    <pre>1304631070000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-05-06 04:31:10</pre>
+    <h2>Change at time 2011-05-06 04:14:36</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>I have adjusted the language to allow for both accessors and mutators. What I wanted to distinguish was the issue where you want to bind two different procedures to the same name, and where you have two field names that were the same, which shouldn't cause a problem since they are not used anywhere.</pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1304630076000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-05-06 04:14:36</pre>
+    <h2>Change at time 2011-05-06 04:14:36</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.
+
+This ticket deals specifically with the situation where two identifiers (accessors or mutators) of two field clauses in a `define-record-type` form  are identical. This is not meant to address field names and what happens or what it means if the field names are symbolically equivalent but lexically distinct.</pre>
+    <h2>oldvalue</h2>
+    <pre>What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.
+
+This ticket deals specifically with the situation where two accessors that are the exact same identifiers are used. This is not meant to address field names and what happens or what it means if the field names are symbolically equivalent but lexically distinct.</pre>
+    <h2>raw-time</h2>
+    <pre>1304630076000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-05-06 04:14:36</pre>
+    <h2>Change at time 2011-05-06 04:08:58</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Why is this restricted to accessors when its title speaks of identifiers generally?  Surely the same issue arises with conflicts between modifiers, or between an accessor and a modifier.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1304629738000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-05-06 04:08:58</pre>
+    <h2>Change at time 2011-05-06 03:00:45</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1304625645000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-05-06 03:00:45</pre>
+    <h2>Change at time 2011-05-06 03:00:45</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.
+
+This ticket deals specifically with the situation where two accessors that are the exact same identifiers are used. This is not meant to address field names and what happens or what it means if the field names are symbolically equivalent but lexically distinct.</pre>
+    <h2>oldvalue</h2>
+    <pre>What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.</pre>
+    <h2>raw-time</h2>
+    <pre>1304625645000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-05-06 03:00:45</pre>
+    <h2>Change at time 2011-05-06 01:18:56</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1304619536000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-05-06 01:18:56</pre>
+    <h2>Change at time 2011-05-06 01:18:56</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?  More generally, we need to say what happens when any two identifiers are non-unique.</pre>
+    <h2>oldvalue</h2>
+    <pre>What happens if `define-record-type` is specified with two fields that have the same `accessor` identifiers provided for both fields?</pre>
+    <h2>raw-time</h2>
+    <pre>1304619536000000</pre>
+    <h2>ticket</h2>
+    <pre>171</pre>
+    <h2>time</h2>
+    <pre>2011-05-06 01:18:56</pre></body></html>

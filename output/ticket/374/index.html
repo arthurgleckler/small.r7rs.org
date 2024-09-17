@@ -1,0 +1,42 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>374: Treat unknown exit argument as #f</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 374: <span class="summary">Treat unknown exit argument as #f</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-07-15 01:20:41</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">duplicate</div>
+      <div class="source"><a href="/ticket/374/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-03-29 23:19:02</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Currently, it's implementation-dependent what an argument to <span class="monospace">exit</span> other than <span class="monospace">#f</span> means. Ticket <a href="/ticket/373">#373</a>, if it passes, will also define <span class="monospace">#t</span>.</p>
+        <p>This ticket doesn't change that, but just adds language to the effect that if the implementation doesn't know what to do with the argument (i.e. a string on Windows or Posix, or a procedure in any existing OS), it should treat it as <span class="monospace">#f</span> rather than possibly failing to exit.</p>
+        <p>The reason to choose <span class="monospace">#f</span> is that there is in most OSes only one way to express success and many to express failure.  So if an argument is uninterpretable, we can at least interpret it as failure.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-15 01:20:41</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">duplicate</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Being balloted simultaneously with <a href="/ticket/373">#373</a>.</p></div></div></div></div></div></body></html>

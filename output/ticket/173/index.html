@@ -1,0 +1,51 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>173: Unifying BEGINs</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 173: <span class="summary">Unifying BEGINs</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-07-10 21:45:20</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/173/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-05-06 03:40:39</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>In R5RS, there are three kinds of BEGINs:</p>
+        <p>1) All subforms are expressions; this can be used wherever an expression can be used.  (4.2.3)</p>
+        <p>2) All subforms are definitions; this can be used wherever an internal definition can be used.  (5.2.2)</p>
+        <p>3) Subforms can be definitions or expressions intermixed in any order; this can be used only at top level.  (In R7RS we extend this to module top level as well).  (5.1)</p>
+        <p>In particular,</p><span class="monospace">(define (x)
+ (define y 32)
+ (begin
+   (define z 45)
+   (set! y z))
+ y)
+</span>
+        <p>is not licensed by any of these provisions, and consequently is not valid R5RS Scheme.  Nevertheless, all of my usual Schemes accept the above definition except Scheme48/scsh and SSCM -- actually, SSCM fails when you invoke x rather than when you define it.  So I'm proposing that we unify them for R7RS.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 21:45:20</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted not to change this.</p></div></div></div></div></div></body></html>

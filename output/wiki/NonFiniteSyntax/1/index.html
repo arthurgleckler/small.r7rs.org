@@ -1,0 +1,104 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>NonFiniteSyntax</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/NonFiniteSyntax.md">NonFiniteSyntax</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Non&shy;Finite&shy;Syntax</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-03-28 23:04:06</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/NonFiniteSyntax/history">history</a></div>
+      <div class="source"><a href="/wiki/NonFiniteSyntax/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Here's how various Schemes deal with syntax for non-finite inexact numbers.  &quot;Standard syntax&quot; means what R6RS prescribes: <span class="monospace">+inf.0</span> for positive infinity, <span class="monospace">-inf.0</span> for negative infinity, and <span class="monospace">+nan.0</span> (or <span class="monospace">-nan.0</span>) for NaN.  The current draft of R7RS does not prescribe <span class="monospace">-nan.0</span>; it is under ballot at this writing.</p>
+      <p>Racket, Gauche, Chicken (with or without the numbers egg), Bigloo, Scheme48, Guile, Kawa, Chez, Ikarus/Vicare, Larceny, Ypsilon, Mosh, IronScheme, STklos, Spark accept and print the standard syntax.</p>
+      <p>Gambit, Chibi accept and print the standard syntax, except that they do not accept <span class="monospace">-nan.0</span>.</p>
+      <p>MIT, SigScheme, Scheme 9, Dream, Oaklisp, Owl Lisp are excluded because they do not have inexact non-finite numbers.</p>
+      <p>The following table concisely describes the other Schemes in the test suite.  &quot;Std syntax&quot; is &quot;yes&quot; if the Scheme can read the standard syntax, &quot;print&quot; shows what <span class="monospace">(let* ((i (* 1.0e200 1.0e200)) (n (- i i))) (list i (- i) n))</span> prints, and &quot;own syntax&quot; is &quot;yes&quot; if the Scheme can reread what it prints.</p>
+      <table><tr><td class="default">
+            <p>Scheme</p></td><td class="default">
+            <p>std syntax</p></td><td class="default">
+            <p>prints</p></td><td class="default">
+            <p>own syntax</p></td></tr><tr><td class="default">
+            <p>KSi</p></td><td class="default">
+            <p>yes</p></td><td class="default">
+            <p><span class="monospace">(+inf.0 -inf.0 nan.0)</span></p></td><td class="default">
+            <p>yes</p></td></tr><tr><td class="default">
+            <p>NexJ</p></td><td class="default">
+            <p>yes</p></td><td class="default">
+            <p><span class="monospace">(Infinity -Infinity NaN)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>VX</p></td><td class="default">
+            <p>yes</p></td><td class="default">
+            <p><span class="monospace">(inf. -inf. -nan.)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>SCM</p></td><td class="default">
+            <p>*</p></td><td class="default">
+            <p><span class="monospace">(+inf.0 -inf.0 0/0)</span></p></td><td class="default">
+            <p>yes</p></td></tr><tr><td class="default">
+            <p>Scheme 7</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf.0 -inf.0 -nan.0)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>SXM</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf.0 -inf.0 -nan.0)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>Inlab</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf.0 -inf.0 -nan.0)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>UMB</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf.0 -inf.0 -nan)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>Shoe</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf -inf -nan)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>TinyScheme</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf -inf -nan)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>XLisp</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf -inf -nan)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>Schemik</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf -inf -nan)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>scsh</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf. -inf. -nan.)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>Rep</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf. -inf. -nan.)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>RScheme</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf. -inf. -nan.)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>Elk</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(inf -inf -nan.0)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>SISC</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(infinity.0 -infinity.0 nan.0)</span></p></td><td class="default">
+            <p>no</p></td></tr><tr><td class="default">
+            <p>BDC</p></td><td class="default">
+            <p>no</p></td><td class="default">
+            <p><span class="monospace">(Infinity -Infinity NaN)</span></p></td><td class="default">
+            <p>no</p></td></tr></table>
+      <p>[*] Accepts <span class="monospace">+inf.0</span> and <span class="monospace">-inf.0</span> but not <span class="monospace">+nan.0</span> or <span class="monospace">-nan.0</span></p></div></body></html>

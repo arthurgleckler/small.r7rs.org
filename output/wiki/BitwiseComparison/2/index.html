@@ -1,0 +1,239 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BitwiseComparison</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BitwiseComparison.md">BitwiseComparison</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Bitwise&shy;Comparison</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-04-12 11:37:00</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/BitwiseComparison/history">history</a></div>
+      <div class="source"><a href="/wiki/BitwiseComparison/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>The following table compares the names of the bitwise (aka logical) functions of <a href="http://www.lispworks.com/documentation/HyperSpec/Body/c_number.htm">Common Lisp</a>, <a href="http://srfi.schemers.org/srfi-33/srfi-33.html">SRFI 33</a>, <a href="http://srfi.schemers.org/srfi-60/srfi-60.html">SRFI 60</a>, <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-12.html#node_sec_11.4">R6RS</a>, and <a href="/wiki/BitwiseCowan">BitwiseCowan</a>.  SRFI 33 was never finalized, but is a comprehensive proposal.  SRFI 60 (based on SLIB) is smaller but has a few procedures of its own; some of its procedures have both native (often CL) and SRFI 33 names.  R6RS is a subset of SRFI 60, but all procedure names begin with a <span class="monospace">bitwise-</span> prefix.</p>
+      <table><tr><th class="default">
+            <p>Function</p></th><th class="default">
+            <p>CL</p></th><th class="default">
+            <p>SRFI 33</p></th><th class="default">
+            <p>SRFI 60</p></th><th class="default">
+            <p>R6RS</p></th><th class="default">
+            <p>Cowan</p></th></tr><tr><td class="default">
+            <p>Bitwise NOT</p></td><td class="default">
+            <p><span class="monospace">lognot</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-not</span></p></td><td class="default">
+            <p><span class="monospace">lognot</span>, <span class="monospace">bitwise-not</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-not</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-not</span></p></td></tr><tr><td class="default">
+            <p>Bitwise AND (variadic)</p></td><td class="default">
+            <p><span class="monospace">logand</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-and</span></p></td><td class="default">
+            <p><span class="monospace">logand</span>, <span class="monospace">bitwise-and</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-and</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-and</span></p></td></tr><tr><td class="default">
+            <p>Bitwise IOR (variadic)</p></td><td class="default">
+            <p><span class="monospace">logior</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-ior</span></p></td><td class="default">
+            <p><span class="monospace">logior</span>, <span class="monospace">bitwise-ior</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-ior</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-ior</span></p></td></tr><tr><td class="default">
+            <p>Bitwise XOR (variadic)</p></td><td class="default">
+            <p><span class="monospace">logxor</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-xor</span></p></td><td class="default">
+            <p><span class="monospace">logxor</span>, <span class="monospace">bitwise-xor</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-xor</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-xor</span></p></td></tr><tr><td class="default">
+            <p>Bitwise EQV (variadic)</p></td><td class="default">
+            <p><span class="monospace">logeqv</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-eqv</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-xor</span></p></td></tr><tr><td class="default">
+            <p>Bitwise NAND (variadic)</p></td><td class="default">
+            <p><span class="monospace">lognand</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-nand</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-nand</span></p></td></tr><tr><td class="default">
+            <p>Bitwise NOR (variadic)</p></td><td class="default">
+            <p><span class="monospace">lognor</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-nor</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-nor</span></p></td></tr><tr><td class="default">
+            <p>Bitwise EQV (variadic)</p></td><td class="default">
+            <p><span class="monospace">logeqv</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-eqv</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-xor</span></p></td></tr><tr><td class="default">
+            <p>Bitwise AND with NOT of first arg</p></td><td class="default">
+            <p><span class="monospace">logandc1</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-andc1</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-andc1</span></p></td></tr><tr><td class="default">
+            <p>Bitwise AND with NOT of second arg</p></td><td class="default">
+            <p><span class="monospace">logandc2</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-andc2</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-andc2</span></p></td></tr><tr><td class="default">
+            <p>Bitwise OR with NOT of first arg</p></td><td class="default">
+            <p><span class="monospace">logorc1</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-orc1</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-orc1</span></p></td></tr><tr><td class="default">
+            <p>Bitwise OR with NOT of second arg</p></td><td class="default">
+            <p><span class="monospace">logorc2</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-orc2</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-orc2</span></p></td></tr><tr><td class="default">
+            <p>Arithmetic shift</p></td><td class="default">
+            <p><span class="monospace">ash</span></p></td><td class="default">
+            <p><span class="monospace">arithmetic-shift</span></p></td><td class="default">
+            <p><span class="monospace">ash</span>, <span class="monospace">arithmetic-shift</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-arithmetic-shift</span></p></td><td class="default">
+            <p><span class="monospace">arithmetic-shift</span></p></td></tr><tr><td class="default">
+            <p>Population count</p></td><td class="default">
+            <p><span class="monospace">logcount</span></p></td><td class="default">
+            <p><span class="monospace">bit-count</span></p></td><td class="default">
+            <p><span class="monospace">logcount</span>, <span class="monospace">bit-count</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-bit-count</span></p></td><td class="default">
+            <p><span class="monospace">bit-count</span></p></td></tr><tr><td class="default">
+            <p>Integer length</p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-integer-length</span></p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td></tr><tr><td class="default">
+            <p>Integer length</p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-integer-length</span></p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td></tr><tr><td class="default">
+            <p>Mask selects source of bits</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-merge</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-if</span>, <span class="monospace">bitwise-merge</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-if</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-if</span></p></td></tr><tr><td class="default">
+            <p>Test single bit</p></td><td class="default">
+            <p><span class="monospace">logbitp</span></p></td><td class="default">
+            <p><span class="monospace">bit-set?</span></p></td><td class="default">
+            <p><span class="monospace">logbit?</span>, <span class="monospace">bit-set?</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-bit-set?</span></p></td><td class="default">
+            <p><span class="monospace">bit-set?</span></p></td></tr><tr><td class="default">
+            <p>See if any mask bits set</p></td><td class="default">
+            <p><span class="monospace">logtest</span></p></td><td class="default">
+            <p><span class="monospace">any-bits-set?â€ </span></p></td><td class="default">
+            <p><span class="monospace">logtest</span>, <span class="monospace">any-bit-set?</span></p></td><td class="default">
+            <p>---</p></td></tr><tr><td class="default">
+            <p>See if all mask bits set</p></td><td class="default">
+            <p>---</p></td><td class="left">
+            <p><span class="monospace">all-bits-set?</span>â€</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">every-bit-set?</span></p></td></tr><tr><td class="default">
+            <p>Replace single bit</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">copy-bit</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-copy-bit</span></p></td><td class="default">
+            <p><span class="monospace">copy-bit</span></p></td></tr><tr><td class="default">
+            <p>Find first bit set</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">first-set-bit</span></p></td><td class="default">
+            <p><span class="monospace">log2-binary-factors</span>, <span class="monospace">first-set-bit</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">first-set-bit</span></p></td></tr><tr><td class="default">
+            <p>Extract bit field*</p></td><td class="default">
+            <p><span class="monospace">ldb</span></p></td><td class="default">
+            <p><span class="monospace">extract-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field</span></p></td></tr><tr><td class="default">
+            <p>Test bit field*</p></td><td class="default">
+            <p><span class="monospace">ldb-test</span></p></td><td class="left">
+            <p><span class="monospace">test-bit-field?</span>â€</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td></tr><tr><td class="default">
+            <p>Clear bit field</p></td><td class="default">
+            <p><span class="monospace">mask-field</span></p></td><td class="left">
+            <p><span class="monospace">clear-bit-field</span>â€</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td></tr><tr><td class="default">
+            <p>Replace bit field*</p></td><td class="default">
+            <p><span class="monospace">dpb</span></p></td><td class="left">
+            <p><span class="monospace">replace-bit-field</span>â€</p></td><td class="default">
+            <p><span class="monospace">copy-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-copy-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-replace</span></p></td></tr><tr><td class="default">
+            <p>Replace corresponding bit field</p></td><td class="default">
+            <p><span class="monospace">deposit-field</span></p></td><td class="left">
+            <p><span class="monospace">copy-bit-field</span>â€</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bit-field-replace-same</span></p></td></tr><tr><td class="default">
+            <p>Rotate bit field</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">rotate-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-rotate-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-rotate</span></p></td></tr><tr><td class="default">
+            <p>Reverse bit field</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">reverse-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-reverse-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-reverse</span></p></td></tr><tr><td class="default">
+            <p>Integer to boolean list</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">integer-&gt;list</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">integer-&gt;list</span></p></td></tr><tr><td class="default">
+            <p>Boolean list to integer</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">list-&gt;integer</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">list-&gt;integer</span></p></td></tr><tr><td class="default">
+            <p>Booleans to integer</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">booleans-&gt;integer</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bits</span></p></td></tr></table>
+      <p>*These procedures take a byte-spec object in Common Lisp (which encodes size and position), leading <i>size</i> and <i>position</i> arguments in SRFI-33, and trailing <i>start</i> and <i>end</i> arguments in SRFI-60, R6RS (where present), and <a href="/wiki/BitwiseCowan">BitwiseCowan</a>.  Consequently, they are not quite compatible across specifications.  Note that <span class="monospace">copy-bit-field</span> corresponds to different procedures in SRFI 33 and SRFI 60.</p>
+      <p>â€ These procedures got new names in <a href="http://srfi.schemers.org/srfi-33/mail-archive/msg00023.html">late changes to SRFI 33</a> that were never consummated:</p>
+      <table><tr><td class="default">
+            <p><span class="monospace">any-bits-set?</span></p></td><td class="default">
+            <p><span class="monospace">any-bit-set?</span></p></td></tr><tr><td class="default">
+            <p><span class="monospace">all-bits-set?</span></p></td><td class="default">
+            <p><span class="monospace">every-bit-set?</span></p></td></tr><tr><td class="default">
+            <p><span class="monospace">test-bit-field?</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-any?</span></p></td></tr><tr><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bit-field-every?</span></p></td></tr><tr><td class="default">
+            <p><span class="monospace">extract-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-extract</span></p></td></tr><tr><td class="default">
+            <p><span class="monospace">clear-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-clear</span></p></td></tr><tr><td class="default">
+            <p><span class="monospace">replace-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-replace</span></p></td></tr><tr><td class="default">
+            <p><span class="monospace">copy-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-copy</span></p></td></tr></table></div></body></html>

@@ -1,0 +1,122 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki AggregatesMedernach version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki AggregatesMedernach version 1</h1>
+    <h2>author</h2>
+    <pre>medernac</pre>
+    <h2>comment</h2>
+    <pre>Aggregate type constructor proposal</pre>
+    <h2>ipnr</h2>
+    <pre>88.177.167.25</pre>
+    <h2>name</h2>
+    <pre>AggregatesMedernach</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>
+= AggregatesMedernach =
+
+== Rationale ==
+
+Generating fixed sized data type disjoint from all other types, called AGGREGATES.
+
+General other record or object features may be build on top of these aggregates.
+
+== Aggregates ( constructor / accessor ) constructor ==
+
+  `(create-aggregate `''&lt;marker&gt;''` `''&lt;number-of-components&gt;''`)`
+
+  `(create-aggregate `''&lt;marker&gt;''` `''&lt;number-of-components&gt;''` `''&lt;assertion&gt;''`)`
+
+''&lt;marker&gt;'' ensures that the call to create-aggregate is functionnal, the same aggregate functions are generated if parameters are the same. Notice that an unique value (such as cons cell) could be provided to obtain unique aggregate type.
+
+''&lt;number-of-components&gt;'' is the fixed number of components of this new aggregate.
+
+Optional: ''&lt;assertion&gt;'' contains an input function assertions (for data consistency).
+
+
+''create-aggregate'' returns 2 functions: 
+
+  ''make-&lt;aggregate&gt;'' is a function taking a fixed number ''&lt;number-of-components&gt;'' of arguments, optionally checking its arguments with ''&lt;assertion&gt;'', and returning a new aggregate containing arguments.
+
+  ''&lt;aggregate&gt;-switch'' is explained below.
+
+== Accessing aggregate components == 
+
+Either
+ 1. Unsafe access procedures must be invoked after a predicate checking data type
+ 2. Or safe access procedure, then a check is performed before accessing and an error is signalled if the data type is not what is expected.
+
+However data are aggregated in order to retrieve many part, not only one, so solution 2. requires to perform redundant check for each accessed field and moreover the error in general is fatal to the program execution. Solution 1. alone is unsatisfactory as if an unsafe access procedure is applied to not of the correct kind data then random and unwanted behaviors may appear.
+
+Another solution is to group together data type checking with accessing in a case analysis function (per aggregate types) :
+
+  `(&lt;aggregate&gt;-switch `''&lt;aggregate-case&gt;''` `''&lt;else-case&gt;''`) = (lambda (`''&lt;obj&gt;''`) ...)`
+
+Two cases are possible: if the data ''&lt;obj&gt;'' is of ''&lt;aggregate&gt;'' kind then ''&lt;aggregate-case&gt;'' function is called with the components of the ''&lt;obj&gt;'' data, else ''&lt;else-case&gt;'' is called with ''&lt;obj&gt;''.
+
+Examples:
+{{{
+  ;; Creating my-null ...
+  
+  (my-null-switch &lt;null-case&gt; &lt;else-case&gt;)
+  
+  ;; Creating my-pair ...
+  
+  (my-pair-switch &lt;pair-case&gt; &lt;else-case&gt;)
+}}}  
+With my-car, my-cdr for instance:
+{{{
+  (define (my-car obj else)
+    ((pair-switch (lambda (first second) first) else)
+     obj))
+  
+  (define (my-cdr obj else)
+    ((pair-switch (lambda (first second) second) else)
+     obj))
+}}}     
+The 'external' composition of aggregates is possible:
+{{{
+  (define (my-list-switch &lt;null-case&gt; &lt;pair-case&gt; &lt;else-case&gt;)
+    (pair-switch &lt;pair-case&gt;
+      (null-switch &lt;null-case&gt;
+        &lt;else-case&gt;)))
+
+  (define (sequential-compose-aggregates switch-&gt;case-list &lt;else-case&gt;)
+    (if (null? switch-&gt;case-list)
+        &lt;else-case&gt; 
+        (let ((switch-&gt;case      (car switch-&gt;case-list))
+              (switch-&gt;case-list (cdr switch-&gt;case-list)))
+          (let ((switch (car  switch-&gt;case))
+                (case   (cadr switch-&gt;case)))
+             (switch case (sequential-compose-aggregates switch-&gt;case-list &lt;else-case&gt;))))))
+}}}
+
+== Issues ==
+
+* Maybe it is better to have instead of create-aggregate a syntactic construct to bind the created functions name ?
+
+* Do we need to define a function or macro to create unions of aggregates ? 
+
+* An orthogonal mechanism is foreseen to allow securing data (like a lock mechanism with capabilities) but this is not the subject of this page.
+
+== References ==
+
+ Jonathan A. Rees. &quot;User-defined data types&quot;. Lisp Pointers. 'The Scheme of Things' (column). 1993 
+ 
+</pre>
+    <h2>time</h2>
+    <pre>2010-11-27 21:15:37</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

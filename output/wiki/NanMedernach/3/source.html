@@ -1,0 +1,112 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki NanMedernach version 3</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki NanMedernach version 3</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>NanMedernach</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= {{{NaNs}}} library proposal = 
+
+== Library proposal == 
+       
+`(nan? &lt;obj&gt;)`
+
+`nan?` returns `#t` if `&lt;obj&gt;` is a NaN. 
+
+`(nan)`
+
+Returns a {{{NaN}}}  with an  implementation-defined chosen  payload.  Implementations are free to return different {{{NaNs}}} for each `nan` invocation or not. The reader calls  the `nan` function with no parameter each time it encounters a {{{NaN}}} representation such as &quot;+nan.0&quot;.
+
+`(nan &lt;payload&gt;)`
+
+Returns a {{{NaN}}} with the given payload as its content.  Valid values for `&lt;payload&gt;` are implementation-dependent.
+
+`(nan-&gt;payload &lt;obj&gt;)`
+
+Returns the payload content of `&lt;obj&gt;` if it is a {{{NaN}}}.
+
+
+== Rationale ==
+
+This library is about {{{NaNs}}} operation handling.
+
+For IEEE Standard for Floating-Point Arithmetic (IEEE 754) implementation there is one {{{NaN}}} concept but many different {{{NaNs}}}. From the purpose of {{{NaNs}}}, we have to be able to distinguish between {{{NaNs}}}. For that effect, {{{NaNs}}} carry a ''payload'' intended to put diagnosis information about what caused a {{{NaN}}} to be produced.
+
+
+=== Purposes of {{{NaNs}}} ===
+
+  * allowing computation to continue even in the presence of incorrect computation, instead of aborting with an error.
+ 
+  * to be able to discover what kind of error has been encountered if needed, by propagating a {{{NaN}}} value.
+
+
+When the reader reads &quot;+nan.0&quot;, it has to choose one particular internal representation for it.  It is free to choose one representation shared for all &quot;+nan.0&quot; or to choose a different one each time it encounters another &quot;nan.0&quot;. This is what the following means:
+
+{{{
+  (eqv? +nan.0 +nan.0) =&gt; unspecified
+}}}
+
+However the identity of a particular {{{NaN}}} should not be questioned. I mean I think we should have this:
+
+{{{
+  (let ((a +nan.0)) (eqv? a a)) =&gt; #t
+}}}
+
+The following is a desirable behaviour, but I would not push for it into the standard:
+
+{{{
+  (let ((a (/ 0.0 0.0)) (b (sin +inf.0))) (eqv? a b)) =&gt; #f 
+}}}
+  
+== Use cases examples ==
+
+ * Report invalid sensor values
+
+Instead of returning strange values such as 99999 which could be mistaken for real ones and cause dramatic effects, sensors may use {{{NaNs}}} to report invalid values.  A payload may be added to report an additional message.
+
+ * Mark undefined values in a vector of reals
+
+In order to identify wrong usage of uninitialased vectors, one could fill vectors with {{{NaNs}}} containing indexes in their payloads.
+
+{{{
+(define (make-reals-vector N)
+  (if (&gt;= N 0)
+    (let ((result (make-vector N)))
+      (let loop ((i 0))
+        (if (&lt; i N)
+            (begin 
+              (vector-set! result i (nan i))
+              (loop (+ i 1)))
+            result )))
+    (error &quot;make-float-vector: negative argument&quot;)))
+}}}    
+
+
+== Comments by John Cowan ==
+
+I think the payload should be constrained to be an exact non-negative integer interpreted as a sequence of bits.   In IEEE formats, the sign bit is part of the payload, and should be extractable separately from the payload using `nan-negative?` or some such predicate.  In addition, the sense of the signaling/quiet bit is implementation-dependent (it is always the highest-order bit of the mantissa, but whether 1 is signaling or quiet depends on the hardware), and so `nan-signaling?` should also be added.
+
+In addition, the requirement that `read` invoke `nan` seems pointless to me.  If `read` returns any old NaN, that should be good enough. </pre>
+    <h2>time</h2>
+    <pre>2012-06-07 01:34:45</pre>
+    <h2>version</h2>
+    <pre>3</pre></body></html>

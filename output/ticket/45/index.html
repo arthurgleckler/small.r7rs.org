@@ -1,0 +1,210 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>45: Record-let syntax and semantics</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 45: <span class="summary">Record-let syntax and semantics</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-11-29 01:54:10</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">medernac</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/45/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2010-03-11 16:16:58</div>
+      <div class="type">enhancement</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>(record-let &lt;record-data&gt;
+            ((&lt;variable&gt; &lt;field&gt;)
+              ...)
+             &lt;body&gt;)</p>
+        <p>Where each &lt;variable&gt; is filled with the corresponding data &lt;field&gt; from &lt;record-data&gt; as in a &lt;let&gt; expression, then the &lt;body&gt; is evaluated with these bindinds added and last expressions is returned. It is an error if the &lt;record-data&gt; does not contain corresponding &lt;fields&gt;.</p>
+        <p>Notice that this works directly on the data itself and that the data may contain more fields than the one cited in the record-let expression allowing code to be reused for inherited records.</p>
+        <ul>
+          <li>Do we need to be able to check at runtime if a given record data has a given field ?</li></ul></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-03-12 12:22:34</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>This will only work if the field names are available at run time, unless the type is also available at compile time.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-03-12 12:27:43</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>An alternate implementation that uses (&lt;record-data&gt; &lt;record-type-descriptor&gt;) instead of &lt;record-data&gt; above will enable record-let to work entirely at compile-time.</p>
+              <p>I also think that let-record is maybe a more consistent name.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">medernac</div>
+            <div class="time">2010-03-13 18:23:30</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Replying to [comment:1 cowan]:</p>
+              <blockquote class="citation">
+                <p>This will only work if the field names are available at run time, unless the type is also available at compile time.</p></blockquote>
+              <p>Yes, It must keep track of fields name. Some kind of reflection is needed for that to work.</p>
+              <p>By the way, would it be better if fields are restricted to be symbols only ?</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">medernac</div>
+            <div class="time">2010-03-13 18:30:02</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Replying to [comment:2 arcfide]:</p>
+              <blockquote class="citation">
+                <p>An alternate implementation that uses (&lt;record-data&gt; &lt;record-type-descriptor&gt;) instead of &lt;record-data&gt; above will enable record-let to work entirely at compile-time. 
+ 
+ I also think that let-record is maybe a more consistent name.</p></blockquote>
+              <p>I am Ok for whatever name.</p>
+              <p>By the way notice that if we have only single-inheritance (hierachy of types) it is easy by convention to always use the same index number as parent-type fields. So an interpreter/compiler just has to lookup from the fields name which is the corresponding index for fields.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">arcfide</div>
+            <div class="time">2010-03-15 07:24:27</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Replying to [comment:4 medernac]:</p>
+              <blockquote class="citation">
+                <p>By the way notice that if we have only single-inheritance (hierachy of types) it is easy by convention to always use the same index number as parent-type fields. So an interpreter/compiler just has to lookup from the fields name which is the corresponding index for fields.</p></blockquote>
+              <p>If we have to do lookups, I'm a little concerned. Lookups can be elided when dealing with a sufficiently smart compiler in many/most cases, but not all, and with interpreters that don't do such optimizations, you will end up having much slower access. Especially when dealing with parents that could come from other libraries, the speed issues become more obvious since it is very hard to do that sort of reasoning in general.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">kumoyuki</div>
+            <div class="time">2010-03-15 14:58:39</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Replying to [comment:4 medernac]:</p>
+              <blockquote class="citation">
+                <p>By the way notice that if we have only single-inheritance (hierachy of types) 
+ it is easy by convention to always use the same index number as parent-type
+ fields. So an interpreter/compiler just has to lookup from the fields name
+ which is the corresponding index for fields.</p></blockquote>
+              <p>It's worth noting that delegation techniques are strictly more expressive than inheritance based ones and they completely avoid the hair of multiple inheritance (this was shown in an OOPSLA paper somewhere around 1994-1996 but I've forgotten the title). I think it would be lovely to see a programmer-defined aggregate system that supported delegation as the core mechanism rather than any form of inheritance.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2010-03-15 23:28:49</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The only &quot;methods&quot; we have are getters, setters, and predicates.  It's not clear to me what the difference is between delegation and inheritance in that context.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">kumoyuki</div>
+            <div class="time">2010-03-16 04:40:00</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Replying to [comment:7 cowan]:</p>
+              <blockquote class="citation">
+                <p>The only &quot;methods&quot; we have are getters, setters, and predicates.  It's not clear to me what the difference is between delegation and inheritance in that context.</p></blockquote>
+              <p>The reference to inheritance was the OP's. The difference could be trivial; the issue is what types does a new value become a member of (and expose the interfaces of). I do realize that the proposal we are commenting on contains no such information, and I wonder how OP got to inheritance in the first place. The lack of anything resembling a type algebra, even as simple a one as SI, has often been mentioned as one of SRFI-9's main drawbacks, so I expect that it *will* come up somewhere along the line. In fact it is one of the few areas where I'd be willing to see more complexity come into Thing1.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">medernac</div>
+            <div class="time">2010-03-17 02:22:38</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Replying to [comment:8 kumoyuki]:</p>
+              <p>To illustrate the idea, here is what I am personnaly using in association with let-record for record definition with types:</p><span class="monospace">(record-constructor &lt;Constructor name&gt;
+		    &lt;Type checker name&gt;
+		    &lt;Fields name&gt;
+		    (&lt;Type&gt; &lt;data&gt; &lt;getter&gt;) ...)
+</span>
+              <p>Where I view type mainly as predicates. I don't have setters, but I
+see no problem in adding it. Here are some examples:</p><span class="monospace">;; A flat record
+(record-constructor make-job
+		    job-type?
+		    job-fields
+		    (real?   release  job-release)
+		    (real?   duration  job-duration)
+		    (string? username  job-username))
+
+(define (List-of type?)
+  (lambda (data)
+    (and (list? data)
+         (let loop ((tmp data))
+	    (or (null? tmp)
+	        (and (type? (car tmp))
+	             (loop (cdr tmp))))))))
+
+;; A record with recursive type field
+(record-constructor Tree-of-integer
+		    Tree-of-integer-type?
+		    Tree-of-integer-fields
+		    (integer? element Tree-of-integer-&gt;element)
+		    ((List-of Tree-of-integer-type?) subtrees Tree-of-integer-&gt;subtrees))
+
+(Tree-of-integer 17 (list (Tree-of-integer 12 '())))
+</span>
+              <p>But I could also do type parameterization like this:</p><span class="monospace">(record-constructor (&lt;Constructor name&gt; &lt;Type parameter&gt; ...)
+		    &lt;Type checker name&gt;
+		    &lt;Fields name&gt;
+		    (&lt;Type&gt; &lt;data&gt; &lt;getter&gt;) ...)
+</span>
+              <p>For instance:</p><span class="monospace">(record-constructor (Tree type?)
+		    Tree-type?
+		    Tree-fields
+		    (type? element Tree-&gt;get-element)
+		    ((List-of (Tree type?)) subtrees Tree-&gt;get-subtrees))
+
+</span>
+              <p>And then generate records like this:</p><span class="monospace">(define make-integer-tree (Tree integer?))
+(make-integer-tree 17 (list (make-integer-tree 12 '())))
+
+(define make-string-tree (Tree string?))
+(make-string-tree &quot;foo&quot; (list (make-string-tree &quot;bar&quot; '())))
+</span>
+              <p>Then let-record easily allows access to fields and I could reuse the same code for records sharing some fields.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-07-10 18:28:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>We voted no.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-11-29 01:54:00</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-11-29 01:54:10</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

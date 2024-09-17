@@ -1,0 +1,63 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BeyondCurryingHemann</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BeyondCurryingHemann.md">BeyondCurryingHemann</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Beyond&shy;Currying&shy;Hemann</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2017-07-02 06:42:35</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/BeyondCurryingHemann/history">history</a></div>
+      <div class="source"><a href="/wiki/BeyondCurryingHemann/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p><a href="http://webyrd.net/scheme-2013/papers/HemannCurrying2013.pdf">λ* : Beyond Currying</a></p>
+      <p>Notes:</p>
+      <p>The proposed name is <span class="monospace">lambda*</span>, not <span class="monospace">λ*</span>.</p>
+      <p>The proposal is Variant 5, which has no support for zero-argument or zero-or-more-arguments procedures, with the additional feature of Variant 8, supporting multi-expression bodies.  Section 4 says &quot;nullary <span class="monospace">λ∗</span> functions seem to be of little to no use&quot;, and I agree:  they seem to be provided only so that <span class="monospace">lambda*</span> can fully subsume <span class="monospace">lambda</span>, which I think is a mistake (it makes detecting an error in the number of arguments at compile time impossible).</p>
+      <p>Here is the (not yet debugged) source code:</p><span class="monospace">(import (scheme case-lambda))
+
+(define-syntax lambda*
+  (syntax-rules ()
+    ((_ a* e* ...)
+     (lambda*-h a* (let () e* ...)))))
+
+(define-syntax lambda*-h
+  (syntax-rules ()
+    ((_ (a a* ...) e) (posary-h (a a* ...) e))
+    ((_ (a a* ... . rest) e)
+     (polyvariadic-h (a a* ... . rest) e))))
+
+(define-syntax posary-h 
+  (syntax-rules ()
+    ((_ (a a* ...) e)
+     (letrec
+       ((rec
+         (case-lambda
+           (() rec)
+           ((a a* ...) e)
+           ((a a* ... . rest)
+            (apply (rec a a* ...) rest))
+           (some ((lambda more (apply rec (append some more))))))))
+        rec))))
+
+(define-syntax polyvariadic-h
+  (syntax-rules ()
+    ((_ (a a* ... . rest) e)
+    (letrec
+      ((rec 
+        (case-lambda
+          (() rec)
+          ((a a* ... . rest) e)
+          (some ((lambda more (apply rec (append some more))))))))
+      rec))))
+
+</span></div></body></html>

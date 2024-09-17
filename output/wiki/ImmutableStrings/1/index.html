@@ -1,0 +1,29 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ImmutableStrings</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ImmutableStrings.md">ImmutableStrings</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Immutable&shy;Strings</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-07-15 22:51:33</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/ImmutableStrings/history">history</a></div>
+      <div class="source"><a href="/wiki/ImmutableStrings/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is an attempt to determine which Schemes treat literal strings as immutable, using the code</p><span class="monospace">(define y &quot;abcde&quot;)
+(string-set! y 0 #\c)
+y
+</span>
+      <p>Mutates <span class="monospace">y</span> to the value <span class="monospace">&quot;cbcde&quot;</span>: MIT, Gambit, Chicken, Bigloo, Detroit, Stalin, Scheme-&gt;C, SCM, Chez, Vicare, Larceny, Ypsilon, JScheme, RScheme, S7, Unlikely, BDC, XLisp, UMB, Elk, SXM, Inlab, Foment, Picrin, Chibi</p>
+      <p>Raises an error about mutating an immutable object: Racket, Gauche, Scheme48/scsh, Guile, Kawa, SISC, Mosh, IronScheme, STklos, KSi, SigScheme, TinyScheme, Scheme 9, Sizzle, Sagittarius</p>
+      <p>Does not support <span class="monospace">string-set!</span>: NexJ, Shoe, Rep, Llava, FemtoLisp, Dfsch, Owl Lisp (no mutation)</p>
+      <p>Does not support <span class="monospace">#\c</span>: MiniScheme, SIOD, Schemik</p></div></body></html>

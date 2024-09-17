@@ -1,0 +1,82 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki MultipleValuesCowan version 5</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki MultipleValuesCowan version 5</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>MultipleValuesCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Multiple values procedure ==
+
+`(values . `''values''`)`
+
+Returns multiple values.
+
+== Multiple values macros ==
+
+`(call-with-values `''producer'' ...` `''consumer''`)`
+
+Invoke the ''producers'' and pass all values returned by them in order to ''consumer''.  This extends R5RS by allowing more than one ''producer''.  Equivalent to Common Lisp's `multiple-value-call`.  See #87.
+
+`(let-values ((`''lambda-list''` `''expression''`)` ...`) `''body''`)` 
+
+Each ''lambda-list'' should be a formal arguments list as for a `lambda` expression, cf. section 4.1.4 of the R5RS.
+
+The ''expressions'' are evaluated in the current environment, the variables of the ''lambda-list'' are bound to fresh locations, the return values of the ''expressions'' are stored in the variables, the ''body'' is evaluated in the extended environment, and the values of the last expression of ''body'' are returned. The ''body'' is a tail body, cf. section 3.5 of the R5RS.
+
+The matching of each ''lambda-list'' to values is done in the same way as in a `lambda` expression, and it is an error for an ''expression'' to return a number of values that does not match its corresponding ''lambda-list''.  (From SRFI 11.)
+
+{{{
+             (let-values (((a b . c) (values 1 2 3 4)))
+               (list a b c))            --&gt; (1 2 (3 4))
+
+             (let ((a 'a) (b 'b) (x 'x) (y 'y))
+               (let-values (((a b) (values x y))
+                            ((x y) (values a b)))
+                 (list a b x y)))       --&gt; (x y a b)
+}}}
+
+`(let*-values ((`''lambda-list''` `''expression''`)` ...`) `''body''`)` 
+
+`let*-values` is similar to `let-values`, but the bindings are performed sequentially from left to right, and the region of a binding indicated by (&lt;formals&gt; &lt;expression&gt;) is the part of the `let*-values` expression to the right of the binding. Thus the second binding is done in an environment in which the first binding is visible, and so on.  (From SRFI 11.)
+
+{{{
+             (let ((a 'a) (b 'b) (x 'x) (y 'y))
+               (let*-values (((a b) (values x y))
+                             ((x y) (values a b)))
+                 (list a b x y)))       --&gt; (x y x y)
+}}}
+
+
+`(set!-values (`''lambda-list''`) `''expression''`)`
+
+Assigns the values returned by ''expression'' to the variables in ''lambda-list''.
+Returns undefined values.  Equivalent to Common Lisp's `multiple-variable-setq`.
+
+`(define-values (`''var'' ...`) `''expr''`)`
+
+Defines the ''vars'' and binds them to the values of ''expr''.
+
+</pre>
+    <h2>time</h2>
+    <pre>2010-12-10 08:39:59</pre>
+    <h2>version</h2>
+    <pre>5</pre></body></html>

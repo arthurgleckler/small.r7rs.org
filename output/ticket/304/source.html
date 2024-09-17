@@ -1,0 +1,250 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #304</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #304</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-05 12:25:17</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>[Based on feedback from Marc Feeley.]
+
+Currently symbols can either be delimited with pipes |...|
+with optional hex escapes inside, or include hex escapes
+directly without the pipes.  This wastes two characters
+that were reserved in R5RS, the pipe and the backslash,
+when either one by itself would be sufficient to represent
+all symbols.  This is especially unfortunate because both
+characters are used as extensions in various Schemes -
+the pipe being another symbol character in SCSH (to
+represent shell-style pipes and C-style operators) and
+the backslash used in Gambit's infix syntax.  We should
+reconsider if we really need to take up both of these
+characters.</pre>
+    <h2>id</h2>
+    <pre>304</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>alexshinn</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>symbol literal syntax wastes characters</pre>
+    <h2>time</h2>
+    <pre>2011-10-20 21:24:32</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-05 12:25:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>7</pre>
+    <h2>raw-time</h2>
+    <pre>1349414717683588</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:25:17</pre>
+    <h2>Change at time 2012-10-05 12:25:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349414717683588</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:25:17</pre>
+    <h2>Change at time 2012-10-05 12:25:17</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349414717683588</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2012-10-05 12:25:17</pre>
+    <h2>Change at time 2012-04-23 13:08:05</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>6</pre>
+    <h2>raw-time</h2>
+    <pre>1335161285233476</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2012-04-23 13:08:05</pre>
+    <h2>Change at time 2012-04-23 13:08:05</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1335161285233476</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2012-04-23 13:08:05</pre>
+    <h2>Change at time 2012-04-23 13:08:05</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1335161285233476</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2012-04-23 13:08:05</pre>
+    <h2>Change at time 2012-04-05 09:49:41</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>5</pre>
+    <h2>raw-time</h2>
+    <pre>1333594181720498</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 09:49:41</pre>
+    <h2>Change at time 2012-04-05 09:49:41</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1333594181720498</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 09:49:41</pre>
+    <h2>Change at time 2012-04-05 09:19:39</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>The WG voted to adopt this proposal, allowing hex escapes only within identifiers within vertical bars.  Outside such identifiers, `\` is not special.</pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1333592379264803</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2012-04-05 09:19:39</pre>
+    <h2>Change at time 2011-12-03 02:19:56</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>\0 is yucky.
+
+Let's stick with pipes and allow hex syntax only inside them.  This is mildly incompatible with R6RS, I admit, but I don't think it matters that much.  Few people will use these syntaxes in anger anyway.  Escaped pipes sound good in principle, but nobody supports them.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1322849996344848</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2011-12-03 02:19:56</pre>
+    <h2>Change at time 2011-10-24 20:48:15</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Technically we could allow \0 or similar for the empty symbol,
+or use \xNN for a single escape and \|...| for the equivalent of
+the current pipe escape.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1319464095000000</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2011-10-24 20:48:15</pre>
+    <h2>Change at time 2011-10-20 22:22:29</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>If we are to drop one syntax, it must be the hex escape syntax, because it is incomplete: it can't represent the value of `(string-&gt;symbol &quot;&quot;)`.  However, we will still need hex escapes ''inside'' pipes, or the value of `(string-&gt;symbol &quot;|&quot;)` cannot be represented (nor any other symbol containing a pipe); furthermore, symbols containing control characters would be problematic for humans to read or write.
+
+In simple cases the pipe syntax is much clearer than hex escapes, and it is widely supported, in particular by  Racket, Gauche, MIT, Gambit, Chicken, Bigloo, SISC, Chez, Ikarus, STklos, KSi, Oaklisp.  Scsh, SCM, Scheme 9, Scheme 7, Elk, UMB, VX treat | as an ordinary symbol character, though only scsh seems to have a specific use for it; Scheme48, Larceny, Ypsilon, Mosh, !SigScheme throw errors; !IronScheme got confused (or perhaps I did).
+
+Support for the hex escape syntax is more limited.  The R6RS Schemes Chez, Ikarus, Larceny, Ypsilon, Mosh, !IronScheme support it as expected; for whatever reason, the default Racket REPL does not.  I tested the remaining Schemes listed above with the form `'a\x46b`, which should evaluate to `aFb` under the R6RS rules: that works only on Kawa, Scheme48, KSi.    All other Schemes listed above treat `;b` as a comment and do random things with the `a\x46` part.
+</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1319124149000000</pre>
+    <h2>ticket</h2>
+    <pre>304</pre>
+    <h2>time</h2>
+    <pre>2011-10-20 22:22:29</pre></body></html>

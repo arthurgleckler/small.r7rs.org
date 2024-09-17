@@ -1,0 +1,178 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #348</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #348</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-09 21:54:14</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Page 23 [of draft 6], section 5.1: &quot;program parts other than expressions that are present at the top level of a program can be interpreted declaratively&quot; -- what does it mean for program parts to be &quot;interpreted declaratively&quot;? What's the difference between this, and expressions, which are &quot;interpreted imperatively&quot;?
+
+Further on page 24 (section 5.2.1) it is said that &quot;at the top level of a program, a definition [...] has essentially the same effect as the assignment expression&quot;, which further increases my confusion about what is &quot;declarative&quot; and what is not.
+</pre>
+    <h2>id</h2>
+    <pre>348</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>cowan</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Editorial: &quot;Declarative&quot; and &quot;imperative&quot; need explanation</pre>
+    <h2>time</h2>
+    <pre>2012-02-23 07:02:29</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-09 21:54:14</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1349794454167039</pre>
+    <h2>ticket</h2>
+    <pre>348</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 21:54:14</pre>
+    <h2>Change at time 2012-10-09 21:54:14</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349794454167039</pre>
+    <h2>ticket</h2>
+    <pre>348</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 21:54:14</pre>
+    <h2>Change at time 2012-10-09 21:54:14</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349794454167039</pre>
+    <h2>ticket</h2>
+    <pre>348</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 21:54:14</pre>
+    <h2>Change at time 2012-06-21 11:35:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>These terms aren't used anywhere else and don't add anything much here, so I ditched them.  The text now reads:
+
+
+Program parts other than expressions that are present at the top level of the problems
+cause bindings to be created in the top level environment or modify the value of existing top-level bindings.  The initial (or &quot;top level&quot;) Scheme environment is empty except for {\cf import}, so further bindings can only be introduced with {\cf import}.
+
+Expressions occurring at the top level of a program are executed in order when the program is invoked or loaded, and typically perform some kind of initialization.
+</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1340253344606053</pre>
+    <h2>ticket</h2>
+    <pre>348</pre>
+    <h2>time</h2>
+    <pre>2012-06-21 11:35:44</pre>
+    <h2>Change at time 2012-06-21 11:35:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>cowan</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1340253344606053</pre>
+    <h2>ticket</h2>
+    <pre>348</pre>
+    <h2>time</h2>
+    <pre>2012-06-21 11:35:44</pre>
+    <h2>Change at time 2012-06-21 11:35:44</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1340253344606053</pre>
+    <h2>ticket</h2>
+    <pre>348</pre>
+    <h2>time</h2>
+    <pre>2012-06-21 11:35:44</pre>
+    <h2>Change at time 2012-02-23 14:52:49</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1329979969355457</pre>
+    <h2>ticket</h2>
+    <pre>348</pre>
+    <h2>time</h2>
+    <pre>2012-02-23 14:52:49</pre>
+    <h2>Change at time 2012-02-23 14:52:49</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1329979969355457</pre>
+    <h2>ticket</h2>
+    <pre>348</pre>
+    <h2>time</h2>
+    <pre>2012-02-23 14:52:49</pre></body></html>

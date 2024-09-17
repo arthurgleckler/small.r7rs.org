@@ -1,0 +1,67 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>372: Formal Comment: (exit #t) should be the same as (exit)</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 372: <span class="summary">Formal Comment: (exit #t) should be the same as (exit)</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 03:02:49</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/372/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-03-29 04:59:48</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Submitter's Name:           Alan Watson
+Submitter's Email Address:  alan at alan-watson dot org
+Draft Version of Report:    6
+Section of draft R7RS:      6.13.4 System interface</p>
+        <p>The draft R7RS follows the R6RS in specifying that <span class="monospace">(exit)</span> is a normal exit, specifying that <span class="monospace">(exit #f)</span> is an abnormal exit, and leaving the interpretation of arguments other than <span class="monospace">#f</span> to the implementation.</p>
+        <p>I suggest that the R7RS should specify that <span class="monospace">(exit #t)</span> is identical to <span class="monospace">(exit)</span>. (Perhaps it would be clearer to state that <span class="monospace">(exit #t)</span> is a normal exit and <span class="monospace">(exit)</span> is identical to <span class="monospace">(exit #t)</span>).</p>
+        <p>This allows the exit status to be handled more uniformly by code which might exit normally or abnormally. For example, in a compiler it is often useful to continue after a syntax error, but in this case one still wants to indicate an abnormal exit. If <span class="monospace">(exit #t)</span> is specified as above, one simply has to keep track of whether an error has occurred in a boolean variable and then:</p><span class="monospace">  (exit (not error-occurred))
+</span>
+        <p>rather than the more cumbersome:</p><span class="monospace">  (if error-occurred
+    (exit #f)
+    (exit))
+</span></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-03-29 05:01:05</div></div>
+          <div class="changes">
+            <div><span class="field">summary</span><span class="old-value">Formal Comment:</span><span class="new-value">Formal Comment: (exit #t) should be the same as (exit)</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-02 10:06:53</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 03:02:49</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

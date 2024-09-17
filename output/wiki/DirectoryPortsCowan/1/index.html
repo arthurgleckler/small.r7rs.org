@@ -1,0 +1,31 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>DirectoryPortsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/DirectoryPortsCowan.md">DirectoryPortsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Directory&shy;Ports&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-09-17 05:22:08</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/DirectoryPortsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/DirectoryPortsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Directoryports">Directory ports</h2>
+      <p>This module depends on the acceptance of <a href="/wiki/PortsCowan">PortsCowan</a> or something like it, as it uses the framework of that proposal.</p>
+      <h2 id="Procedures">Procedures</h2>
+      <p><span class="monospace">(directory? </span><i>filename</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>filename</i> is the name of a directory.  <i>Filename</i> is a string or an implementation-dependent object.</p>
+      <p><span class="monospace">(open-directory </span><i>filename</i><span class="monospace">)</span></p>
+      <p><i>Filename</i> can be a string or a <i>settings list</i> as described in <a href="/wiki/PortsCowan">PortsCowan</a>.  In addition to the keys <span class="monospace">path</span> and <span class="monospace">encoding</span> specified there, the key <span class="monospace">hidden</span> can have the values <span class="monospace">#f</span> (no hidden files), <span class="monospace">#t</span> (all files), and <span class="monospace">dots</span> (all files except <span class="monospace">.</span> and <span class="monospace">..</span>).  On Posix systems, hidden files have names beginning with <span class="monospace">.</span>; on Windows, hidden files are named <span class="monospace">.</span>, <span class="monospace">..</span>, or have the <span class="monospace">hidden</span> file attribute.</p>
+      <p>The returned value is an input port, but it is neither a binary port nor a character port, so the only procedure callable on it is <span class="monospace">read</span>, which returns the next available filename as a string (or, when necessary, an implementation-dependent object).  Filenames are returned in arbitrary order.</p>
+      <p><span class="monospace">(directory-port? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a directory port.</p></div></body></html>

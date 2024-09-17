@@ -1,0 +1,42 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>157: syntax-rules literal matching semantics</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 157: <span class="summary">syntax-rules literal matching semantics</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2011-05-19 16:02:43</div>
+      <div class="component">WG1 - Macros</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">worksforme</div>
+      <div class="source"><a href="/ticket/157/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2011-04-19 07:27:51</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Syntax-rules literals match if they both have the same name and are unbound, or if they are the same binding.  In the presence of a module system, the meaning of &quot;same binding&quot; is not obvious.  Are imported bindings (possibly under different names) required to match?</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">alexshinn</div>
+            <div class="time">2011-05-19 16:02:43</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">worksforme</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>In practice any implementation which takes liberties
+with matching here is likely to follow the Chicken/Chibi
+semantics, and so the bindings will always match.</p></div></div></div></div></div></body></html>

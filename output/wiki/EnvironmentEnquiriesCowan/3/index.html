@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>EnvironmentEnquiriesCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/EnvironmentEnquiriesCowan.md">EnvironmentEnquiriesCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Environment&shy;Enquiries&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2012-01-03 02:21:12</div>
+      <div class="version">3<span class="comment"></span><a href="/wiki/EnvironmentEnquiriesCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/EnvironmentEnquiriesCowan/3/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="EnvironmentEnquiries">Environment Enquiries</h1>
+      <p>This is a proposal for environment enquiries, which provide information <i>at run time</i> about the hardware and software configuration on which a Scheme program is being executed.  They are mostly based on Common Lisp with influence from the Posix <span class="monospace">uname()</span> system call.  The names in this proposal are in the <span class="monospace">(scheme enquiries)</span> module.</p>
+      <p>The following procedures with no arguments return either a string, or <span class="monospace">#f</span> if the implementation cannot provide an appropriate and relevant result.  It is an error to mutate the returned string.</p>
+      <p>The phrase &quot;a <span class="monospace">cond-expand</span> feature identifier related to&quot; means an identifier used in <span class="monospace">cond-expand</span> clauses which is intended to have the same meaning to a human being as the returned string, but possibly differs in typographical details such as being all lower case or having hyphens instead of spaces.  There is no algorithmic mapping between the string and the identifier.</p>
+      <p><span class="monospace">(implementation-type)</span></p>
+      <p>Returns the name of the Scheme implementation.  This procedure corresponds roughly to Common Lisp's <span class="monospace">lisp-implementation-type</span> function.  A <span class="monospace">cond-expand</span> feature identifier related to this string is also provided.</p>
+      <p><span class="monospace">(implementation-version)</span></p>
+      <p>Returns the version of the Scheme implementation.  This procedure corresponds roughly to Common Lisp's <span class="monospace">lisp-implementation-version</span> function.  A <span class="monospace">cond-expand</span> feature identifier related to the string returned by <span class="monospace">(string-concat (scheme-implementation-type) &quot;-&quot; (scheme-implementation-version))</span> is also provided.</p>
+      <p><span class="monospace">(cpu-architecture)</span></p>
+      <p>Returns the CPU architecture, real or virtual, on which this implementation is executing.  Semi-standard values are <span class="monospace">i386, x86-64, ppc, sparc, jvm, clr, llvm</span>.  This procedure corresponds roughly to Common Lisp's <span class="monospace">machine-type</span> function.  On Posix systems, the result may be derived from the <span class="monospace">machine</span> field of the <span class="monospace">utsname</span> structure.  A <span class="monospace">cond-expand</span> feature identifier related to this string is also provided.</p>
+      <p><span class="monospace">(c-memory-model)</span></p>
+      <p>Returns the C memory model applicable to this implementation.  Semi-standard values are <span class="monospace">ilp32, lp64, ilp64</span>.  A <span class="monospace">cond-expand</span> feature identifier related to this string is also provided.</p>
+      <p><span class="monospace">(system-instance)</span></p>
+      <p>Returns a name for the particular instance of the system on which the implementation is running.  Possible values are the DNS or WINS host name, the DNS full name, an IP address associated with the system, or a MAC address associated with the system.  On Posix systems, the result may be derived from the <span class="monospace">nodename</span> field of the <span class="monospace">utsname</span> structure.</p>
+      <p><span class="monospace">(os-type)</span></p>
+      <p>Returns a name for the operating system (or equivalent) on which the implementation is running.  Semi-standard values are <span class="monospace">unix, darwin, linux, bsd, freebsd, solaris</span>.  This procedure corresponds roughly to Common Lisp's <span class="monospace">software-type</span> function.  On Posix systems, the result may be derived from the <span class="monospace">sysname</span> field of the <span class="monospace">utsname</span> structure.  A <span class="monospace">cond-expand</span> feature identifier related to this string is also provided.</p>
+      <p><span class="monospace">(os-version)</span></p>
+      <p>Returns the version of the operating system (or equivalent) on which the implementation is running.  On Posix systems, the result may be derived from the <span class="monospace">release</span> and/or <span class="monospace">version</span> fields of the <span class="monospace">utsname</span> structure.  This procedure corresponds roughly to Common Lisp's <span class="monospace">software-version</span> function.</p>
+      <p>The following procedure returns a list of symbols.  It is an error to mutate this list.</p>
+      <p><span class="monospace">(get-features)</span></p>
+      <p>Returns the symbols which are provided as <span class="monospace">cond-expand</span> feature identifiers by the implementation.</p>
+      <p>Note: Rough equivalents to the Common Lisp <span class="monospace">machine-version</span>, <span class="monospace">short-site-name</span>, and <span class="monospace">long-site-name</span> are not provided.  They are inconsistently implemented and of doubtful utility.</p></div></body></html>

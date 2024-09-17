@@ -1,0 +1,152 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>FixnumsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/FixnumsCowan.md">FixnumsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Fixnums&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-09-15 00:05:22</div>
+      <div class="version">9<span class="comment"></span><a href="/wiki/FixnumsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/FixnumsCowan/9/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Abstract">Abstract</h2>
+      <p>Fixnums are an implementation-defined subset of the exact integers.
+Every implementation of this SRFI must define its fixnum range as a closed
+interval [-2<sup><i>w</i>-1</sup>, 2<sup><i>w</i>-1</sup>-1], 
+where <i>w</i> is an integer greater than or equal to 24.  Every
+mathematical integer within an implementation's fixnum range must
+correspond to an exact integer that is representable within the
+implementation.
+A fixnum is an exact integer whose value lies within this
+fixnum range.</p>
+      <h2 id="Rationale">Rationale</h2>
+      <p>Fixnum arithmetic is already supported by many systems, mainly for efficiency. Standardizing fixnum arithmetic increases the portability of code that uses it. Standardizing the range of fixnums would make fixnum operations inefficient on some systems, which would defeat their purpose. Therefore, this SRFI specifies some of the semantics of fixnums, but makes the range implementation-dependent.</p>
+      <p>Existing implementations employ different implementation strategies for fixnums: Some implement the model specified by R6RS (overflows cause exceptions), some implement modular arithmetic (overflows “wrap around”), and others do not handle arithmetic overflows at all.  In programs that use fixnums instead of generic arithmetic, overflows are typically programming mistakes.</p>
+      <h2 id="Specification">Specification</h2>
+      <p>Fixnum operations perform integer arithmetic on their fixnum
+arguments.  If any argument is not a fixnum, or if the mathematical result
+is not representable as a fixnum, it is an error: this is known as the
+<i>fixnum rule</i>.  In particular, this means
+that fixnum operations may return a mathematically incorrect fixnum in these
+situations without raising an error.  Exceptions to the fixnum rule
+are noted below.</p>
+      <p>This SRFI uses <i>fx</i>, <i>fx<sub>1</sub></i>, <i>fx<sub>2</sub></i>, etc., as parameter
+names for fixnum arguments.  Except as noted, the name of fixnum procedures begin with
+the letters <span class="monospace">fx</span>.  In most cases they correspond to an R7RS-small or
+<a href="/wiki/DivisionRiastradh">DivisionRiastradh</a> or <a href="/wiki/BitwiseCowan">BitwiseCowan</a> operation on general integers.</p>
+      <h3 id="Constants">Constants</h3>
+      <p><span class="monospace">fx-width</span></p>
+      <p>Bound to the value <i>w</i> that specifies the implementation-defined range.
+(R6RS <span class="monospace">fixnum-width</span> is a procedure that always returns this value.)</p>
+      <p><span class="monospace">fx-greatest</span></p>
+      <p>Bound to the value 2<sup><i>w</i>-1</sup>-1, the largest representable fixnum.
+(R6RS <span class="monospace">greatest-fixnum</span> is a procedure that always returns this value.)</p>
+      <p><span class="monospace">fx-least</span></p>
+      <p>Bound to the value -2<sup><i>w</i>-1</sup>, the smallest representable fixnum.
+(R6RS <span class="monospace">least-fixnum</span> is a procedure that always returns this value.)</p>
+      <h3 id="Predicate">Predicate</h3>
+      <p><span class="monospace">(fixnum? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an exact integer within the fixnum range,
+and <span class="monospace">#f</span> otherwise.</p>
+      <h3 id="Basicarithmetic">Basic arithmetic</h3>
+      <p>The following procedures are the fixnum counterparts of procedures from R7RS-small:</p><span class="monospace">fxzero? fxpositive? fxnegative? fxodd? fxeven?
+fx= fx&lt; fx&gt; fx&lt;= fx&gt;=
+fxmax fxmin
+fx+ fx- fx*
+fxabs fxsquare fxsqrt fxexpt
+</span>
+      <p>Except for the effects of the fixnum rule, the <span class="monospace">fx</span> versions
+have the same arguments and semantics as their generic counterparts,
+with the following additional modifications:</p>
+      <ul>
+        <li>The procedures <span class="monospace">fx+</span> and <span class="monospace">fx*</span> accept exactly two arguments.</li></ul>
+      <ul>
+        <li>The procedure <span class="monospace">fx-</span> accepts either one or two arguments.</li></ul>
+      <ul>
+        <li>The <span class="monospace">fxsqrt</span> procedure is the counterpart of <span class="monospace">exact-integer-sqrt</span> rather than <span class="monospace">sqrt</span>.</li></ul>
+      <p>Note that in accordance with the fixnum rule the procedure <span class="monospace">fxabs</span> has undefined
+results when applied to <span class="monospace">fx-least</span>.</p>
+      <h3 id="Arithmeticwithcarry">Arithmetic with carry</h3>
+      <p><span class="monospace">(fx+/carry </span><i>fx<sub>1</sub> fx<sub>2</sub> fx<sub>3</sub></i><span class="monospace">)‌‌</span></p>
+      <p>Returns the two fixnum results of the following computation:</p><span class="monospace">(let* ((s (+ fx1 fx2 fx3))
+       (s0 (balanced-remainder s (expt 2 (fixnum-width))))
+       (s1 (balanced-quotient s (expt 2 (fixnum-width)))))
+  (values s0 s1))
+</span>
+      <p><span class="monospace">(fx-/carry </span><i>fx<sub>1</sub> fx<sub>2</sub> fx<sub>3</sub></i><span class="monospace">)‌‌</span></p>
+      <p>Returns the two fixnum results of the following computation:</p><span class="monospace">(let* ((d (- fx1 fx2 fx3))
+       (d0 (balanced-remainder d (expt 2 (fixnum-width))))
+       (d1 (balanced-quotient d (expt 2 (fixnum-width)))))
+  (values d0 d1))
+</span>
+      <p><span class="monospace">(fx*/carry </span><i>fx<sub>1</sub> fx<sub>2</sub> fx<sub>3</sub></i><span class="monospace">)‌‌</span></p>
+      <p>Returns the two fixnum results of the following computation:</p><span class="monospace">(let* ((s (+ (* fx1, fx1)) fx3))
+       (s0 (balanced-remainder s (expt 2 (fixnum-width))))
+       (s1 (balanced-quotient s (expt 2 (fixnum-width)))))
+  (values s0 s1))
+</span>
+      <h3 id="Integerdivision">Integer division</h3>
+      <p>The following procedures are the fixnum counterparts of procedures
+from <a href="http://srfi.schemers.org/srfi-141/srfi-141.html">SRFI 141</a>:</p><span class="monospace">fxfloor/ fxfloor-quotient fxfloor-remainder
+fxceiling/ fxceiling-quotient fxceiling-remainder
+fxtruncate/ fxtruncate-quotient fxtruncate-remainder
+fxround/ fxround-quotient fxround-remainder
+fxeuclidean/ fxeuclidean-quotient fxeuclidean-remainder
+fxrbalanced/ fxbalanced-quotient fxbalanced-remainder
+</span>
+      <p>Except for the effects of the fixnum rule, the <span class="monospace">fx</span> versions
+have the same arguments and semantics as their generic counterparts.</p>
+      <h3 id="Bitwiseoperations">Bitwise operations</h3>
+      <p>The following procedures are the fixnum counterparts of procedures
+from <a href="http://srfi.schemers.org/srfi-141/srfi-141.html">SRFI 141</a>:</p><span class="monospace">fxnot
+fxand   fxior   fxxor   fxeqv
+fxnand  fxnor 
+fxandc1 fxandc2 fxorc1  fxorc2 
+
+farithmetic-shift fxbit-count fxinteger-length
+
+fxif 
+fxbit-set? fxcopy-bit fxbit-swap
+fxany-bit-set? fxevery-bit-set?
+fxfirst-set-bit
+
+fxbit-field fxbit-field-any? fxbit-field-every?
+fxbit-field-clear fxbit-field-set
+fxbit-field-replace  fbit-field-replace-same
+fxbit-field-rotate fxbit-field-reverse
+fxbit-field-append
+
+fixnum-&gt;list list-&gt;fixnum
+fixnum-&gt;vector vector-&gt;fixnum
+fxbits
+fxfold fxfor-each fxunfold
+</span>
+      <p>Except for the effects of the fixnum rule, the <span class="monospace">fx</span> versions
+have the same arguments and semantics as their generic counterparts,
+with the following additional modifications:</p>
+      <ul>
+        <li>The prefix <span class="monospace">bitwise-</span> in the SRFI 141 functions is dropped for brevity and compatibility.</li></ul>
+      <ul>
+        <li>Despite the fixnum rule, the <span class="monospace">fxarithmetic-shift</span> procedure produces a defined result on all fixnums by discarding any higher-order bits that do not fit into the fixnum width.</li></ul>
+      <ul>
+        <li>The <span class="monospace">fixnum-&gt;list</span> and <span class="monospace">list-&gt;fixnum</span> procedures correspond to the <span class="monospace">integer-&gt;list</span> and <span class="monospace">list-&gt;integer</span></li></ul>
+      <p>procedures respectively, and the same for their vector analogues.</p>
+      <p>The following additional bitwise procedure is provided:</p>
+      <p><span class="monospace">(fxlogical-shift </span><i>i count</i><span class="monospace">)</span></p>
+      <p>When left shifting (<i>count</i> &gt; 0), returns the same result
+as <span class="monospace">fxarithmetic-shift</span>.  When right shifting,
+always inserts 0 bits at the most significant end
+rather than copies of the sign bit.</p>
+      <p>The result of a logical shift depends on the value of <span class="monospace">fx-width</span>.
+This means that if <span class="monospace">fx-width</span> were 8 (which this SRFI does not permit),
+<span class="monospace">(fxlogical-shift -8 -1)</span> would be <span class="monospace">#x74</span>, or 116, rather than -4.</p></div></body></html>

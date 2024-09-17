@@ -1,0 +1,68 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>439: Formal Comment: Bidirectional ports and port-open?</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 439: <span class="summary">Formal Comment: Bidirectional ports and port-open?</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-12 04:09:02</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/439/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-07-02 04:10:18</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Formal Comment</p>
+        <p>Submitter's name: Marc Feeley
+Submitter's email: feeley at iro.umontreal.ca
+Relevant draft: r7rs draft 6</p>
+        <p>Type: defect
+Priority: major
+Relevant section of draft: 6.13.1. Ports</p>
+        <p>Summary: Bidirectional ports and port-open?</p>
+        <p>R7RS states that an implementation of Scheme may have bidirectional
+ports (because the input and output port types may not be disjoint).
+Bidirectional ports may be useful to represent operating devices such
+as serial ports, terminals, and network connections.  On some of these
+ports it is useful to close the input and output sides separately
+(for example closing the output side of a network connection on
+which a request was sent, while leaving the input side open to
+receive the response).</p>
+        <p>For this reason, the procedure port-open? is not very informative for
+bidirectional ports.  It would be better to separate this into two
+procedures so that each direction can be tested independently:</p>
+        <p>(input-port-open? port)
+  (output-port-open? port)</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-07-02 09:45:09</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">accepted</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-12 04:09:02</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">accepted</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

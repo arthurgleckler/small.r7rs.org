@@ -1,0 +1,78 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>SrfiInteroperability</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/SrfiInteroperability.md">SrfiInteroperability</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Srfi&shy;Interoperability</h1>
+    <div class="wiki metadata">
+      <div class="author">WillClinger</div>
+      <div class="time">2015-06-05 18:57:04</div>
+      <div class="version">1<span class="comment">SRFIs 0 through 25</span><a href="/wiki/SrfiInteroperability/history">history</a></div>
+      <div class="source"><a href="/wiki/SrfiInteroperability/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>Some SRFIs export identifiers that are exported by `<span class="monospace">(scheme base)</span>` or by another SRFI.  When the libraries that export an identifier give it the same or a compatible semantics, the conflict can be resolved by arranging for all libraries that export the identifier to export the same binding, with its most general semantics.  When two libraries export the same identifier with truly incompatible semantics, the conflict is real cannot be resolved without renaming.</p>
+      <p>In the table below, an identifier whose SRFI semantics generalizes its R7RS semantics is counted as a real conflict.  When an identifier's R7RS semantics generalizes its SRFI semantics, the conflict is counted as superficial.</p>
+      <table><tr><td class="default">
+            <p><b>SRFI</b></p></td><td class="default">
+            <p><b>real conflicts with R7RS</b></p></td><td class="default">
+            <p><b>real conflicts with R6RS</b></p></td><td class="default">
+            <p><b>real conflicts with SRFIs</b></p></td><td class="default">
+            <p><b>superficial conflicts with R7RS</b></p></td></tr><tr><td class="default">
+            <p>SRFI 0</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">cond-expand</span></p></td></tr><tr><td class="default">
+            <p>SRFI 1</p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">assoc</span> <span class="monospace">member</span> <span class="monospace">for-each</span> <span class="monospace">map</span> <span class="monospace">make-list</span> <span class="monospace">list-copy</span></p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">cons</span> <span class="monospace">list</span> <span class="monospace">make-list</span> <span class="monospace">list-copy</span> <span class="monospace">pair?</span> <span class="monospace">null?</span> <span class="monospace">car</span> <span class="monospace">cdr</span> ... <span class="monospace">cddddr</span> <span class="monospace">list-ref</span> <span class="monospace">length</span> <span class="monospace">append</span> <span class="monospace">reverse</span> <span class="monospace">map</span> <span class="monospace">for-each</span> <span class="monospace">member</span> <span class="monospace">memq</span> <span class="monospace">memv</span> <span class="monospace">assoc</span> <span class="monospace">assq</span> <span class="monospace">assv</span> <span class="monospace">set-car!</span> <span class="monospace">set-cdr!</span></p></td></tr><tr><td class="default">
+            <p>SRFI 2</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 4</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 5</p></td><td class="default">
+            <p><span class="monospace">let</span></p></td><td class="default">
+            <p><span class="monospace">let</span></p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 6</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 7</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 8</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 9</p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">define-record-type</span></p></td><td class="default"></td><td class="default">
+            <p><span class="monospace">define-record-type</span></p></td></tr><tr><td class="default">
+            <p>SRFI 10</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 11</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 13</p></td><td class="default">
+            <p><span class="monospace">string-downcase</span> <span class="monospace">string-upcase</span> <span class="monospace">string-for-each</span> <span class="monospace">string-map</span></p></td><td class="default">
+            <p>(many)</p></td><td class="default">
+            <p><span class="monospace">string-hash</span> <span class="monospace">string-hash-ci</span></p></td><td class="default">
+            <p><span class="monospace">string?</span> <span class="monospace">make-string</span> <span class="monospace">string</span> <span class="monospace">string-&gt;list</span> <span class="monospace">list-&gt;string</span> <span class="monospace">string-length</span> <span class="monospace">string-ref</span> <span class="monospace">string-copy</span> <span class="monospace">string-copy</span> <span class="monospace">string-set!</span> <span class="monospace">string-fill!</span> <span class="monospace">string-append</span></p></td></tr><tr><td class="default">
+            <p>SRFI 14</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 16</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 17</p></td><td class="default">
+            <p><span class="monospace">set!</span></p></td><td class="default">
+            <p><span class="monospace">set!</span></p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 18</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">current-time</span> <span class="monospace">time?</span></p></td><td class="default">
+            <p><span class="monospace">with-exception-handler</span> <span class="monospace">raise</span></p></td></tr><tr><td class="default">
+            <p>SRFI 19</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">current-time</span> <span class="monospace">time?</span></p></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 21</p></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">current-time</span> <span class="monospace">time?</span></p></td><td class="default">
+            <p><span class="monospace">with-exception-handler</span> <span class="monospace">raise</span></p></td></tr><tr><td class="default">
+            <p>SRFI 22</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default">
+            <p>extends lexical syntax</p></td><td class="default"></td><td class="default"></td></tr><tr><td class="default">
+            <p>SRFI 23</p></td><td class="default"></td><td class="default"></td><td class="default"></td><td class="default">
+            <p><span class="monospace">error</span></p></td></tr><tr><td class="default">
+            <p>SRFI 25</p></td><td class="default">
+            <p><span class="monospace">equal?</span></p></td><td class="default">
+            <p><span class="monospace">equal?</span></p></td><td class="default">
+            <p><span class="monospace">equal?</span> <span class="monospace">make-array</span> <span class="monospace">array-rank</span> <span class="monospace">array-ref</span> <span class="monospace">array-set!</span></p></td><td class="default"></td></tr></table></div></body></html>

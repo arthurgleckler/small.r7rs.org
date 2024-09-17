@@ -1,0 +1,63 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki FixnumInfo version 8</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki FixnumInfo version 8</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.10.177.1</pre>
+    <h2>name</h2>
+    <pre>FixnumInfo</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>= Fixnum ranges for 32-bit Schemes =
+
+This is the range of fixnums in bits for the 32-bit builds of 39 Schemes.   For this purpose, an exact integer ''n'' is a fixnum if ''n'' satisfies the implementation's `fixnum?` procedure (marked by an asterisk) or if there is no such procedure, then if `(eq? `''n''` `''n''`)` returns `#t`.
+
+||31 bits||Racket*, Chicken*, Ypsilon*, Elk||
+||30 bits||Gambit* , Scheme48/scsh, Guile, Chibi*, Chez*, SCM, Ikarus*/Vicare*, Larceny*, Ypsilon*, Mosh*, !IronScheme* (but see below), STklos*, RScheme*, Oaklisp*||
+||29 bits||Gauche*, Bigloo*, !SigScheme||
+||26 bits||MIT*||
+||16 bits||Owl Lisp*||
+||9 bits||S7||
+||No fixnums (even `(eq? 0 0)` is `#f`)||SISC, KSi, !TinyScheme, Scheme 9, Dream, BDC, UMB||
+||Apparently unbounded fixnums||Shoe, Schemik, VX||
+||Answer not easily determined||NexJ, XLisp, rep||
+
+In Kawa and !IronScheme all exact integers are boxed, but a short range is preallocated, so that `eq?` is satisfied: -100 to 1024 for Kawa, -100 to 999 for !IronScheme.
+
+= Fixnum ranges for 64-bit Schemes =
+
+These were computed using later versions of the same Schemes.
+
+||62 bits||Racket*, Chicken*, Ypsilon*||
+||61 bits||Gauche*, Gambit*, Scheme48/scsh, Guile, Chibi*, SCM, STklos*||
+||60 bits||Chez, Vicare*||
+||59 bits||!SigScheme||
+||56 bits||MIT*||
+||31 bits||Elk, !IronScheme* (but see above)||
+||29 bits||Larceny*, Mosh*, RScheme*||
+||16 bits||Owl Lisp*||
+||11 bits||S7||
+||8 bits||BDC||
+||No fixnums (even `(eq? 0 0)` is `#f`)||SISC, KSi, !TinyScheme, Scheme 9, BDC||
+||Apparently unbounded fixnums||Shoe, Schemik, NexJ||
+||Answer not easily determined||Bigloo*, UMB, XLisp, rep||</pre>
+    <h2>time</h2>
+    <pre>2013-09-21 04:29:42</pre>
+    <h2>version</h2>
+    <pre>8</pre></body></html>

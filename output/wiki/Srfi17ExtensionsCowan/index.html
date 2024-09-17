@@ -1,0 +1,41 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Srfi17ExtensionsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/Srfi17ExtensionsCowan.md">Srfi17ExtensionsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Srfi17Extensions&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-11-23 09:36:58</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/Srfi17ExtensionsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/Srfi17ExtensionsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Macros">Macros</h2>
+      <p>Here are a few macros that extend <a href="http://srfi.schemers.org/srfi-17/srfi-17.html">SRFI 17</a> getters and setters.</p>
+      <p><span class="monospace">(push! </span><i>variable item</i><span class="monospace">)</span></p>
+      <p>Calls <span class="monospace">cons</span> on the values of <i>item</i> and <i>variable</i>, and sets <i>variable</i> to the result.  Returns an unspecified value.</p>
+      <p><span class="monospace">(push! (</span><i>proc arg</i> ...<span class="monospace">)</span> <i>item</i><span class="monospace">)</span></p>
+      <p>Calls <span class="monospace">cons</span> on the values of <i>item</i> and <span class="monospace">(</span><i>proc arg</i> ...<span class="monospace">)</span>. Then evaluates <span class="monospace">((setter </span><i>proc</i><span class="monospace">)</span> <i>arg</i> ... <i>result</i><span class="monospace">)</span>, where <i>result</i> is the newly allocated pair.   Returns an unspecified value.  It is an error if <i>proc</i> does not have an associated setter.</p>
+      <p><span class="monospace">(pop! </span><i>variable</i><span class="monospace">)</span></p>
+      <p>Calls <span class="monospace">car</span> and <span class="monospace">cdr</span> on the value of <i>variable</i>, and sets <i>variable</i> to the result of <span class="monospace">cdr</span>.  Returns the result of <span class="monospace">car</span>.  It is an error if the value of <i>variable</i> is not a pair.</p>
+      <p><span class="monospace">(pop! (</span><i>proc arg</i> ...<span class="monospace">))</span></p>
+      <p>Calls <span class="monospace">car</span> and <span class="monospace">cdr</span> on the value of <span class="monospace">(</span><i>proc arg</i> ...<span class="monospace">)</span>. Then evaluates <span class="monospace">((setter </span><i>proc</i><span class="monospace">)</span> <i>arg</i> ... <i>cdr-result</i><span class="monospace">)</span>, where <i>cdr-result</i> is the result of <span class="monospace">cdr</span>.   Returns the result of <span class="monospace">car</span>.  It is an error if the value of <i>variable</i> is not a pair.  It is also an error if <i>proc</i> does not have an associated setter.</p>
+      <p><span class="monospace">(inc! </span><i>variable</i> [ <i>delta</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(dec! </span><i>variable</i> [ <i>delta</i> ]<span class="monospace">)</span></p>
+      <p>Calls <span class="monospace">+</span> on the values of <i>variable</i> and <i>delta</i>, and sets <i>variable</i> to the result.  Returns an unspecified value.  It is an error if the value of <i>variable</i> is not a number.  The default value of <i>delta</i> is 1 for <span class="monospace">inc!</span> and -1 for <span class="monospace">dec!</span>.</p>
+      <p><span class="monospace">(inc! (</span><i>proc arg</i> ...<span class="monospace">)</span> [ <i>delta</i> ]<span class="monospace">)</span></p>
+      <p><span class="monospace">(dec! (</span><i>proc arg</i> ...<span class="monospace">)</span> [ <i>delta</i> ]<span class="monospace">)</span></p>
+      <p>Calls <span class="monospace">+</span> on the values of <span class="monospace">(</span><i>proc arg</i> ...<span class="monospace">)</span> and <i>delta</i>. Then evaluates <span class="monospace">((setter </span><i>proc</i><span class="monospace">)</span> <i>arg</i> ... <i>result</i><span class="monospace">)</span>, where <i>cdr-result</i> is the result of <span class="monospace">+</span>.   Returns an unspecified value.  The default value of <i>delta</i> is 1 for <span class="monospace">inc!</span> and -1 for <span class="monospace">dec!</span>.  It is an error if the value of <i>variable</i> is not a number.  It is also an error if <i>proc</i> does not have an associated setter.</p>
+      <p><span class="monospace">(update! </span><i>variable proc</i><span class="monospace">)</span></p>
+      <p>Applies the value of <i>proc</i> to the value of <i>variable</i>, and sets <i>variable</i> to the result.  Returns an unspecified value.  It is an error if the value of <i>proc</i> is not a procedure that accepts one argument.</p>
+      <p><span class="monospace">(update! (</span><i>proc arg</i> ...<span class="monospace">)</span> <i>item</i><span class="monospace">)</span></p>
+      <p>Applies <i>proc</i> to the values of <i>item</i> and <span class="monospace">(</span><i>proc arg</i> ...<span class="monospace">)</span>. Then evaluates <span class="monospace">((setter </span><i>proc</i><span class="monospace">)</span> <i>arg</i> ... <i>result</i><span class="monospace">)</span>, where <i>result</i> is the result.   Returns an unspecified value.  It is an error if the value of <i>proc</i> is not a procedure that accepts one argument.  It is also an error if <i>proc</i> does not have an associated setter.</p></div></body></html>

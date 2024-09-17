@@ -1,0 +1,65 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ParametersSnellPym</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ParametersSnellPym.md">ParametersSnellPym</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Parameters&shy;Snell&shy;Pym</h1>
+    <div class="wiki metadata">
+      <div class="author">alaric</div>
+      <div class="time">2010-06-13 20:01:25</div>
+      <div class="version">1<span class="comment">Proposed parameters</span><a href="/wiki/ParametersSnellPym/history">history</a></div>
+      <div class="source"><a href="/wiki/ParametersSnellPym/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Background">Background</h1>
+      <p><a href="/wiki/Parameters">Parameters</a>, as per <a href="http://srfi.schemers.org/srfi-39/srfi-39.html">SRFI-39</a>, are certainly useful.</p>
+      <ol class="number">
+        <li>They can be labour-savers, passing &quot;configuration information&quot; down through complex call stacks without needing explicit parameter passing through functions that do nothing with the parameter other than pass it to all child procedures called, until a lower layer actually uses it</li></ol>
+      <ol class="number" start="2">
+        <li>They allow isolation of concerns;.as per the previous point, the intermediate procedures do not need to know what configuration information is sent to which child procedures, which is useful when the child procedures are provided by external libraries, or are arbitrary closures which might invoke arbitrary external libraries.</li></ol>
+      <ol class="number" start="3">
+        <li>They allow dynamically scoped state, for tasks like exception handling and thread-local storage</li></ol>
+      <ol class="number" start="4">
+        <li>They generalise a mechanism that must be present within the implementation to support <span class="monospace">current-input-port</span> and <span class="monospace">current-output-port</span>, making it portably available to library authors.</li></ol>
+      <p>I think that parameters should be specified as part of WG1 scheme rather than implemented by portable libraries, as a portable library has no way of knowing if the implementation provides threads; and if it does, it has no portable way of implementing dynamically scoped state in a thread-safe manner.</p>
+      <h1 id="TheProposal">The Proposal</h1>
+      <p>We support <a href="http://srfi.schemers.org/srfi-39/srfi-39.html">SRFI-39</a> parameters.</p>
+      <p>However, in order to promote portability, we must take this opportunity to specify the behaviour of parameters in the presence of threads; even if WG1 does not specify a threading system, any implementation of WG1 parameters that does provide threads must conform with the following specification, or else libraries using parameters will not operate safely in threaded programs.</p>
+      <p><a href="/wiki/Parameters">Parameters</a> are defined in terms of mutable cells. When <span class="monospace">make-parameter</span> is called, the parameter is bound to a new mutable cell in the current thread's dynamic environment.</p>
+      <p>When a thread is created, it inherits its parent's dynamic environment bindings, so assignment to inherited parameters will change them in the parent and in other sibling threads whose dynamic environments refer to the same mutable cells. This assignment is guaranteed to be safe and atomic between threads, regardless of whether the semantics of <span class="monospace">set!</span> and other mutating operations are well-defined between threads; such parameters can reliably be used as shared state. We can also produce some wording to the effect that such assignments are write barriers, so that if some mutable structure is mutated within one thread, then a reference to that structure is written into a shared parameter cell, then another thread reading that value from that shared parameter cell will see the results of all the prior mutations by the writing thread (to the mutable structure, or to other shared parameter cells), but may or may not see the results of subsequent ones.</p>
+      <p>When <span class="monospace">parameterize</span> is used, the specified parameters are bound to newly created parameter cells, initially unique to the current thread.</p>
+      <p>Eg:</p><span class="monospace">(define foo (make-parameter 123))
+
+Thread 1: (foo) =&gt; 123
+Thread 2: (foo) =&gt; 123
+Thread 1: (foo 1234)
+Thread 1: (foo) =&gt; 1234
+Thread 2: (foo) =&gt; 1234
+Thread 1: (parameterize ((foo 456))
+Thread 1: (foo) =&gt; 456
+Thread 2: (foo) =&gt; 1234
+Thread 1: (foo 4567)
+Thread 1: (foo) =&gt; 4567
+Thread 2: (foo) =&gt; 1234
+Thread 2: (foo 12345)
+Thread 1: (foo) =&gt; 4567
+Thread 2: (foo) =&gt; 12345
+Thread 1: Fork off thread 3
+Thread 3: (foo) =&gt; 4567
+Thread 3: (foo 45678)
+Thread 1: (foo) =&gt; 45678
+Thread 1: ) ; close parameterize
+Thread 1: (foo) =&gt; 12345
+Thread 2: (foo) =&gt; 12345
+</span>
+      <p>Note that when thread 1 forked off thread 3 from within its
+parameterized dynamic scope, thread 3 inherited it - so thread 3's
+assignment to the parameter was seen by thread 1, as they shared that scope.</p></div></body></html>

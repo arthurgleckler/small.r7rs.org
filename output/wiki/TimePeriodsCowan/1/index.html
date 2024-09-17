@@ -1,0 +1,39 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>TimePeriodsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/TimePeriodsCowan.md">TimePeriodsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Time&shy;Periods&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-11-25 02:28:15</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/TimePeriodsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/TimePeriodsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="TimeDurationsandIntervals">Time Durations and Intervals</h2>
+      <p>A <i>duration</i> is an immutable object belonging to a distinct type and representing a period of time according a particular chronology.  In the ISO, Gregorian, and Julian chronologies, it is the sum of
+some number of years, months, weeks, days, hours, minutes, and seconds.</p>
+      <p>A <i>time interval</i> is the an immutable object belonging to a distinct type and representing the elapsed time between two instants of time.  See <a href="/wiki/TimeAdvancedCowan">TimeAdvancedCowan</a> for the definition of instants.</p>
+      <h2 id="Durationprocedures">Duration procedures</h2>
+      <p><span class="monospace">(make-duration </span><i>chronology</i><span class="monospace"> </span><i>alist</i><span class="monospace">)</span></p>
+      <p>Constructs and returns a duration based on <i>chronology</i>.  <i>Alist</i> is an alist mapping duration field names understood by that chronology to their values.  In the ISO, Gregorian, and Julian calendars, the field names are
+<span class="monospace">years</span>, <span class="monospace">months</span>, <span class="monospace">weeks</span>, <span class="monospace">days</span>, <span class="monospace">hours</span>,
+<span class="monospace">minutes</span>, <span class="monospace">seconds</span>, and `ms' (milliseconds).
+The values of each field must be exact integers,
+except that the smallest unit present may be an exact rational number.</p>
+      <p><span class="monospace">(duration? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a duration, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(duration-</span><i>unit</i><span class="monospace"> </span><i>duration</i><span class="monospace">)</span></p>
+      <p>Returns the value associated with <i>unit</i>.  For example, <span class="monospace">(duration-weeks d)</span> returns the number of weeks in duration <i>d</i>.  If the duration was not constructed with a
+particular unit, <span class="monospace">#f</span> is returned instead.</p>
+      <h2 id="Timeintervalprocedures">Time interval procedures</h2>
+      <p>TODO</p></div></body></html>

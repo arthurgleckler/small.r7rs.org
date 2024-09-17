@@ -1,0 +1,97 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>536: R6RS and R7RS libraries should be made closer</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 536: <span class="summary">R6RS and R7RS libraries should be made closer</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2013-07-07 03:20:44</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">alexshinn</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">wontfix</div>
+      <div class="source"><a href="/ticket/536/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2013-05-20 00:11:52</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Michael Montague writes:</p>
+        <p>R6RS libraries without versions and import levels seem awfully close to R7RS libraries; could they be made closer to the same without losing the benefits of R7RS libraries?  For example, assuming <a href="/ticket/535">#535</a>, I believe that the following would be a valid R6RS and R7RS library (ignoring library vs define-library keyword).</p><span class="monospace">(library (stack)
+
+  (export make push! pop! empty!)
+
+  (import (rnrs))
+
+  (begin ;;; &lt;----- all I did was add this to the example in section 7.3 of R6RS
+
+  (define (make) (list '()))
+
+  (define (push! s v) (set-car! s (cons v (car s))))
+
+  (define (pop! s) (let ([v (caar s)])
+                     (set-car! s (cdar s))
+                     v))
+
+  (define (empty! s) (set-car! s '()))))
+</span>
+        <p>This is a valid transformation even without <a href="/ticket/535">#535</a>, at least for an implementation that provides the <span class="monospace">(rnrs)</span> library.  The effect of <a href="/ticket/535">#535</a> is to forbid multiple <span class="monospace">begin</span> declarations; the existing draft already permits single ones.</p>
+        <p>The primary benefit of using a distinct keyword is to allow R6RS implementations to immediately reject R7RS libraries that they cannot process.  R7RS implementations that don't provide the R6RS system libraries (such as Chibi) can also reject R6RS user libraries easily, but of course there is nothing to prevent R7RS implementations from accepting R6RS libraries as well, as Sagittarius does.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-20 12:08:36</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Michael Montague replies:</p>
+              <p>Right now, it is not possible to have a library which works in both R6RS and R7RS. If the <span class="monospace">define-library</span> keyword was changed to <span class="monospace">library</span> then some libraries would work in both R6RS and R7RS.</p>
+              <p>In the general case, no library can work exactly unchanged on both R6RS and R7RS systems because of the differences in the names and contents of the libraries they need to import.  At the very least, each needs to import the base library, which means that an R7RS library will begin with <span class="monospace">(import (rnrs base))</span> and an R7RS library with <span class="monospace">(import (scheme base))</span>.  This difference is unavoidable, of course, since these libraries are quite distinct.</p>
+              <p>Using a distinct keyword makes portability of libraries between R6RS and R7RS impossible. I believe that normal error detection on R6RS systems should detect R7RS libraries (outside the common subset) as an error.  And vice versa for R7RS systems. It seems like it would be reasonably easy for a system to decide that the error is likely caused by an incompatible library. And for systems that want to support both R6RS and R7RS, it seems like attempting to load the library first as R7RS and if that doesn't work then as R6RS would do the trick.</p>
+              <p>Quite so, but this is equally true if the libraries are (as they are today) syntactically distinct.</p>
+              <p>In short, having this difference helps humans and simple-minded classifiers
+and doesn't actually harm anyone that I can see.  If you see further than I do, please help me here.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-21 00:32:25</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Michael Montague writes:</p>
+              <p>Having different keywords harms scheme users who want to write portable libraries. Today, a scheme user who wants to write portable libraries has to make a choice: use R6RS <span class="monospace">library</span> or R7RS <span class="monospace">define-library</span>.</p>
+              <p>In R7RS, at least, it's possible to segregate the code from the library declarations.  R6RS systems that support <span class="monospace">include</span> can do that too, or you can write <span class="monospace">include</span> as a syntax-case macro.  There's a sample definition in <a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-13.html#node_sec_12.6">R6RS section 12.6</a>.  This also allows you to use the code on a pure R5RS system with no modules, or (as my sample implementations do) on an R5RS system like Chicken with its own module system.</p>
+              <p>Change to the same keyword, and the scheme user has a way to write portable libraries that work on as many scheme systems as possible now and into the future, including current R6RS systems and future R7RS systems.</p>
+              <p>Well, the WG will consider the question.  It's been treated as a bikeshed issue so far.  See <a href="/ticket/102">#102</a> and the <a href="/wiki/WG1Ballot2">second ballot</a>, where we chose <span class="monospace">module</span>, and <a href="/wiki/WG1Ballot4Results">fourth ballot</a>, where we changed it to <span class="monospace">define-library</span> to be closer to R6RS without colliding with it.</p>
+              <p>The second sentence of the Charter for working group 1 is &quot;The purpose of this work is to facilitate sharing of Scheme code.&quot; I believe this is a way to increase the sharing of Scheme code.</p>
+              <p>The base library problem is solvable. For instance, R7RS has the library <span class="monospace">(scheme r5rs)</span>. Since R6RS is based on R5RS, it should be easy to provide the same library on those systems.</p>
+              <p>I don't expect that R6RS users will tend to restrict themselves to the R5RS part of the system, though.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-05-21 01:40:04</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>See also my comment to <a href="/ticket/533">#533</a>.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2013-07-07 03:20:44</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">wontfix</span></div>
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>The WG decided by unanimous consent to take no action on this ticket.</p></div></div></div></div></div></body></html>

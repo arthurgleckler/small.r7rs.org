@@ -1,0 +1,77 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki InputDocket version 25</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki InputDocket version 25</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>198.185.18.207</pre>
+    <h2>name</h2>
+    <pre>InputDocket</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== WG2 Input Docket ==
+
+This docket contains work items that need to be voted on for possible inclusion into R7RS-large.  See [wiki:WG2Dockets WG2Dockets] for other dockets.
+
+Custom I/O ports: [http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html R6RS]
+
+Default exception handler controls:
+
+External representation of records: 
+
+Features, allowing libraries to add:
+
+Identifier-syntax: [http://www.r6rs.org/final/html/r6rs/r6rs-Z-H-14.html#node_sec_11.19 R6RS]
+
+R6RS versions of `real?`, `rational?`, `integer?`: these are false if the imaginary part is an inexact zero; the issue here is what to name them to avoid confusion
+
+Immutable data: ImmutableData
+
+Interrupts, timers, signals: 
+
+Jiffy cleanup: [http://arcanesentiment.blogspot.com/2012/07/current-jiffy-is-not-usable-portably.html Arcane Sentiment blog post]
+
+Macro expander(s) available at run time: 
+
+`number-&gt;string` variant with control for significant digits: [http://lists.scheme-reports.org/pipermail/scheme-reports/2011-May/000709.html Vincent Manis proposal], R6RS
+
+`number-&gt;string` and `string-&gt;number` with non-ASCII decimal digits: NumberStringUnicode
+
+Observable objects: 
+
+Port type detector: see #177
+
+R6RS compatibility: whole libraries or cherry-picked procedures:
+
+Record external representations: 
+
+`standard-*-port` routines:  [http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-9.html R6RS]
+
+String positions and slices: [http://www.r6rs.org/formal-comments/comment-235.txt R6RS formal comment]
+
+Tree library: at least `tree=?` and `tree-copy`, probably Common Lisp [http://www.lispworks.com/documentation/lw50/CLHS/Body/f_sublis.htm SUBLIS and NSUBLIS], fold, unfold, map ... 
+
+Thread-local storage: 
+
+Unquote with multiple arguments:  see #123
+
+User-specified syntax-transformers:</pre>
+    <h2>time</h2>
+    <pre>2013-05-22 01:24:05</pre>
+    <h2>version</h2>
+    <pre>25</pre></body></html>

@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki StringSymbolConversion version 3</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki StringSymbolConversion version 3</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>StringSymbolConversion</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>I tested how Schemes deal with `string-&gt;symbol` when the string contains characters that can only appear in an escaped symbol.  All Schemes in my test suite (except Rep, Schemik, and Oaklisp, which don't support `string-&gt;symbol`) return a symbol from `(string-&gt;symbol &quot;foo)(bar&quot;)` rather than a syntax error.
+
+An interesting difference was the way in which the resulting symbol was printed by the REPL.
+
+Racket, Gauche, MIT, Gambit, Chicken, SISC, Chibi, STklos, Sagittarius printed the symbol name as `|foo)(bar|`.
+
+Guile, Chez, !Icarus/Vicare, Larceny, Ypsilon, KSi printed it as `foo\x29;\x28;bar`, R6RS-style.
+
+SCM, Shoe, Elk printed it as `foo\)\(bar`.
+
+Bigloo, Scheme48/scsh, Kawa, Mosh, !IronScheme, NexJ, !SigScheme, !TinyScheme, Scheme 9, Dream, RScheme, S7, BDC, XLisp, UMB, VX, Owl Lisp displayed the symbol as `foo)(bar` (this is arguably a bug in Mosh and !IronScheme, which are R6RS implementations).
+
+Note that this list does not match the list of implementations which ''accept'' vertical bars, hex escapes, and backslashes.</pre>
+    <h2>time</h2>
+    <pre>2014-12-28 10:26:33</pre>
+    <h2>version</h2>
+    <pre>3</pre></body></html>

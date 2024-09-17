@@ -1,0 +1,74 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>CondExpandCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/CondExpandCowan.md">CondExpandCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Cond&shy;Expand&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2010-12-04 07:54:03</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/CondExpandCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/CondExpandCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="ConditionalExpansionofModules">Conditional Expansion of Modules</h2>
+      <p>This is a proposal for a <span class="monospace">cond-expand</span> facility within its module language.  The syntax is the same as <a href="http://srfis.schemers.org/srfi-0/srfi-0.html">SRFI 0</a>, but the bodies are declarations in the module language (<a href="/wiki/ModulesShinn">ModulesShinn</a>) rather than Scheme expressions.  This makes it possible, for example, to conditionally include a file of code based on the specific implementation or some feature of the implementation, or to conditionally import a module by name provided that module exists.</p>
+      <p>In this version, an implementation or implementation feature is named by a symbol, and a module is named by a list whose first element is not <span class="monospace">and</span>, <span class="monospace">or</span>, or <span class="monospace">not</span>.  The meaning of a module name is &quot;the module with this name is available for import, whether it is currently imported or not&quot;.</p>
+      <h2 id="Syntax">Syntax</h2>
+      <p>We add a new type of module declaration, &lt;conditional expansion form&gt;, with the following syntax:</p><span class="monospace">&lt;conditional expansion form&gt;
+    --&gt; (cond-expand &lt;cond-expand clause&gt;+)
+      | (cond-expand &lt;cond-expand clause&gt;* (else &lt;module declaration&gt;*))
+&lt;cond-expand clause&gt;
+    --&gt; (&lt;feature requirement&gt; &lt;module declaration&gt;*)
+&lt;feature requirement&gt;
+    --&gt; &lt;feature identifier&gt;
+      | &lt;module name&gt;
+      | (and &lt;feature requirement&gt;*)
+      | (or &lt;feature requirement&gt;*)
+      | (not &lt;feature requirement&gt;)
+&lt;feature identifier&gt;
+    --&gt; a symbol
+&lt;module name&gt;
+    --&gt; a list of symbols or exact integers
+</span>
+      <h2 id="Semantics">Semantics</h2>
+      <p>Each implementation maintains a list of feature identifiers which are present, as well as a list of modules which may be imported.  The semantics of a &lt;feature requirement&gt; are that if each feature identifier and module name on the implementation's list is replaced by <span class="monospace">#t</span> and all other feature identifiers and module names are replaced by <span class="monospace">#f</span>, and the resulting expression is evaluated as Scheme, then the corresponding &lt;module declarations&gt; are part of the module iff the result of the evaluation is <span class="monospace">#t</span>.</p>
+      <h2 id="Standardfeatureidentifiers">Standard feature identifiers</h2>
+      <p>An implementation MAY provide any or all of these feature identifiers, as well as any others that it chooses, but MUST NOT provide a feature identifier if it does not provide the corresponding feature.</p>
+      <table><tr><td class="default">
+            <p>Feature identifier</p></td><td class="default">
+            <p>Feature description</p></td></tr><tr><td class="default">
+            <p><span class="monospace">thing-one</span> (temporary name)</p></td><td class="default">
+            <p>All R7RS Scheme implementations have this feature.</p></td></tr><tr><td class="default">
+            <p><span class="monospace">exact-closed</span></p></td><td class="default">
+            <p>All rational operations on exact values produce exact values, with the possible exception of /.  If an implementation restriction is reached, an error is signaled.  If this feature identifier is missing, some results may be inexact.</p></td></tr><tr><td class="default">
+            <p><span class="monospace">ratios</span></p></td><td class="default">
+            <p><span class="monospace">/</span> with exact arguments produces an exact result.</p></td></tr><tr><td class="default">
+            <p><span class="monospace">ieee-float</span></p></td><td class="default">
+            <p>Inexact numbers are IEEE 754 floating point values.  This implies support for <span class="monospace">+inf.0</span>, <span class="monospace">-inf.0</span>, <span class="monospace">+nan.0</span>, and <span class="monospace">-0.0</span>.</p></td></tr><tr><td class="default">
+            <p><span class="monospace">full-unicode</span></p></td><td class="default">
+            <p>All Unicode characters are supported.</p></td></tr><tr><td class="default">
+            <p><span class="monospace">windows</span></p></td><td class="default">
+            <p>This Scheme implementation is running on Windows.</p></td></tr><tr><td class="default">
+            <p><span class="monospace">posix</span></p></td><td class="default">
+            <p>This Scheme implementation is running on a Posix system.</p></td></tr><tr><td class="default">
+            <p><span class="monospace">unix, darwin, linux, bsd, netbsd, openbsd, freebsd, solaris, ...</span></p></td><td class="default">
+            <p>Operating system flags (more than one may apply).</p></td></tr><tr><td class="default">
+            <p><span class="monospace">i386, x86_64, ppc, sparc, sparc64, jvm, clr, llvm,</span> ...</p></td><td class="default">
+            <p>CPU architecture flags.</p></td></tr><tr><td class="default">
+            <p><span class="monospace">ilp32, lp64, ilp64,</span> ...</p></td><td class="default">
+            <p>C memory model flags</p></td></tr><tr><td class="default">
+            <p><span class="monospace">big-endian, little-endian</span></p></td><td class="default">
+            <p>Byte order flags.</p></td></tr><tr><td class="default">
+            <p><i>name</i></p></td><td class="default">
+            <p>The name of this implementation.</p></td></tr><tr><td class="default">
+            <p><i>name</i><span class="monospace">-</span><i>version</i></p></td><td class="default">
+            <p>The name and version of this implementation.</p></td></tr></table></div></body></html>

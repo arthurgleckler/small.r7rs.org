@@ -1,0 +1,48 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>PortOperationsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/PortOperationsCowan.md">PortOperationsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Port&shy;Operations&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2011-10-25 13:24:08</div>
+      <div class="version">5<span class="comment"></span><a href="/wiki/PortOperationsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/PortOperationsCowan/5/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="PortOperations">Port Operations</h2>
+      <p>This is a proposal for the WG2 &quot;port operations&quot; work item.  It provides useful iterators over generic ports, and ways to combine and alias ports.  It is mostly based on Chicken's ports unit and CL's streams facilities.</p>
+      <h2 id="Portiterators">Port iterators</h2>
+      <p><span class="monospace">(port-for-each </span><i>iterator</i><span class="monospace"> </span><i>reader</i><span class="monospace"> </span><i>input-port</i><span class="monospace">)</span></p>
+      <p>Applies <i>iterator</i> to the successive results of calling <i>reader</i> on <i>input-port</i> until it returns an EOF object (not including the EOF object), discarding the results.  Returns an undefined value.</p>
+      <p><span class="monospace">(port-map </span><i>iterator</i><span class="monospace"> </span><i>reader</i><span class="monospace"> </span><i>input-port</i><span class="monospace">)</span></p>
+      <p>Applies <i>iterator</i> to the successive results of calling <i>reader</i> on <i>input-port</i> until it returns an EOF object (not including the EOF object), returning a list of the collected results.</p>
+      <p><span class="monospace">(port-fold </span><i>iterator</i><span class="monospace"> </span><i>reader</i><span class="monospace"> </span><i>input-port</i><span class="monospace"> </span><i>seed</i> ...<span class="monospace">)</span></p>
+      <p>Applies <i>iterator</i> to the successive results of calling <i>reader</i> on <i>input-port</i>, passing the <i>seed</i> values as additional arguments to <i>iterator</i>. The results returned by <i>iterator</i> become the new <i>seed</i> values. When <i>reader</i> returns an EOF object, the last results of <i>iterator</i> are returned.</p>
+      <p><span class="monospace">(port-unfold </span><i>terminate?</i><span class="monospace"> </span><i>iterator</i><span class="monospace"> </span><i>writer</i><span class="monospace"> </span><i>output-port</i><span class="monospace"> </span><i>seed</i> ...<span class="monospace">)</span></p>
+      <p>Uses <i>iterator</i> to generate the sequence of values <span class="monospace">seed</span>, <span class="monospace">(iterator seed)</span>, <span class="monospace">(iterator (iterator seed))</span>, and so on.  Uses <i>writer</i> to output the values to <i>output-port</i>.  <i>Terminate?</i> is invoked before calling <i>iterator</i> each time; if it returns <span class="monospace">#f</span>, the unfolding terminates.  Returns an undefined value.</p>
+      <p><span class="monospace">(copy-port </span><i>source</i><span class="monospace"> </span><i>sink</i><span class="monospace"> </span><i>reader</i><span class="monospace"> </span><i>writer</i><span class="monospace">)</span></p>
+      <p>Reads all remaining data from <i>source</i> using the procedure <i>reader</i> and writes it to <i>sink</i> using the procedure <i>writer</i>. <i>Reader</i> defaults to <span class="monospace">read-char</span> and <i>writer</i> to <span class="monospace">write-char</span>.  This procedure does not check that <i>source</i> and <i>sink</i> are actually ports, so <i>reader</i> and <i>writer</i> may perform arbitrary operations as long as they can be invoked as <span class="monospace">(</span><i>reader</i><span class="monospace"> </span><i>source</i><span class="monospace">)</span> and <span class="monospace">(</span><i>writer</i><span class="monospace"> </span><i>value</i><span class="monospace"> </span><i>sink</i><span class="monospace">)</span>, respectively.  Returns an undefined value.</p>
+      <h2 id="Specialports">Special ports</h2>
+      <p>Broadcast ports, concatenated ports, and alias ports are mutually disjoint types, and are disjoint from other types of Scheme objects.</p>
+      <p><span class="monospace">(make-broadcast-port </span><i>output-port</i> ...<span class="monospace">)</span></p>
+      <p>Returns a custom output port that emits everything written into it to the <i>output-ports</i>.  An operation can only be performed on a broadcast port if it can be performed on all the <i>output-ports</i>.  Closing the broadcast port does not close any of the <i>output-ports</i>.  If no ports are specified, the result serves as a sink that discards all its output.</p>
+      <p><span class="monospace">(broadcast-port? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a broadcast port, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(make-concatenated-port </span><i>input-port</i> ...<span class="monospace">)</span></p>
+      <p>Returns a custom input port that reads its input from each <i>input-port</i> until it returns an EOF object, then returns just one EOF object itself.  An operation can only be performed on a concatenated port if it can be performed on all the <i>input-ports</i>.  Closing the concatenated port does not close any of the <i>input-ports</i>.  If no <i>input-ports</i> are specified, the result serves as an empty source.</p>
+      <p><span class="monospace">(concatenated-port? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is a concatenated port, and <span class="monospace">#f</span> otherwise.</p>
+      <p><span class="monospace">(make-alias-port </span><i>parameter</i><span class="monospace">)</span></p>
+      <p>Returns a port which passes any port operations invoked on it to the current value of the dynamic variable <i>parameter</i>.</p>
+      <p><span class="monospace">(alias-port? </span><i>obj</i><span class="monospace">)</span></p>
+      <p>Returns <span class="monospace">#t</span> if <i>obj</i> is an alias port, and <span class="monospace">#f</span> otherwise.</p></div></body></html>

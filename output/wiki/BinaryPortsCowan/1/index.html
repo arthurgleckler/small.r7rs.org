@@ -1,0 +1,73 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BinaryPortsCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BinaryPortsCowan.md">BinaryPortsCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Binary&shy;Ports&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2011-06-21 08:56:41</div>
+      <div class="version">1<span class="comment"></span><a href="/wiki/BinaryPortsCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/BinaryPortsCowan/1/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Introduction">Introduction</h2>
+      <p>This is my proposal for binary ports in small R7RS.  It assumes, but partly overrides, <a href="/wiki/PortsCowan">PortsCowan</a>.  In particular, the version of the <span class="monospace">buffering</span> key described there is replaced by the <span class="monospace">buffer</span> key here.</p>
+      <p>Under this proposal, it is no longer true that all binary ports are also character ports.  The user may create a file port that is either a character port, a binary port, or both.  String ports are character ports; blob ports are binary ports.</p>
+      <h2 id="Openingfileports">Opening file ports</h2>
+      <p>To open a binary file port, use any of the file-opening operations, passing the <span class="monospace">binary</span> key with a true value.  To open a character file port, use any of the
+file-opening operations, passing the <span class="monospace">character</span> key with a true value.  If either the <span class="monospace">character</span> key or the <span class="monospace">binary</span> key is not present, it is assumed to be false.  However, if the whole file spec takes the form of a string rather than a list, the <span class="monospace">character</span> key is assumed to be true.</p>
+      <p>If the <span class="monospace">buffer</span> key is false, the port must not be buffered by the implementation.  If the key is true or is not present, the port may be buffered.  Buffered character ports that are <i>not</i> binary ports may have both a character buffer and a binary buffer, but buffered character ports that <i>are</i> binary ports must not have a character buffer.  This permits safe interleaving of character and binary operations.</p>
+      <p>Here are the above rules in tabular form:</p>
+      <table><tr><td class="default">
+            <p><span class="monospace">character</span></p></td><td class="default">
+            <p><span class="monospace">binary</span></p></td><td class="default">
+            <p><span class="monospace">buffer</span></p></td><td class="default">
+            <p>returns:</p></td></tr><tr><td class="default">
+            <p>false</p></td><td class="default">
+            <p>false</p></td><td class="default">
+            <p>false</p></td><td class="default">
+            <p>undefined, no buffering</p></td></tr><tr><td class="default">
+            <p>false</p></td><td class="default">
+            <p>false</p></td><td class="default">
+            <p>true</p></td><td class="default">
+            <p>undefined</p></td></tr><tr><td class="default">
+            <p>false</p></td><td class="default">
+            <p>true</p></td><td class="default">
+            <p>false</p></td><td class="default">
+            <p>binary port, no buffer</p></td></tr><tr><td class="default">
+            <p>false</p></td><td class="default">
+            <p>true</p></td><td class="default">
+            <p>true</p></td><td class="default">
+            <p>binary port, may have buffer</p></td></tr><tr><td class="default">
+            <p>true</p></td><td class="default">
+            <p>false</p></td><td class="default">
+            <p>false</p></td><td class="default">
+            <p>character port, no buffer</p></td></tr><tr><td class="default">
+            <p>true</p></td><td class="default">
+            <p>false</p></td><td class="default">
+            <p>true</p></td><td class="default">
+            <p>character port, may have binary buffer and/or character buffer</p></td></tr><tr><td class="default">
+            <p>true</p></td><td class="default">
+            <p>true</p></td><td class="default">
+            <p>false</p></td><td class="default">
+            <p>character and binary port, no buffering</p></td></tr><tr><td class="default">
+            <p>true</p></td><td class="default">
+            <p>true</p></td><td class="default">
+            <p>true</p></td><td class="default">
+            <p>character and binary port, may have binary port, must not have character buffer</p></td></tr></table>
+      <h2 id="Operationsoncharacterandbinaryports">Operations on character and binary ports</h2>
+      <ul>
+        <li>Character ports allow the <span class="monospace">read-char</span>, <span class="monospace">peek-char</span>, <span class="monospace">char-ready</span>, and the layered <span class="monospace">read</span>, <span class="monospace">write</span>, and <span class="monospace">display</span> operations; they answer <span class="monospace">#t</span> to <span class="monospace">character-port?</span>.</li></ul>
+      <ul>
+        <li>Binary ports allow the <span class="monospace">read-u8</span>, <span class="monospace">peek-u8</span>, and <span class="monospace">u8-ready</span> operations; they answer <span class="monospace">#t</span> to <span class="monospace">binary-port?</span>.</li></ul>
+      <ul>
+        <li>Both kinds of ports can be handed to <span class="monospace">port?</span>, <span class="monospace">input-port?</span>, <span class="monospace">output-port?</span>, <span class="monospace">character-port</span>, <span class="monospace">binary-port</span>, <span class="monospace">port-open?</span>, <span class="monospace">close-input-port</span>, and <span class="monospace">close-output-port</span>.</li></ul></div></body></html>

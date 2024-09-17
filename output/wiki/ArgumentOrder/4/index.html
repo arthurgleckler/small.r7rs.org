@@ -1,0 +1,38 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ArgumentOrder</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ArgumentOrder.md">ArgumentOrder</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Argument&shy;Order</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2014-08-20 22:57:46</div>
+      <div class="version">4<span class="comment"></span><a href="/wiki/ArgumentOrder/history">history</a></div>
+      <div class="source"><a href="/wiki/ArgumentOrder/4/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is a test of the order in which Scheme REPLs evaluate the arguments of a procedure call.  It doesn't necessarily apply when arguments have different levels of complexity, nor does it apply to compiled code.  The test is <span class="monospace">((lambda x x) (display &quot;l&quot;) (display &quot;t&quot;) (display &quot;r&quot;))</span>.  In some cases, side-effecting procedures other than <span class="monospace">display</span> were used.</p>
+      <p>Displays <span class="monospace">ltr</span>: Racket, Gauche, Gambit, Chicken, Bigloo, Scheme48/scsh, Kawa, SCM, Vicare, Ypsilon, Mosh, IronScheme, NexJ, STklos, KSi, SigScheme, Scheme 9, RScheme, S7, Rep, Schemik, Elk, UMB, Llava, Sizzle, FemtoLisp, Dfsch, Inlab, Foment</p>
+      <p>Displays <span class="monospace">rtl</span>: MIT, BDC, XLisp, SXM, Chibi</p>
+      <p>Unpredictable order: Chez</p>
+      <p>Undeterminable order (no side effects): Owl Lisp</p>
+      <p>The following C code was also tested:</p><span class="monospace"># include &lt;stdio.h&gt;
+
+int yotz(int a, int b, int c) {
+  return a + b + c;
+}
+
+int main() {
+  yotz(printf(&quot;l&quot;), printf(&quot;t&quot;), printf(&quot;r&quot;));
+}
+</span>
+      <p>Displays <span class="monospace">ltr</span>: Clang</p>
+      <p>Displays <span class="monospace">rtl</span>: GCC</p></div></body></html>

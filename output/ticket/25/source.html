@@ -1,0 +1,131 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #25</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #25</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2010-11-18 13:55:26</pre>
+    <h2>component</h2>
+    <pre>WG1 - Strings and Chars</pre>
+    <h2>description</h2>
+    <pre>R6RS provides comparator routines for
+characters and strings using locale-independent
+Unicode algorithms.  How do we order our
+textual data?
+</pre>
+    <h2>id</h2>
+    <pre>25</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>alexshinn</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>char and string ordering</pre>
+    <h2>time</h2>
+    <pre>2010-02-23 16:55:35</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2010-11-18 13:55:26</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>This has been subsumed by #23.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1290059726000000</pre>
+    <h2>ticket</h2>
+    <pre>25</pre>
+    <h2>time</h2>
+    <pre>2010-11-18 13:55:26</pre>
+    <h2>Change at time 2010-11-18 13:55:26</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>milestone</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1290059726000000</pre>
+    <h2>ticket</h2>
+    <pre>25</pre>
+    <h2>time</h2>
+    <pre>2010-11-18 13:55:26</pre>
+    <h2>Change at time 2010-11-18 13:55:26</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1290059726000000</pre>
+    <h2>ticket</h2>
+    <pre>25</pre>
+    <h2>time</h2>
+    <pre>2010-11-18 13:55:26</pre>
+    <h2>Change at time 2010-11-18 13:55:26</h2>
+    <h2>author</h2>
+    <pre>alexshinn</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1290059726000000</pre>
+    <h2>ticket</h2>
+    <pre>25</pre>
+    <h2>time</h2>
+    <pre>2010-11-18 13:55:26</pre>
+    <h2>Change at time 2010-03-02 01:34:21</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>R5RS ordering is very undemanding: it requires only that the ASCII uppercase letters sort correctly, that the ASCII lowercase letters sort correctly, that the digits sort correctly, and that digits and letters are not interleaved.   On the other hand, it also requires that string sorting be lexicographic with respect to character sorting: that is, if two (sub)strings are the same except for the last character, they are sorted in the same way that the last character is sorted.
+
+I'd like to apply R6RS rules to characters: they sort in Unicode order and char-&gt;integer and integer-&gt;char (which are arbitrary mappings in R5RS) map characters to Unicode code points.  But Thing One implementations shouldn't be required to represent all of Unicode, nor to use UTF-8 or UTF-32 for strings internally (the native sort of UTF-16 is ''not'' codepoint order).
+
+Instead, I believe we should break the lexicographic rule and allow string ordering to be done however an implementation pleases, as long as the R5RS rules are kept (all modern encodings, including EBCDIC, do keep them), and as long as the regular rules of comparison functions are preserved (consistency, trichotomy, etc.)</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1267464861000000</pre>
+    <h2>ticket</h2>
+    <pre>25</pre>
+    <h2>time</h2>
+    <pre>2010-03-02 01:34:21</pre></body></html>

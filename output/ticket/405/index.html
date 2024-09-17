@@ -1,0 +1,117 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>405: Make promises first-class</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 405: <span class="summary">Make promises first-class</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-07 04:36:15</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">cowan</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/405/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-06-12 04:08:03</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>Currently there is no way to inspect an object to see if it's a promise.  This proposal makes promises first-class by adding a <span class="monospace">promise?</span> predicate.  It also requires that if the argument to <span class="monospace">make-promise</span> is a promise, it is returned without rewrapping it, and that if <span class="monospace">force</span> is given a non-promise argument, it returns it unchanged.  (These things cannot be provided by the user without a <span class="monospace">promise?</span> predicate, and are trivial to provide with it.)</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-06-13 05:22:00</div></div>
+          <div class="changes">
+            <div><span class="field">description</span><span class="old-value">Currently there is no way to inspect an object to see if it's a promise.  This proposal makes promises first-class by adding a `promise?` predicate.  It also requires that if the argument to `make-promise` is a promise, it is returned without rewrapping it.</span><span class="new-value">Currently there is no way to inspect an object to see if it's a promise.  This proposal makes promises first-class by adding a `promise?` predicate.  It also requires that if the argument to `make-promise` is a promise, it is returned without rewrapping it, and that if `force` is given a non-promise argument, it returns it unchanged.  (These things cannot be provided by the user without a `promise?` predicate, and are trivial to provide with it.)</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-06-13 06:09:55</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Programmers can do the second two items themselves if the implementation provides
+<span class="monospace">promise?</span>, but they are simple and worth having.  Combined with auto-forcing (with or without insta-forcing of constants), they provide what Per spoke of: laziness is explicit, eagerness is implicit, but the user has full control.</p>
+              <p>On the other hand, since auto-forcing is not required, there is only trivial cost to implementations who don't wish to provide it, namely the cost of making sure promises are a disjoint type and not just a special case of procedures.</p>
+              <p>I ran tests against the usual suite of Schemes:</p>
+              <p>Promises are not thunks, <span class="monospace">force</span> returns any non-promise unchanged : Racket, Gauche, Gambit, Chicken, Chibi, STklos, RScheme, XLisp, UMB, Oaklisp, SXM</p>
+              <p>Promises are not thunks but can be invoked anyway, <span class="monospace">force</span> returns any non-promise unchanged: TinyScheme</p>
+              <p>Promises are not thunks, <span class="monospace">force</span> rejects anything but a promise: Guile, SCM, SigScheme, Elk, VX, Spark</p>
+              <p>Promises are thunks, <span class="monospace">force</span> rejects anything else (presumably because it just invokes its argument): Scheme48/scsh, SISC, Chez, Vicare, Larceny, Ypsilon, Mosh, IronScheme, Scheme 9, Dream, BDC, Schemik, Sizzle, Inlab</p>
+              <p>No force/delay support: KSi, Shoe, Scheme 7, Rep, Llava, Femtolisp, Dfsch</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 00:49:24</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to add the <span class="monospace">promise?</span> procedure without requiring promises to be disjoint.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 08:58:30</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-09-19 10:50:48</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-09-19 10:52:13</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">fixed</span><span class="new-value">&blank;</span></div>
+            <div><span class="field">status</span><span class="old-value">closed</span><span class="new-value">reopened</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>Reopening part of the ticket to retract this requirement: &quot;If force is given a non-promise argument, it returns it unchanged&quot;, because it conflicts with R6RS, which requires an error to be signalled.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-03 00:25:42</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">reopened</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 decided to retract the above requirement.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-03 00:25:48</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-07 04:36:15</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

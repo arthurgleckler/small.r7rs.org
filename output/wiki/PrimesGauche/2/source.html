@@ -1,0 +1,212 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki PrimesGauche version 2</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki PrimesGauche version 2</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>PrimesGauche</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>{{{
+#!html
+&lt;p&gt;This module provides utilities related to prime numbers.
+&lt;/p&gt;&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-_002aprimes_002a&quot;&gt;&lt;/a&gt;&lt;code&gt;all-primes&lt;/code&gt; [Variable]&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;An infinite lazy sequence of primes.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;;; show 10 prime numbers from 100-th one.
+(lseq-take (lseq-drop all-primes 100) 10)
+ &amp;rArr; (547 557 563 569 571 577 587 593 599 601)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-reset_002dprimes&quot;&gt;&lt;/a&gt; &lt;code&gt;reset-primes&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Once you take a prime out of &lt;code&gt;all-primes&lt;/code&gt;, all smaller primes
+have been calculated and remain in memory, since the
+head of the sequence is held in &lt;code&gt;all-primes&lt;/code&gt;.  Sometimes you know
+you need no more prime numbers and you wish the ones that have already been computed
+to be garbage-collected.  Calling &lt;code&gt;reset-primes&lt;/code&gt; rebinds
+&lt;code&gt;all-primes&lt;/code&gt; to a fully unrealized lazy sequence, allowing the previously
+realized primes to be garbage collected.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-primes&quot;&gt;&lt;/a&gt;&lt;code&gt;primes&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Returns a fresh lazy sequence of primes.  It is useful when
+you need certain for a short period of time &amp;mdash; if you don&amp;rsquo;t keep
+a reference to the head of the returned sequence, it will be garbage
+collected after you&amp;rsquo;re done with the primes.
+(Note that the calculation of a prime number needs the
+sequence of primes from the beginning, 
+so even if your code only keeps a reference
+into the middle of the sequence, the entire sequence will be stored &amp;mdash; you
+have to release all
+references in order to allow the sequence to be garbage collected.)
+&lt;/p&gt;
+&lt;p&gt;On the other hand,
+each sequence returned by &lt;code&gt;primes&lt;/code&gt; is computed individually,
+duplicating computation.  
+&lt;/p&gt;
+&lt;p&gt;The rule of thumb is: if you use primes repeatedly throughout
+the program, just use &lt;code&gt;all-primes&lt;/code&gt; and you&amp;rsquo;ll save computation.
+If you need primes just once, call &lt;code&gt;primes&lt;/code&gt; and abandon the result
+and you&amp;rsquo;ll save space.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;a name=&quot;Testing-primality&quot;&gt;&lt;/a&gt;
+&lt;h3 class=&quot;subheading&quot;&gt;Testing primality&lt;/h3&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-small_002dprime_003f&quot;&gt;&lt;/a&gt;&lt;code&gt;small-prime?&lt;/code&gt;&lt;i&gt; n&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;For positive integers 
+less than &lt;code&gt;small-prime-bound&lt;/code&gt;, this procedure
+determines if &lt;var&gt;n&lt;i&gt; is prime or not, quickly and deterministically.
+If &lt;var&gt;n&lt;/var&gt; is greater than or equal to this bound, this procedure returns &lt;code&gt;#f&lt;/code&gt;.
+&lt;/p&gt;
+&lt;p&gt;This can be used to quickly filter out known primes; it never returns
+&lt;code&gt;#t&lt;/code&gt; on composite numbers, but it may return &lt;code&gt;#f&lt;/code&gt; on
+sufficiently large prime numbers).
+The Miller-Rabin test below can tell if the input is definitely composite,
+but it may return &lt;code&gt;#t&lt;/code&gt; on some composite numbers.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-_002asmall_002dprime_002dbound_002a&quot;&gt;&lt;/a&gt;&lt;code&gt;small-prime-bound&lt;/code&gt; [Variable]&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;For all positive integers below this value
+&lt;code&gt;small-prime?&lt;/code&gt; can determine whether it is a prime or not.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-miller_002drabin_002dprime_003f&quot;&gt;&lt;/a&gt;&lt;code&gt;miller-rabin-prime?&lt;/code&gt;&lt;i&gt; n [ num-tests ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Check if an exact integer &lt;var&gt;n&lt;/var&gt; is a prime number, using
+probabilistic Miller-Rabin algorithm (&lt;var&gt;n&lt;/var&gt; must be greater than 1).
+If this procedure returns &lt;code&gt;#f&lt;/code&gt;,
+&lt;var&gt;n&lt;/var&gt; is a composite number.  If this procedure returns &lt;code&gt;#t&lt;/code&gt;,
+&lt;var&gt;n&lt;/var&gt; is &lt;em&gt;likely&lt;/em&gt; a prime, but there&amp;rsquo;s a small probability
+that it is a false positive.
+&lt;/p&gt;
+&lt;p&gt;Note that if &lt;var&gt;n&lt;/var&gt; is smaller than &lt;code&gt;small-prime-bound&lt;/code&gt;, the algorithm is
+deterministic; if it returns &lt;code&gt;#t&lt;/code&gt;, &lt;var&gt;n&lt;/var&gt; is certainly a prime.
+&lt;/p&gt;
+&lt;p&gt;If &lt;var&gt;n&lt;/var&gt; is greater than or equal to 
+&lt;code&gt;small-prime-bound&lt;/code&gt;, we use a probabilistic test.
+We choose a random base integer
+to perform the Miller-Rabin test up to &lt;var&gt;num-tests&lt;/var&gt; (7 times by default).
+The probability
+of returning &lt;code&gt;#t&lt;/code&gt; for a composite number
+is at most &lt;code&gt;(expt 4 (- num-tests))&lt;/code&gt;.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-bpsw_002dprime_003f&quot;&gt;&lt;/a&gt;&lt;code&gt;bpsw-prime?&lt;/code&gt;&lt;i&gt; n&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Check if an exact integer &lt;var&gt;n&lt;/var&gt; is a prime number, using
+the Baillie-PSW primality test
+(&lt;a href=&quot;http://www.trnicely.net/misc/bpsw.html&quot;&gt;http://www.trnicely.net/misc/bpsw.html&lt;/a&gt;).   It is deterministic,
+and is known to return a definitive answer for all numbers less than 2&lt;super&gt;64&lt;/super&gt;.
+For larger integers this can return &lt;code&gt;#t&lt;/code&gt; on a composite number,
+although no such number has been found yet.  This procedure never returns &lt;code&gt;#f&lt;/code&gt;
+on a prime number.
+&lt;/p&gt;
+&lt;p&gt;This test is slower than Miller-Rabin but fast enough for casual use,
+so it is handy when you want a definitive answer below the above range.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;a name=&quot;Factorization&quot;&gt;&lt;/a&gt;
+&lt;h3 class=&quot;subheading&quot;&gt;Factorization&lt;/h3&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-naive_002dfactorize&quot;&gt;&lt;/a&gt;&lt;code&gt;naive-factorize&lt;/code&gt;&lt;i&gt; n [ divisor-limit ]&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Factorize a positive integer &lt;var&gt;n&lt;/var&gt; by trying to divide it into
+all primes up to &lt;code&gt;(sqrt n)&lt;/code&gt;.  Returns a list of prime factors,
+smallest first.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(naive-factorize 142857)
+  &amp;rArr; (3 3 3 11 13 37)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Although this is a pretty naive method, this works well as far as
+any of &lt;var&gt;n&lt;/var&gt;&amp;rsquo;s factors are not larger than about ten million.
+&lt;/p&gt;
+
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(naive-factorize 3644357367494986671013))
+  &amp;rArr; (10670053 10670053 32010157)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;p&gt;If &lt;var&gt;n&lt;/var&gt; includes any larger prime factors,
+the performance becomes abysmal.&lt;/p&gt;
+&lt;p&gt;Alternatively, providing the &lt;var&gt;divisor-limit&lt;/var&gt; argument specifies
+the upper bound of the prime number to be tried.  If it is given,
+&lt;code&gt;naive-factorize&lt;/code&gt; returns a factor &lt;var&gt;f&lt;/var&gt; unchanged if it can&amp;rsquo;t be
+divided by any primes less than or equal to &lt;var&gt;divisor-limit&lt;/var&gt;.
+So, the last element of the returned list may be a composite number.
+This is useful for excluding trivial factors before applying more sophisticated
+factorizing algorithms.
+&lt;/p&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;pre class=&quot;example&quot;&gt;(naive-factorize 825877877739 1000)
+  &amp;rArr; (3 43 6402154091)
+
+;; whereas
+(naive-factorize 825877877739)
+  &amp;rArr; (3 43 4591 1394501)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;The procedure also memoizes the results on smaller values of &lt;var&gt;n&lt;/var&gt; to make
+things faster.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-mc_002dfactorize&quot;&gt;&lt;/a&gt;&lt;code&gt;mc-factorize&lt;/code&gt;&lt;i&gt; n&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Factorize a positive integer &lt;var&gt;n&lt;/var&gt; using the algorithm
+described in 
+R. P. Brent, An improved Monte Carlo factorization algorithm, BIT 20 (1980), 176-184. &lt;a href=&quot;http://maths-people.anu.edu.au/~brent/pub/pub051.html&quot;&gt;http://maths-people.anu.edu.au/~brent/pub/pub051.html&lt;/a&gt;.
+&lt;/p&gt;
+&lt;p&gt;This one is capable of handling much larger factors than
+&lt;code&gt;naive-factorize&lt;/code&gt;, somewhere around 10&lt;super&gt;20&lt;/super&gt; or so.
+&lt;/p&gt;
+&lt;p&gt;Since this method is probabilistic, the execution time may vary
+on the same &lt;var&gt;n&lt;/var&gt;.  But it will always return the definitive
+results as long as every prime factor of &lt;var&gt;n&lt;/var&gt; is smaller than an
+implementation-specified limit.  If &lt;var&gt;n&lt;/var&gt; contains a prime factor greater than
+the limit, the procedure may loop forever.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+
+&lt;a name=&quot;Miscellaneous&quot;&gt;&lt;/a&gt;
+&lt;h3 class=&quot;subheading&quot;&gt;Miscellaneous&lt;/h3&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-jacobi&quot;&gt;&lt;/a&gt;&lt;code&gt;jacobi&lt;/code&gt;&lt;i&gt; a n&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Calculates the Jacobi symbol &lt;code&gt;(&lt;var&gt;a&lt;/var&gt;/&lt;var&gt;n&lt;/var&gt;)&lt;/code&gt;
+(&lt;a href=&quot;http://en.wikipedia.org/wiki/Jacobi_symbol&quot;&gt;http://en.wikipedia.org/wiki/Jacobi_symbol&lt;/a&gt;).
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;&lt;a name=&quot;index-totient&quot;&gt;&lt;/a&gt;&lt;code&gt;totient&lt;/code&gt;&lt;i&gt; n&lt;/i&gt;&lt;/dt&gt;
+&lt;dd&gt;&lt;p&gt;Euler&amp;rsquo;s totient function of nonnegative integer &lt;var&gt;n&lt;/var&gt;.
+&lt;/p&gt;
+&lt;p&gt;The current implementation relies on &lt;code&gt;mc-factorize&lt;/code&gt; above,
+so it may take very long if &lt;var&gt;n&lt;/var&gt; contains large prime factors.
+&lt;/p&gt;&lt;/dd&gt;&lt;/dl&gt;
+}}}</pre>
+    <h2>time</h2>
+    <pre>2016-07-11 10:38:43</pre>
+    <h2>version</h2>
+    <pre>2</pre></body></html>

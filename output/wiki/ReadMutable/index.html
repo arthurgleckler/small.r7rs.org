@@ -1,0 +1,31 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>ReadMutable</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/ReadMutable.md">ReadMutable</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Read&shy;Mutable</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-04-21 01:52:47</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/ReadMutable/history">history</a></div>
+      <div class="source"><a href="/wiki/ReadMutable/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>The following test from the REPL was used to determine which Schemes, if any, return immutable pairs from calling <span class="monospace">read</span> on the input <span class="monospace">(a . b)</span>:</p><span class="monospace">(define x (read))
+(a . b)
+(set-car! x 'b)
+x
+</span>
+      <p>IronScheme, S7, Dfsch, Inlab don't support (read) direct from the command line, so I substituted reading from a file that contained nothing but <span class="monospace">(a . b)</span>.</p>
+      <p>Output <span class="monospace">(b . b)</span> per R![57]RS: Gauche, MIT, Gambit, Chicken, Bigloo, Scheme48/scsh, Guile, Kawa, SISC, Detroit, SCM, Chez, Vicare, Larceny, Ypsilon, Mosh, IronScheme, JScheme, STklos, KSi, SigScheme, MiniScheme, TinyScheme, S7, Scheme 9, RScheme, Unlikely, SIOD, BDC, XLisp, Elk, SXM, Sizzle, FemtoLisp, Inlab, Sagittarius, Foment, Picrin, Chibi</p>
+      <p>All pairs are immutable: Racket, Owl Lisp</p>
+      <p>Returned pair is immutable: JScheme</p>
+      <p>No usable <span class="monospace">read</span>, <span class="monospace">set-car!</span> or <span class="monospace">open-input-file</span>: Rep, Shoe, UMB, Llava, Dfsch</p></div></body></html>

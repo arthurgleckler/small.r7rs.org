@@ -1,0 +1,38 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>RandomUtilitiesMore</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/RandomUtilitiesMore.md">RandomUtilitiesMore</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Random&shy;Utilities&shy;More</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-04-23 12:13:00</div>
+      <div class="version">2<span class="comment"></span><a href="/wiki/RandomUtilitiesMore/history">history</a></div>
+      <div class="source"><a href="/wiki/RandomUtilitiesMore/2/source.html">source</a></div></div>
+    <div class="wiki text">
+      <p>This is an unformatted dump of things that Mikael More thinks R7RS-large should provide somehow, from #scheme:</p>
+      <h2 id="Utilities">Utilities</h2>
+      <p>Also some kind of general purpose routines for strings, chars   (there are some fundamental things here that are clearly not in SRFI 13 and 14, like, <span class="monospace">string-strip</span>, <span class="monospace">string-replace-char</span>, <span class="monospace">join</span>, a <span class="monospace">string-append</span> form that takes non-string arguments too a bit like <span class="monospace">print</span>, <span class="monospace">string&lt;-&gt;object</span> serialization), lists (same here - <span class="monospace">list-add!</span>, <span class="monospace">list-rm!</span>, <span class="monospace">filter!</span>).</p>
+      <p>u8vector/blob (same here - <span class="monospace">u8vector&lt;-&gt;string</span> and file) tree structures like WT tree, mailboxes,  exception handling that also catches the continuation for stack trace printouts and other handling, queues... <span class="monospace">let-vector</span>,  <span class="monospace">number&lt;-&gt;string</span> with formatting parameters.</p>
+      <p><span class="monospace">let-args</span> is essentially <span class="monospace">(define-macro (let-args var def . code) (quasiquote (apply (lambda ,def . ,code) ,var)))</span>.</p>
+      <p><span class="monospace">map-w-index</span> and <span class="monospace">for-each-w-index</span> add a first argument to the called lambda, which is the zero-based index  of the element you are at.</p>
+      <h2 id="Customports">Custom ports</h2>
+      <p>Scheme brings an ports/IO API with open-file, call-with-input-file , open-tcp-client etc. where the Scheme environment exports this functionality to the program this is great. it can include char encoding for instance. and object serialization of course.</p>
+      <p>I've gotten into uses like HTTPS and GZIP and HTTP and really any protocol out there.</p>
+      <p>My firm conclusion is that the absolutely finest, and possibly only really reliable way to implement these in Scheme (apart from as block procedures that take or deliver an u8vector/blob) is that they need to export <i>Scheme ports</i>.</p>
+      <ol class="alpha-lower" start="5">
+        <li>g., <span class="monospace">(open-ssl-channel (open-tcp-client args))</span> =&gt; <i>ssl-channel-port</i>.</li></ol>
+      <p>The only major detail to be added to this is that there's a certain need of mixing binary and character data, as is done in HTTP for instance.</p>
+      <p>I got into this need for &quot;application layer&quot; port implementations  that have specific exports more or less at per-IO primitive level, from trying to implement an SSL channel atop bidirectional u8vector port.</p>
+      <p>That failed miserably as the SSL logics code would not be up to date about whether there was EOF or not etc.</p>
+      <p>This might be too implementation specific for any standard to touch it, i'm very well aware of this.</p>
+      <p>Though, ability to abstract protocols and IO is at the core of delivering practical things, which is the subject of the larger language as I got it.</p></div></body></html>

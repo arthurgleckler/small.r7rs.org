@@ -1,0 +1,649 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>BitwiseCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/BitwiseCowan.md">BitwiseCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Bitwise&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2016-08-09 09:06:00</div>
+      <div class="version">13<span class="comment"></span><a href="/wiki/BitwiseCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/BitwiseCowan/13/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h1 id="Bitwisearithmeticprocedures">Bitwise arithmetic procedures</h1>
+      <h2 id="Abstract">Abstract</h2>
+      <p>This SRFI proposes a coherent and comprehensive set of procedures for
+performing bitwise logical operations on integers; it is
+accompanied by a reference implementation of the spec in terms of a set of
+seven core operators. The sample implementation is portable, as efficient
+as practical with pure Scheme arithmetic (it is worthwhile replacing the
+core ops with C or assembly language if possible), and open source.
+The precise semantics of these operators is almost never an issue. A
+consistent, portable set of <i>names</i> and <i>parameter conventions</i>, however, is.</p>
+      <p>Hence this SRFI, which is based mainly on <a href="http://srfi.schemers.org/srfi-33/srfi-33.html">SRFI 33</a>, with some changes and additions from <a href="http://srfi.schemers.org/srfi-33/mail-archive/msg00023.html">Olin's late revisions to SRFI 33</a> (which were never consummated) and a few procedures from <a href="http://srfi.schemers.org/srfi-60/srfi-60.html">SRFI 60</a> and
+the general vector <a href="http://srfi.schemers.org/srfi-133/srfi-133.html">SRFI 133</a>.  
+SRFI 33 was never finalized, but is a reasonably comprehensive proposal.
+SRFI 60 (based on SLIB) is smaller but has a few procedures of its own;
+some of its procedures have both native (often CL) and SRFI 33 names.
+<a href="http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-12.html#node_sec_11.4">R6RS</a>
+is a subset of SRFI 60, except that all procedure names begin with a <span class="monospace">bitwise-</span> prefix.</p>
+      <p>Among the applications of bitwise operations are: hashing,
+Galois-field calculations of error-detecting and error-correcting codes,
+cryptography and ciphers,
+pseudo-random number generation,
+register-transfer-level modeling of digital logic designs,
+Fast-Fourier transforms,
+packing and unpacking numbers in persistant data structures,
+space-filling curves with applications to dimension reduction
+and sparse multi-dimensional database indexes,
+and generating approximate seed values for root-finders
+and transcendental function algorithms.</p>
+      <h2 id="Procedureindex">Procedure index</h2><span class="monospace">bitwise-not
+bitwise-and   bitwise-ior 
+bitwise-xor   bitwise-eqv
+bitwise-nand  bitwise-nor 
+bitwise-andc1 bitwise-andc2
+bitwise-orc1  bitwise-orc2 
+
+arithmetic-shift bit-count integer-length
+
+bitwise-if 
+bit-set? copy-bit bit-swap
+any-bit-set? every-bit-set?
+first-set-bit
+
+bit-field bit-field-any? bit-field-every?
+bit-field-clear bit-field-set
+bit-field-replace  bit-field-replace-same
+bit-field-rotate bit-field-reverse
+bit-field-append
+
+integer-&gt;list list-&gt;integer bits
+bitwise-fold bitwise-for-each bitwise-unfold
+</span>
+      <h2 id="Rationale">Rationale</h2>
+      <h3 id="Generaldesignprinciples">General design principles</h3>
+      <ul>
+        <li>These operations interpret exact integers using two's-complement representation.</li></ul>
+      <ul>
+        <li>It is not optional for the associative bitwise ops to be n-ary instead of merely binary. They are required to be n-ary. Programmers can <i>reliably</i> write <span class="monospace">bitwise-and</span> with 3 arguments, for example.</li></ul>
+      <ul>
+        <li>The word <span class="monospace">or</span> is never used by itself, only with modifiers: <span class="monospace">xor</span>, <span class="monospace">ior</span>, <span class="monospace">nor</span>,
+   <span class="monospace">orc1</span>, or <span class="monospace">orc2</span>.  This is the same rule as Common Lisp.</li></ul>
+      <ul>
+        <li>Extra and redundant functions such as <span class="monospace">bitwise-count</span>, <span class="monospace">bitwise-nor</span> 
+   and the bit-field ops have been included.  Settling on a standard
+   choice of names makes it easier to read
+   code that uses these sorts of operations. It also means computations
+   can be clearly expressed using the more powerful ops rather than
+   synthesized with a snarled mess of <span class="monospace">bitwise-and</span>s, <span class="monospace">bitwise-or</span>s, and <span class="monospace">bitwise-not</span>s.
+   What we gain is having an agreed-upon set of names by which we can refer
+   to these functions. If you believe in &quot;small is beautiful,&quot; then what is your motivation
+   for including anything beyond <span class="monospace">bitwise-nand</span>?</li></ul>
+      <ul>
+        <li>The programmer doesn't have to re-implement the redundant functions, and stumble
+   over the boundary cases and error checking. The programmer can express
+   himself using a full palette of building blocks.</li></ul>
+      <ul>
+        <li>Compilers can directly implement many of these ops for great efficiency gains
+   without requiring any tricky analysis.</li></ul>
+      <ul>
+        <li>Logical right or left shift operations are excluded 
+   because they are not well defined on general integers; they are only defined
+   on integers in some finite range. Remember that, in this library, integers
+   are interpreted as <i>semi-infinite</i> bit strings that have only a finite
+   number of ones or a finite number of zeros. Logical shifting operates on bit
+   strings of some fixed size. If we shift left, then leftmost bits &quot;fall off&quot;
+   the end (and zeros shift in on the right). If we shift right, then zeros
+   shift into the string on the left (and rightmost bits fall off the end). So
+   to define a logical shift operation, <i>we must specify the size of the
+   window</i>. Typically this is the width of the underlying machine's register
+   set (e.g., 32 bits). This is blatantly machine-specific and unportable, and
+   clearly not the right thing for Scheme's more machine-independent general
+   integers.</li></ul>
+      <h3 id="CommonLisp">Common Lisp</h3>
+      <p>The core of this design design mirrors the structure of Common Lisp's pretty closely.  Here are some differences:</p>
+      <ul>
+        <li>&quot;load&quot; and &quot;deposit&quot; are the wrong verbs (e.g., Common Lisp's <span class="monospace">ldb</span> and <span class="monospace">dpb</span> ops),
+        since these guys have nothing to do with the store.</li></ul>
+      <blockquote></blockquote>
+      <ul>
+        <li><span class="monospace">boole</span> has been removed; it is not one with the Way of Scheme.  Boolean functions
+        are directly encoded in Scheme as first-class functions.</li></ul>
+      <blockquote></blockquote>
+      <ul>
+        <li>The name choices are more in tune with Scheme conventions (hyphenation,
+        using <span class="monospace">?</span> to mark a predicate, etc.). Common Lisp's name choices were more
+        historically motivated, for reasons of backward compatibility with
+        Maclisp and Zetalisp.</li></ul>
+      <blockquote></blockquote>
+      <ul>
+        <li>The prefix <span class="monospace">log</span> has been changed to <span class="monospace">bitwise-</span> (e.g, <span class="monospace">lognot</span> to <span class="monospace">bitwise-not</span>),
+        as the prefix <span class="monospace">bitwise-</span> more accurately reflects what they do.</li></ul>
+      <blockquote></blockquote>
+      <ul>
+        <li>The six trivial binary boolean ops that return constants, the left or right arguments,
+        and the <span class="monospace">bitwise-not</span> of the left or right arguments, do not appear in this SRFI.</li></ul>
+      <h3 id="SRFI33">SRFI 33</h3>
+      <p>This SRFI contains all the procedures of SRFI 33, and retains their original names with these exceptions:</p>
+      <ul>
+        <li>The name <span class="monospace">bitwise-merge</span> is replaced by <span class="monospace">bitwise-if</span>, the name used in SRFI 60 and R6RS.</li></ul>
+      <ul>
+        <li>The name <span class="monospace">extract-bit-field</span> (<span class="monospace">bit-field-extract</span> in Olin's revisions) is replaced by <span class="monospace">bit-field</span>, the name used in SRFI 60 and R6RS.</li></ul>
+      <ul>
+        <li>The names <span class="monospace">any-bits-set?</span> and <span class="monospace">all-bits-set?</span> are replaced by <span class="monospace">any-bit-set?</span> and <span class="monospace">every-bit-set?</span>, in accordance with Olin's revisions.</li></ul>
+      <ul>
+        <li>The name <span class="monospace">test-bit-field?</span> has been renamed <span class="monospace">bit-field-any?</span> and supplemented with
+  <span class="monospace">bit-field-every?</span>, in accordance with Olin's revisions.</li></ul>
+      <ul>
+        <li>Because  <span class="monospace">copy-bit-field</span> means different things in SRFI 33 and SRFI 60,
+  SRFI 33's name <span class="monospace">copy-bit-field</span> (<span class="monospace">bit-field-copy</span> in Olin's revisions)
+  has been changed to <span class="monospace">bit-field-replace-same</span>.</li></ul>
+      <h3 id="SRFI60">SRFI 60</h3>
+      <p>SRFI 60 includes six procedures that do not have SRFI 33 equivalents.  They are incorporated into this SRFI as follows:</p>
+      <ul>
+        <li>The names <span class="monospace">rotate-bit-field</span> and <span class="monospace">reverse-bit-field</span> are replaced by <span class="monospace">bit-field-rotate</span> and <span class="monospace">bit-field-reverse</span>, in parallel with Olin's revisions.</li></ul>
+      <ul>
+        <li>The procedures <span class="monospace">copy-bit</span>, <span class="monospace">integer-&gt;list</span> and <span class="monospace">list-&gt;integer</span> are incorporated into this SRFI unchanged.</li></ul>
+      <ul>
+        <li>The procedure <span class="monospace">booleans-&gt;integer</span> is a convenient way to specify a bitwise integer in the absence of datum syntax: it accepts an arbitrary number of boolean arguments and returns a non-negative integer.  So in this SRFI it has the short name <span class="monospace">bits</span>, roughly analogous to <span class="monospace">list</span>, <span class="monospace">string</span>, and <span class="monospace">vector</span>.</li></ul>
+      <h3 id="Othersources">Other sources</h3>
+      <p>The following procedures are inspired by SRFI 133:  <span class="monospace">bit-swap</span>, <span class="monospace">bit-field-append</span>,
+<span class="monospace">bitwise-fold</span>, <span class="monospace">bitwise-for-each</span>, <span class="monospace">bitwise-unfold</span>.</p>
+      <ul>
+        <li>The procedure <span class="monospace">bit-field-set</span> is the counterpart of <span class="monospace">bit-field-clear</span>.</li></ul>
+      <h3 id="Argumentorderingandsemantics">Argument ordering and semantics</h3>
+      <ul>
+        <li>In general, these procedures place the bitstring arguments to be operated on first.
+  Where the operation is not commutative, the &quot;destination&quot; argument that provides
+  the background to be operated on is placed before the &quot;source&quot; argument that provides
+  the bits to be transferred to it.</li></ul>
+      <ul>
+        <li>In SRFI 33, <span class="monospace">bitwise-nand</span> and <span class="monospace">bitwise-nor</span> accepted an arbitrary number of arguments
+  even though they are not commutative.  Olin's late revisions made them dyadic, and so
+  does this SRFI.</li></ul>
+      <ul>
+        <li>Common Lisp bit-field operations use a <i>byte spec</i> to encapsulate the position and
+  size of the field.  SRFI 33 bit-field operations had leading <i>position</i> and <i>size</i>
+  arguments instead.  These
+  have been replaced in this SRFI by <i>start</i> (inclusive) and <i>end</i> (exclusive)
+  arguments, the convention used not only in SRFI 60 and R6RS but also in most other
+  subsequence operations in Scheme standards and SRFIs.</li></ul>
+      <h2 id="Specification">Specification</h2>
+      <p>In the following procedure specifications all parameters and return values
+are exact integers unless otherwise indicated (except that procedures with
+names ending in <span class="monospace">?</span> are predicates, as usual). It is
+an error to pass values of other types as arguments to these functions.</p>
+      <p>Bitstrings are represented by exact integers, using a two's-complement encoding of
+the bitstring. Thus every integer represents a semi-infinite bitstring, having
+either a finite number of zeros (negative integers) or a finite number of
+ones (non-negative integers). The bits of a bitstring are numbered from the
+rightmost/least-significant bit: bit !<a href="/ticket/0">#0</a> is the rightmost or 2<sup>0</sup> bit, bit !<a href="/ticket/1">#1</a> is
+the next or 2<sup>1</sup> bit, and so forth.</p>
+      <h3 id="Basicoperations">Basic operations</h3>
+      <p><span class="monospace">(bitwise-not </span><i>i</i><span class="monospace">)</span></p>
+      <p>Returns the bitwise complement of <i>i</i>; that is, all 1 bits are changed
+to 0 bits and all 0 bits to 1 bits.</p><span class="monospace">  (bitwise-not 10) =&gt; -11
+  (bitwise-not -37) =&gt; 36
+</span>
+      <p>The following ten procedures correspond to the useful set
+of non-trivial two-argument boolean functions. For each such function,
+the corresponding bitwise operator
+maps that function across a pair of bitstrings in a bit-wise fashion.</p>
+      <p>The core idea of this group of functions is this bitwise &quot;lifting&quot;
+of the set of dyadic boolean functions to bitstring parameters.</p>
+      <p><span class="monospace">(bitwise-and </span><i>i</i> ...<span class="monospace">)</span><br>
+<span class="monospace">(bitwise-ior </span><i>i</i> ...<span class="monospace">)</span><br>
+<span class="monospace">(bitwise-xor </span><i>i</i> ...<span class="monospace">)</span><br>
+<span class="monospace">(bitwise-eqv </span><i>i</i> ...<span class="monospace">)</span></p>
+      <p>These operations are associative.  When passed no arguments, the procedures
+return the identity values -1, 0, 0, and -1 respectively.</p>
+      <p>The <span class="monospace">bitwise-eqv</span> procedure produces the
+complement of the <span class="monospace">bitwise-xor</span> procedure.  When applied to three
+arguments, it does <i>not</i> produce a 1 bit
+everywhere that a, b and c all agree. That is, it does <i>not</i> produce</p><span class="monospace">     (bitwise-ior (bitwise-and a b c)
+                  (bitwise-and (bitwise-not a)
+                               (bitwise-not b)
+                               (bitwise-not c)))
+</span>
+      <p>Rather, it produces <span class="monospace">(bitwise-eqv a (bitwise-eqv b c))</span> or the equivalent
+<span class="monospace">(bitwise-eqv (bitwise-eqv a b) c)</span>.</p><span class="monospace">      (bitwise-ior 3  10)     =&gt;  11
+      (bitwise-and 11 26)     =&gt;  10
+      (bitwise-xor 3 10)      =&gt;   9
+      (bitwise-eqv 37 12)     =&gt; -42
+      (bitwise-and 37 12)     =&gt;   4
+</span>
+      <p><span class="monospace">(bitwise-nand </span><i>i j</i><span class="monospace">)</span><br>
+<span class="monospace">(bitwise-nor </span><i>i j</i><span class="monospace">)</span><br>
+<span class="monospace">(bitwise-andc1 </span><i>i j</i><span class="monospace">)</span><br>
+<span class="monospace">(bitwise-andc2 </span><i>i j</i><span class="monospace">)</span><br>
+<span class="monospace">(bitwise-orc1 </span><i>i j</i><span class="monospace">)</span><br>
+<span class="monospace">(bitwise-orc2 </span><i>i j</i><span class="monospace">)</span></p>
+      <p>These operations are not associative.</p><span class="monospace">      (bitwise-nand 11 26) =&gt;  -11
+      (bitwise-nor  11 26) =&gt; -28
+      (bitwise-andc1 11 26) =&gt; 16
+      (bitwise-andc2 11 26) =&gt; 1
+      (bitwise-orc1 11 26) =&gt; -2
+      (bitwise-orc2 11 26) =&gt; -17
+</span>
+      <h3 id="Integeroperations">Integer operations</h3>
+      <p><span class="monospace">(arithmetic-shift </span><i>i count</i><span class="monospace">)</span></p>
+      <p>Returns the arithmetic left shift when <i>count</i>&gt;0; right shift when <i>count</i>&lt;0.</p><span class="monospace">    (arithmetic-shift 8 2) =&gt; 32
+    (arithmetic-shift 4 0) =&gt; 4
+    (arithmetic-shift 8 -1) =&gt; 4
+    (arithmetic-shift -100000000000000000000000000000000 -100) =&gt; -79
+</span>
+      <p><span class="monospace">(bit-count </span><i>i</i><span class="monospace">)</span></p>
+      <p>Returns the population count of 1's (<i>i</i> &gt;= 0) or 0's (<i>i</i> &lt; 0).  The result is always non-negative.</p><span class="monospace">    (bit-count 0) =&gt;  0
+    (bit-count -1) =&gt;  0
+    (bit-count 7) =&gt;  3
+    (bit-count  13) =&gt;  3 ;Two's-complement binary: ...0001101
+    (bit-count -13) =&gt;  2 ;Two's-complement binary: ...1110011
+    (bit-count  30) =&gt;  4 ;Two's-complement binary: ...0011110
+    (bit-count -30) =&gt;  4 ;Two's-complement binary: ...1100010
+    (bit-count (expt 2 100)) =&gt;  1
+    (bit-count (- (expt 2 100))) =&gt;  100
+    (bit-count (- (1+ (expt 2 100)))) =&gt;  1
+</span>
+      <p><span class="monospace">(integer-length </span><i>i</i><span class="monospace">)</span></p>
+      <p>The number of bits needed to represent <i>i</i>, i.e.</p><span class="monospace">	(ceiling (/ (log (if (negative? integer)
+			     (- integer)
+			     (+ 1 integer)))
+		    (log 2)))
+</span>
+      <p>The result is always non-negative.
+    
+For non-negative <i>i</i>, this is the number of bits needed to
+represent I in an unsigned binary representation. For all <i>i</i>,
+<span class="monospace">(+ 1 (integer-length </span><i>i</i><span class="monospace">))</span> is the number of bits needed
+to represent <i>i</i> in a signed twos-complement 
+representation.</p><span class="monospace">    (integer-length  0) =&gt; 0
+    (integer-length  1) =&gt; 1
+    (integer-length -1) =&gt; 0
+    (integer-length  7) =&gt; 3
+    (integer-length -7) =&gt; 3
+    (integer-length  8) =&gt; 4
+    (integer-length -8) =&gt; 3
+</span>
+      <p><span class="monospace">(bitwise-if </span><i>mask i j</i><span class="monospace">)</span></p>
+      <p>Merge the bitstrings <i>i</i> and <i>j</i>, with bitstring <i>mask</i> determining
+from which string to take each bit. That is, if the <i>k</i>th bit of <i>mask</i>
+is 0, then the <i>k</i>th bit of the result is the <i>k</i>th bit of <i>i</i>, otherwise
+the <i>k</i>th bit of <i>j</i>.  This is equivalent to:</p><span class="monospace">        (bitwise-ior (bitwise-and (bitwise-not mask) i)
+                     (bitwise-and mask j))
+</span>
+      <h3 id="Single-bitoperations">Single-bit operations</h3>
+      <p><span class="monospace">(bit-set? </span><i>index i</i><span class="monospace">)</span></p>
+      <p>Is bit <i>index</i> set in bitstring <i>i</i> (where <i>index</i> is a non-negative exact
+integer)?  As always, the rightmost/least-significant bit in <i>i</i> is bit 0.</p><span class="monospace">    (bit-set? 1 1) =&gt;  false
+    (bit-set? 0 1) =&gt;  true
+    (bit-set? 3 10) =&gt;  true
+    (bit-set? 1000000 -1) =&gt;  true
+    (bit-set? 2 6) =&gt;  true
+    (bit-set? 0 6) =&gt;  false
+</span>
+      <p><span class="monospace">(copy-bit </span><i>index i boolean</i><span class="monospace">)</span></p>
+      <p>Returns an integer the same as <i>i</i> except in the <i>index</i>th bit,
+which is 1 if <i>boolean</i> is <span class="monospace">#t</span> and 0 if <i>boolean</i> is <span class="monospace">#f</span>.</p><span class="monospace">(copy-bit 0 0 #t) =&gt; #b1
+(copy-bit 2 0 #t) =&gt; #b100
+(copy-bit 2 #b1111 #f) =&gt; #b1011
+</span>
+      <p><span class="monospace">(bit-swap </span><i>index<sub>1</sub> index<sub>2</sub> i</i><span class="monospace">)</span></p>
+      <p>Returns an integer the same as <i>i</i> except that the <i>index<sub>1</sub></i>th bit
+and the <i>index<sub>2</sub></i>th bit have been exchanged.</p><span class="monospace">(bit-swap 0 2 4) =&gt; #b1
+</span>
+      <p><span class="monospace">(any-bit-set? </span><i>test-bits i</i><span class="monospace">)</span><br>
+<span class="monospace">(every-bit-set? </span><i>test-bits i</i><span class="monospace">)</span></p>
+      <p>Determines if any/all of the bits set in bitstring <i>test-bits</i> are set
+in bitstring 'i<i>. I.e.,  returns <span class="monospace">(not (zero? (bitwise-and </span></i>test-bits i<i><span class="monospace">)))</span>
+or <span class="monospace">(= </span></i>test-bits<i>` (bitwise-and </i>test-bits i'')))` respectively.</p>
+      <p><span class="monospace">(first-set-bit </span><i>i</i><span class="monospace">)</span></p>
+      <p>Return the index of the first (smallest index) 1 bit in bitstring <i>i</i>.
+Return -1 if <i>i</i> contains no 1 bits (i.e., if I is zero).</p><span class="monospace">    (first-set-bit 1) =&gt; 0
+    (first-set-bit 2) =&gt; 1
+    (first-set-bit 0) =&gt; -1
+    (first-set-bit 40) =&gt; 3
+    (first-set-bit -28) =&gt; 2
+    (first-set-bit (expt  2 99)) =&gt; 99
+    (first-set-bit (expt -2 99)) =&gt; 99
+</span>
+      <h3 id="Bitfieldoperations">Bit field operations</h3>
+      <p>These functions operate on a contiguous field of bits (a &quot;byte,&quot; in
+Common-Lisp parlance) in a given bitstring. The <i>start</i> and <i>end</i>
+arguments, which are not optional, are
+non-negative exact integers specifying the field: it is the <i>end-start</i> bits
+running from bit <i>start</i> to bit <i>end</i>-1.</p>
+      <p><span class="monospace">(bit-field </span><i>i start end</i><span class="monospace">)</span></p>
+      <p>Returns the designated bit field from <i>i</i>, shifted
+down to the least-significant position in the result.</p>
+      <p><span class="monospace">(bit-field-any? </span><i>i start end</i><span class="monospace">)</span></p>
+      <p>Returns true if any of the field's bits are set in bitstring <i>i</i>, and false otherwise.</p>
+      <p><span class="monospace">(bit-field-every? </span><i>i start end</i><span class="monospace">)</span></p>
+      <p>Returns false if any of the field's bits are not set in bitstring <i>i</i>, and true otherwise.</p>
+      <p><span class="monospace">(bit-field-clear </span><i>i start end</i><span class="monospace">)</span><br>
+<span class="monospace">(bit-field-set </span><i>i start end</i><span class="monospace">)</span></p>
+      <p>Returns <i>i</i> with the selected field's bits set to all 0s/1s.</p>
+      <p><span class="monospace">(bit-field-replace </span><i>dst src start end</i><span class="monospace">)</span></p>
+      <p>Returns <i>dst</i> with the designated bit field replaced
+by the least-significant <i>end-start</i> bits in <i>src</i>.</p>
+      <p><span class="monospace">(bit-field-replace-same </span><i>dst src start end</i><span class="monospace">)</span></p>
+      <p>Returns <i>dst</i> with the selected field's bits replaced
+by the corresponding field's bits in <i>src</i>.</p>
+      <p><span class="monospace">(bit-field-rotate </span><i>i count start end</i><span class="monospace">)</span></p>
+      <p>Returns <i>i</i> with the selected field cyclically permuted
+by <i>count</i> bits towards high-order.</p>
+      <p><span class="monospace">(bit-field-reverse </span><i>i start end</i><span class="monospace">)</span></p>
+      <p>Returns <i>i</i> with the order of the bits in the selected field reversed.</p>
+      <p><span class="monospace">(bit-field-append </span>{ <i>i start end </i> }<span class="monospace">)</span></p>
+      <p>The number of arguments must be a multiple of three.  The field specified
+by each triple of (<i>i, start, end</i>) arguments is extracted, and the
+fields are concatenated in left-to-right order and returned as an integer.</p>
+      <h3 id="Bitsasbooleans">Bits as booleans</h3>
+      <p><span class="monospace">(integer-&gt;list </span><i>i</i> [ <i>len</i> ]<span class="monospace">)</span></p>
+      <p>Returns a list of <i>len</i> booleans corresponding to each bit of the non-negative integer <i>i</i>.
+<span class="monospace">#t</span> is returned for each 1; <span class="monospace">#f</span> for 0. The len argument defaults to <span class="monospace">(integer-length </span><i>i</i><span class="monospace">)</span>.</p>
+      <p><span class="monospace">(list-&gt;integer </span><i>list</i><span class="monospace">)</span></p>
+      <p>Returns an integer formed from the booleans in <i>list</i>;
+it is an error if <i>list</i> contains non-booleans.
+A 1 bit is coded for each <span class="monospace">#t</span>; a 0 bit for <span class="monospace">#f</span>.
+Note that the result is never a negative integer.
+<span class="monospace">integer-&gt;list</span> and <span class="monospace">list-&gt;integer</span> are inverses in the sense of <span class="monospace">equal?</span>.</p>
+      <p><span class="monospace">(bits </span><i>bool</i> ...<span class="monospace">)</span></p>
+      <p>Returns the integer coded by the <span class="monospace">bool</span> arguments.</p>
+      <h3 id="Fold,unfold,andgenerate">Fold, unfold, and generate</h3>
+      <p>It is an error if the arguments named <i>proc, stop?, mapper, successor</i>
+are not procedures.
+The arguments named <i>seed</i> may be any Scheme object.</p>
+      <p><span class="monospace">(bitwise-fold </span><i>proc seed i</i><span class="monospace">)</span></p>
+      <p>For each bit <i>b</i> of <i>i</i> from bit 0 to <span class="monospace">(integer-length </span><i>i</i><span class="monospace">)</span>, <i>proc</i> is called as
+<span class="monospace">(</span><i>proc b r</i><span class="monospace">)</span>, where <i>r</i> is the current accumulated result.  The initial value of <i>r</i>
+is <i>seed</i>, and the value returned by <i>proc</i> becomes the next accumulated result.  When
+all bits are exhausted, the final accumulated result becomes the result of <span class="monospace">bitwise-fold</span>.</p>
+      <p><span class="monospace">(bitwise-for-each </span><i>proc i</i><span class="monospace">)</span></p>
+      <p>Repeatedly applies <i>proc</i> to the bits of <i>i</i> starting with 0 and ending with
+<span class="monospace">(integer-length </span><i>i</i><span class="monospace">)</span>.  The values returned by <i>proc</i> are discarded.  Returns
+an unspecified value.</p>
+      <p><span class="monospace">(bitwise-unfold </span><i>stop? mapper successor seed</i><span class="monospace">)</span></p>
+      <p>Generates a non-negative integer bit by bit, starting with bit 0.
+If the result of applying <i>stop?</i> to the current state
+(whose initial value is <i>seed</i>) is true, return the
+currently accumulated bits as an integer.  Otherwise, apply <i>mapper</i>
+to the current state to obtain the next bit of the result.  Then get a new state
+by applying <i>successor</i> to the current state, and repeat this algorithm.</p>
+      <p><span class="monospace">(make-bitwise-generator </span><i>i</i><span class="monospace">)</span></p>
+      <p>Returns a <a href="http://srfi.schemers.org/srfi-121/srfi-121.html">SRFI 121</a>
+generator that generates all the bits of <i>i</i> starting
+with bit 0.  Note that it is an infinite generator.</p>
+      <h2 id="Comparisonofproposals">Comparison of proposals</h2>
+      <p>The following table compares the names of the bitwise (aka logical) functions of Common Lisp, SRFI 33, Olin's revisions, SRFI 60, R6RS, and this SRFI.</p>
+      <table><tr><th class="default">
+            <p>Function</p></th><th class="default">
+            <p>CL</p></th><th class="default">
+            <p>SRFI 33</p></th><th class="default">
+            <p>SRFI 33 late revs</p></th><th class="default">
+            <p>SRFI 60</p></th><th class="default">
+            <p>R6RS</p></th><th class="default">
+            <p>This SRFI</p></th></tr><tr><td class="default">
+            <p>Bitwise NOT</p></td><td class="default">
+            <p><span class="monospace">lognot</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-not</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-not</span></p></td><td class="default">
+            <p><span class="monospace">lognot</span>, <span class="monospace">bitwise-not</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-not</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-not</span></p></td></tr><tr><td class="default">
+            <p>Bitwise AND</p></td><td class="default">
+            <p><span class="monospace">logand</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-and</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-and</span></p></td><td class="default">
+            <p><span class="monospace">logand</span>, <span class="monospace">bitwise-and</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-and</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-and</span></p></td></tr><tr><td class="default">
+            <p>Bitwise IOR</p></td><td class="default">
+            <p><span class="monospace">logior</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-ior</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-ior</span></p></td><td class="default">
+            <p><span class="monospace">logior</span>, <span class="monospace">bitwise-ior</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-ior</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-ior</span></p></td></tr><tr><td class="default">
+            <p>Bitwise XOR</p></td><td class="default">
+            <p><span class="monospace">logxor</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-xor</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-xor</span></p></td><td class="default">
+            <p><span class="monospace">logxor</span>, <span class="monospace">bitwise-xor</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-xor</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-xor</span></p></td></tr><tr><td class="default">
+            <p>Bitwise EQV</p></td><td class="default">
+            <p><span class="monospace">logeqv</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-eqv</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-eqv</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-eqv</span></p></td></tr><tr><td class="default">
+            <p>Bitwise NAND</p></td><td class="default">
+            <p><span class="monospace">lognand</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-nand</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-nand</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-nand</span></p></td></tr><tr><td class="default">
+            <p>Bitwise NOR</p></td><td class="default">
+            <p><span class="monospace">lognor</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-nor</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-nor</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-nor</span></p></td></tr><tr><td class="default">
+            <p>Bitwise AND with NOT of first arg</p></td><td class="default">
+            <p><span class="monospace">logandc1</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-andc1</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-andc1</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-andc1</span></p></td></tr><tr><td class="default">
+            <p>Bitwise AND with NOT of second arg</p></td><td class="default">
+            <p><span class="monospace">logandc2</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-andc2</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-andc2</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-andc2</span></p></td></tr><tr><td class="default">
+            <p>Bitwise OR with NOT of first arg</p></td><td class="default">
+            <p><span class="monospace">logorc1</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-orc1</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-orc1</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-orc1</span></p></td></tr><tr><td class="default">
+            <p>Bitwise OR with NOT of second arg</p></td><td class="default">
+            <p><span class="monospace">logorc2</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-orc2</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-orc2</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-orc2</span></p></td></tr><tr><td class="default">
+            <p>Arithmetic shift</p></td><td class="default">
+            <p><span class="monospace">ash</span></p></td><td class="default">
+            <p><span class="monospace">arithmetic-shift</span></p></td><td class="default">
+            <p><span class="monospace">arithmetic-shift</span></p></td><td class="default">
+            <p><span class="monospace">ash</span>, <span class="monospace">arithmetic-shift</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-arithmetic-shift</span></p></td><td class="default">
+            <p><span class="monospace">arithmetic-shift</span></p></td></tr><tr><td class="default">
+            <p>Population count</p></td><td class="default">
+            <p><span class="monospace">logcount</span></p></td><td class="default">
+            <p><span class="monospace">bit-count</span></p></td><td class="default">
+            <p><span class="monospace">bit-count</span></p></td><td class="default">
+            <p><span class="monospace">logcount</span>, <span class="monospace">bit-count</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-bit-count</span></p></td><td class="default">
+            <p><span class="monospace">bit-count</span></p></td></tr><tr><td class="default">
+            <p>Integer length</p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-integer-length</span></p></td><td class="default">
+            <p><span class="monospace">integer-length</span></p></td></tr><tr><td class="default">
+            <p>Mask selects source of bits</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-merge</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-merge</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-if</span>, <span class="monospace">bitwise-merge</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-if</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-if</span></p></td></tr><tr><td class="default">
+            <p>Test single bit</p></td><td class="default">
+            <p><span class="monospace">logbitp</span></p></td><td class="default">
+            <p><span class="monospace">bit-set?</span></p></td><td class="default">
+            <p><span class="monospace">bit-set?</span></p></td><td class="default">
+            <p><span class="monospace">logbit?</span>, <span class="monospace">bit-set?</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-bit-set?</span></p></td><td class="default">
+            <p><span class="monospace">bit-set?</span></p></td></tr><tr><td class="default">
+            <p>See if any mask bits set</p></td><td class="default">
+            <p><span class="monospace">logtest</span></p></td><td class="default">
+            <p><span class="monospace">any-bits-set?</span></p></td><td class="default">
+            <p><span class="monospace">any-bit-set?</span></p></td><td class="default">
+            <p><span class="monospace">logtest</span>, <span class="monospace">any-bit-set?</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">any-bit-set</span></p></td></tr><tr><td class="default">
+            <p>See if all mask bits set</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">all-bits-set?</span></p></td><td class="default">
+            <p><span class="monospace">every-bit-set?</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">every-bit-set?</span></p></td></tr><tr><td class="default">
+            <p>Replace single bit</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">copy-bit</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-copy-bit</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">copy-bit</span></p></td></tr><tr><td class="default">
+            <p>Swap bits</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bit-swap</span></p></td></tr><tr><td class="default">
+            <p>Find first bit set</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">first-bit-set</span></p></td><td class="default">
+            <p><span class="monospace">first-set-bit</span></p></td><td class="default">
+            <p><span class="monospace">log2-binary-factors</span>, <span class="monospace">first-set-bit</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">first-set-bit</span></p></td></tr><tr><td class="default">
+            <p>Extract bit field</p></td><td class="default">
+            <p><span class="monospace">ldb</span></p></td><td class="default">
+            <p><span class="monospace">extract-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">extract-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field</span></p></td></tr><tr><td class="default">
+            <p>Test bit field (any)</p></td><td class="default">
+            <p><span class="monospace">ldb-test</span></p></td><td class="default">
+            <p><span class="monospace">test-bit-field?</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-any?</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bit-field-any?</span></p></td></tr><tr><td class="default">
+            <p>Test bit field (every)</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bit-field-every?</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bit-field-every?</span></p></td></tr><tr><td class="default">
+            <p>Clear bit field</p></td><td class="default">
+            <p><span class="monospace">mask-field</span></p></td><td class="default">
+            <p><span class="monospace">clear-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-clear</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bit-field-clear</span></p></td></tr><tr><td class="default">
+            <p>Replace bit field</p></td><td class="default">
+            <p><span class="monospace">dpb</span></p></td><td class="default">
+            <p><span class="monospace">replace-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-replace</span></p></td><td class="default">
+            <p><span class="monospace">copy-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-copy-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-replace</span></p></td></tr><tr><td class="default">
+            <p>Replace corresponding bit field</p></td><td class="default">
+            <p><span class="monospace">deposit-field</span></p></td><td class="default">
+            <p><span class="monospace">deposit-field</span></p></td><td class="default">
+            <p><span class="monospace">copy-bit-field</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bit-field-copy-same</span></p></td></tr><tr><td class="default">
+            <p>Fill bit field</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>bit-field-fill</p></td></tr><tr><td class="default">
+            <p>Rotate bit field</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">rotate-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-rotate-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-rotate</span></p></td></tr><tr><td class="default">
+            <p>Reverse bit field</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">reverse-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bitwise-reverse-bit-field</span></p></td><td class="default">
+            <p><span class="monospace">bit-field-reverse</span></p></td></tr><tr><td class="default">
+            <p>Append bit fields</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bit-field-append</span></p></td></tr><tr><td class="default">
+            <p>Integer to boolean list</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">integer-&gt;list</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">integer-&gt;list</span></p></td></tr><tr><td class="default">
+            <p>Boolean list to integer</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">list-&gt;integer</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">list-&gt;integer</span></p></td></tr><tr><td class="default">
+            <p>Booleans to integer</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">booleans-&gt;integer</span></p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bits</span></p></td></tr></table>
+      <p>||Bitwise fold||---||---||---||---||---||<span class="monospace">bitwise-fold</span>|</p>
+      <table><tr><td class="default">
+            <p>Bitwise for-each</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-for-each</span></p></td></tr><tr><td class="default">
+            <p>Bitwise unfold</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p>---</p></td><td class="default">
+            <p><span class="monospace">bitwise-unfold</span></p></td></tr></table></div></body></html>

@@ -1,0 +1,111 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki LibraryDeclarationsCowan version 5</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki LibraryDeclarationsCowan version 5</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>173.13.139.236</pre>
+    <h2>name</h2>
+    <pre>LibraryDeclarationsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This is a proposal to add further library declarations and import-set types to the large language.
+
+== Library declarations ==
+
+In R7RS it is not an error to provide a library declaration that a specific implementation does not understand, although implementations should provide warnings in such cases.  Most of these declarations specified here use &quot;should&quot;, which means that implementations are allowed to silently ignore them if they are inappropriate.  Furthermore, implementations may (but should not) ignore any list of identifiers.  Conflicts between declarations are resolved in an implementation-specific way.  Exceptions:
+
+ * Support for `reexport` and `export-all` is required.
+
+ * Precise support for `notinline` is required for implementations that make the decision to inline code.
+
+=== Name control (required) ===
+
+`(reexport `''import-set'' ...`)`
+
+Like `import`, but also exports all identifiers that were imported.  This allows a library to easily extend one or more other libraries.
+
+`(export-all)`
+
+Exports all defined identifiers except those that were imported.  This allows a library to be easily extended.
+
+=== Optimization ===
+
+In the list below, ''importance'' represents a symbol, one of `unimportant` (no importance), `neutral` (some importance, the default), `important` (substantial importance), or `extreme` (extreme importance).  It is an error to specify anything else.
+
+If no identifiers are named, then the library declaration applies to all defined identifiers.  
+
+`(speed `''importance'' ''identifier'' ...`)`
+
+The named ''identifiers'' should be processed so as to maximize execution speed to the extent specified by ''importance''.
+
+`(space `''importance'' ''identifier'' ...`)`
+
+The named ''identifiers'' should be processed so as to minimize the use of space at run time to the extent specified by ''importance''.
+
+`(safety `''importance'' ''identifier'' ...`)`
+
+The named ''identifiers'' should be processed so as to maximize safety at execution time to the extent specified by ''importance''.
+
+`(compilation-speed `''importance'' ''identifier'' ...`)`
+
+The named ''identifiers'' should be processed so as to maximize compilation speed to the extent specified by ''importance''.
+
+`(debuggability `''importance'' ''identifier'' ...`)`
+
+The named ''identifiers'' should be processed so as to maximize ease of debugging to the extent specified by ''importance''.
+
+=== Compilation ===
+
+`(inline `''identifier'' ...`)`
+
+The procedures named by the ''identifiers'' should be inlined by the compiler, if there is one.
+
+`(notinline `''identifier'' ...`)`
+
+The procedures named by the ''identifiers'' must not be inlined by the compiler, if there is one.
+
+`(unused `''identifier'' ...`)`
+
+The implementation should not warn the user if the ''identifiers'' are defined but not used in the library.
+
+`(verbose `''identifier'' ...`)`
+
+The implementation should process the definitions of the named identifiers (if none are named, the whole library) verbosely.
+
+`(terse `''identifier'' ...`)`
+
+The implementation should process the definitions of the named identifiers (if none are named, the whole library) as quietly as is reasonable.  The user should still be notified of errors and warnings.
+
+`(silent `''identifier'' ...`)`
+
+The implementation should process the definitions of the named identifiers (if none are named, the whole library) silently.  The user should still be notified of errors.
+
+== Import sets ==
+
+`(drop-prefix `''import-set'' ''identifier''`)`
+
+This import set automatically renames identifiers in the given ''import-set'': any of them which begin with the characters in ''identifier'' have those characters removed.
+
+For example, if the library `(foo)` exports identifiers `foo-a`, `foo-b`, and `foo-c`, then `(import (drop-prefix (foo) foo-)` will import them under the names of `a`, `b`, and `c` respectively.  Chibi Scheme already supports this type of import set.
+
+See also InterfacesCowan.</pre>
+    <h2>time</h2>
+    <pre>2013-01-14 09:58:53</pre>
+    <h2>version</h2>
+    <pre>5</pre></body></html>

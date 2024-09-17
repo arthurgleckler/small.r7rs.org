@@ -1,0 +1,413 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #365</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #365</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-11 23:27:13</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>The range of tan^-1^ x y is as in the following table. The asterisk (*) indicates that the entry applies to implementations that distinguish minus zero.
+
+|| ||y condition||x condition||range of result r||
+|| ||y = 0.0||x &gt; 0.0||0.0||
+||∗||y = + 0.0||x &gt; 0.0||+0.0||
+||∗||y = - 0.0||x &gt; 0.0||-0.0||
+|| ||y &gt; 0.0||x &gt; 0.0||0.0 &lt; r &lt; (π/2)||
+|| ||y &gt; 0.0||x = 0.0||(π/2)||
+|| ||y &gt; 0.0||x &lt; 0.0||(π/2) &lt; r &lt; π||
+|| ||y = 0.0||x &lt; 0||π||
+||∗||y = + 0.0||x &lt; 0.0||π||
+||∗||y = - 0.0||x &lt; 0.0||-π||
+|| ||y &lt; 0.0||x &lt; 0.0||-π &lt; r &lt; - (π/2)||
+|| ||y &lt; 0.0||x = 0.0||-(π/2)||
+|| ||y &lt; 0.0||x &gt; 0.0||-(π/2) &lt; r&lt; 0.0||
+|| ||y = 0.0||x = 0.0||undefined||
+||∗||y = + 0.0||x = +0.0||+0.0||
+||∗||y = - 0.0||x = + 0.0||- 0.0||
+||∗||y = + 0.0||x = - 0.0||π||
+||∗||y = - 0.0||x = - 0.0||-π||
+||∗||y = + 0.0||x = 0||(π/2)||
+||∗||y = - 0.0||x = 0||-(π/2)||
+</pre>
+    <h2>id</h2>
+    <pre>365</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>aag</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>cowan</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Editorial: Add examples for transcendental functions</pre>
+    <h2>time</h2>
+    <pre>2012-03-27 21:43:56</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-11 23:27:13</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>5</pre>
+    <h2>raw-time</h2>
+    <pre>1349972833023074</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-10-11 23:27:13</pre>
+    <h2>Change at time 2012-10-11 23:27:13</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349972833023074</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-10-11 23:27:13</pre>
+    <h2>Change at time 2012-10-11 23:27:13</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>writing</pre>
+    <h2>raw-time</h2>
+    <pre>1349972833023074</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-10-11 23:27:13</pre>
+    <h2>Change at time 2012-09-03 10:25:48</h2>
+    <h2>author</h2>
+    <pre>aag</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1346642748309552</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-09-03 10:25:48</pre>
+    <h2>Change at time 2012-09-03 10:25:48</h2>
+    <h2>author</h2>
+    <pre>aag</pre>
+    <h2>field</h2>
+    <pre>owner</pre>
+    <h2>newvalue</h2>
+    <pre>aag</pre>
+    <h2>oldvalue</h2>
+    <pre>alexshinn</pre>
+    <h2>raw-time</h2>
+    <pre>1346642748309552</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-09-03 10:25:48</pre>
+    <h2>Change at time 2012-09-03 10:25:48</h2>
+    <h2>author</h2>
+    <pre>aag</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>writing</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1346642748309552</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-09-03 10:25:48</pre>
+    <h2>Change at time 2012-03-29 03:59:38</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1332968378231919</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-03-29 03:59:38</pre>
+    <h2>Change at time 2012-03-29 03:59:38</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1332968378231919</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-03-29 03:59:38</pre>
+    <h2>Change at time 2012-03-29 03:59:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1332968366957503</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-03-29 03:59:26</pre>
+    <h2>Change at time 2012-03-29 03:59:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>summary</pre>
+    <h2>newvalue</h2>
+    <pre>Editorial: Add examples for transcendental functions</pre>
+    <h2>oldvalue</h2>
+    <pre>Adopt R6RS language for transcendental functions</pre>
+    <h2>raw-time</h2>
+    <pre>1332968366957503</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-03-29 03:59:26</pre>
+    <h2>Change at time 2012-03-29 03:59:26</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>The range of tan^-1^ x y is as in the following table. The asterisk (*) indicates that the entry applies to implementations that distinguish minus zero.
+
+|| ||y condition||x condition||range of result r||
+|| ||y = 0.0||x &gt; 0.0||0.0||
+||∗||y = + 0.0||x &gt; 0.0||+0.0||
+||∗||y = - 0.0||x &gt; 0.0||-0.0||
+|| ||y &gt; 0.0||x &gt; 0.0||0.0 &lt; r &lt; (π/2)||
+|| ||y &gt; 0.0||x = 0.0||(π/2)||
+|| ||y &gt; 0.0||x &lt; 0.0||(π/2) &lt; r &lt; π||
+|| ||y = 0.0||x &lt; 0||π||
+||∗||y = + 0.0||x &lt; 0.0||π||
+||∗||y = - 0.0||x &lt; 0.0||-π||
+|| ||y &lt; 0.0||x &lt; 0.0||-π &lt; r &lt; - (π/2)||
+|| ||y &lt; 0.0||x = 0.0||-(π/2)||
+|| ||y &lt; 0.0||x &gt; 0.0||-(π/2) &lt; r&lt; 0.0||
+|| ||y = 0.0||x = 0.0||undefined||
+||∗||y = + 0.0||x = +0.0||+0.0||
+||∗||y = - 0.0||x = + 0.0||- 0.0||
+||∗||y = + 0.0||x = - 0.0||π||
+||∗||y = - 0.0||x = - 0.0||-π||
+||∗||y = + 0.0||x = 0||(π/2)||
+||∗||y = - 0.0||x = 0||-(π/2)||
+</pre>
+    <h2>oldvalue</h2>
+    <pre>In general, the transcendental functions log, sin^-1^ (arcsine), cos^-1^ (arccosine), and tan^-1^ are multiply defined. The value of log z is defined to be the one whose imaginary part lies in the range from -π  (inclusive if -0.0 is distinguished, exclusive otherwise) to π (inclusive). log 0 is undefined.
+
+The value of log z for non-real z is defined in terms of log on real numbers as 
+
+log z = log |z| + (angle z)i
+
+where angle z is the angle of z = a · e^ib^ specified as: 
+
+angle z = b + 2πn 
+
+with -π ≤ angle z ≤ π and angle z = b + 2πn for some integer n.
+
+With the one-argument version of log defined this way, the values of the two-argument-version of log, sin^-1^ z, cos^-1^ z, tan^-1^ z, and the two-argument version of tan^-1^ are according to the following formulæ: 
+
+log z b  =  (log z/log b) [only relevant if #366 passes]
+sin^-1^ z  =  - i log (i z + (1 - z^2^)^1/2^) 
+cos^-1^ z  =  π / 2 - sin^-1^ z 
+tan^-1^ z  =  (log (1 + i z) - log (1 - i z)) / (2 i) 
+tan^-1^ x y  =  angle(x + yi)  
+
+The range of tan^-1^ x y is as in the following table. The asterisk (*) indicates that the entry applies to implementations that distinguish minus zero.
+
+|| ||y condition||x condition||range of result r||
+|| ||y = 0.0||x &gt; 0.0||0.0||
+||∗||y = + 0.0||x &gt; 0.0||+0.0||
+||∗||y = - 0.0||x &gt; 0.0||-0.0||
+|| ||y &gt; 0.0||x &gt; 0.0||0.0 &lt; r &lt; (π/2)||
+|| ||y &gt; 0.0||x = 0.0||(π/2)||
+|| ||y &gt; 0.0||x &lt; 0.0||(π/2) &lt; r &lt; π||
+|| ||y = 0.0||x &lt; 0||π||
+||∗||y = + 0.0||x &lt; 0.0||π||
+||∗||y = - 0.0||x &lt; 0.0||-π||
+|| ||y &lt; 0.0||x &lt; 0.0||-π &lt; r &lt; - (π/2)||
+|| ||y &lt; 0.0||x = 0.0||-(π/2)||
+|| ||y &lt; 0.0||x &gt; 0.0||-(π/2) &lt; r&lt; 0.0||
+|| ||y = 0.0||x = 0.0||undefined||
+||∗||y = + 0.0||x = +0.0||+0.0||
+||∗||y = - 0.0||x = + 0.0||- 0.0||
+||∗||y = + 0.0||x = - 0.0||π||
+||∗||y = - 0.0||x = - 0.0||-π||
+||∗||y = + 0.0||x = 0||(π/2)||
+||∗||y = - 0.0||x = 0||-(π/2)||
+</pre>
+    <h2>raw-time</h2>
+    <pre>1332968366957503</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-03-29 03:59:26</pre>
+    <h2>Change at time 2012-03-27 21:52:38</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1332859958933746</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-03-27 21:52:38</pre>
+    <h2>Change at time 2012-03-27 21:52:38</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>description</pre>
+    <h2>newvalue</h2>
+    <pre>In general, the transcendental functions log, sin^-1^ (arcsine), cos^-1^ (arccosine), and tan^-1^ are multiply defined. The value of log z is defined to be the one whose imaginary part lies in the range from -π  (inclusive if -0.0 is distinguished, exclusive otherwise) to π (inclusive). log 0 is undefined.
+
+The value of log z for non-real z is defined in terms of log on real numbers as 
+
+log z = log |z| + (angle z)i
+
+where angle z is the angle of z = a · e^ib^ specified as: 
+
+angle z = b + 2πn 
+
+with -π ≤ angle z ≤ π and angle z = b + 2πn for some integer n.
+
+With the one-argument version of log defined this way, the values of the two-argument-version of log, sin^-1^ z, cos^-1^ z, tan^-1^ z, and the two-argument version of tan^-1^ are according to the following formulæ: 
+
+log z b  =  (log z/log b) [only relevant if #366 passes]
+sin^-1^ z  =  - i log (i z + (1 - z^2^)^1/2^) 
+cos^-1^ z  =  π / 2 - sin^-1^ z 
+tan^-1^ z  =  (log (1 + i z) - log (1 - i z)) / (2 i) 
+tan^-1^ x y  =  angle(x + yi)  
+
+The range of tan^-1^ x y is as in the following table. The asterisk (*) indicates that the entry applies to implementations that distinguish minus zero.
+
+|| ||y condition||x condition||range of result r||
+|| ||y = 0.0||x &gt; 0.0||0.0||
+||∗||y = + 0.0||x &gt; 0.0||+0.0||
+||∗||y = - 0.0||x &gt; 0.0||-0.0||
+|| ||y &gt; 0.0||x &gt; 0.0||0.0 &lt; r &lt; (π/2)||
+|| ||y &gt; 0.0||x = 0.0||(π/2)||
+|| ||y &gt; 0.0||x &lt; 0.0||(π/2) &lt; r &lt; π||
+|| ||y = 0.0||x &lt; 0||π||
+||∗||y = + 0.0||x &lt; 0.0||π||
+||∗||y = - 0.0||x &lt; 0.0||-π||
+|| ||y &lt; 0.0||x &lt; 0.0||-π &lt; r &lt; - (π/2)||
+|| ||y &lt; 0.0||x = 0.0||-(π/2)||
+|| ||y &lt; 0.0||x &gt; 0.0||-(π/2) &lt; r&lt; 0.0||
+|| ||y = 0.0||x = 0.0||undefined||
+||∗||y = + 0.0||x = +0.0||+0.0||
+||∗||y = - 0.0||x = + 0.0||- 0.0||
+||∗||y = + 0.0||x = - 0.0||π||
+||∗||y = - 0.0||x = - 0.0||-π||
+||∗||y = + 0.0||x = 0||(π/2)||
+||∗||y = - 0.0||x = 0||-(π/2)||
+</pre>
+    <h2>oldvalue</h2>
+    <pre>In general, the transcendental functions log, sin^-1^ (arcsine), cos^-1^ (arccosine), and tan^-1^ are multiply defined. The value of log z is defined to be the one whose imaginary part lies in the range from -π  (inclusive if -0.0 is distinguished, exclusive otherwise) to π (inclusive). log 0 is undefined.
+
+The value of log z for non-real z is defined in terms of log on real numbers as 
+
+log z = log |z| + (angle z)i
+
+where angle z is the angle of z = a · e^ib^ specified as: 
+
+angle z = b + 2πn 
+
+with -π ≤ angle z ≤ π and angle z = b + 2πn for some integer n.
+
+With the one-argument version of log defined this way, the values of the two-argument-version of log, sin^-1^ z, cos^-1^ z, tan^-1^ z, and the two-argument version of tan^-1^ are according to the following formulæ: 
+
+log z b  =  (log z/log b) 
+sin^-1^ z  =  - i log (i z + (1 - z^2^)^1/2^) 
+cos^-1^ z  =  π / 2 - sin^-1^ z 
+tan^-1^ z  =  (log (1 + i z) - log (1 - i z)) / (2 i) 
+tan^-1^ x y  =  angle(x + yi)  
+
+The range of tan^-1^ x y is as in the following table. The asterisk (*) indicates that the entry applies to implementations that distinguish minus zero.
+
+|| ||y condition||x condition||range of result r||
+|| ||y = 0.0||x &gt; 0.0||0.0||
+||∗||y = + 0.0||x &gt; 0.0||+0.0||
+||∗||y = - 0.0||x &gt; 0.0||-0.0||
+|| ||y &gt; 0.0||x &gt; 0.0||0.0 &lt; r &lt; (π/2)||
+|| ||y &gt; 0.0||x = 0.0||(π/2)||
+|| ||y &gt; 0.0||x &lt; 0.0||(π/2) &lt; r &lt; π||
+|| ||y = 0.0||x &lt; 0||π||
+||∗||y = + 0.0||x &lt; 0.0||π||
+||∗||y = - 0.0||x &lt; 0.0||-π||
+|| ||y &lt; 0.0||x &lt; 0.0||-π &lt; r &lt; - (π/2)||
+|| ||y &lt; 0.0||x = 0.0||-(π/2)||
+|| ||y &lt; 0.0||x &gt; 0.0||-(π/2) &lt; r&lt; 0.0||
+|| ||y = 0.0  x = 0.0  undefined 
+||∗||y = + 0.0||x = +0.0||+0.0||
+||∗||y = - 0.0||x = + 0.0||- 0.0||
+||∗||y = + 0.0||x = - 0.0||π||
+||∗||y = - 0.0||x = - 0.0||-π||
+||∗||y = + 0.0||x = 0||(π/2)||
+||∗||y = - 0.0||x = 0||-(π/2)||
+</pre>
+    <h2>raw-time</h2>
+    <pre>1332859958933746</pre>
+    <h2>ticket</h2>
+    <pre>365</pre>
+    <h2>time</h2>
+    <pre>2012-03-27 21:52:38</pre></body></html>

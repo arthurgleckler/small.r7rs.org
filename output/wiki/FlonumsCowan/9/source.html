@@ -1,0 +1,177 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki FlonumsCowan version 9</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki FlonumsCowan version 9</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>74.68.121.27</pre>
+    <h2>name</h2>
+    <pre>FlonumsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Flonums package ==
+
+''Flonums'' are a subset of the inexact real numbers provided by a Scheme implementation.  In most Schemes, the flonums and the inexact reals are the same.
+
+The procedures in this package don't have hard-coded prefixes.  The intent is that they be placed in a module.  Users can then import this module with their own prefix such as `fl`, or `ƒ` if their Scheme implementation supports that character, or with no prefix at all if the intent is to override the normal Scheme arithmetic routines.
+
+== Basic procedures ==
+
+`(flonum? `''obj''`)`
+
+Returns #t if obj is a flonum, #f otherwise.
+
+`(real-&gt;flonum `''x''`)`
+
+Returns the best flonum representation of x.
+
+== R7RS-small-compatible procedures ==
+
+The following R7RS-small procedures have flonum equivalents:
+
+{{{
+= &lt; &lt;= &gt; &gt;= 
+integer? zero? positive? negative? odd? even? finite? infinite? nan?
++ - * /
+abs numerator denominator floor ceiling truncate round
+log sin cos tan asin acos atan
+sqrt expt
+}}}
+
+TODO: need to see about integer division procedures
+
+== C99 &lt;math.h&gt; constants ==
+
+The following constants are defined in terms of the constants of the &lt;math.h&gt; header of ISO/IEC 9899:1999 (C language).
+
+||Scheme name||C name||Comments||
+||`e`||`M_E`||Value of e||
+||`log2-e`||`M_LOG2E`||Value of log,,2,, e||
+||`log10-e`||`M_LOG10E`||Value of log,,10,, e||
+||`ln-2`||`M_LN2`||Value of log,,e,, 2||
+||`ln-10`||`M_LN10`||Value of log,,e,, 10||
+||`pi`||`M_PI`||Value of pi||
+||`pi/2`||`M_PI_2`||Value of pi/2||
+||`pi/4`||`M_PI_4`||Value of pi/4||
+||`one-over-pi`||`M_1_PI`||Value of 1/pi||
+||`two-over-pi`||`M_2_PI`||Value of 2/pi||
+||`two-over-sqrt-pi`||`M_2_SQRTPI`||Value of 2/sqrt(pi)||
+||`sqrt-2`||`M_SQRT2`||Value of sqrt(2)||
+||`one-over-sqrt-2`||`M_SQRT1_2`||Value of 1/sqrt(2)||
+||`maximum-flonum`||`HUGE_VAL`||`+inf.0` or else\\the largest finite flonum||
+||`fast-multiply-add`||`#t` if `FP_FAST_FMA` is 1,\\or `#f` otherwise||multiply-add is fast||
+||`integer-exponent-zero`||`FP_ILOGB0`||what `(integer-binary-log 0)` returns||
+||`integer-exponent-nan`||`FP_ILOGBNAN`||what `(integer-binary-log +0.nan)` returns||
+
+== C99 &lt;math.h&gt; procedures ==
+
+The following procedures are defined in terms of the functions of the &lt;math.h&gt; header of ISO/IEC 9899:1999 (C language).  In the C signatures, the types &quot;double&quot; and &quot;int&quot; are mapped to Scheme flonums and (suitably bounded) Scheme exact integers respectively.
+
+||Scheme name||C signature||Comments||
+||`acosh`||`double      acosh(double)`||hyperbolic arc cosine||
+||`asinh`||`double      asinh(double)`||hyperbolic arc sine||
+||`atanh`||`double      atanh(double)`||hyperbolic arc tangent||
+||`cbrt`||`double      cbrt(double);`||cube root||
+||`complementary-error-function`||`double      erfc(double)`||-||
+||`copy-sign`||`double      copysign(double x, double y)`||result has magnitude of x and sign of y||
+||`cosh`||`double      cosh(double)`||hyperbolic cosine||
+||`make-flonum`||`double      ldexp(double x, int n)`||x*2^n^||
+||`error-function`||`double      erf(double)`||-||
+||`exp`||`double exp(double)`||e^x^||
+||`exp-binary`||`double      exp,,2,,(double)`||base-2 exponential||
+||`exp-minus-1`||`double      expm1(double)`||e^x^-1||
+||`exponent`||`double      logb(double x)`||the exponent of x, which is the integral part of log_r(|x|), as a signed floating-point value, for non-zero x, where r is the radix of the machine's floating-point arithmetic||
+||`first-bessel-order-0`||`double      j0(double)`||bessel function of the first kind, order 0||
+||`first-bessel-order-1`||`double      j1(double)`||bessel function of the first kind, order 1||
+||`first-bessel`||`double      jn(int n, double)`||bessel function of the first kind, order n||
+||`fraction-exponent`||`double      modf(double, double *)`||returns two values, fraction and int exponent||
+||`gamma`||`double      tgamma(double)`||-||
+||`hypotenuse`||`double      hypot(double, double)`||sqrt(x^2^+y^2^)||
+||`integer-exponent`||`int         ilogb(double)`||binary log as int||
+||`log-binary`||`double      log2(double)`||log base 2||
+||`log-decimal`||`double      log10(double)`||log base 10||
+||`log-gamma`||`double      lgamma(double)`||returns two values, log(|gamma(x)|) and sgn(gamma(x))||
+||`log-one-plus`||`double      log1p(double x)`||log (1+x)||
+||`multiply-add`||`double      fma(double a, double b, double c)`||a*b+c||
+||`next-after`||`double      nextafter(double, double)`||next flonum following x in the direction of y||
+||`normalized-fraction-exponent`||`double      frexp(double, int *)`||returns two values, fraction in range [1/2,1) and int exponent||
+||`positive-difference`||`double      fdim(double, double)`||-||
+||`remquo`||`double      remquo(double, double, int *)`||returns two values, rounded remainder and low-order ''n'' bits of the quotient (''n'' is implementation-defined)
+||`scalbn`||`double      scalbn(double x, int y)`||x*r^y^, where r is the machine float radix||
+||`second-bessel-order-0`||`double      y0(double)`||bessel function of the second kind, order 0||
+||`second-bessel-order-1`||`double      y1(double)`||bessel function of the second kind, order 1||
+||`second-bessel`||`double      yn(int n, double)`||bessel function of the second kind, order ''n''||
+||`sinh`||`double      cosh(double)`||hyperbolic sine||
+||`tanh`||`double      cosh(double)`||hyperbolic tangent||
+
+
+== General remarks ==
+
+In the event that these operations do not yield a real result for the given arguments, the result may be `+nan.0`, or may be some unspecified flonum.
+
+Implementations that use IEEE binary floating-point arithmetic should follow the relevant standards for these procedures.
+
+== Compnum procedures from &lt;complex.h&gt; ==
+
+A ''compnum'' is a general complex number whose `real-part` and `imag-part` are both flonums.  The following procedures should be in a different library from the flonum procedures, since they will only be relevant to Schemes that support general complex numbers, and since there are conflicting names.
+
+||Scheme name||C signature||Comments||
+||`abs`||`double cabs(double complex)`||same as magnitude||
+||`acos`||`double complex cacos(double complex)`||-||
+||`acosh`||`double complex cacosh(double complex)`||-||
+||`angle`||`double carg(double complex)`||-||
+||`asin`||`double complex casin(double complex)`||-||
+||`asinh`||`double complex casinh(double complex)`||-||
+||`atan`||`double complex catan(double complex)`||-||
+||`atanh`||`double complex catanh(double complex)`||-||
+||`conjugate`||`double complex conj(double complex)`||complex conjugate||
+||`cos`||`double complex ccos(double complex)`||-||
+||`cosh`||`double complex ccosh(double complex)`||-||
+||`exp`||`double complex cexp(double complex)`||-||
+||`expt`||`double complex cpow(double complex, double complex)`||-||
+||`imag-part`||`double cimag(double complex)`||-||
+||`log`||`double complex clog(double complex)`||-||
+||`magnitude`||`double cabs(double complex)`||same as abs||
+||`projection`||`double complex  cproj(double complex)`||projects to Riemann sphere
+||`real-part`||`double creal(double complex)`||-||
+||`sin`||`double complex csin(double complex)`||-||
+||`sinh`||`double complex csinh(double complex)`||-||
+||`sqrt`||`double complex csqrt(double complex)`||-||
+||`tan`||`double complex ctan(double complex)`||-||
+||`tanh`||`double complex ctanh(double complex)`||-||
+
+== Derived procedures ==
+
+TODO: what library do these go in?
+
+`(cis `''z''`)`
+
+Returns e^i''z''^, a complex number whose real part is cos ''z'' and whose imaginary part is sin ''z''.
+
+`(signum `''z''`)`
+
+Returns a complex number whose phase is the same as ''z'' but whose magnitude is 1, unless ''z'' is zero, in which case it returns ''z''.  As a consequence of this definition, negative real numbers return -1, positive real numbers return 1, and zero returns zero.
+
+`(decode-float `''z''`)` and friends
+
+See [http://www.lispworks.com/documentation/lw50/CLHS/Body/f_dec_fl.htm CL DECODE-FLOAT and friends].
+ </pre>
+    <h2>time</h2>
+    <pre>2012-11-29 04:49:57</pre>
+    <h2>version</h2>
+    <pre>9</pre></body></html>

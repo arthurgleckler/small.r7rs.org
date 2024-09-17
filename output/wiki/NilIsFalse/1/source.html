@@ -1,0 +1,33 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki NilIsFalse version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki NilIsFalse version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.10.177.1</pre>
+    <h2>name</h2>
+    <pre>NilIsFalse</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>R2RS, R3RS, and R4RS permit `()` and `#f` to be the same (in the sense of `eq?`), as is required in Common Lisp and most other Lisps; this was done to make conversion of older Lisp code easier.  For the same reason, `()` counts as false for conditional tests in R2RS and R3RS, and is permitted but not required to count as false in R4RS.  IEEE Scheme, R5RS, R6RS, or R7RS don't allow any of this confusion.
+
+Almost all the Schemes in the test suite, even those that claim only R3RS or R4RS conformance, distinguish cleanly between `()` and `#f`, and treat only `#f` as false.  The only exceptions are XLisp and Rep, which specifically state that they draw on ideas from both Scheme and Common Lisp, and consider `()` and `#f` to be the same.</pre>
+    <h2>time</h2>
+    <pre>2013-06-22 23:40:15</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>

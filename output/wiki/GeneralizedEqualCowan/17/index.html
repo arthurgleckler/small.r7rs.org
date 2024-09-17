@@ -1,0 +1,48 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>GeneralizedEqualCowan</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>. For a version of this page that may be more recent, see <a href="https://github.com/johnwcowan/r7rs-work/blob/master/GeneralizedEqualCowan.md">GeneralizedEqualCowan</a> in WG2's repo for R7RS-large.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="wiki">Generalized&shy;Equal&shy;Cowan</h1>
+    <div class="wiki metadata">
+      <div class="author">cowan</div>
+      <div class="time">2013-05-23 19:46:40</div>
+      <div class="version">17<span class="comment"></span><a href="/wiki/GeneralizedEqualCowan/history">history</a></div>
+      <div class="source"><a href="/wiki/GeneralizedEqualCowan/17/source.html">source</a></div></div>
+    <div class="wiki text">
+      <h2 id="Generalized`equal?`predicate">Generalized <span class="monospace">equal?</span> predicate</h2>
+      <p><span class="monospace">(generalized-equal? </span><i>obj1 obj2</i><span class="monospace"> . </span><i>comparator-list</i><span class="monospace">)</span></p>
+      <p>Compares <i>obj1</i> and <i>obj2</i> for equality.  A <i>comparator</i> is a procedure that is given two arguments to compare.  It returns <span class="monospace">#t</span> if its arguments are to be considered equal, <span class="monospace">#f</span> if they are to be considered unequal, and the symbol <span class="monospace">pass</span> if it cannot decide.  It is an error for a comparator to return anything else.  The third argument passed to a comparator is <i>comparator-list</i>, to be used in recursive calls to <span class="monospace">generalized-equal?</span>.</p>
+      <p>First, if <i>x</i> and <i>y</i> are the same in the sense of <span class="monospace">eqv?</span>, the result is <span class="monospace">#t</span>.  This keeps <span class="monospace">generalized-equal?</span> consistent with <span class="monospace">eqv?</span>, as <span class="monospace">equal?</span> is.</p>
+      <p>Next, each element of <i>comparator-list</i>  is invoked on <i>obj1</i> and <i>obj2</i>, passing <i>comparator-list</i> as its third argument.  If the comparator returns <span class="monospace">#t</span> or <span class="monospace">#f</span>, that is the result.</p>
+      <p>If all comparators in <i>comparator-list</i> have been invoked with a <span class="monospace">pass</span> result, then <span class="monospace">generalized-equal?</span> behaves as if it had been invoked on the comparators <span class="monospace">list-comparator</span>, <span class="monospace">string-comparator</span>, <span class="monospace">vector-comparator</span>, and <span class="monospace">bytevector-comparator</span> defined below, plus additional implementation-defined comparators if any.  If all of these return <span class="monospace">pass</span>, then <span class="monospace">generalized-equal?</span> returns <span class="monospace">#f</span>, as <span class="monospace">eqv?</span> would.</p>
+      <p>When <span class="monospace">generalized-equal?</span> is invoked with an empty comparator list, it returns what <span class="monospace">equal?</span> returns, except possibly on implementation-defined object types that are not record types, and for the fact that <span class="monospace">generalized-equal?</span> is not required to return when handed circular data structures.  When it is invoked with <span class="monospace">numeric-comparator</span>, <span class="monospace">char-ci-comparator</span>, <span class="monospace">string-ci-comparator</span>, and a comparator that descends into hash tables, it returns what Common Lisp's <span class="monospace">equalp</span> returns.</p>
+      <p><span class="monospace">(make-atomic-comparator </span><i>type-predicate compare-predicate</i><span class="monospace">)</span></p>
+      <p>Returns a comparator that invokes <i>type-predicate</i> on its first and its second arguments.  If they both return <span class="monospace">#t</span>, then they are assumed to be of the same type, and <i>compare-predicate</i> is invoked on the first and second arguments together.  If the result is <span class="monospace">#t</span> or <span class="monospace">#f</span>, then the comparator returns <span class="monospace">#t</span> or <span class="monospace">#f</span> respectively.  If they are not of the same type, a third value is returned.  The resulting comparator always ignores its third argument.</p>
+      <p><span class="monospace">(make-specific-equality </span><i> . `</i>comparator-list''<span class="monospace">)</span></p>
+      <p>Return a curried version of <span class="monospace">generalized-equal?</span> that accepts two arguments to compare and uses the comparators in <i>comparator-list</i>.</p>
+      <h2 id="Standardcomparators">Standard comparators</h2>
+      <p><span class="monospace">(numeric-comparator </span><i>obj1 obj2 comparators-list</i><span class="monospace">)</span></p>
+      <p>A comparator that returns <span class="monospace">#t</span> if <i>obj1</i> and <i>obj2</i> are numbers that are equal in the sense of <span class="monospace">=</span>, <span class="monospace">#f</span> if they are numbers that are not equal in the sense of <span class="monospace">=</span>, and <span class="monospace">pass</span> otherwise.  The <i>comparators-list</i> argument is ignored.</p>
+      <p><span class="monospace">(char-ci-comparator </span><i>obj1</i> <i>obj2 comparators-list</i><span class="monospace">)</span></p>
+      <p>A comparator that returns <span class="monospace">#t</span> if <i>obj1</i> and <i>obj2</i> are characters that are equal in the sense of <span class="monospace">char-ci=?</span>, <span class="monospace">#f</span> if they are characters that are not equal in the sense of <span class="monospace">char-ci=?</span>, and <span class="monospace">pass</span> otherwise.  The <i>comparators-list</i> argument is ignored.</p>
+      <p><span class="monospace">(list-comparator </span><i>obj1 obj2 comparators-list</i><span class="monospace">)</span></p>
+      <p>A comparator that returns <span class="monospace">#t</span> if <i>obj1</i> and <i>obj2</i> are lists of the same length whose elements are equal in the sense of <span class="monospace">generalized-equal?</span> when passed <i>comparators-list</i>, <span class="monospace">#f</span> if they are lists that are not equal in that sense, and <span class="monospace">pass</span> otherwise.  The <i>comparators-list</i> argument is ignored.</p>
+      <p><span class="monospace">(string-comparator </span><i>obj1 obj2 comparators-list</i><span class="monospace">)</span></p>
+      <p>A comparator that returns <span class="monospace">#t</span> if <i>obj1</i> and <i>obj2</i> are strings that are equal in the sense of <span class="monospace">string=?</span>, <span class="monospace">#f</span> if they are strings that are not equal in the sense of <span class="monospace">string=?</span>, and <span class="monospace">pass</span> otherwise.  The <i>comparators-list</i> argument is ignored.</p>
+      <p><span class="monospace">(string-ci-comparator </span><i>obj1 obj2 comparators-list</i><span class="monospace">)</span></p>
+      <p>A comparator that returns <span class="monospace">#t</span> if <i>obj1</i> and <i>obj2</i> are strings that are equal in the sense of <span class="monospace">string-ci=?</span>, <span class="monospace">#f</span> if they are strings that are not equal in the sense of <span class="monospace">string-ci=?</span>, and <span class="monospace">pass</span> otherwise.  The <i>comparators-list</i> argument is ignored.</p>
+      <p><span class="monospace">(vector-comparator </span><i>obj1 obj2 comparators-list</i><span class="monospace">)</span></p>
+      <p>A comparator that returns <span class="monospace">#t</span> if <i>obj1</i> and <i>obj2</i> are vectors of the same length whose elements are equal in the sense of <span class="monospace">generalized-equal?</span> when passed <i>comparators-list</i>, <span class="monospace">#f</span> if they are vectors that are not equal in that sense, and <span class="monospace">pass</span> otherwise.  The <i>comparators-list</i> argument is ignored.</p>
+      <p><span class="monospace">(bytevector-comparator </span><i>obj1 obj2 comparators-list</i><span class="monospace">)</span></p>
+      <p>A comparator that returns <span class="monospace">#t</span> if <i>obj1</i> and <i>obj2</i> are bytevectors of the same length whose elements are equal in the sense of <span class="monospace">generalized-equal?</span> when passed <i>comparators-list</i>, <span class="monospace">#f</span> if they are bytevectors that are not equal in that sense, and <span class="monospace">pass</span> otherwise.  The <i>comparators-list</i> argument is ignored.</p>
+      <p>When used by an implementation that doesn't provide bytevectors, this procedure always returns <span class="monospace">pass</span>.</p></div></body></html>

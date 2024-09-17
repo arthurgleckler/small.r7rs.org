@@ -1,0 +1,171 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #273</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #273</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2011-09-23 23:45:53</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>In the section &lt;Output&gt;, in the description of `write', we say:
+
+  Symbols that contain non-ASCII characters are escaped either with inline hex escapes or with vertical bars.
+
+Is this right?  Shouldn't implementations that support Unicode be allowed to write symbols that contain non-ASCII characters without treating them specially?
+
+The invariant we want to establish is that `read' can read what `write' has written.
+
+The question for this ticket is whether the standard should require that that invariant hold only in the same implementation, or across implementations.
+
+If we stick with the existing language, we get interoperability across implementations.
+
+If we change the language to allow any non-whitespace character supported by the implementation to be written unescaped and without vertical bars, we lose interoperability across implementations, but gain the ability of the implementation to display symbols containing Unicode characters in a natural manner.</pre>
+    <h2>id</h2>
+    <pre>273</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre></pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>major</pre>
+    <h2>reporter</h2>
+    <pre>aag</pre>
+    <h2>resolution</h2>
+    <pre>wontfix</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Decide whether the presence of non-ASCII characters in symbols requires escaping or using vertical bars when output by `write'.</pre>
+    <h2>time</h2>
+    <pre>2011-08-29 18:48:22</pre>
+    <h2>type</h2>
+    <pre>defect</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2011-09-23 23:45:53</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>5</pre>
+    <h2>raw-time</h2>
+    <pre>1316796353000000</pre>
+    <h2>ticket</h2>
+    <pre>273</pre>
+    <h2>time</h2>
+    <pre>2011-09-23 23:45:53</pre>
+    <h2>Change at time 2011-09-23 23:45:53</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>wontfix</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1316796353000000</pre>
+    <h2>ticket</h2>
+    <pre>273</pre>
+    <h2>time</h2>
+    <pre>2011-09-23 23:45:53</pre>
+    <h2>Change at time 2011-09-23 23:45:53</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1316796353000000</pre>
+    <h2>ticket</h2>
+    <pre>273</pre>
+    <h2>time</h2>
+    <pre>2011-09-23 23:45:53</pre>
+    <h2>Change at time 2011-09-23 23:45:35</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>I'm closing this ticket because we no longer have to decide this.</pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1316796335000000</pre>
+    <h2>ticket</h2>
+    <pre>273</pre>
+    <h2>time</h2>
+    <pre>2011-09-23 23:45:35</pre>
+    <h2>Change at time 2011-08-30 06:09:14</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>UnicodeCowan 15 doesn't fly; it winds up assigning the pname &quot;a\\xbb0;b&quot; to the symbol a\xbb0;b as well as a\x5c;xbb0\x3b;b, which is intolerable.
+
+So I withdraw my objections.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1314659354000000</pre>
+    <h2>ticket</h2>
+    <pre>273</pre>
+    <h2>time</h2>
+    <pre>2011-08-30 06:09:14</pre>
+    <h2>Change at time 2011-08-30 04:46:21</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Alex is mistaken as things stand.  See #274.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1314654381000000</pre>
+    <h2>ticket</h2>
+    <pre>273</pre>
+    <h2>time</h2>
+    <pre>2011-08-30 04:46:21</pre>
+    <h2>Change at time 2011-08-30 03:57:38</h2>
+    <h2>author</h2>
+    <pre>aag</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Alex points out:
+
+If some other implementation doesn't support the Greek
+subset of Unicode, then they wouldn't support it even
+if it were escaped.</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1314651458000000</pre>
+    <h2>ticket</h2>
+    <pre>273</pre>
+    <h2>time</h2>
+    <pre>2011-08-30 03:57:38</pre></body></html>

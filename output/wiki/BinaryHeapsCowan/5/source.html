@@ -1,0 +1,106 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki BinaryHeapsCowan version 5</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki BinaryHeapsCowan version 5</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre>Revised wording</pre>
+    <h2>ipnr</h2>
+    <pre>173.13.139.236</pre>
+    <h2>name</h2>
+    <pre>BinaryHeapsCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>== Binary heaps ==
+
+Binary heaps are mutable collections that can contain any Scheme object provided there exists a total ordering on the objects expressed by an ''ordering procedure''.  They are intended to be a thin veneer over vectors.  Binary heaps are disjoint from other types of Scheme objects.
+
+== Procedures ==
+
+`(make-heap `''&lt;''`)`
+
+Returns a newly allocated empty heap.  ''&lt;'' is the less-than procedure for the heap.
+
+`(heap `''&lt;''` `''element''` ...)`
+
+Returns a newly allocated heap using ''&lt;'' as the ordering procedure, and containing the ''elements''.  This operation should be O(n) in the size of the heap.
+
+`(copy-heap` ''heap''`)`
+
+Returns a newly allocated heap containing the elements of ''heap'' with the same ''&lt;'' procedure.
+
+`(heap? `''obj''`)`
+
+Returns `#t` if ''obj'' is a heap, and `#f` otherwise.
+
+`(heap-length `''heap''`)`
+
+Returns the number of elements in ''heap''.
+
+'''Issue:''' change the name to `heap-size` or `heap-count`?
+
+`(heap-member? `''heap''` `''element''`)`
+
+Returns `#t` if ''element'' is a member of ''heap'' (in the sense of `eqv?`) and `#f` otherwise.
+
+`(heap-add! `''heap''` `''element''`)`
+
+Adds ''element'' to ''heap''.  Returns an unspecified value.  This operation should be O(log N) in the size of the heap.
+
+`(heap-minimum `''heap''` `''element''`)`
+
+Returns the smallest element of the heap (according to the ''&lt;'' function).  This operation should be O(log N) in the size of the heap.
+
+`(heap-remove-minimum! `''heap''` `''element''`)`
+
+Removes the smallest element of the heap (according to the ''&lt;'' function) and returns it.  This operation should be O(log N) in the size of the heap.
+
+`(heap-map `''proc''` `''&lt;''` `''heap''`)`
+
+Applies ''proc'' to each element of ''heap'' in arbitrary order and returns a newly allocated heap with ordering predicate ''&lt;'' containing the values of the applications.  This operation should be O(N) in the size of the heap.
+
+`(heap-for-each `''proc''` `''heap''`)`
+
+Applies ''proc'' to ''heap'' in arbitrary order, discarding the returned values.  Returns an unspecified value.  This operation should be O(N) in the size of the heap.
+
+`(heap-&gt;list `''heap''`)`
+
+Returns a newly allocated list containing the members of ''heap'' in arbitrary order.  This operation should be O(N) in the size of the heap.
+
+`(heap-&gt;sorted-list! `''&lt;''` `''heap''`)`
+
+Returns a newly allocated list containing the members of ''heap'' in increasing order.  ''Heap'' may be destroyed in the process.
+
+`(list-&gt;heap `''&lt;''` `''list''`)`
+
+Returns a newly allocated heap containing the elements of ''list'' and using ''&lt;'' as the ordering procedure.  This operation should be O(n) in the size of the heap.
+
+`(heap-&gt;vector `''heap''`)`
+
+Returns a newly allocated vector containing the elements of ''heap'' in arbitrary order.
+
+`(heap-&gt;sorted-vector! `''&lt;''` `''heap''`)`
+
+Returns a newly allocated vector containing the elements of ''heap'' in increasing order.  ''Heap'' may be destroyed in the process.
+
+`(vector-&gt;heap `''&lt;''` `''vector''`)`
+
+Returns a newly allocated heap containing the elements of ''vector'' and using ''&lt;'' as the ordering procedure.  This operation should be O(n) in the size of the heap.
+</pre>
+    <h2>time</h2>
+    <pre>2012-11-22 10:26:12</pre>
+    <h2>version</h2>
+    <pre>5</pre></body></html>

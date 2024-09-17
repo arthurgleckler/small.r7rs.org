@@ -1,0 +1,366 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for ticket #350</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for ticket #350</h1>
+    <h2>cc</h2>
+    <pre></pre>
+    <h2>changetime</h2>
+    <pre>2012-10-11 23:34:50</pre>
+    <h2>component</h2>
+    <pre>WG1 - Core</pre>
+    <h2>description</h2>
+    <pre>Vitaly pointed out a place where the wording is not clear and seems contradictory.  He suggested alternate language.  While I agree that the current language seems contradictory, I don't think his wording is good enough.  I'd like help from other WG1 members, et al. improving this language.
+
+Here is the latest message in the conversion:
+
+
+from Vitaly Magerya on Thu, Feb 23, 2012 at 4:41 AM:
+
+Arthur A. Gleckler wrote:
+&gt; | Page 24, section 5.2.1: &quot;implementations are permitted to provide
+&gt; | an initial environment in which all possible variables are bound
+&gt; | to locations, most of which contain unspecified values&quot; -- this
+&gt; | seems to contradict section 5.1, page 23, where it says &quot;the initial
+&gt; | (or 'top level') environment is empty except for import&quot;.
+&gt;
+&gt; The former statement is included because some implementations forbid
+&gt; assignment to any top-level variable using `set!' until `define' has
+&gt; been used on that variable, while other implementations allow `set!'
+&gt; without a preceding `define'.  The latter statement means that the
+&gt; only variable bound to a specific value in the initial environment is
+&gt; `import'.  However, it doesn't preclude all other possible variables
+&gt; being bound to locations whose values haven't yet been specified.
+
+So &quot;empty&quot; does not mean &quot;unbound&quot;, but &quot;unbound or bound to
+unspecified values&quot;. Can we change &quot;empty&quot; to &quot;unspecified&quot; if
+that's the case?
+
+&gt; | This also does not play along with environment specifiers to eval
+&gt; | and load: for example section 6.2, page 51 says &quot;[null-environment]
+&gt; | contains only the bindings [...]&quot; -- in effect, an implementation
+&gt; | that uses the initial environment where everything is bound must
+&gt; | nonetheless support environments where not everything is bound.
+&gt;
+&gt; Based on my description above, can you suggest better wording?
+
+Instead of &quot;[...] contains only the bindings [...]&quot; in null-environment
+and scheme-report-environment descriptions (page 51, section 6.1)
+I propose &quot;contains bindings&quot;, without &quot;only&quot;. In the description
+of environment I propose using &quot;implementation-specific (possibly
+empty)&quot; instead of &quot;empty&quot;.</pre>
+    <h2>id</h2>
+    <pre>350</pre>
+    <h2>keywords</h2>
+    <pre></pre>
+    <h2>milestone</h2>
+    <pre>Final Draft</pre>
+    <h2>owner</h2>
+    <pre>alexshinn</pre>
+    <h2>priority</h2>
+    <pre>minor</pre>
+    <h2>reporter</h2>
+    <pre>aag</pre>
+    <h2>resolution</h2>
+    <pre>fixed</pre>
+    <h2>severity</h2>
+    <pre></pre>
+    <h2>status</h2>
+    <pre>closed</pre>
+    <h2>summary</h2>
+    <pre>Clarify wording explaining almost-empty environments vs. environments containing unspecified values for all possible variables.</pre>
+    <h2>time</h2>
+    <pre>2012-02-24 13:23:05</pre>
+    <h2>type</h2>
+    <pre>enhancement</pre>
+    <h1>Changes</h1>
+    <h2>Change at time 2012-10-11 23:34:50</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Moved the problematic paragraph to the REPL section, thus avoiding the conflict.</pre>
+    <h2>oldvalue</h2>
+    <pre>10</pre>
+    <h2>raw-time</h2>
+    <pre>1349973290678264</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-11 23:34:50</pre>
+    <h2>Change at time 2012-10-11 23:34:50</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349973290678264</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-11 23:34:50</pre>
+    <h2>Change at time 2012-10-11 23:34:50</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1349973290678264</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-11 23:34:50</pre>
+    <h2>Change at time 2012-10-09 00:17:20</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>9</pre>
+    <h2>raw-time</h2>
+    <pre>1349716640380659</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 00:17:20</pre>
+    <h2>Change at time 2012-10-09 00:17:20</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>reopened</pre>
+    <h2>raw-time</h2>
+    <pre>1349716640380659</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 00:17:20</pre>
+    <h2>Change at time 2012-10-09 00:15:32</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>8</pre>
+    <h2>raw-time</h2>
+    <pre>1349716532071070</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 00:15:32</pre>
+    <h2>Change at time 2012-10-09 00:15:32</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>fixed</pre>
+    <h2>raw-time</h2>
+    <pre>1349716532071070</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 00:15:32</pre>
+    <h2>Change at time 2012-10-09 00:15:32</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>reopened</pre>
+    <h2>oldvalue</h2>
+    <pre>closed</pre>
+    <h2>raw-time</h2>
+    <pre>1349716532071070</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-09 00:15:32</pre>
+    <h2>Change at time 2012-10-07 13:22:11</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre></pre>
+    <h2>oldvalue</h2>
+    <pre>7</pre>
+    <h2>raw-time</h2>
+    <pre>1349590931916665</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 13:22:11</pre>
+    <h2>Change at time 2012-10-07 13:22:11</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>resolution</pre>
+    <h2>newvalue</h2>
+    <pre>fixed</pre>
+    <h2>oldvalue</h2>
+    <pre></pre>
+    <h2>raw-time</h2>
+    <pre>1349590931916665</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 13:22:11</pre>
+    <h2>Change at time 2012-10-07 13:22:11</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>closed</pre>
+    <h2>oldvalue</h2>
+    <pre>decided</pre>
+    <h2>raw-time</h2>
+    <pre>1349590931916665</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 13:22:11</pre>
+    <h2>Change at time 2012-10-07 13:12:46</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>I went with allowing `set!` to bind its variable if it is not already bound, but using &quot;as if&quot; language so that the Chez implementation is conformant. </pre>
+    <h2>oldvalue</h2>
+    <pre>6</pre>
+    <h2>raw-time</h2>
+    <pre>1349590366544995</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-10-07 13:12:46</pre>
+    <h2>Change at time 2012-07-11 01:07:55</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Treating as editorial.</pre>
+    <h2>oldvalue</h2>
+    <pre>5</pre>
+    <h2>raw-time</h2>
+    <pre>1341943675055366</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-07-11 01:07:55</pre>
+    <h2>Change at time 2012-07-11 01:07:55</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>status</pre>
+    <h2>newvalue</h2>
+    <pre>decided</pre>
+    <h2>oldvalue</h2>
+    <pre>new</pre>
+    <h2>raw-time</h2>
+    <pre>1341943675055366</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-07-11 01:07:55</pre>
+    <h2>Change at time 2012-03-01 07:10:23</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Yes.  I should have said that this is the behavior ''in the REPL''.</pre>
+    <h2>oldvalue</h2>
+    <pre>4</pre>
+    <h2>raw-time</h2>
+    <pre>1330557023220189</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-03-01 07:10:23</pre>
+    <h2>Change at time 2012-03-01 06:49:08</h2>
+    <h2>author</h2>
+    <pre>arcfide</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>In Chez Scheme's case, this is not actually accurate. The REPL top-level environment expands DEFINEs into SET! expressions, but in this environment, all variables are implicitly bound.  In R6RS Library forms, or any clean environment, such as those produced by MODULE forms with IMPORT-ONLY or inside of program scripts, a SET! to an unbound variable will produce an error.</pre>
+    <h2>oldvalue</h2>
+    <pre>3</pre>
+    <h2>raw-time</h2>
+    <pre>1330555748459166</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-03-01 06:49:08</pre>
+    <h2>Change at time 2012-03-01 06:04:25</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>Of the 39 Schemes, Racket, Gauche, MIT, Bigloo, Scheme48/scsh, SISC, SCM, Ypsilon, NexJ, STklos, KSi, !SigScheme, Shoe, !TinyScheme, Scheme 9, Dream, Scheme 7, Schemik, Elk, UMB throw an error when attempting to `set!` an undefined variaboe.
+
+Chicken, Kawa, Chibi, Chez, !Ikarus/Vicare, Larceny, Mosh, !IronScheme, RScheme, BDC, XLisp, VX allow it silently.
+
+Guile, Oaklisp print a warning but allow it.
+
+Rep, Owl Lisp do not support `set!`.</pre>
+    <h2>oldvalue</h2>
+    <pre>2</pre>
+    <h2>raw-time</h2>
+    <pre>1330553065727454</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-03-01 06:04:25</pre>
+    <h2>Change at time 2012-02-24 14:07:20</h2>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>field</h2>
+    <pre>comment</pre>
+    <h2>newvalue</h2>
+    <pre>I think R5RS/R7RS provides too much generality and should be clawed back.  The implementations which allow `set!` on unbound identifiers actually don't make the identifiers contain unspecified values.  For example, we don't have implementations whose initial state binds `foo` to `'foo` and `bar` to `'bar`, or anything of the sort.  Nor do they come back with `#&lt;undef&gt;` or silence.  Instead, an error is signalled when you attempt to evaluate `foo` and `bar`.
+
+What I'd like to do is to drop this language altogether and just say (as we already do) that it's an error to set an undefined identifier.  Then we can add a note saying that some implementations extend the standard by automatically defining any undefined identifier before setting it.
+
+</pre>
+    <h2>oldvalue</h2>
+    <pre>1</pre>
+    <h2>raw-time</h2>
+    <pre>1330063640867834</pre>
+    <h2>ticket</h2>
+    <pre>350</pre>
+    <h2>time</h2>
+    <pre>2012-02-24 14:07:20</pre></body></html>

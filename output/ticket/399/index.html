@@ -1,0 +1,81 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>399: clarify which primitives are allowed to implicitly force</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1 class="ticket">Ticket 399: <span class="summary">clarify which primitives are allowed to implicitly force</span></h1>
+    <div class="ticket metadata">
+      <div class="changetime">2012-10-07 11:30:53</div>
+      <div class="component">WG1 - Core</div>
+      <div class="owner">cowan</div>
+      <div class="priority">major</div>
+      <div class="reporter">alexshinn</div>
+      <div class="resolution">fixed</div>
+      <div class="source"><a href="/ticket/399/source.html">source</a></div>
+      <div class="status">closed</div>
+      <div class="time">2012-06-10 10:59:39</div>
+      <div class="type">defect</div></div>
+    <div class="ticket">
+      <div class="description">
+        <p>The standard allows the following extension to force:</p>
+        <p>Some implementations may implement &quot;implicit forcing,&quot; where the
+  value of a promise is forced by primitive procedures like `cdr'
+  and `+'</p>
+        <p>We should remove this note or tighten the definition.</p></div>
+      <div class="history">
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-06-11 11:05:55</div></div>
+          <div class="changes"></div>
+          <div class="comments">
+            <div class="comment">
+              <ol class="number">
+                <li>Procedures whose arguments belong to specific types should be allowed to force promises to see if the value of the promise belongs to that type.  That covers <span class="monospace">cdr</span> and <span class="monospace">+</span> and the great majority of standard procedures.</li>
+                <li>The type-identifying predicates <span class="monospace">number? complex? real? rational? integer? boolean? pair? null? list? symbol? char? string? vector? bytevector? procedure? error-object? input-port? output-port? textual-port? binary-port? port? eof-object?</span> should likewise be allowed to force promises, given that promises are not a disjoint type and there is no way to identify one.  So <span class="monospace">number?</span> should be allowed to return <span class="monospace">#t</span> either on a number or a promise whose value is a number.</li>
+                <li>The constructors <span class="monospace">cons list vector</span>, the pseudo-constructor <span class="monospace">values</span>, and the mutators <span class="monospace">set-car! set-cdr! list-set! vector-set!</span> should <i>not</i> be allowed to force promises.  A promise is an object, and it should be possible to put it into a data structure without forcing it.  Likewise, the keyed accessors <span class="monospace">memq memv member assq assv assoc</span> should be able to retrieve a promise from a list.</li>
+                <li>I don't have a good intuition about the remaining procedures that accept arbitrary objects.  They seem to fall into these groups:
+                  <ol class="alpha-lower">
+                    <li><span class="monospace">make-promise</span>: what happens if the argument is already a promise?  The draft doesn't say.</li>
+                    <li>the equivalence predicates <span class="monospace">eq? eqv? equal?</span>: should promises be distinct from their values?</li>
+                    <li><span class="monospace">not</span>: can a promise whose value is <span class="monospace">#f</span> count as false?</li>
+                    <li>the error procedures <span class="monospace">raise raise-continuable error</span>: what's to be done?</li>
+                    <li>the output procedures <span class="monospace">write write-simple display</span>: what's to be done?</li>
+                    <li><span class="monospace">exit</span>: what's to be done?</li>
+                    <li><span class="monospace">list-copy</span>: the argument is normally a list, but can be an arbitrary object (a degenerate case of an improper list) in which case it returns the object.</li></ol></li></ol></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-26 23:20:02</div></div>
+          <div class="changes">
+            <div><span class="field">status</span><span class="old-value">new</span><span class="new-value">decided</span></div></div>
+          <div class="comments">
+            <div class="comment">
+              <p>WG1 voted to adopt the rule that a procedure which performs a type-check on its arguments is permitted to implicitly force promises.</p></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-08-27 08:26:26</div></div>
+          <div class="changes">
+            <div><span class="field">owner</span><span class="old-value">alexshinn</span><span class="new-value">cowan</span></div>
+            <div><span class="field">status</span><span class="old-value">decided</span><span class="new-value">writing</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div>
+        <div class="ticket change-group">
+          <div class="metadata">
+            <div class="author">cowan</div>
+            <div class="time">2012-10-07 11:30:53</div></div>
+          <div class="changes">
+            <div><span class="field">resolution</span><span class="old-value">&blank;</span><span class="new-value">fixed</span></div>
+            <div><span class="field">status</span><span class="old-value">writing</span><span class="new-value">closed</span></div></div>
+          <div class="comments">
+            <div class="comment"></div></div></div></div></div></body></html>

@@ -1,0 +1,90 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Copyright 2013 by Arthur A. Gleckler. All rights reserved. -->
+    <title>Source for wiki ExtendedRecordSyntaxCowan version 1</title>
+    <link href="/trac.css" rel="stylesheet" type="text/css"></head>
+  <body>
+    <header>This site is a static rendering of the <a href="https://trac.edgewall.org/">Trac</a> instance that was used by <a href="http://scheme-reports.org/2015/working-group-1.html">R7RS-WG1</a> for its work on R7RS-small (<a href="/attachment/r7rs.pdf">PDF</a>), which was ratified in 2013. For more information, see <a href="/">Home</a>.</header>
+    <ul class="navigation">
+      <li><a href="/">Home</a></li>
+      <li><a href="/ticket/">All tickets</a></li>
+      <li><a href="/wiki/">All wiki pages</a></li></ul>
+    <h1>Source for wiki ExtendedRecordSyntaxCowan version 1</h1>
+    <h2>author</h2>
+    <pre>cowan</pre>
+    <h2>comment</h2>
+    <pre></pre>
+    <h2>ipnr</h2>
+    <pre>127.11.51.1</pre>
+    <h2>name</h2>
+    <pre>ExtendedRecordSyntaxCowan</pre>
+    <h2>readonly</h2>
+    <pre>0</pre>
+    <h2>text</h2>
+    <pre>This is a proposal for extending the syntax of R7RS record type definitions to accommodate the procedural layer of [http://srfi.schemers.org/srfi-99/srfi-99.html SRFI 99].  It is a reduced version of the SRFI 99 syntactic layer that can be implemented with `syntax-rules`.
+
+== Syntactic Layer ==
+
+The syntactic layer consists of R7RS `define-record-type` extended with single inheritance and mechanisms for abstract record types.
+
+The syntax of a record-type definition is:
+
+{{{
+#!html
+&lt;pre&gt;
+ &amp;lt;definition&amp;gt;           
+   -&amp;gt; &amp;lt;record type definition&amp;gt;
+
+ &amp;lt;record type definition&amp;gt;
+   -&amp;gt; (define-record-type &amp;lt;type spec&amp;gt;
+        &amp;lt;constructor spec&amp;gt;
+        &amp;lt;predicate spec&amp;gt;
+        &amp;lt;field spec&amp;gt; ...)
+
+ &amp;lt;type spec&amp;gt;  -&amp;gt; &amp;lt;type name&amp;gt;
+              -&amp;gt; (&amp;lt;type name&amp;gt; &amp;lt;parent&amp;gt;)
+
+ &amp;lt;constructor spec&amp;gt;
+              -&amp;gt; #f
+              -&amp;gt; &amp;lt;constructor name&amp;gt;
+              -&amp;gt; (&amp;lt;constructor name&amp;gt; &amp;lt;field name&amp;gt; ...)
+
+ &amp;lt;predicate spec&amp;gt;
+              -&amp;gt; #f
+              -&amp;gt; &amp;lt;predicate name&amp;gt;
+
+ &amp;lt;field spec&amp;gt; -&amp;gt; (&amp;lt;field name&amp;gt; &amp;lt;accessor name&amp;gt;)
+              -&amp;gt; (&amp;lt;field name&amp;gt; &amp;lt;accessor name&amp;gt; &amp;lt;mutator name&amp;gt;)
+
+ &amp;lt;parent&amp;gt;           -&amp;gt; &amp;lt;expression&amp;gt;
+
+ &amp;lt;type name&amp;gt;        -&amp;gt; &amp;lt;identifier&amp;gt;
+ &amp;lt;constructor name&amp;gt; -&amp;gt; &amp;lt;identifier&amp;gt;
+ &amp;lt;predicate name&amp;gt;   -&amp;gt; &amp;lt;identifier&amp;gt;
+ &amp;lt;accessor name&amp;gt;    -&amp;gt; &amp;lt;identifier&amp;gt;
+ &amp;lt;mutator name&amp;gt;     -&amp;gt; &amp;lt;identifier&amp;gt;
+ &amp;lt;field name&amp;gt;       -&amp;gt; &amp;lt;identifier&amp;gt;
+&lt;/pre&gt;
+}}}
+
+The semantics of a record type definition is the same as in R7RS (or SRFI 9, except that record types are generative).
+The record type definition macro-expands into a cluster of definitions that:
+
+ * define the `&lt;type name&gt;` as the record-type descriptor for the new record-type;
+ * defines a constructor for instances of the new record-type (unless the constructor spec is `#f`);
+ * defines a predicate that recognizes instances of the new record-type and its subtypes (unless the predicate spec is `#f`);
+ * defines an accessor for each field name;
+ * defines a mutator for each mutable field name.
+
+A record type definition extends SRFI 9 with the following additional options:
+
+ * If a `&lt;parent&gt;` expression is specified, then it must evaluate to a record-type descriptor that serves as the parent record-type for the record-type being defined.
+ * If `#f` is specified for the constructor or predicate, then no constructor or predicate procedure is defined.  (This is useful when the record-type being defined will be used as an abstract base class.)
+ * If the constructor name is specified as an identifier, then the constructor's arguments correspond to the fields of the parent (if any) followed by the new fields added by this record-type definition in the specified order.</pre>
+    <h2>time</h2>
+    <pre>2015-04-09 22:38:49</pre>
+    <h2>version</h2>
+    <pre>1</pre></body></html>
