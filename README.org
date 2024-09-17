@@ -1,5 +1,23 @@
-This is the home of my work on the static Trac pages I produced from
-backups of the Trac instance R7RS WG2 used to have at
-<http://trac.sacrideo.us/>.
+The [[http://www.scheme-reports.org/][R7RS Working Group 1]] produced the R7RS Small standard ([[https://small.r7rs.org/attachment/r7rs.pdf][PDF]]) of
+Scheme in 2013.  I was one of the members of the working group.
 
-The backups are included in a Git Annex in this repository.
+We used a [[https://trac.edgewall.org/][Trac]] instance to keep track of all of our work.  Trac
+provides a wiki, a ticketing system, etc.  We used it to track
+remaining work, to collect votes, to publish and revise proposals,
+etc.  Our Trac server was at http://trac.sacrideo.us/, and was hosted
+by Aaron Hsu.
+
+In 2019, we didn't want to maintain a Trac server any more, but we
+didn't want to lose the record of all of our work on R7RS Small.  I
+wrote [[file:trac.scm][trac.scm]] to convert our Trac instance's Sqlite database into the
+static web site now hosted at https://small.r7rs.org/.  I made it just
+good enough to extract our data in a usable form once and for all.
+
+Normally, it's not a good idea to include generated output in a Git
+repo.  However, in this case, my plan was to run the code here once,
+produce the output, and be done.  I'm not maintaining the code, so
+it's better to keep a copy of the output just in.  So the output is in
+[[file:output/][output/]], and the attachments, including the final R7RS Small report,
+are in [[file:trac-attachments][trac-attachments/]].
+
+I plan to publish the Trac database backup at [[https://files.scheme.org/][files.scheme.org]].
